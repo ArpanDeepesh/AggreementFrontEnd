@@ -4,7 +4,7 @@ import FormSubmitButton from "../FormParts/FormSubmitButton";
 import UserProfile from "../Context/UserProfile";
 
 
-const LogOut = () => {
+const LogOut = ({ setUserName}) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -15,6 +15,7 @@ const LogOut = () => {
 	const submitBtnClicked = (e) => {
 		e.preventDefault();
 		UserProfile.resetUser();
+		setUserName("");
 		console.log("log out btn is clicked");
 		navigate('/');
 	}
@@ -25,21 +26,21 @@ const LogOut = () => {
 	}
 	return (
 		<>
-			<div className="LandingPageMain container form-container">
-				<div className="row justify-content-center">
+			<div style={{ marginTop: "150px" }}>
+
+				<div className="row" >
 					<div className="col-md-12">
 						<h3>Are you sure you want to log out?</h3>
 					</div>
+				</div>
+				<div className="row ">
 					<div className="col-md-6">
 						<FormSubmitButton name="Log out" onClick={(e) => submitBtnClicked(e)} />
 					</div>
 					<div className="col-md-6">
 						<FormSubmitButton name="Cancel" onClick={(e) => cancelBtnClicked(e)} />
 					</div>
-					
-
 				</div>
-
 
 			</div>
 		</>

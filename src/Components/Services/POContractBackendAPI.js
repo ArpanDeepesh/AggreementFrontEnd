@@ -10,6 +10,16 @@ export const checkConnection = () => {
         referrerPolicy: "unsafe-url" 
     });
 }
+export const crypt = (postBody) => {
+    return fetch(baseAddress + 'api/Common/GetCryptStr', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postBody),
+        referrerPolicy: "unsafe-url"
+    });
+}
 export const sendAuthNotificationRequest = (phoneNo) => {
     return fetch(baseAddress + "api/POManagerAuth/SendOtp?phNo=" + phoneNo, {
         method: "GET",
@@ -67,21 +77,27 @@ export const sendPostRequest = (url, token, postbody) => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
+            'ClientKey': 'POManagerFrontEnd',
             Authorization: 'Bearer ' + token
         },
         referrerPolicy: "unsafe-url" 
     });
 
 }
-export const uploadFile = (formData) => {
-    return fetch(baseAddress + "api/FileSystem/fileUpload", {
+export const uploadFile = (formData,token) => {
+    return fetch(baseAddress + "api/FileUpload/upload", {
         method: "POST",
-        body: formData
+        body: formData,
+        headers: {
+            'ClientKey': 'POManagerFrontEnd',
+            Authorization: 'Bearer ' + token
+        },
+        referrerPolicy: "unsafe-url"
     });
 }
 
 export const uploadMultipleFile = (formData) => {
-    return fetch(baseAddress + "api/FileSystem/multipleFileUpload", {
+    return fetch(baseAddress + "api/FileUpload/upload", {
         method: "POST",
         body: formData
     });

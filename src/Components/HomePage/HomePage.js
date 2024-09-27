@@ -2,114 +2,233 @@ import "./HomePage.css";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserProfile from "../Context/UserProfile";
-import FormSubmitButton from "../FormParts/FormSubmitButton";
+import FormButton from "../FormParts/FormButton";
 import { getRequest } from "../Services/POContractBackendAPI";
+import { useState } from "react";
+import PurchaseOrder from "../Context/PurchaseOrder";
+import PieChart from "../CommonPages/PieChart";
+import DelayMsgs from "../CommonPages/DelayMsgs";
 
 
-const HomePage = () => {
+const HomePage = ({ setUserName }) => {
     const navigate = useNavigate();
+    const [raisedForLst, setRaisedForList] = useState();
+    const [raisedByLst, setRaisedByList] = useState();
+    const [delayMsg, setDelayMsg] = useState([]);
     useEffect(() => {
         if (UserProfile.getLoginStatus() !== "1") {
             navigate("/");
         }
+        setUserName(UserProfile.getName());
+        PurchaseOrder.resetData();
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=true", UserProfile.getToken()).then(rr => rr.json()).then(res => {
-            if (res.status === 1 && res.data.count > 0)
+            //console.log(res);
+            if (res.status === 0 && res.data.length > 0)
             {
                 console.log(res);
+                console.log("raised By you is set")
+                setRaisedByList(res.data);
             }
         }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=false", UserProfile.getToken()).then(rr => rr.json()).then(res => {
-            if (res.status === 1 && res.data.count>0) {
+            //console.log(res);
+            if (res.status === 0 && res.data.length > 0) {
                 console.log(res);
+                console.log("raised for you is set")
+                setRaisedForList(res.data);
             }
         }).catch(err => console.log(err));
     }, []);
+    const editPurchaseOrder = (e, id) => {
+        e.preventDefault();
+        console.log("Setting purchae Id to " + id);
+        PurchaseOrder.setPoId(id);
+        PurchaseOrder.setPurchaseOrderEditFlag(1);
+        navigate("/New");
+    }
+    const copyPurchaseOrder = (e, id) => {
+        e.preventDefault();
+        getRequest("api/POManagement/CopyPurchaseOrder?poId="+id, UserProfile.getToken()).then(rr => rr.text()).then(res => {
+            //console.log(res);
+            if (res > 0) {
+                PurchaseOrder.setPoId(res);
+                PurchaseOrder.setPurchaseOrderEditFlag(1);
+                navigate("/New");
+            }
+            
+        }).catch(err => console.log(err));
+    }
 
-	return (
-		<div>
-            <div className="mt-4">
+    return (
+        <div className="d-flex h-100" style={{ overflowY: "scroll" }}>
+            <DelayMsgs msgList={delayMsg} setMsgList={setDelayMsg} />
+            <div className="mt-1" >
+                <div className="row">
+                    <div className="col-md-3 p-0 m-0" >
+                        <div className="bg-success" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
+                            Completed
+                        </div>
+                        
+                    </div>
+                    <div className="col-md-3 p-0 m-0" >
+                        <div className="bg-primary" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
+                            Active
+                        </div>
+                        
+                    </div>
+                    <div className="col-md-3 p-0 m-0" >
+                        <div className="bg-info" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
+                            Claimed
+                        </div>
+                        
+                    </div>
+                    <div className="col-md-3 p-0 m-0" >
+                        <div className="bg-danger" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
+                            Waiting
+                        </div>
+                        
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-6 col-xs-12">
-                        <h4>PO Raised By</h4>
-                        <table className="table table-striped table-bordered">
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Raised For</th>
-                                    <th>Raised By</th>
-                                    <th>Status</th>
-                                    <th>Delay Statements</th>
-                                    <th>Work Done</th>
-                                    <th>Amount Spent</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>PO #001</td>
-                                    <td>Supplier A</td>
-                                    <td>John Doe</td>
-                                    <td>Completed</td>
-                                    <td>No Delay</td>
-                                    <td>
-                                        <div className="progress">
-                                            <div className="progress-bar bg-success" style={{ width: "75%"}} >75%</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="progress">
-                                            <div className="progress-bar bg-info" style={{ width: "50%"}} >$5000</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <FormSubmitButton name="Copy" />
-                                        <br />
-                                        <FormSubmitButton name="Details" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <h4>Sale Contracts</h4>
+                        <div className="table mr-1">
+                            <div className="row tableHeader">
+                                <div className="col-md-1">
+                                    Title
+                                </div>
+                                <div className="col-md-2">
+                                    Raised For
+                                </div>
+                                <div className="col-md-1">
+                                    Status
+                                </div>
+                                <div className="col-md-2">
+                                    Delay Statements
+                                </div>
+                                <div className="col-md-2">
+                                    Work Done
+                                </div>
+                                <div className="col-md-2">
+                                    Amount Received
+                                </div>
+                                <div className="col-md-2">
+                                    Action
+                                </div>
+                            </div>
+                            {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
+                                    <div className="col-md-1">
+                                        {tempPO.title}
+                                    </div>
+                                <div className="col-md-2">
+                                    {tempPO.raisedForName}<br /><span style={{ fontSize:'10px' }}>{tempPO.raisedForPhoneNo}</span>
+                                    </div>
+                                    <div className="col-md-1">
+                                    { tempPO.status}
+                                    </div>
+                                <div className="col-md-2">
+                                    {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
+                                    {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
+                                        <img src={"./info.png"} width={20} height={20} alt="Alter icon"
+                                            className="delayIcon"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
+                                                setDelayMsg(tempPO.delaysAndWaitingResponse);
+                                            }} /> 
+                                        : <></>}
+                                    </div>
+                                <div className="col-md-2">
+                                    
+                                    <PieChart dataArray={tempPO.workDoneStatus}/>
+                                    </div>
+                                    <div className="col-md-2">
+                                    <PieChart dataArray={tempPO.paymentStatus} />
+                                    </div>
+                                <div className="col-md-2">
+                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO.poId)} /> :
+                                        <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO.poId)} />
+                                            <FormButton name="Details" onClick={(e) => {
+                                                e.preventDefault();
+                                                console.log("Calling Respond Button");
+                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                navigate("/Details");
+                                            }} />
+                                    </>}
+                                    
+                                    </div>
+                                </div>
+                            ) : <div className="row tablebox">No Data present</div>}
+                            
+                        </div>
+                        
                     </div>
                     <div className="col-md-6 col-xs-12">
-                        <h4>PO Raised For</h4>
-                        <table className="table table-striped table-bordered">
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Raised For</th>
-                                    <th>Raised By</th>
-                                    <th>Status</th>
-                                    <th>Delay Statements</th>
-                                    <th>Work Done</th>
-                                    <th>Amount Spent</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>PO #002</td>
-                                    <td>Supplier B</td>
-                                    <td>Jane Smith</td>
-                                    <td>In Progress</td>
-                                    <td>Delayed by 2 Days</td>
-                                    <td>
-                                        <div className="progress">
-                                            <div className="progress-bar bg-success" style={{ width: "40%" }} >40%</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="progress">
-                                            <div className="progress-bar bg-info" style={{ width: "30%" }} >$3000</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <FormSubmitButton name="Copy"/>
-                                        <br />
-                                        <FormSubmitButton name="Details" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <h4>Purchase Contracts</h4>
+                        <div className="table ml-1 ">
+                            <div className="row tableHeader">
+                                <div className="col-md-1">
+                                    Title
+                                </div>
+                                <div className="col-md-2">
+                                    Raised By
+                                </div>
+                                <div className="col-md-1">
+                                    Status
+                                </div>
+                                <div className="col-md-2">
+                                    Delay Statements
+                                </div>
+                                <div className="col-md-2">
+                                    Work Done
+                                </div>
+                                <div className="col-md-2">
+                                    Amount Spent
+                                </div>
+                                <div className="col-md-2">
+                                    Action
+                                </div>
+                            </div>
+                            {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => <div className="row tablebox">
+                                <div className="col-md-1">
+                                    {tempPO.title}
+                                </div>
+                                <div className="col-md-2">
+                                    {tempPO.raisedByName}<br />{tempPO.raisedByPhoneNo}
+                                </div>
+                                <div className="col-md-1">
+                                    {tempPO.status}
+                                </div>
+                                <div className="col-md-2">
+                                    {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
+                                        <img src={"./info.png"} width={20} height={20} alt="Alter icon" onClick={(e) => {
+                                            e.preventDefault();
+                                            console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
+                                            setDelayMsg(tempPO.delaysAndWaitingResponse);
+                                        }} /> : <></>}
+                                </div>
+                                <div className="col-md-2">
+                                    <PieChart dataArray={tempPO.workDoneStatus} />
+                                </div>
+                                <div className="col-md-2">
+                                    <PieChart dataArray={tempPO.paymentStatus} />
+                                </div>
+                                <div className="col-md-2">
+                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={ (e)=>editPurchaseOrder(e,tempPO.poId)} /> :
+                                        <>
+                                            <FormButton name="Respond" onClick={(e) => {
+                                                e.preventDefault();
+                                                console.log("Calling Respond Button");
+                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                navigate("/Details")
+                                            }} />
+                                        </>}
+
+                                </div>
+                            </div>
+                            ) : <div className="row tablebox">No Data present</div>}
+
+                        </div>
                     </div>
                 </div>
             </div>

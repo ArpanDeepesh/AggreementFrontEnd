@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./DefaultLayout.css";
 import WrongAddress from './CommonPages/WrongAddress';
 import { checkConnection } from './Services/POContractBackendAPI';
@@ -10,30 +10,40 @@ import ValidateOTP from './LandingPage/ValidateOTP';
 import UpdateUser from './LandingPage/UpdateUser';
 import LogOut from './LandingPage/LogOut';
 import NewPO from './NewPO/NewPO';
+import DetailPO from './DetailPO/DetailPO';
+import PurchaseOrder from './Context/PurchaseOrder';
+import CheckPODetails from './DetailPO/CheckPODetails';
+
 
 
 const DefaultLayout = () => {
+    const [loggedInUserName, setLoggedInUsername] = useState();
     useEffect(() => {
         checkConnection().then(rr => rr.text()).then(res => console.log(res)).catch(err => console.log(err));
     }, []);
     return (
         <div >
             <header className="bg-primary text-white py-2 pl-4 pr-4 pt-2 pb-2">
+                {/*<a href="\LogOut" className="text-white text-decoration-none"> Logout</a>*/}
                 {UserProfile.getLoginStatus() === "1" ? <div className="d-flex justify-content-between align-items-center">
                     <div className="logo">
-                        <a href="\" className="text-white text-decoration-none"><img src='./logo192.png' alt="Musedaq logo" width={50} height={50} /> Purchase Aggrement</a>
+                        <a href="\" className="text-white text-decoration-none">
+                            <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span>
+                        </a>
                     </div>
                     <div className="logo">
-                        <a href="\New" className="text-white text-decoration-none">New Aggrement</a>
+                        <a href="\New" className="text-white text-decoration-none" onClick={(e) => { PurchaseOrder.resetData() }}>New Agreement</a>
                     </div>
-                    <div className="user-info">
-                        <span className="me-3">Logged in as <strong>John Doe</strong></span>
+                    {loggedInUserName !== "" ? <div className="user-info">
+                        <span className="me-3">Logged in as <strong>{loggedInUserName}</strong></span>
                         <a href="\LogOut" className="text-white text-decoration-none"> Logout</a>
-                    </div>
+                    </div>:<></>}
+                    
                 </div> :
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="logo">
-                            <a href="\" className="text-white text-decoration-none"> Purchase Aggrement</a>
+                            <a href="\" className="text-white text-decoration-none">
+                                <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span></a>
                         </div>
                         
                     </div>
@@ -43,12 +53,13 @@ const DefaultLayout = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
-                        <Route path="/Home" element={<HomePage />} />
+                        <Route path="/Home" element={<HomePage setUserName={setLoggedInUsername} />} />
                         <Route path="/ValidateUser" element={<ValidateOTP />} />
-                        <Route path="/UpdateUser" element={<UpdateUser />} />
-                        <Route path="/LogOut" element={<LogOut />} />
-                        <Route path="/New" element={ <NewPO/>}/>
-                        
+                        <Route path="/UpdateUser" element={<UpdateUser setUserName={setLoggedInUsername } />} />
+                        <Route path="/LogOut" element={<LogOut setUserName={setLoggedInUsername } />} />
+                        <Route path="/New" element={<NewPO setUserName={setLoggedInUsername } />} />
+                        <Route path="/Details" element={<DetailPO setUserName={setLoggedInUsername} />} />
+                        <Route path="/CheckPODetails" element={<CheckPODetails setUserName={setLoggedInUsername} />} />
                         
                         <Route path='*' element={<WrongAddress />} />
                     </Routes>
@@ -56,7 +67,7 @@ const DefaultLayout = () => {
             </main>
             <footer>
                 <div>
-                    Contract Aggrement &copy; Musedaq 2024
+                    Contract Agreement &copy; Musedaq 2024
                 </div>
             </footer>
 

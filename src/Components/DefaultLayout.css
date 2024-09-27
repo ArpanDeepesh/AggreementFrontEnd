@@ -1,16 +1,28 @@
-.appMainBody {
-    text-align:center;
-    margin:10px;
-    padding:10px;
-
-}
 body, html {
     height: 100%;
     margin: 0;
+    padding:0;
     display: flex;
     flex-direction: column;
 }
-
+.row {
+    padding:0;
+    margin:0 !important;
+}
+.col-md- {
+    padding: 0;
+    margin: 0;
+}
+.appMainBody {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 30px;
+    top: 65px;
+    right:0;
+    width: 100%;
+    padding:5px;
+}
 .header {
     width: 100%;
     padding: 10px;
@@ -29,10 +41,23 @@ body, html {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
 .form-content {
     width: 100%;
-    max-width: 400px;
+}
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+.logoText {
+    font-size: 30px;
+    font-family: 'Arial';
+}
+.logoSubPart {
+    color: #ff8400;
+    font-weight:800 !important;
 }

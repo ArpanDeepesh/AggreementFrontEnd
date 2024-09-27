@@ -93,3 +93,47 @@
 .payment-tab-content.active {
     display: block;
 }
+
+
+
+.section {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.item-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+    .item-list li {
+        background-color: #ececec;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+        .item-list li.dragging {
+            opacity: 0.5;
+        }
+
+.section h2 {
+    text-align: center;
+}
+
+.scrollable-section {
+    overflow-y: auto;
+   /* height: 100vh;*/
+    height: calc(100vh - 100px); /* Adjusting for header (60px) and footer (60px) height */
+}
+
+.fixed-section {
+    height: calc(100vh - 100px); /* Adjusting for header (60px) and footer (60px) height */
+    background-color: #f8f9fa;
+    /*height:100vh;*/
+}

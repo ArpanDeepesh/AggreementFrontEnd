@@ -6,9 +6,10 @@ import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import { sendPostRequest, getRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
+import PurchaseOrder from "../Context/PurchaseOrder";
 
 
-const UpdateUser = () => {
+const UpdateUser = ({ setUserName }) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -16,6 +17,7 @@ const UpdateUser = () => {
 			navigate("/");
 		}
 		getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(res => {
+			setUserName(res.data.name);
 			if (res.data.status === 'New') {
 				UserProfile.setUserId(res.data.id);
 				UserProfile.setEmail(res.data.email);
@@ -23,6 +25,16 @@ const UpdateUser = () => {
 				UserProfile.setName(res.data.name);
 				UserProfile.setUserGSTIN(res.data.gstin);
 			} else {
+				UserProfile.setUserId(res.data.id);
+				UserProfile.setEmail(res.data.email);
+				UserProfile.setWatsAppNumber(res.data.watsappNumber);
+				UserProfile.setName(res.data.name);
+				UserProfile.setUserGSTIN(res.data.gstin);
+				if (PurchaseOrder.getPoId() > 0)
+				{
+					navigate('/Details');
+					return;
+				}
 				navigate('/Home');
 			}
 			
@@ -42,6 +54,10 @@ const UpdateUser = () => {
 			Status: 'New'
 		};
 		sendPostRequest("api/POManagerAuth/UpdateClient", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+			if (PurchaseOrder.getPoId() > 0) {
+				navigate('/Details');
+				return;
+			}
 			navigate("/Home");
 			console.log(res);
 		}).catch(err => {
@@ -55,7 +71,7 @@ const UpdateUser = () => {
 
 	return (
 		<>
-			<div className="LandingPageMain container form-container">
+			<div className="LandingPageMain container form-container" style={{ paddingTop: "25px" }}>
 				<div className="row justify-content-center">
 					<div className="form-content">
 						<Form ref={usrForm} onSubmit={handleSubmit}>

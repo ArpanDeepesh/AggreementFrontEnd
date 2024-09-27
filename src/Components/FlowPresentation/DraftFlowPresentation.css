@@ -1,0 +1,13 @@
+.item-content {
+    text-align:right
+}
+.pay-content {
+    text-align: left
+}
+.start-end {
+    background-color: #d3d3d3;
+    border-radius: 5px
+}
+.number {
+    font-size:small
+}

@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\Components",
-    "\\Components\\Context",
+    "\\Components\\CommonPages",
+    "\\Components\\DetailPO",
+    "\\Components\\HomePage",
     "\\Components\\LandingPage",
-    "\\Components\\NewPO"
+    "\\Components\\NewPO",
+    "\\Components\\Services"
   ],
-  "SelectedNode": "\\Components\\NewPO\\NewPO.css",
   "PreviewInSolutionExplorer": false
 }
