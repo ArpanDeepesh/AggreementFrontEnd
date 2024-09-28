@@ -7,7 +7,7 @@ export const checkConnection = () => {
         headers: {
             'Content-Type': 'application/json',
         },
-        referrerPolicy: "unsafe-url" 
+        //referrerPolicy: "unsafe-url" 
     });
 }
 export const crypt = (postBody) => {
@@ -17,7 +17,7 @@ export const crypt = (postBody) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(postBody),
-        referrerPolicy: "unsafe-url"
+        //referrerPolicy: "unsafe-url"
     });
 }
 export const sendAuthNotificationRequest = (phoneNo) => {
@@ -27,7 +27,7 @@ export const sendAuthNotificationRequest = (phoneNo) => {
             'Content-Type': 'application/json',
             'ClientKey': 'POManagerFrontEnd',
         },
-        referrerPolicy: "unsafe-url"
+        //referrerPolicy: "unsafe-url"
     });
 }
 export const validateOTPRequest = (postbody) => {
@@ -40,7 +40,7 @@ export const validateOTPRequest = (postbody) => {
                 'ClientKey': 'POManagerFrontEnd',
             },
             body: JSON.stringify(postbody),
-            referrerPolicy: "unsafe-url" 
+            //referrerPolicy: "unsafe-url" 
         });
     }
     return;
@@ -55,7 +55,7 @@ export const getRequest = (url,token) => {
             'Authorization': 'Bearer ' + token
             
         },
-        referrerPolicy: "unsafe-url" 
+        //referrerPolicy: "unsafe-url" 
     });
 }
 export const sendPostRequest = (url, token, postbody) => {
@@ -70,7 +70,7 @@ export const sendPostRequest = (url, token, postbody) => {
                 Authorization: 'Bearer ' + token
             },
             body: JSON.stringify(postbody),
-            referrerPolicy: "unsafe-url" 
+            //referrerPolicy: "unsafe-url" 
         });
     }
     return fetch(baseAddress + url, {
@@ -80,7 +80,7 @@ export const sendPostRequest = (url, token, postbody) => {
             'ClientKey': 'POManagerFrontEnd',
             Authorization: 'Bearer ' + token
         },
-        referrerPolicy: "unsafe-url" 
+        //referrerPolicy: "unsafe-url" 
     });
 
 }
@@ -92,7 +92,7 @@ export const uploadFile = (formData,token) => {
             'ClientKey': 'POManagerFrontEnd',
             Authorization: 'Bearer ' + token
         },
-        referrerPolicy: "unsafe-url"
+        //referrerPolicy: "unsafe-url"
     });
 }
 
