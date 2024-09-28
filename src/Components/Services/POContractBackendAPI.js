@@ -1,5 +1,5 @@
 
-const baseAddress = "http://ec2-13-201-68-200.ap-south-1.compute.amazonaws.com/";
+const baseAddress = "https://www.api.contrect.com/";
 
 export const checkConnection = () => {
     return fetch(baseAddress + 'api/Common/Connect', {
