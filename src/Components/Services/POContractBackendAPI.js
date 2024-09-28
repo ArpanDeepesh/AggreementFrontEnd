@@ -3,8 +3,8 @@ const baseAddress = "https://www.api.contrect.com/";
 
 export const checkConnection = () => {
     return fetch(baseAddress + 'api/Common/Connect', {
-        method: "GET",
         mode: 'no-cors',
+        method: "GET",
         headers: {
             'Content-Type': 'application/json',
         },
