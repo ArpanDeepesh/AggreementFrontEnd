@@ -3,7 +3,6 @@ const baseAddress = "https://www.api.contrect.com/";
 
 export const checkConnection = () => {
     return fetch(baseAddress + 'api/Common/Connect', {
-        mode: 'no-cors',
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -13,7 +12,6 @@ export const checkConnection = () => {
 }
 export const crypt = (postBody) => {
     return fetch(baseAddress + 'api/Common/GetCryptStr', {
-        mode: 'no-cors',
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -25,7 +23,6 @@ export const crypt = (postBody) => {
 export const sendAuthNotificationRequest = (phoneNo) => {
     return fetch(baseAddress + "api/POManagerAuth/SendOtp?phNo=" + phoneNo, {
         method: "GET",
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json',
             'ClientKey': 'POManagerFrontEnd',
@@ -38,7 +35,6 @@ export const validateOTPRequest = (postbody) => {
     if (postbody) {
         return fetch(baseAddress + "api/POManagerAuth/login", {
             method: "POST",
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
                 'ClientKey': 'POManagerFrontEnd',
