@@ -49,7 +49,6 @@ export const validateOTPRequest = (postbody) => {
 export const getRequest = (url,token) => {
     return fetch(baseAddress + url, {
         method: "GET",
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json',
             'ClientKey': 'POManagerFrontEnd',
@@ -65,7 +64,6 @@ export const sendPostRequest = (url, token, postbody) => {
     if (postbody) {
         return fetch(baseAddress + url, {
             method: "POST",
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
                 'ClientKey': 'POManagerFrontEnd',
@@ -77,7 +75,6 @@ export const sendPostRequest = (url, token, postbody) => {
     }
     return fetch(baseAddress + url, {
         method: "POST",
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json',
             'ClientKey': 'POManagerFrontEnd',
@@ -90,7 +87,6 @@ export const sendPostRequest = (url, token, postbody) => {
 export const uploadFile = (formData,token) => {
     return fetch(baseAddress + "api/FileUpload/upload", {
         method: "POST",
-        mode: 'no-cors',
         body: formData,
         headers: {
             'ClientKey': 'POManagerFrontEnd',
