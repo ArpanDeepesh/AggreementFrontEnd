@@ -163,8 +163,7 @@
               "ViewState": "AQIAAAkAAAAAAAAAAAAAABoAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-08-05T14:16:54.139Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -263,7 +262,7 @@
               "RelativeDocumentMoniker": "Components\\Services\\POContractBackendAPI.js",
               "ToolTip": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\Services\\POContractBackendAPI.js",
               "RelativeToolTip": "Components\\Services\\POContractBackendAPI.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAWAAAA",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAAAFgAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-24T11:34:26.394Z",
               "EditorCaption": ""
@@ -290,8 +289,7 @@
               "RelativeToolTip": "Components\\HomePage\\HomePage.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAADcAAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T09:25:51.244Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-19T09:25:51.244Z"
             },
             {
               "$type": "Document",
