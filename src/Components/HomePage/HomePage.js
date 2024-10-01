@@ -21,6 +21,13 @@ const HomePage = ({ setUserName }) => {
         }
         setUserName(UserProfile.getName());
         PurchaseOrder.resetData();
+        getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
+            console.log(resD);
+            setUserName(resD.data.name);
+            UserProfile.setUserId(resD.data.id);
+            UserProfile.setEmail(resD.data.email);
+            UserProfile.setName(resD.data.name);
+        }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=true", UserProfile.getToken()).then(rr => rr.json()).then(res => {
             //console.log(res);
             if (res.status === 0 && res.data.length > 0)

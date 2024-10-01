@@ -49,6 +49,12 @@ const NewPO = ({ setUserName }) => {
 	const [poNotificationPeriod, setPoNotificationPeriod] = useState();
 	const [poCompletionInDays, setPoCompletionInDays] = useState();
 	const [poDiscount, setPoDiscount] = useState();
+	const [poSellerGstin, setPoSellerGstin] = useState();
+	const [poSellerAddress, setPoSellerAddress] = useState();
+	const [poSellerCompany, setPoSellerCompany] = useState();
+	const [poBuyerGstin, setPoBuyerGstin] = useState();
+	const [poBuyerAddress, setPoBuyerAddress] = useState();
+	const [poBuyerCompany, setPoBuyerCompany] = useState();
 	const [poAmount, setPoAmount] = useState();
 
 	//Tax related setTaxId setTaxTitle setTaxPercent  taxId taxTitle taxPercent
@@ -100,7 +106,7 @@ const NewPO = ({ setUserName }) => {
 	
 
 	useEffect(() => {
-		console.log();
+		console.log("New PO is created");
 		setUserName(UserProfile.getName());
 		setPoAmount(0);
 		setAutoCalculateOn(1);
@@ -140,6 +146,13 @@ const NewPO = ({ setUserName }) => {
 					setPoCompletionInDays(res.data.poCompletionDurationInDays);
 					setRemarkList(res.data.remarks);
 					setAttachmentList(res.data.attachments);
+					setPoBuyerAddress(res.data.poBuyerAddress);
+					setPoSellerAddress(res.data.poSellerAddress);
+					setPoBuyerGstin(res.data.poBuyerGSTIN);
+					setPoSellerGstin(res.data.poSellerGSTIN);
+					setPoBuyerCompany(res.data.poBuyerCompany);
+					setPoSellerCompany(res.data.poSellerCompany);
+
 				}
 			}).catch(err => {
 				console.log(err);
@@ -152,15 +165,21 @@ const NewPO = ({ setUserName }) => {
 		console.log("Submit button is clicked."+ UserProfile.getUserId());
 		var formBody = {
 			Id: poId > 0 ? poId : 0,
-			PoRaisedBy: UserProfile.getUserId(),
-			PoRaisedForPhoneNumber: poForm.current['PoRaisedForPhoneNumber'].value,
+			PoSellerPhoneNumber: PurchaseOrder.getRaisedBy() === "Seller" ? UserProfile.getContactNumber() : poForm.current['PoRaisedForPhoneNumber'].value,
+			PoBuyerPhoneNumber: PurchaseOrder.getRaisedBy() === "Buyer" ? UserProfile.getContactNumber() : poForm.current['PoRaisedForPhoneNumber'].value,
 			PoTitle: poForm.current['PoTitle'].value,
 			PoDescription: poForm.current['PoDescription'].value,
 			PoNotificationPeriod: poForm.current['PoNotificationPeriod'].value,
 			PoCompletionDurationInDays: poForm.current['PoCompletionDurationInDays'].value,
 			PoStartDate: new Date().toJSON(),
 			PoTotalAmount: poAmount,
-			PoDiscount: poForm.current['PoDiscount'].value
+			PoDiscount: poForm.current['PoDiscount'].value,
+			PoBuyerGSTIN: poForm.current['PoBuyerGSTIN'].value,
+			PoSellerGSTIN: poForm.current['PoSellerGSTIN'].value,
+			PoBuyerAddress: poForm.current['PoBuyerAddress'].value,
+			PoSellerAddress: poForm.current['PoSellerAddress'].value,
+			PoBuyerCompany: poForm.current['PoBuyerCompany'].value,
+			PoSellerCompany: poForm.current['PoSellerCompany'].value
 		};
 		sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrder', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
@@ -656,10 +675,16 @@ const NewPO = ({ setUserName }) => {
                 <div className="col-md-8 scrollable-section">
                     <div className="">
 
-                        <Form ref={poForm} onSubmit={handleSubmit}>
+						<Form ref={poForm} onSubmit={handleSubmit}>
+							<div className="row">
+								<div className="col-md-12">
+									{PurchaseOrder.getRaisedBy() === "Seller" ? "Seller Contract" : "Buyer Contract"}
+								</div>
+							</div>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <InputField name="PoRaisedForPhoneNumber" type="tel" label="Raised For Phone Number" value={poRaiseForPhNo} />
+									<InputField name="PoRaisedForPhoneNumber" type="tel"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Phone Number" : "Seller Phone Number"} value={poRaiseForPhNo} />
                                 </div>
                                 <div className="col-md-4">
                                     <InputField name="PoTitle" type="tel" label="Title" value={poTitle} />
@@ -667,7 +692,29 @@ const NewPO = ({ setUserName }) => {
                                 <div className="col-md-4">
                                     <InputField name="PoDescription" type="tel" label="Description" value={poDescription} />
                                 </div>
-                            </div>
+							</div>
+							<div className="row">
+								<div className="col-md-4">
+									<InputField name="PoBuyerGSTIN" type="text" label="Buyer GSTIN" value={poBuyerGstin} />
+								</div>
+								<div className="col-md-4">
+									<InputField name="PoBuyerAddress" type="text" label="Buyer Address" value={poBuyerAddress} />
+								</div>
+								<div className="col-md-4">
+									<InputField name="PoBuyerCompany" type="text" label="Buyer Company Name" value={poBuyerCompany} />
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-4">
+									<InputField name="PoSellerGSTIN" type="text" label="Seller GSTIN" value={poSellerGstin} />
+								</div>
+								<div className="col-md-4">
+									<InputField name="PoSellerAddress" type="text" label="Seller Address" value={poSellerAddress} />
+								</div>
+								<div className="col-md-4">
+									<InputField name="PoSellerCompany" type="text" label="Seller Company Name" value={poSellerCompany} />
+								</div>
+							</div>
                             <div className="row">
                                 <div className="col-md-4">
                                     <InputField name="PoNotificationPeriod" type="number" label="Notification period (in Days)" value={poNotificationPeriod} />
@@ -678,28 +725,29 @@ const NewPO = ({ setUserName }) => {
                                 <div className="col-md-4">
                                     <InputField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)} value={poDiscount} />
                                 </div>
-                            </div>
-                            <div className="row">
-                                {autoCalculateOn !== 1 ?
-                                    <InputField name="PoAmount" type="number"
-                                        label="Amount"
-                                        onChange={(e) => { setPoAmount(e.target.value) }}
-                                        value={poAmount}
-                                    /> : <></>}
-                            </div>
-                            <div className="row">
-                                <div className="col-md-4">
-                                    Total Amount {poAmount}
-                                </div>
-                                <div className="col-md-4">
-                                    <InputField name="autoCalculateAmount" type="checkbox"
-                                        label="Uncheck the box if you want to provide the aggreement amount."
-                                        onChange={(e) => { setAutoCalculateOn(e.target.checked === true ? 1 : 0) }}
-                                        value='true'
-                                    />
-                                </div>
-
-                            </div>
+							</div>
+							<div className="row">
+								<div className="col-md-4">
+									<InputField name="autoCalculateAmount" type="checkbox"
+										label="Uncheck the box if you want to provide the aggreement amount."
+										onChange={(e) => { setAutoCalculateOn(e.target.checked === true ? 1 : 0) }}
+										value='true'
+									/>
+									
+								</div>
+								<div className="col-md-4">
+									{autoCalculateOn !== 1 ?
+										<InputField name="PoAmount" type="number"
+											label="Amount"
+											onChange={(e) => { setPoAmount(e.target.value) }}
+											value={poAmount}
+										/> : <></>}
+									
+								</div>
+								<div className="col-md-4">
+									Total Amount {poAmount}
+								</div>
+							</div>
                             <div className="row">
                                 <div className="col-md-4">
                                     <FormSubmitButton name="Create Order" onClick={(e) => submitBtnClicked(e)} />

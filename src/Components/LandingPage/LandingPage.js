@@ -7,56 +7,29 @@ import FormSubmitButton from "../FormParts/FormSubmitButton";
 import { sendAuthNotificationRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
+import LoginPage from "./LoginPage";
+import RegisterPage from "./RegisterPage";
 
 
 const LandingPage= ()=>{
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
+	const [displayLogin, setDisplayLogin] = useState(1);
 	useEffect(() => {
 		if (UserProfile.getLoginStatus() === "1") {
 			navigate("/Home");
 		}
 	}, []);
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		if (!validatePhoneNumber()) {
-			return;
-		}
-		console.log("Submit button is clicked.");
-		sendAuthNotificationRequest(usrForm.current['PhoneNumber'].value).then(r => r.json()).then(res => {
-			console.log(res);
-			if (res === true)
-			{
-				UserProfile.setContactNumber(usrForm.current['PhoneNumber'].value);
-				navigate("/ValidateUser");
-			}
-			
-		}).catch(err => {
-			console.log(err);
-		});
-	};
-	const validatePhoneNumber = () => {
-		var phNo = usrForm.current['PhoneNumber'].value;
-		let isnum = /^\+\d+$/.test(phNo);
-		if (!isnum) {
-			setMsg("Phone Number is not correct.");
-		}
-		return isnum;
-	}
 
 	return (
 		<>
-			<MessageDisplay msg={msg} setMsg={setMsg} />
-			<Form ref={usrForm} onSubmit={handleSubmit} >
+
 				<div className="">
 					<div className="row overflow-auto">
 						<div className="col-md-5 LandingPageMain col-sm-12">
 							<div className="">
-								<div style={{ textAlign: 'left'}}>
-									<InputField name="PhoneNumber" type="tel" label="Phone Number" />
-									<FormSubmitButton name="Send OTP" />
-								</div>
+								{displayLogin === 1 ? <LoginPage setDisplayLogin={setDisplayLogin} /> : <RegisterPage setDisplayLogin={setDisplayLogin} />}
 							</div>
 						</div>
 						<div className="col-md-6 col-sm-12">
@@ -143,7 +116,6 @@ const LandingPage= ()=>{
 						</div>
 					</div>
 				</div>
-			</Form>
 		</>
 	);
 };

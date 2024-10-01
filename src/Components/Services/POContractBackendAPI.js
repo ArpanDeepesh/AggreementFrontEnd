@@ -33,6 +33,22 @@ export const sendAuthNotificationRequest = (phoneNo) => {
 export const validateOTPRequest = (postbody) => {
     console.log(postbody);
     if (postbody) {
+        return fetch(baseAddress + "api/POManagerAuth/ValidateOTP", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'ClientKey': 'POManagerFrontEnd',
+            },
+            body: JSON.stringify(postbody),
+            //referrerPolicy: "unsafe-url" 
+        });
+    }
+    return;
+
+}
+export const loginRequest = (postbody) => {
+    console.log(postbody);
+    if (postbody) {
         return fetch(baseAddress + "api/POManagerAuth/login", {
             method: "POST",
             headers: {

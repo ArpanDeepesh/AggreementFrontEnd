@@ -16,17 +16,27 @@ var PurchaseOrder = (function () {
         localStorage.setItem("editFlag", name);
         // Also set this in cookie/localStorage
     };
-    
+    var getRaisedBy = function () {
+        return localStorage.getItem("raisedBy");    // Or pull this from cookie/localStorage
+    };
+
+    var setRaisedBy = function (name) {
+        localStorage.setItem("raisedBy", name);
+        // Also set this in cookie/localStorage
+    };
 
     var resetData = function () {
         setPoId(0);
         setPurchaseOrderEditFlag(0);
+        setRaisedBy("");
     };
     return {
         getPoId: getPoId,
         setPoId: setPoId,
         getPurchaseOrderEditFlag: getPurchaseOrderEditFlag,
         setPurchaseOrderEditFlag: setPurchaseOrderEditFlag,
+        getRaisedBy: getRaisedBy,
+        setRaisedBy: setRaisedBy,
         resetData: resetData
     }
 

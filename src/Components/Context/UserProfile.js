@@ -9,15 +9,6 @@ var UserProfile = (function () {
         localStorage.setItem("userId", id);
         // Also set this in cookie/localStorage
     }
-    var getUserGSTIN = function () {
-        return localStorage.getItem("userGSTIN");
-        // Or pull this from cookie/localStorage
-    };
-
-    var setUserGSTIN = function (gstin) {
-        localStorage.setItem("userGSTIN", gstin);
-        // Also set this in cookie/localStorage
-    }
 
     var getEmail = function () {
         return localStorage.getItem("email");
@@ -50,13 +41,6 @@ var UserProfile = (function () {
     var setContactNumber = function (name) {
         localStorage.setItem("contact_number", name);
     };
-    var getWatsAppNumber = function () {
-        return localStorage.getItem("watsapp_number");
-    };
-
-    var setWatsAppNumber = function (name) {
-        localStorage.setItem("watsapp_number", name);
-    };
     var getLoginStatus = function () {
         return localStorage.getItem("user_login_status");
     };
@@ -70,16 +54,12 @@ var UserProfile = (function () {
         setToken("");
         setContactNumber("");
         setUserId("");
-        setWatsAppNumber("");
         setLoginStatus("0");
-        setUserGSTIN("");
 
     };
     return {
         getName: getName,
         setName: setName,
-        getUserGSTIN: getUserGSTIN,
-        setUserGSTIN: setUserGSTIN,
         getToken: getToken,
         setToken: setToken,
         getEmail: getEmail,
@@ -89,8 +69,6 @@ var UserProfile = (function () {
         setContactNumber: setContactNumber,
         getUserId: getUserId,
         setUserId: setUserId,
-        getWatsAppNumber: getWatsAppNumber,
-        setWatsAppNumber: setWatsAppNumber,
         getLoginStatus: getLoginStatus,
         setLoginStatus: setLoginStatus
     }

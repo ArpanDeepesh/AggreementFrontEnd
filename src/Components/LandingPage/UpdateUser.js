@@ -21,15 +21,11 @@ const UpdateUser = ({ setUserName }) => {
 			if (res.data.status === 'New') {
 				UserProfile.setUserId(res.data.id);
 				UserProfile.setEmail(res.data.email);
-				UserProfile.setWatsAppNumber(res.data.watsappNumber);
 				UserProfile.setName(res.data.name);
-				UserProfile.setUserGSTIN(res.data.gstin);
 			} else {
 				UserProfile.setUserId(res.data.id);
 				UserProfile.setEmail(res.data.email);
-				UserProfile.setWatsAppNumber(res.data.watsappNumber);
 				UserProfile.setName(res.data.name);
-				UserProfile.setUserGSTIN(res.data.gstin);
 				if (PurchaseOrder.getPoId() > 0)
 				{
 					navigate('/Details');
@@ -43,23 +39,40 @@ const UpdateUser = ({ setUserName }) => {
 	}, []);
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		if (usrForm.current['UsrPass'].value !== usrForm.current['UsrReEnterPass'].value && usrForm.current['UsrAcceptedTerms'].checked !== true) {
+			console.log("Not equal");
+			console.log(usrForm.current['UsrPass'].value + " -- " + usrForm.current['UsrReEnterPass'].value);
+			console.log(usrForm.current['UsrAcceptedTerms'].checked);
+			return;
+		}
 		console.log("Submit button is clicked.");
 		var formBody = {
 			Id: UserProfile.getUserId(),
 			Name: usrForm.current['UserName'].value,
-			GSTIN: usrForm.current['GSTIN'].value,
+			Password: usrForm.current['UsrPass'].value,
 			PhoneNumber: UserProfile.getContactNumber(),
 			Email: usrForm.current['Email'].value,
-			WatsappNumber: usrForm.current['WatsappNumber'].value,
-			Status: 'New'
+			Status: 'New',
+			UserTermAccepted: usrForm.current['UsrAcceptedTerms'].checked === true
 		};
 		sendPostRequest("api/POManagerAuth/UpdateClient", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (PurchaseOrder.getPoId() > 0) {
-				navigate('/Details');
-				return;
+			if (res)
+			{
+				getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
+					setUserName(resD.data.name);
+					UserProfile.setUserId(resD.data.id);
+					UserProfile.setEmail(resD.data.email);
+					UserProfile.setName(resD.data.name);
+					if (PurchaseOrder.getPoId() > 0) {
+						navigate('/Details');
+						return;
+					}
+					navigate('/Home');
+					console.log(resD)
+				}).catch(err => console.log(err));
+				console.log(res);
 			}
-			navigate("/Home");
-			console.log(res);
+			
 		}).catch(err => {
 			console.log(err);
 		});
@@ -77,9 +90,10 @@ const UpdateUser = ({ setUserName }) => {
 						<Form ref={usrForm} onSubmit={handleSubmit}>
 							Phone number: {UserProfile.getContactNumber()}
 							<InputField name="UserName" type="text" label="Display Name" value={UserProfile.getName()} />
-							<InputField name="WatsappNumber" type="tel" label="Watsapp Number" value={UserProfile.getWatsAppNumber()} />
 							<InputField name="Email" type="text" label="Email Address" value={UserProfile.getEmail()} />
-							<InputField name="GSTIN" type="text" label="GSTIN (optional)" value={UserProfile.getUserGSTIN()} />
+							<InputField name="UsrPass" type="password" label="Password" value={""} />
+							<InputField name="UsrReEnterPass" type="password" label="Re-Enter Password" value={""} />
+							<InputField name="UsrAcceptedTerms" type="checkbox" label="Please accept the terms and conditons." value={""} />
 							<FormSubmitButton name="Update User" onClick={(e) => submitBtnClicked(e)} />
 						</Form>
 					</div>

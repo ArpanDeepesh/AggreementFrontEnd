@@ -31,8 +31,17 @@ const DefaultLayout = () => {
                             <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span>
                         </a>
                     </div>
-                    <div className="logo">
-                        <a href="\New" className="text-white text-decoration-none" onClick={(e) => { PurchaseOrder.resetData() }}>New Agreement</a>
+                    <div className="">
+                        <a href="\New" className="text-white text-decoration-none" onClick={(e) => {
+                            PurchaseOrder.resetData();
+                            PurchaseOrder.getRaisedBy("Seller");
+                        }}>New Seller Agreement</a>
+                    </div>
+                    <div className="">
+                        <a href="\New" className="text-white text-decoration-none" onClick={(e) => {
+                            PurchaseOrder.resetData();
+                            PurchaseOrder.getRaisedBy("Buyer");
+                        }}>New Buyer Agreement</a>
                     </div>
                     {loggedInUserName !== "" ? <div className="user-info">
                         <span className="me-3">Logged in as <strong>{loggedInUserName}</strong></span>
