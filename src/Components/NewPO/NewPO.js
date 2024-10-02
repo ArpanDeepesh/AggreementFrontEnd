@@ -13,6 +13,7 @@ import DraftFlowPresentation from "../FlowPresentation/DraftFlowPresentation";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 import AddItemAndPOAttachments from "../CommonPages/AddItemAndPOAttachments";
 import DeleteConfirmation from "../CommonPages/DeleteConfirmation";
+import DisappearingMessage from "../CommonPages/DisappearingMessage";
 
 const NewPO = ({ setUserName }) => {
 	const poForm = useRef(null);
@@ -27,6 +28,8 @@ const NewPO = ({ setUserName }) => {
 	const [selectedItems, setSelectedItems] = useState([]);
 	const [draggedItem, setDraggedItem] = useState(null);
 	const [msg, setMsg] = useState("");
+	const [msgDis, setMsgDis] = useState("");
+	const [msgType, setMsgType] = useState("");
 	
 	const navigate = useNavigate();
 	//Item related
@@ -66,7 +69,6 @@ const NewPO = ({ setUserName }) => {
 
 	//Term related setTermId setTermSeq setTermValue termId termSeq termValue
 	const [termId, setTermId] = useState();
-	const [termSeq, setTermSeq] = useState();
 	const [termValue, setTermValue] = useState();
 
 	const [termList, setTermList] = useState([]);
@@ -74,15 +76,12 @@ const NewPO = ({ setUserName }) => {
 	//Payment related
 	const [payId, setPayId] = useState();
 	const [payType, setPayType] = useState();
-	const [payPartSeq, setPayPartSeq] = useState();
 	const [payPartNote, setPayPartNote] = useState();
 	const [payPartAmt, setPayPartAmt] = useState();
 	const [payPartFrq, setPayPartFrq] = useState();
-	const [payPeriodicSeq, setPayPeriodicSeq] = useState();
 	const [payPeriodicNote, setPayPeriodicNote] = useState();
 	const [payPeriodicAmt, setPayPeriodicAmt] = useState();
 	const [payPeriodicFrq, setPayPeriodicFrq] = useState();
-	const [payItemSeq, setPayItemSeq] = useState();
 	const [payItemNote, setPayItemNote] = useState();
 	const [payItemAmt, setPayItemAmt] = useState();
 	
@@ -106,11 +105,13 @@ const NewPO = ({ setUserName }) => {
 	
 
 	useEffect(() => {
+		
 		console.log("New PO is created");
+		console.log(PurchaseOrder.getRaisedBy());
 		setUserName(UserProfile.getName());
 		setPoAmount(0);
 		setAutoCalculateOn(1);
-		resetItem();
+		resetItem(0);
 		resetTax();
 		termReset();
 		resetPayForms();
@@ -119,6 +120,7 @@ const NewPO = ({ setUserName }) => {
 		if (PurchaseOrder.getPoId().toString() !== "0" && PurchaseOrder.getPoId()>0) {
 
 			setPurchaseOrder(PurchaseOrder.getPoId());
+			
 			addValueInItemList();
 			addValueInTaxList();
 			addValueInTermList();
@@ -134,10 +136,18 @@ const NewPO = ({ setUserName }) => {
 	const setPurchaseOrder = (id) => {
 		getRequest('api/POManagement/GetPurchaseOrder?poId=' + id, UserProfile.getToken())
 			.then(r => r.json()).then(res => {
+				if (res.data.poTitle === "Locked")
+				{
+					PurchaseOrder.resetData();
+					setMsg("Someone else is editing the purchase order. Please rediect to the home page.");
+					setMsgType("Info");
+					return;
+				}
+				lockPurchaseOrder(res.data.id);
 				console.log(res);
 				if (res.status === 0) {
 					setPoId(res.data.id);
-					setPoRaisedForPhNo(res.data.poRaisedForPhoneNumber);
+					setPoRaisedForPhNo(PurchaseOrder.getRaisedBy() === "Seller" ? res.data.poSellerPhoneNumber :res.data.poBuyerPhoneNumber );
 					setPoTitle(res.data.poTitle);
 					setPoAmount(res.data.poTotalAmount);
 					setPoDescription(res.data.poDescription);
@@ -152,16 +162,110 @@ const NewPO = ({ setUserName }) => {
 					setPoSellerGstin(res.data.poSellerGSTIN);
 					setPoBuyerCompany(res.data.poBuyerCompany);
 					setPoSellerCompany(res.data.poSellerCompany);
-
+					resetItem(res.data.poCompletionDurationInDays);
 				}
 			}).catch(err => {
 				console.log(err);
 			});
 
 	}
+	const validatePurchaseOrder = () => {
+
+		poForm.current['PoTitle'].style.borderColor = '#ced4da';
+		poForm.current['PoRaisedForPhoneNumber'].style.borderColor = '#ced4da';
+		poForm.current['PoDescription'].style.borderColor = '#ced4da';
+		poForm.current['PoBuyerGSTIN'].style.borderColor = '#ced4da';
+		poForm.current['PoSellerGSTIN'].style.borderColor = '#ced4da';
+		poForm.current['PoSellerAddress'].style.borderColor = '#ced4da';
+		poForm.current['PoBuyerAddress'].style.borderColor = '#ced4da';
+		poForm.current['PoSellerCompany'].style.borderColor = '#ced4da';
+		poForm.current['PoBuyerCompany'].style.borderColor = '#ced4da';
+		poForm.current['PoNotificationPeriod'].style.borderColor = '#ced4da';
+		poForm.current['PoCompletionDurationInDays'].style.borderColor = '#ced4da';
+
+
+		var data = poForm.current['PoRaisedForPhoneNumber'].value;
+		var isnum = /^\+91\d+$/.test(data);
+		var message = "";
+		if (!isnum) {
+			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
+			message += "Phone Number should start with +91";
+		}
+		if (data.lenght < 14) {
+			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
+			message += "Phone Number lenght is incorrect";
+		}
+		if (!data || data === "")
+		{
+			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
+			message += "Phone Number is required";
+		}
+		data = poForm.current['PoTitle'].value;
+		if (data.length > 99)
+		{
+			poForm.current['PoTitle'].style.borderColor = 'red';
+			message += "Title cannot be more than 100 characters";
+		}
+		data = poForm.current['PoDescription'].value;
+		if (data.length > 1000) {
+			poForm.current['PoDescription'].style.borderColor = 'red';
+			message += "Title cannot be more than 1000 characters";
+		}
+		data = poForm.current['PoBuyerGSTIN'].value;
+		if (data.lenght > 0 && !/^[A-Za-z0-9]{15}$/.test(data)) {
+			poForm.current['PoBuyerGSTIN'].style.borderColor = 'red';
+			message += "Buyer GSTIN should be 15 charcters and can contain only alphanumeric values.";
+		}
+		data = poForm.current['PoSellerGSTIN'].value;
+		if (data.lenght>0 && ! /^ [A - Za - z0 - 9]{ 15 } $ /.test(data)) {
+			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
+			message += "Seller GSTIN should be 15 charcters and can contain only alphanumeric values.";
+		}
+		data = poForm.current['PoSellerAddress'].value;
+		if (data.lenght>150) {
+			poForm.current['PoSellerAddress'].style.borderColor = 'red';
+			message += "Seller address should be less than 150 characters";
+		}
+		data = poForm.current['PoBuyerAddress'].value;
+		if (data.lenght > 150) {
+			poForm.current['PoBuyerAddress'].style.borderColor = 'red';
+			message += "Buyer address should be less than 150 characters";
+		}
+		data = poForm.current['PoSellerCompany'].value;
+		if (data.lenght > 100) {
+			poForm.current['PoSellerCompany'].style.borderColor = 'red';
+			message += "Seller Company should be less than 100 characters";
+		}
+		data = poForm.current['PoBuyerCompany'].value;
+		if (data.lenght > 100) {
+			poForm.current['PoBuyerCompany'].style.borderColor = 'red';
+			message += "Buyer Company should be less than 100 characters";
+		}
+		data = poForm.current['PoNotificationPeriod'].value;
+		if (data < 0 || Number(data) > Number(poForm.current['PoCompletionDurationInDays'].value)) {
+			console.log(poForm.current['PoCompletionDurationInDays'].value + "-----" + data);
+			console.log(data > poForm.current['PoCompletionDurationInDays'].value);
+			poForm.current['PoNotificationPeriod'].style.borderColor = 'red';
+			message += "Notification Period cannot be negative and can not be more than completion days";
+		}
+		data = poForm.current['PoCompletionDurationInDays'].value;
+		if (Number(data) <= 0) {
+			poForm.current['PoCompletionDurationInDays'].style.borderColor = 'red';
+			message += "Completion days cannot be less than 1";
+		}
+		setMsg(message);
+		setMsgType("Error");
+		return message === "";
+	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		
+		if (!validatePurchaseOrder())
+		{
+			console.log("Validation failed");
+			return;
+		}
 		console.log("Submit button is clicked."+ UserProfile.getUserId());
 		var formBody = {
 			Id: poId > 0 ? poId : 0,
@@ -185,8 +289,10 @@ const NewPO = ({ setUserName }) => {
 			console.log(res);
 			if (res > 0) {
 				PurchaseOrder.setPoId(res);
+				setPurchaseOrder(res);
 				PurchaseOrder.setPurchaseOrderEditFlag(1);
 				setMsg("Purchase order is created successfully.");
+				setMsgType("Success");
 			}
 
 		}).catch(err => {
@@ -194,14 +300,50 @@ const NewPO = ({ setUserName }) => {
 		});
 
 	};
-	const resetItem = () => {
+	const lockPurchaseOrder = (pId) => {
+		console.log("Unlock button is clicked." + UserProfile.getUserId());
+		getRequest('api/POManagement/LockPO?poId=' + pId, UserProfile.getToken()).then(r => r.json()).then(res => {
+			console.log(res);
+			if (res) {
+				console.log("Setting purchae Id to " + pId);
+
+			}
+		}).catch(err => {
+			console.log(err);
+		});
+
+	};
+	const unlockPurchaseOrder = (e) => {
+		e.preventDefault();
+		console.log("Unlock button is clicked." + UserProfile.getUserId());
+
+		getRequest('api/POManagement/UnlockPO?poId=' + poId, UserProfile.getToken()).then(r => r.json()).then(res => {
+			console.log(res);
+			if (res) {
+				PurchaseOrder.resetData();
+				navigate("/Home");
+			}
+
+		}).catch(err => {
+			console.log(err);
+		});
+
+	};
+	const resetItem = (defaultCompletionDays) => {
 		setItemId(0);
 		setItemTitle("");
 		setItemDescription("");
 		setItemQuantity(0);
 		setItemRate(0);
-		setItemDaysToComplete(0);
+		setItemDaysToComplete(defaultCompletionDays);
 		setItemTotal(0);
+	}
+	const resetInputItem = (defaultCompletionDays) => {
+		itemForm.current['ItemTitle'].value = "";
+		itemForm.current['ItemDescription'].value = "";
+		itemForm.current['ItemQty'].value = 0;
+		itemForm.current['ItemRate'].value = 0;
+		itemForm.current['ItemCompDays'].value = defaultCompletionDays;
 	}
 	const editItem = (e, item) => {
 		console.log(item);
@@ -218,6 +360,7 @@ const NewPO = ({ setUserName }) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
 			setMsg("First Create Purchase Order");
+			setMsgType("Error");
 			return;
 		}
 		
@@ -235,7 +378,9 @@ const NewPO = ({ setUserName }) => {
 		sendPostRequest('api/POManagement/AddOrUpdateItem', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
-				setMsg("New Item is added successfully.");
+				setMsgDis("New Item is added successfully.");
+				resetInputItem(poCompletionInDays);
+				//setMsgType("Success");
 				if (itemIdToAttach === -1)
 				{
 					setItemIdToAttach(res);
@@ -248,7 +393,7 @@ const NewPO = ({ setUserName }) => {
 							if (r >0) {
 								setPoAmount(r);
 								addValueInItemList();
-								resetItem();
+								resetItem(poCompletionInDays);
 						}
 					}).catch(err => {
 						console.log(err);
@@ -304,12 +449,18 @@ const NewPO = ({ setUserName }) => {
 		setTaxId(0);
 		setTaxTitle("");
 		setTaxPercent(0);
+
+	}
+	const resetTaxInputFields = () => {
+		taxForm.current['TaxPercent'].value = "0";
+		taxForm.current['TaxTitle'].value = "";
 	}
 	const taxSubmit = (e) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
 			
 			setMsg("First Create Purchase Order");
+			setMsgType("Error");
 			return;
 		}
 		console.log("Submit button is clicked.");
@@ -322,8 +473,8 @@ const NewPO = ({ setUserName }) => {
 		sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrderTaxes', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
-				//setTaxId(res);
-				setMsg("Tax is added successfully in the purchase order");
+				resetTaxInputFields();
+				setMsgDis("Tax is added successfully in the purchase order");
 				if (autoCalculateOn === 1) {
 					getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 						.then(r => r.json()).then(res => {
@@ -331,7 +482,7 @@ const NewPO = ({ setUserName }) => {
 							if (res >0) {
 								setPoAmount(res);
 								addValueInTaxList();
-								resetTax();
+								resetTax()
 							}
 						}).catch(err => {
 							console.log(err);
@@ -360,26 +511,28 @@ const NewPO = ({ setUserName }) => {
 		console.log(term);
 		e.preventDefault();
 		setTermId(term.termId);
-		setTermSeq(term.seq);
 		setTermValue(term.val);
 	}
 	const termReset = () => {
 		setTermId(0);
-		setTermSeq(0);
 		setTermValue("");
+		
+	}
+	const termInputReset = () => {
+		termForm.current['TermText'].value = "";
 	}
 	const termSubmit = (e) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
 			
 			setMsg("First Create Purchase Order");
+			setMsgType("Error");
 			return;
 		}
 		console.log("Submit button is clicked.");
 		var formBody = {
 			TermId: termId,
 			PoId: PurchaseOrder.getPoId(),
-			Seq: termForm.current['TermSeq'].value,
 			Val: termForm.current['TermText'].value
 		}
 		sendPostRequest('api/POManagement/AddOrUpdateTermsAndConditions', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
@@ -387,8 +540,9 @@ const NewPO = ({ setUserName }) => {
 			if (res > 0) {
 				//setTermId(res);
 				addValueInTermList();
-				setMsg("Term is added successfully in the purchase order");
+				setMsgDis("Term is added successfully in the purchase order");
 				termReset();
+				termInputReset();
 			}
 
 		}).catch(err => {
@@ -399,16 +553,13 @@ const NewPO = ({ setUserName }) => {
 
 	const resetPayForms = () => {
 		setPayId(0);
-		setPayPartSeq(payList.lenght + 1);
 		setPayPartNote("");
 		setPayPartAmt(0);
 		setPayPartFrq(0);
 
 		setPayPeriodicNote("");
-		setPayPeriodicSeq(payList.lenght + 1);
 		setPayPeriodicAmt(0);
 		setPayPeriodicFrq(0);
-		setPayItemSeq(payList.lenght + 1);
 		setPayItemNote("");
 		setPayItemAmt(0);
 		
@@ -418,12 +569,12 @@ const NewPO = ({ setUserName }) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
 			setMsg("First Create Purchase Order");
+			setMsgType("Error");
 			return;
 		}
 		var formBody = {
 			PayId: payId,
 			PoId: poId,
-			Seq: payForm.current['PaySeq'].value,
 			Note: payForm.current['PayNote'].value,
 			Amt: payForm.current['PayAmount'].value,
 			Frq: payType === 'P' ? payForm.current['PayFreq'].value : 0,
@@ -433,7 +584,7 @@ const NewPO = ({ setUserName }) => {
 		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
-				setMsg("Payment added successfully");
+				setMsgDis("Payment added successfully");
 				addValueInPayList();
 			}
 
@@ -446,12 +597,12 @@ const NewPO = ({ setUserName }) => {
 		if (poId && !poId > 0) {
 			
 			setMsg("First Create Purchase Order");
+			setMsgType("Error");
 			return;
 		}
 		var formBody = {
 			PayId: payId,
 			PoId: poId,
-			Seq: payFrqForm.current['PaySeq'].value,
 			Note: payFrqForm.current['PayNote'].value,
 			Amt: payFrqForm.current['PayAmount'].value,
 			Frq: payFrqForm.current['PayFreq'].value,
@@ -461,7 +612,7 @@ const NewPO = ({ setUserName }) => {
 		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
-				setMsg("Payment added successfully");
+				setMsgDis("Payment added successfully");
 				addValueInPayList();
 			}
 
@@ -475,13 +626,13 @@ const NewPO = ({ setUserName }) => {
 		if (poId && !poId > 0) {
 			
 			setMsg("First Create Purchase Order");
+			setMsgType("Error");
 			return;
 		}
 		console.log("Submit button is clicked." );
 		var formBody = {
 			PayId: payId,
 			PoId: poId,
-			Seq: itemPayForm.current['PaySeq'].value,
 			Note: itemPayForm.current['PayNote'].value,
 			Amt: itemPayForm.current['PayAmount'].value,
 			ItemIds: [],
@@ -494,7 +645,7 @@ const NewPO = ({ setUserName }) => {
 		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentItemBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
-				setMsg("Payment added successfully");
+				setMsgDis("Payment added successfully");
 				addValueInPayList();
 			}
 
@@ -527,13 +678,11 @@ const NewPO = ({ setUserName }) => {
 			setPayPartAmt(p.amt);
 			setPayPartFrq();
 			setPayPartNote(p.note);
-			setPayPartSeq(p.seq)
 			openPaymentTab(e, "Advance");
 		} else if (p.type === "Item Based") {
 			setPayType()
 			setPayItemAmt(p.amt);
 			setPayItemNote(p.note);
-			setPayItemSeq(p.seq)
 			openPaymentTab(e, "ItemBased");
 		}
 		else if (p.type === "Frequency Based")
@@ -546,7 +695,6 @@ const NewPO = ({ setUserName }) => {
 			openPaymentTab(e, "Frequency");
 			setPayPeriodicAmt(p.amt);
 			setPayPeriodicNote(p.note);
-			setPayPeriodicSeq(p.seq);
 		}
 	}
 
@@ -555,6 +703,16 @@ const NewPO = ({ setUserName }) => {
 	}
 	const publishBtnClicked = (e) => {
 		e.preventDefault();
+		var paymentAmt = 0;
+		for (var i = 0; i < paymentDisplayList.length; i++) { paymentAmt += Number(paymentDisplayList[i]); }
+		console.log(paymentAmt);
+		console.log(poAmount);
+		if (Number(paymentAmt) !== Number(poAmount))
+		{
+			setMsg("You still have payment to add. Cannot publish if payment sum is not equal to order total amount.");
+			setMsgType("Error");
+			return;
+		}
 		var formBody = {}
 		sendPostRequest('api/POManagement/RaisePurchaseOrder?poId='+poId, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
@@ -569,15 +727,7 @@ const NewPO = ({ setUserName }) => {
 	}
 	const openTab = (e, id) =>
 	{
-		e.preventDefault();
-		if (id === "Payments") {
-			setPayItemSeq(payList.length + 1);
-			setPayPartSeq(payList.length + 1);
-			setPayPeriodicSeq(payList.length + 1);
-		} else if (id === "Terms")
-		{
-			setTermSeq(termList.length + 1);
-		}
+		e.preventDefault(); 
 		var tabContent = document.getElementsByClassName("tab-content");
 		for (var i = 0; i < tabContent.length; i++) {
 			tabContent[i].style.display = "none";
@@ -668,8 +818,9 @@ const NewPO = ({ setUserName }) => {
 
 	return (
         <>
-            <div className="row" style={{ paddingTop: "25px" }}>
-                <MessageDisplay msg={msg} setMsg={setMsg} />
+			<div className="row" style={{ paddingTop: "25px" }}>
+				<DisappearingMessage msg={msgDis} setMsg={setMsgDis }  />
+				<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
                 <AddItemAndPOAttachments id={attachmentId} setId={setAttachmentId} type={attachmentParentType} />
                 <DeleteConfirmation deleteId={deleteId} setDeleteId={setDeleteId} type={deleteType} />
                 <div className="col-md-8 scrollable-section">
@@ -678,7 +829,7 @@ const NewPO = ({ setUserName }) => {
 						<Form ref={poForm} onSubmit={handleSubmit}>
 							<div className="row">
 								<div className="col-md-12">
-									{PurchaseOrder.getRaisedBy() === "Seller" ? "Seller Contract" : "Buyer Contract"}
+									{PurchaseOrder.getRaisedBy() === "Seller" ? "Sales Contract" : "Purchase Contract"}
 								</div>
 							</div>
                             <div className="row">
@@ -695,24 +846,28 @@ const NewPO = ({ setUserName }) => {
 							</div>
 							<div className="row">
 								<div className="col-md-4">
-									<InputField name="PoBuyerGSTIN" type="text" label="Buyer GSTIN" value={poBuyerGstin} />
+									<InputField name="PoBuyerGSTIN" type="text" label={PurchaseOrder.getRaisedBy() === "Seller"?"Buyer GSTIN":"Your GSTIN"} value={poBuyerGstin} />
 								</div>
 								<div className="col-md-4">
-									<InputField name="PoBuyerAddress" type="text" label="Buyer Address" value={poBuyerAddress} />
+									<InputField name="PoBuyerAddress" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"} value={poBuyerAddress} />
 								</div>
 								<div className="col-md-4">
-									<InputField name="PoBuyerCompany" type="text" label="Buyer Company Name" value={poBuyerCompany} />
+									<InputField name="PoBuyerCompany" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"} value={poBuyerCompany} />
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-4">
-									<InputField name="PoSellerGSTIN" type="text" label="Seller GSTIN" value={poSellerGstin} />
+									<InputField name="PoSellerGSTIN" type="text" label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"} value={poSellerGstin} />
 								</div>
 								<div className="col-md-4">
-									<InputField name="PoSellerAddress" type="text" label="Seller Address" value={poSellerAddress} />
+									<InputField name="PoSellerAddress" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Address" : "Your Address"} value={poSellerAddress} />
 								</div>
 								<div className="col-md-4">
-									<InputField name="PoSellerCompany" type="text" label="Seller Company Name" value={poSellerCompany} />
+									<InputField name="PoSellerCompany" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"} value={poSellerCompany} />
 								</div>
 							</div>
                             <div className="row">
@@ -733,7 +888,9 @@ const NewPO = ({ setUserName }) => {
 										onChange={(e) => { setAutoCalculateOn(e.target.checked === true ? 1 : 0) }}
 										value='true'
 									/>
-									
+								</div>
+								<div className="col-md-4">
+									Total Amount {poAmount}
 								</div>
 								<div className="col-md-4">
 									{autoCalculateOn !== 1 ?
@@ -742,20 +899,19 @@ const NewPO = ({ setUserName }) => {
 											onChange={(e) => { setPoAmount(e.target.value) }}
 											value={poAmount}
 										/> : <></>}
-									
-								</div>
-								<div className="col-md-4">
-									Total Amount {poAmount}
 								</div>
 							</div>
                             <div className="row">
-                                <div className="col-md-4">
+                                <div className="col-md-3">
                                     <FormSubmitButton name="Create Order" onClick={(e) => submitBtnClicked(e)} />
                                 </div>
-                                <div className="col-md-4">
+                                <div className="col-md-3">
                                     {poId && poId > 0 ? <FormButton name="Publish" onClick={(e) => publishBtnClicked(e)} /> : <></>}
-                                </div>
-                                <div className="col-md-4">
+								</div>
+								<div className="col-md-3">
+									{poId && poId > 0 ? <FormButton name="Unlock" onClick={(e) => unlockPurchaseOrder(e)} /> : <></>}
+								</div>
+                                <div className="col-md-3">
                                     {poId && poId > 0 ? <FormButton name="Add Attachments" onClick={(e) => {
                                         e.preventDefault();
                                         setAttachmentParentType("N");
@@ -971,9 +1127,6 @@ const NewPO = ({ setUserName }) => {
                                 <div className="table">
                                     <Form ref={termForm} onSubmit={termSubmit}>
                                         <div className="row">
-                                            <div className="col-md-2">
-                                                <InputField name="TermSeq" type="number" label="Term Sequence" value={termSeq} />
-                                            </div>
                                             <div className="col-md-10">
                                                 <InputField name="TermText" type="text" label="Term" value={termValue} />
                                             </div>
@@ -995,9 +1148,6 @@ const NewPO = ({ setUserName }) => {
                                 </div>
                                 <div className="table">
                                     <div className="row tableHeader">
-                                        <div className="col-md-2 ">
-                                            Seq
-                                        </div>
                                         <div className="col-md-8 ">
                                             Terms and Conditions
                                         </div>
@@ -1006,9 +1156,6 @@ const NewPO = ({ setUserName }) => {
                                         </div>
                                     </div>
                                     {termList && termList.length > 0 ? termList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-5">
-                                            {x.seq}
-                                        </div>
                                         <div className="col-md-5">
                                             {x.val}
                                         </div>
@@ -1054,9 +1201,6 @@ const NewPO = ({ setUserName }) => {
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-3">
-                                                        <InputField name="PaySeq" type="number" label="Sequence" value={payPartSeq} />
-                                                    </div>
-                                                    <div className="col-md-3">
                                                         <InputField name="PayNote" type="text" label="Note" value={payPartNote} />
                                                     </div>
                                                     <div className="col-md-3">
@@ -1096,9 +1240,6 @@ const NewPO = ({ setUserName }) => {
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-3">
-                                                        <InputField name="PaySeq" type="number" label="Sequence" value={payPeriodicSeq} />
-                                                    </div>
-                                                    <div className="col-md-3">
                                                         <InputField name="PayNote" type="text" label="Note" value={payPeriodicNote} />
                                                     </div>
                                                     <div className="col-md-3">
@@ -1122,9 +1263,6 @@ const NewPO = ({ setUserName }) => {
                                         <div className="table">
                                             <Form ref={itemPayForm} onSubmit={itemPaySubmit}>
                                                 <div className="row">
-                                                    <div className="col-md-4">
-                                                        <InputField name="PaySeq" type="number" label="Sequence" value={payItemSeq} />
-                                                    </div>
                                                     <div className="col-md-4">
                                                         <InputField name="PayNote" type="text" label="Note" value={payItemNote} />
                                                     </div>
@@ -1171,7 +1309,6 @@ const NewPO = ({ setUserName }) => {
                                 </div>
                                 <div className="table">
                                     <div className="row tableHeader">
-                                        <div className="col-md-1 ">Seq</div>
                                         <div className="col-md-3 ">Note</div>
                                         <div className="col-md-2 ">Amt</div>
                                         <div className="col-md-1 ">PaymentType</div>
@@ -1179,7 +1316,6 @@ const NewPO = ({ setUserName }) => {
                                         <div className="col-md-2 ">Action</div>
                                     </div>
                                     {payList && payList.length > 0 ? payList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-1">{x.seq}</div>
                                         <div className="col-md-3">{x.note}</div>
                                         <div className="col-md-2">{x.amt}</div>
                                         <div className="col-md-1">{x.type}</div>

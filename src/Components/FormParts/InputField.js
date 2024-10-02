@@ -8,8 +8,8 @@ const InputField = (props) => {
         {props.type === "checkbox" ?
             props.onChange ? <input name={props.name} type={props.type} className='form-control' defaultChecked={props.value} onChange={props.onChange} /> :
                 <input name={props.name} type={props.type} className='form-control' defaultChecked={props.value} />
-            : props.onChange ? <input name={props.name} type={props.type} className='form-control' defaultValue={props.value} onChange={props.onChange} /> :
-                <input name={props.name} type={props.type} className='form-control' defaultValue={props.value} />
+            : props.onChange ? <input name={props.name} type={props.type} className='form-control' defaultValue={props.value} onChange={props.onChange} min="0"/> :
+                <input name={props.name} type={props.type} className='form-control' defaultValue={props.value} min="0"  />
     }
         
     </div>);

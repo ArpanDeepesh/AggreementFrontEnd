@@ -13,7 +13,7 @@ import NewPO from './NewPO/NewPO';
 import DetailPO from './DetailPO/DetailPO';
 import PurchaseOrder from './Context/PurchaseOrder';
 import CheckPODetails from './DetailPO/CheckPODetails';
-
+import { getRequest } from '../Components/Services/POContractBackendAPI';
 
 
 const DefaultLayout = () => {
@@ -21,31 +21,39 @@ const DefaultLayout = () => {
     useEffect(() => {
         checkConnection().then(rr => rr.text()).then(res => console.log(res)).catch(err => console.log(err));
     }, []);
+    const unlockPurchaseOrder = () => {
+        console.log("Unlock button is clicked." + UserProfile.getUserId());
+        if (PurchaseOrder.getPoId() > 0) {
+            getRequest('api/POManagement/UnlockPO?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken()).then(r => r.json()).then(res => {
+                console.log(res);
+                if (res) {
+                    console.log("Unlock done successfully.");
+                }
+
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    };
     return (
         <div >
             <header className="bg-primary text-white py-2 pl-4 pr-4 pt-2 pb-2">
                 {/*<a href="\LogOut" className="text-white text-decoration-none"> Logout</a>*/}
                 {UserProfile.getLoginStatus() === "1" ? <div className="d-flex justify-content-between align-items-center">
                     <div className="logo">
-                        <a href="\" className="text-white text-decoration-none">
+                        <a href="\" className="text-white text-decoration-none" onClick={(e) => {
+                            unlockPurchaseOrder();
+                            PurchaseOrder.resetData();
+                        }}>
                             <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span>
                         </a>
                     </div>
-                    <div className="">
-                        <a href="\New" className="text-white text-decoration-none" onClick={(e) => {
-                            PurchaseOrder.resetData();
-                            PurchaseOrder.getRaisedBy("Seller");
-                        }}>New Seller Agreement</a>
-                    </div>
-                    <div className="">
-                        <a href="\New" className="text-white text-decoration-none" onClick={(e) => {
-                            PurchaseOrder.resetData();
-                            PurchaseOrder.getRaisedBy("Buyer");
-                        }}>New Buyer Agreement</a>
-                    </div>
                     {loggedInUserName !== "" ? <div className="user-info">
                         <span className="me-3">Logged in as <strong>{loggedInUserName}</strong></span>
-                        <a href="\LogOut" className="text-white text-decoration-none"> Logout</a>
+                        <a href="\LogOut" className="text-white text-decoration-none" onClick={(e) => {
+                            unlockPurchaseOrder();
+                            PurchaseOrder.resetData();
+                        }}> Logout</a>
                     </div>:<></>}
                     
                 </div> :

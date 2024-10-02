@@ -6,7 +6,6 @@ import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import { sendAuthNotificationRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
-import MessageDisplay from "../CommonPages/MessageDisplay";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 
@@ -29,7 +28,7 @@ const LandingPage= ()=>{
 					<div className="row overflow-auto">
 						<div className="col-md-5 LandingPageMain col-sm-12">
 							<div className="">
-								{displayLogin === 1 ? <LoginPage setDisplayLogin={setDisplayLogin} /> : <RegisterPage setDisplayLogin={setDisplayLogin} />}
+							{displayLogin === 1 ? <LoginPage setDisplayLogin={setDisplayLogin} /> : <RegisterPage displayLogin={displayLogin} setDisplayLogin={setDisplayLogin} />}
 							</div>
 						</div>
 						<div className="col-md-6 col-sm-12">

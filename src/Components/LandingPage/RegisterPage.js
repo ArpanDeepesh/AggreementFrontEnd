@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
+import FormButton from "../FormParts/FormButton";
 import { sendAuthNotificationRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 
 
-const RegisterPage = ({setDisplayLogin}) => {
+const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
@@ -48,13 +49,16 @@ const RegisterPage = ({setDisplayLogin}) => {
 		<>
 			<MessageDisplay msg={msg} setMsg={setMsg} />
 			<Form ref={usrForm} onSubmit={handleSubmit} >
+				<center>{displayLogin === 2 ? "Forgot Your Password?" : ""}</center>
 				<div style={{ textAlign: 'left' }}>
-					<InputField name="PhoneNumber" type="tel" label="Phone Number" />
-					<FormSubmitButton name="Send OTP" />
-					<span className="landingPageLink" onClick={(e) => {
-						e.preventDefault();
-						setDisplayLogin(1);
-					}}>Login</span>
+					<InputField name="PhoneNumber" type="tel" label="Phone Number" value="+91" />
+					<div className="row" style={{ textAlign: "center" }}>
+						<div className="col-md-6"><FormSubmitButton name="Send OTP" /></div>
+						<div className="col-md-6"><FormButton name="Login" onClick={(e) => {
+							e.preventDefault();
+							setDisplayLogin(1);
+						}} myClass="landingPageBtn" /></div>
+					</div>
 				</div>
 			</Form>
 		</>

@@ -4,6 +4,7 @@ import {useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
+import FormButton from "../FormParts/FormButton";
 import { loginRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
@@ -13,6 +14,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
+	const [msgType, setMsgType] = useState("");
 	useEffect(() => {
 		if (UserProfile.getLoginStatus() === "1") {
 			navigate("/Home");
@@ -32,6 +34,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 			console.log(res);
 			if (res.token === null && res.message === 'Invalid Info') {
 				setMsg("Invalid Credentials.");
+				setMsgType("Error");
 				return;
 			}
 			UserProfile.setLoginStatus("1");
@@ -45,27 +48,38 @@ const LoginPage = ({ setDisplayLogin })=>{
 		var data = usrForm.current['userId'].value;
 		let isnum = /^\+91\d+$/.test(data);
 		if (!isnum) {
-			isnum = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data);
-			if (isnum) {
-				setMsg("Phone Number or Email is not in correct format.");
-			}
-			
+			setMsg("Phone Number is not in correct format.");
+			setMsgType("Error");
 		}
 		return isnum;
 	}
 
 	return (
 		<>
-			<MessageDisplay msg={msg} setMsg={setMsg} />
+			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
 			<Form ref={usrForm} onSubmit={handleSubmit} >
 				<div style={{ textAlign: 'left', padding:'5px' }}>
-					<InputField name="userId" type="text" label="Phone Number Or Email" />
+					<InputField name="userId" type="text" label="Phone Number" value="+91"/>
 					<InputField name="userPass" type="password" label="Password" />
-					<FormSubmitButton name="Login" />
-					<span className="landingPageLink" onClick={(e) => {
-						e.preventDefault();
-						setDisplayLogin(0);
-					}}>Register</span>
+					<div className="row" style={{ textAlign: "center" }}>
+						<div className="col-md-6"><FormSubmitButton name="Login" /></div>
+						<div className="col-md-6"><FormButton name="Register" onClick={(e) => {
+							e.preventDefault();
+							setDisplayLogin(0);
+						}} myClass="landingPageBtn" /></div>
+					</div>
+					<div className="row" style={{ textAlign: "center" }}>
+						<div className="col-md-12">
+							<span className="landingPageLink" onClick={(e) => {
+								e.preventDefault();
+								setDisplayLogin(2);
+							}} >
+							Forgot your password?
+						</span>
+						</div>
+					</div>
+					
+
 				</div>
 			</Form>
 		</>

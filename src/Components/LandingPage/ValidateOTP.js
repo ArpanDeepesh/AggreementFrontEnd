@@ -13,6 +13,7 @@ const ValidateOTP = () => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
+	const [msgType, setMsgType] = useState("");
 	useEffect(() => {
 		if (UserProfile.getLoginStatus() === "1") {
 			navigate("/Home");
@@ -33,6 +34,7 @@ const ValidateOTP = () => {
 			if (res.token===null && res.message === 'Invalid Info')
 			{
 				setMsg("Invalid OTP.");
+				setMsgType("Error");
 				return;
 			}
 			UserProfile.setLoginStatus("1");
@@ -48,13 +50,14 @@ const ValidateOTP = () => {
 		let isnum = /\d{6}/.test(otp);
 		if (!isnum) {
 			setMsg("Invalid otp structure.");
+			setMsgType("Error");
 		}
 		return isnum;
 	}
 
 	return (
 		<>
-			<MessageDisplay msg={msg} setMsg={setMsg} />
+			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
 			<Form ref={usrForm} onSubmit={handleSubmit} className="d-flex h-100">
 				<div className="row flex-grow-1">
 					<div className="col-md-5 LandingPageMain">

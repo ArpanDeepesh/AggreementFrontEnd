@@ -10,3 +10,17 @@
 .delayIcon {
     cursor:pointer;
 }
+
+.routingBtn {
+    background-color: rgba(255,255,255,0) !important;
+    border: rgba(0,123,255,1) solid 1px !important;
+    color: rgba(0,123,255,1) !important;
+    border-radius: 15px !important;
+    font-weight: 600 !important;
+}
+
+    .routingBtn:hover {
+        background-color: rgba(0,123,255,1) !important;
+        border: rgba(0,123,255,1) solid 1px !important;
+        color: rgba(255,255,255,1) !important;
+    }

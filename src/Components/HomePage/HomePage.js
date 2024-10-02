@@ -27,6 +27,7 @@ const HomePage = ({ setUserName }) => {
             UserProfile.setUserId(resD.data.id);
             UserProfile.setEmail(resD.data.email);
             UserProfile.setName(resD.data.name);
+            UserProfile.setContactNumber(resD.data.phoneNumber);
         }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=true", UserProfile.getToken()).then(rr => rr.json()).then(res => {
             //console.log(res);
@@ -48,11 +49,12 @@ const HomePage = ({ setUserName }) => {
     }, []);
     const editPurchaseOrder = (e, id) => {
         e.preventDefault();
-        console.log("Setting purchae Id to " + id);
         PurchaseOrder.setPoId(id);
         PurchaseOrder.setPurchaseOrderEditFlag(1);
         navigate("/New");
+
     }
+
     const copyPurchaseOrder = (e, id) => {
         e.preventDefault();
         getRequest("api/POManagement/CopyPurchaseOrder?poId="+id, UserProfile.getToken()).then(rr => rr.text()).then(res => {
@@ -70,6 +72,22 @@ const HomePage = ({ setUserName }) => {
         <div className="d-flex h-100" style={{ overflowY: "scroll" }}>
             <DelayMsgs msgList={delayMsg} setMsgList={setDelayMsg} />
             <div className="mt-1" >
+                <div className="row mb-1">
+                    <div className="col-md-6 p-0 m-0" >
+                        <FormButton name="Sale Contract" onClick={(e) => {
+                            PurchaseOrder.setRaisedBy("Seller");
+                            navigate("/New");
+                        }} myClass="routingBtn"/>
+
+                    </div>
+                    <div className="col-md-6 p-0 m-0" >
+                        <FormButton name="Purchase Contract" onClick={(e) => {
+                            PurchaseOrder.setRaisedBy("Buyer");
+                            navigate("/New");
+                        }} myClass="routingBtn"/>
+
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-3 p-0 m-0" >
                         <div className="bg-success" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
@@ -97,15 +115,18 @@ const HomePage = ({ setUserName }) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-6 col-xs-12">
-                        <h4>Sale Contracts</h4>
+                    <div className="col-md-12 col-xs-12">
+                        <h4>Draft Contracts</h4>
                         <div className="table mr-1">
                             <div className="row tableHeader">
                                 <div className="col-md-1">
                                     Title
                                 </div>
-                                <div className="col-md-2">
-                                    Raised For
+                                <div className="col-md-1">
+                                    Seller
+                                </div>
+                                <div className="col-md-1">
+                                    Buyer
                                 </div>
                                 <div className="col-md-1">
                                     Status
@@ -127,9 +148,12 @@ const HomePage = ({ setUserName }) => {
                                     <div className="col-md-1">
                                         {tempPO.title}
                                     </div>
-                                <div className="col-md-2">
-                                    {tempPO.raisedForName}<br /><span style={{ fontSize:'10px' }}>{tempPO.raisedForPhoneNo}</span>
-                                    </div>
+                                <div className="col-md-1">
+                                    {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                </div>
+                                <div className="col-md-1">
+                                    {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                </div>
                                     <div className="col-md-1">
                                     { tempPO.status}
                                     </div>
@@ -170,15 +194,18 @@ const HomePage = ({ setUserName }) => {
                         </div>
                         
                     </div>
-                    <div className="col-md-6 col-xs-12">
-                        <h4>Purchase Contracts</h4>
+                    <div className="col-md-12 col-xs-12">
+                        <h4>Other Contracts</h4>
                         <div className="table ml-1 ">
                             <div className="row tableHeader">
                                 <div className="col-md-1">
                                     Title
                                 </div>
-                                <div className="col-md-2">
-                                    Raised By
+                                <div className="col-md-1">
+                                    Seller
+                                </div>
+                                <div className="col-md-1">
+                                    Buyer
                                 </div>
                                 <div className="col-md-1">
                                     Status
@@ -200,8 +227,11 @@ const HomePage = ({ setUserName }) => {
                                 <div className="col-md-1">
                                     {tempPO.title}
                                 </div>
-                                <div className="col-md-2">
-                                    {tempPO.raisedByName}<br />{tempPO.raisedByPhoneNo}
+                                <div className="col-md-1">
+                                    {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                </div>
+                                <div className="col-md-1">
+                                    {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                 </div>
                                 <div className="col-md-1">
                                     {tempPO.status}
@@ -223,6 +253,7 @@ const HomePage = ({ setUserName }) => {
                                 <div className="col-md-2">
                                     {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={ (e)=>editPurchaseOrder(e,tempPO.poId)} /> :
                                         <>
+                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO.poId)} />
                                             <FormButton name="Respond" onClick={(e) => {
                                                 e.preventDefault();
                                                 console.log("Calling Respond Button");
