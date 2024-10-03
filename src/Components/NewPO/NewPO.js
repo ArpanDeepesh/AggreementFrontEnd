@@ -696,6 +696,7 @@ const NewPO = ({ setUserName }) => {
 		if (payType === 'F' || payType === 'P' || payType==='A') {
 			payForm.current['PayNote'].style.borderColor = '#ced4da';
 			payForm.current['PayAmount'].style.borderColor = '#ced4da';
+			payForm.current['PaymentType'].style.borderColor = '#ced4da';
 			var data = payForm.current['PayNote'].value;
 			if (data === "") {
 				payForm.current['PayNote'].style.borderColor = 'red';
@@ -711,9 +712,14 @@ const NewPO = ({ setUserName }) => {
 				payForm.current['PayFreq'].style.borderColor = "#ced4da";
 				if (data === "" || Number(data) <= 0 || Number(data)>Number(poCompletionInDays) ) {
 					payForm.current['PayFreq'].style.borderColor = 'red';
-					message += "Payment in days is required \n Payment in days should be greater than 0 \n Payment in days cannot be more than contract completion days";
+					message += "Payment in days is required \n Payment in days should be greater than 0 \n Payment in days cannot be more than contract completion days \n";
 				}
 			}
+			if (payListContainAdvancePay() && (!poId || Number(poId) === 0)) {
+				payForm.current['PaymentType'].style.borderColor = 'red';
+				message += "Cannot add more than 1 advance payment in the payment list \n";
+			}
+				
 		}
 		else if (payType === 'W' || payType === 'M' || payType === 'Q') {
 			payFrqForm.current['PayNote'].style.borderColor = '#ced4da';
@@ -902,31 +908,45 @@ const NewPO = ({ setUserName }) => {
 		console.log(p);
 		setPayId(p.payId);
 		if (p.type === "Base payment") {
-
-			if (p.extraInfo.includes("Advance")) { setPayType('A') }
-			else if (p.extraInfo.includes("Final")) { setPayType('F') }
-			else if (p.extraInfo.includes("number")) { setPayType('P') }
-			//setPayType('A');
-			setPayPartAmt(p.amt);
-			setPayPartFrq();
-			setPayPartNote(p.note);
 			openPaymentTab(e, "Advance");
+			if (p.extraInfo.includes("1st")) {
+				setPayType('A'); setPayPartAmt(p.amt);
+				payForm.current["PayAmount"].value = p.amt;
+				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount); }
+			else if (p.extraInfo.includes("Final")) { setPayType('F'); }
+			else if (p.extraInfo.includes("number")) {
+				setPayType('P');
+				setPayPartFrq(0);
+				setPayPartAmt(p.amt);
+				payForm.current["PayAmount"].value = p.amt;
+				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			}
+			//setPayType('A');
+			
+			
+			setPayPartNote(p.note);
+			
 		} else if (p.type === "Item Based") {
-			setPayType()
+			openPaymentTab(e, "ItemBased");
+			setPayType('I')
 			setPayItemAmt(p.amt);
 			setPayItemNote(p.note);
-			openPaymentTab(e, "ItemBased");
+			payFrqForm.current["PayAmount"].value = p.amt;
+			payFrqForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			
 		}
 		else if (p.type === "Frequency Based")
 		{
 			
-			if (p.extraInfo.includes("Monthly")) { setPayType('M') }
-			else if (p.extraInfo.includes("Weekly")) { setPayType('W') }
+			if (p.extraInfo.includes("Monthly")) { setPayType('M'); }
+			else if (p.extraInfo.includes("Weekly")) { setPayType('W'); }
 			else if (p.extraInfo.includes("Quaterly"))
-			{ setPayType('Q') }
+			{ setPayType('Q'); }
 			openPaymentTab(e, "Frequency");
 			setPayPeriodicAmt(p.amt);
 			setPayPeriodicNote(p.note);
+			itemPayForm.current["PayAmount"].value = p.amt;
+			itemPayForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
 		}
 	}
 
@@ -936,12 +956,17 @@ const NewPO = ({ setUserName }) => {
 	const publishBtnClicked = (e) => {
 		e.preventDefault();
 		var paymentAmt = 0;
-		for (var i = 0; i < paymentDisplayList.length; i++) { paymentAmt += Number(paymentDisplayList[i]); }
+		for (var i = 0; i < payList.length; i++) { paymentAmt += Number(payList[i].amt); }
 		console.log(paymentAmt);
 		console.log(poAmount);
-		if (Number(paymentAmt) !== Number(poAmount))
+		if (Number(paymentAmt) < Number(poAmount))
 		{
-			setMsg("You still have payment to add. Cannot publish if payment sum is not equal to order total amount.");
+			setMsg("You need to add more amount in the payment list to make it equal to the contract amount.");
+			setMsgType("Error");
+			return;
+		}
+		if (Number(paymentAmt) > Number(poAmount)) {
+			setMsg("You have added more amount in the payment list. Change the payment list items to reduce the payment.");
 			setMsgType("Error");
 			return;
 		}
@@ -1417,16 +1442,11 @@ const NewPO = ({ setUserName }) => {
                                                     <div className="offset-md-2 col-md-8">
                                                         <div className="form-group" style={{ padding: '5px' }}>
 															<label style={{ fontsize: '20px', color: 'black' }} >Select Type</label>
-															{payList.length > 0 && payListContainAdvancePay() ?
-																<select name="PaymentType" className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
-																	<option value='P'>Part Payment</option>
-																	<option value='F'>Final Payment</option>
-																</select>
-																: <select name="PaymentType" className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
+															<select name="PaymentType" className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
 																<option value='A' >Advance Payment</option>
 																<option value='P'>Part Payment</option>
 																<option value='F'>Final Payment</option>
-															</select>}
+															</select>
                                                         </div>
                                                     </div>
                                                 </div>
