@@ -8,7 +8,10 @@ const MessageDisplay = ({ msgType,msg, setMsg }) => {
         <div className={msg === "" ?"modalOverlay hidden":"modalOverlay"}>
             <div className="modalContent">
                 <button className="closeButton" onClick={(e) => { closeModule(e) }}>X</button>
-                <p style={{ color: ( msgType === "Error" ? "red" : (msgType === "Info" ?"blue":msgType==="Success"?"Green":"black") ) }}>{msg}</p>
+                <p style={{
+                    color: (msgType === "Error" ? "red" : (msgType === "Info" ? "blue" : msgType === "Success" ? "Green" : "black")),
+                    whiteSpace: 'pre-line'
+                }}>{msg}</p>
             </div>
         </div>);
 };

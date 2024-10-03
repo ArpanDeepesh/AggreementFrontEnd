@@ -13,7 +13,8 @@ const AddAttachment = ({fileLinkList, setFileLinkList }) => {
         formData.append("file", attachmentForm.current['uploadFile'].files[0]);
         formData.append("tempName", "testFile");
         console.log(formData.get("file"));
-        uploadFile(formData,UserProfile.getToken()).then(r => r.json()).then(res => {
+        uploadFile(formData, UserProfile.getToken()).then(r => r.json()).then(res => {
+            console.log(res);
             console.log(res.url);
             if (res) {
                 var newLinkList = [...fileLinkList, res.url];

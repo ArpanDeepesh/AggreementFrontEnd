@@ -14,6 +14,7 @@ import MessageDisplay from "../CommonPages/MessageDisplay";
 import AddItemAndPOAttachments from "../CommonPages/AddItemAndPOAttachments";
 import DeleteConfirmation from "../CommonPages/DeleteConfirmation";
 import DisappearingMessage from "../CommonPages/DisappearingMessage";
+import InputNumberField from "../FormParts/InputNumberField";
 
 const NewPO = ({ setUserName }) => {
 	const poForm = useRef(null);
@@ -115,6 +116,10 @@ const NewPO = ({ setUserName }) => {
 		resetTax();
 		termReset();
 		resetPayForms();
+		setPoRaisedForPhNo("+91");
+		setPoNotificationPeriod(0);
+		setPoDiscount(0);
+		setPoCompletionInDays(1);
 		console.log(PurchaseOrder.getPoId() + PurchaseOrder.getPurchaseOrderEditFlag());
 		console.log(PurchaseOrder.getPurchaseOrderEditFlag() === 1)
 		if (PurchaseOrder.getPoId().toString() !== "0" && PurchaseOrder.getPoId()>0) {
@@ -182,79 +187,103 @@ const NewPO = ({ setUserName }) => {
 		poForm.current['PoBuyerCompany'].style.borderColor = '#ced4da';
 		poForm.current['PoNotificationPeriod'].style.borderColor = '#ced4da';
 		poForm.current['PoCompletionDurationInDays'].style.borderColor = '#ced4da';
+		poForm.current['PoDiscount'].style.borderColor = "#ced4da";
 
 
 		var data = poForm.current['PoRaisedForPhoneNumber'].value;
 		var isnum = /^\+91\d+$/.test(data);
 		var message = "";
+		console.log("1111");
 		if (!isnum) {
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
-			message += "Phone Number should start with +91";
+			message += "Phone Number should start with +91 \n";
+			console.log("11112");
 		}
 		if (data.lenght < 14) {
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
-			message += "Phone Number lenght is incorrect";
+			message += "Phone Number lenght is incorrect \n";
+			console.log("11113");
 		}
-		if (!data || data === "")
+		if (data === "")
 		{
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
-			message += "Phone Number is required";
+			message += "Phone Number is required \n";
+			console.log("11114");
 		}
 		data = poForm.current['PoTitle'].value;
-		if (data.length > 99)
+		if (data==="" || data.length > 99)
 		{
 			poForm.current['PoTitle'].style.borderColor = 'red';
-			message += "Title cannot be more than 100 characters";
+			message += " Title is required and cannot be more than 100 characters \n";
+			console.log("11115");
 		}
 		data = poForm.current['PoDescription'].value;
-		if (data.length > 1000) {
+		if (data !== "" && data.length > 1000) {
 			poForm.current['PoDescription'].style.borderColor = 'red';
-			message += "Title cannot be more than 1000 characters";
+			message += " Description cannot be more than 1000 characters \n";
+			console.log("11116");
 		}
 		data = poForm.current['PoBuyerGSTIN'].value;
-		if (data.lenght > 0 && !/^[A-Za-z0-9]{15}$/.test(data)) {
+		if (data!=="" && !/^[A-Za-z0-9]{15}$/.test(data)) {
 			poForm.current['PoBuyerGSTIN'].style.borderColor = 'red';
-			message += "Buyer GSTIN should be 15 charcters and can contain only alphanumeric values.";
+			message += " Buyer GSTIN should be 15 charcters and can contain only alphanumeric values. \n";
+			console.log("11117");
 		}
 		data = poForm.current['PoSellerGSTIN'].value;
-		if (data.lenght>0 && ! /^ [A - Za - z0 - 9]{ 15 } $ /.test(data)) {
+		if (data !== "" && ! /^ [A - Za - z0 - 9]{ 15 } $ /.test(data)) {
 			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
-			message += "Seller GSTIN should be 15 charcters and can contain only alphanumeric values.";
+			message += " Seller GSTIN should be 15 charcters and can contain only alphanumeric values. \n";
+			console.log("11118");
 		}
 		data = poForm.current['PoSellerAddress'].value;
-		if (data.lenght>150) {
+		if (data !== "" && data.length>150) {
 			poForm.current['PoSellerAddress'].style.borderColor = 'red';
-			message += "Seller address should be less than 150 characters";
+			message += " Seller address should be less than 150 characters \n";
+			console.log("11118");
 		}
 		data = poForm.current['PoBuyerAddress'].value;
-		if (data.lenght > 150) {
+		if (data !== "" && data.length > 150) {
 			poForm.current['PoBuyerAddress'].style.borderColor = 'red';
-			message += "Buyer address should be less than 150 characters";
+			message += " Buyer address should be less than 150 characters \n";
+			console.log("11120");
 		}
 		data = poForm.current['PoSellerCompany'].value;
-		if (data.lenght > 100) {
+		if (data !== "" && data.length > 100) {
 			poForm.current['PoSellerCompany'].style.borderColor = 'red';
-			message += "Seller Company should be less than 100 characters";
+			message += " Seller Company should be less than 100 characters \n";
+			console.log("11119");
 		}
 		data = poForm.current['PoBuyerCompany'].value;
-		if (data.lenght > 100) {
+		if (data !== "" && data.length > 100) {
 			poForm.current['PoBuyerCompany'].style.borderColor = 'red';
-			message += "Buyer Company should be less than 100 characters";
+			message += " Buyer Company should be less than 100 characters \n";
+			console.log("11121");
 		}
 		data = poForm.current['PoNotificationPeriod'].value;
-		if (data < 0 || Number(data) > Number(poForm.current['PoCompletionDurationInDays'].value)) {
+		console.log("Notification Period" + data)
+		if (data==="" || Number(data) > Number(poForm.current['PoCompletionDurationInDays'].value)) {
 			console.log(poForm.current['PoCompletionDurationInDays'].value + "-----" + data);
 			console.log(data > poForm.current['PoCompletionDurationInDays'].value);
 			poForm.current['PoNotificationPeriod'].style.borderColor = 'red';
-			message += "Notification Period cannot be negative and can not be more than completion days";
+			message += " Notification Period cannot be negative and can not be more than completion days \n";
+			console.log("11122");
 		}
 		data = poForm.current['PoCompletionDurationInDays'].value;
-		if (Number(data) <= 0) {
+		if (data === "" || Number(data) <= 0) {
 			poForm.current['PoCompletionDurationInDays'].style.borderColor = 'red';
-			message += "Completion days cannot be less than 1";
+			message += " Completion days cannot be less than 1 \n";
+			console.log("11123");
 		}
-		setMsg(message);
-		setMsgType("Error");
+		data = poForm.current['PoDiscount'].value;
+		if (data === "" || Number(data) < 0) {
+			poForm.current['PoDiscount'].style.borderColor = 'red';
+			message += "Discount cannot be negative \n";
+			console.log("11123");
+		}
+		if (message !== "") {
+			setMsg(message);
+			setMsgType("Error");
+		}
 		return message === "";
 	}
 
@@ -289,6 +318,7 @@ const NewPO = ({ setUserName }) => {
 			console.log(res);
 			if (res > 0) {
 				PurchaseOrder.setPoId(res);
+				setPoId(res);
 				setPurchaseOrder(res);
 				PurchaseOrder.setPurchaseOrderEditFlag(1);
 				setMsg("Purchase order is created successfully.");
@@ -356,6 +386,59 @@ const NewPO = ({ setUserName }) => {
 		setItemDaysToComplete(item.liItemCompletionInDays);
 		setItemTotal(item.liQuantity * item.liRate);
 	}
+	const validateItem = () => {
+		itemForm.current['ItemTitle'].style.borderColor = '#ced4da';
+		itemForm.current['ItemDescription'].style.borderColor = '#ced4da';
+		itemForm.current['ItemQty'].style.borderColor = '#ced4da';
+		itemForm.current['ItemRate'].style.borderColor = '#ced4da';
+		itemForm.current['ItemCompDays'].style.borderColor = '#ced4da';
+		var message = "";
+		var data = itemForm.current['ItemTitle'].value;
+		if (data === "") {
+			itemForm.current['ItemTitle'].style.borderColor = 'red';
+			message += "Title is required and cannot be negative \n";
+		}
+		data = itemForm.current['ItemDescription'].value;
+		if (data !== "" && data.length > 1000) {
+			itemForm.current['ItemDescription'].style.borderColor = 'red';
+			message += "Item description cannot be more than 1000\n";
+		}
+		data = itemForm.current['ItemQty'].value;
+		if (data === "") {
+			itemForm.current['ItemQty'].style.borderColor = 'red';
+			message += "Item quantity is required \n";
+		}
+		if (data !== "" && Number(data) <= 0) {
+			itemForm.current['ItemQty'].style.borderColor = 'red';
+			message += "Item quantity should be greater than 0\n";
+		}
+		data = itemForm.current['ItemRate'].value;
+		if (data === "") {
+			itemForm.current['ItemRate'].style.borderColor = 'red';
+			message += "Item rate is required \n";
+		}
+		if (data !== "" && Number(data) <= 0) {
+			itemForm.current['ItemRate'].style.borderColor = 'red';
+			message += "Item rate should be greater than 0\n";
+		}
+		data = itemForm.current['ItemCompDays'].value;
+		if (data === "") {
+			itemForm.current['ItemCompDays'].style.borderColor = 'red';
+			message += "Item completion days is required \n";
+		}
+		if (data !== "" && Number(data) < 0) {
+			itemForm.current['ItemCompDays'].style.borderColor = 'red';
+			message += "Item completion days should be greater than 0\n";
+		} if (data !== "" && Number(data) > 0 && Number(data) > Number(poCompletionInDays)) {
+			itemForm.current['ItemCompDays'].style.borderColor = 'red';
+			message += "Item completion days cannot be greater than contract completion days\n";
+		}
+		if (message !== "") {
+			setMsg(message);
+			setMsgType("Error");
+		}
+		return message === "";
+	}
 	const itemSubmit = (e) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
@@ -363,7 +446,9 @@ const NewPO = ({ setUserName }) => {
 			setMsgType("Error");
 			return;
 		}
-		
+		if (!validateItem()) {
+			return;
+		}
 		console.log("Submit button is clicked.");
 		var formBody = {
 			Id: itemId,
@@ -399,14 +484,12 @@ const NewPO = ({ setUserName }) => {
 						console.log(err);
 					});
 				}
-				
 			}
-
 		}).catch(err => {
 			console.log(err);
 		});
-
 	};
+
 	const addValueInItemList = () =>
 	{
 		getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
@@ -427,6 +510,7 @@ const NewPO = ({ setUserName }) => {
 				console.log(err);
 			});
 	}
+
 	const addValueInTaxList = () => {
 		getRequest('api/POManagement/GetPurchaseOrderTaxes?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 			.then(r => r.json()).then(res => {
@@ -455,12 +539,37 @@ const NewPO = ({ setUserName }) => {
 		taxForm.current['TaxPercent'].value = "0";
 		taxForm.current['TaxTitle'].value = "";
 	}
+	const validateTax = () => {
+		taxForm.current['TaxPercent'].style.borderColor = '#ced4da';
+		taxForm.current['TaxTitle'].style.borderColor = '#ced4da';
+		var message = "";
+		var data = taxForm.current['TaxPercent'].value;
+		if (data === "" || Number(data) <= 0) {
+			taxForm.current['TaxPercent'].style.borderColor = 'red';
+			message += "Tax percent is required and has to be greater than 0\n";
+		}
+		data = taxForm.current['TaxTitle'].value;
+		if (data === "") {
+			taxForm.current['TaxTitle'].style.borderColor = 'red';
+			message+="Tax title cannot be empty \n"
+		}
+		if (message !== "")
+		{
+			setMsg(message);
+			setMsgType("Error");
+		}
+		return message === "";
+	}
 	const taxSubmit = (e) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
 			
 			setMsg("First Create Purchase Order");
 			setMsgType("Error");
+			return;
+		}
+		if (!validateTax())
+		{
 			return;
 		}
 		console.log("Submit button is clicked.");
@@ -521,12 +630,30 @@ const NewPO = ({ setUserName }) => {
 	const termInputReset = () => {
 		termForm.current['TermText'].value = "";
 	}
+	const validateTerms = () => {
+		termForm.current['TermText'].style.borderColor = '#ced4da';
+		var data = termForm.current['TermText'].value;
+		var message = "";
+		if (data === "")
+		{
+			termForm.current['TermText'].style.borderColor = 'red';
+			message = "Cannot submit term without value";
+		}
+		if (message !== "") {
+			setMsg(message);
+			setMsgType("Error");
+		}
+		return message === "";
+	}
 	const termSubmit = (e) => {
 		e.preventDefault();
 		if (poId && !poId > 0) {
 			
 			setMsg("First Create Purchase Order");
 			setMsgType("Error");
+			return;
+		}
+		if (!validateTerms()) {
 			return;
 		}
 		console.log("Submit button is clicked.");
@@ -564,6 +691,108 @@ const NewPO = ({ setUserName }) => {
 		setPayItemAmt(0);
 		
 	}
+	const validatePay = () => {
+		var message = "";
+		if (payType === 'F' || payType === 'P' || payType==='A') {
+			payForm.current['PayNote'].style.borderColor = '#ced4da';
+			payForm.current['PayAmount'].style.borderColor = '#ced4da';
+			var data = payForm.current['PayNote'].value;
+			if (data === "") {
+				payForm.current['PayNote'].style.borderColor = 'red';
+				message += "Pay note cannot be empty \n";
+			}
+			data = payForm.current['PayAmount'].value;
+			if (data === "") {
+				payForm.current['PayAmount'].style.borderColor = 'red';
+				message += "Pay amount is required \n";
+			}
+			if (payType === 'P') {
+				data = payForm.current['PayFreq'].value;
+				payForm.current['PayFreq'].style.borderColor = "#ced4da";
+				if (data === "" || Number(data) <= 0 || Number(data)>Number(poCompletionInDays) ) {
+					payForm.current['PayFreq'].style.borderColor = 'red';
+					message += "Payment in days is required \n Payment in days should be greater than 0 \n Payment in days cannot be more than contract completion days";
+				}
+			}
+		}
+		else if (payType === 'W' || payType === 'M' || payType === 'Q') {
+			payFrqForm.current['PayNote'].style.borderColor = '#ced4da';
+			payFrqForm.current['PayAmount'].style.borderColor = '#ced4da';
+			payFrqForm.current['PayFreq'].style.borderColor = "#ced4da";
+			var data = payFrqForm.current['PayNote'].value;
+			if (data === "") {
+				payFrqForm.current['PayNote'].style.borderColor = 'red';
+				message += "Pay note cannot be empty \n";
+			}
+			data = payFrqForm.current['PayAmount'].value;
+			if (data === "") {
+				payFrqForm.current['PayAmount'].style.borderColor = 'red';
+				message += "Pay amount is required \n";
+			}
+			data = payFrqForm.current['PayFreq'].value;
+			if (data === "" || Number(data) <= 0) {
+				payFrqForm.current['PayFreq'].style.borderColor = 'red';
+				message += "Number of payment is required \n  Number of payments should be greater than 0 \n";
+			} else {
+				var d = new Date();
+				var completionDate = new Date();
+				completionDate.setDate(completionDate.getDate() + poCompletionInDays);
+				if (payType === 'Q') {
+					d.setMonth(d.getMonth() + Number(payFrqForm.current['PayFreq'].value) * 3);
+				} else if (payType === "M") {
+					d.setMonth(d.getMonth() + Number(payFrqForm.current['PayFreq'].value));
+				} else {
+					d.setDate(d.getDate() + Number(payFrqForm.current['PayFreq'].value) * 7);
+				}
+				if (d > completionDate) {
+					payFrqForm.current['PayFreq'].style.borderColor = 'red';
+					message = "Frequency pay duration cannot be more than contract completion time\n";
+				}
+			}
+			
+		}
+
+		if (message !== "") {
+			setMsg(message);
+			setMsgType("Error");
+		}
+		return message === "";
+	}
+	const validateItemPay = () => {
+
+		payFrqForm.current['PayFreq'].style.borderColor = '#ced4da';
+		var data = itemPayForm.current['PayNote'].value;
+		var message = "";
+
+		data = itemPayForm.current['PayAmount'].value;
+		if (data === "") {
+			itemPayForm.current['PayAmount'].style.borderColor = 'red';
+			message = "Pay amount is required";
+		}
+		if (selectedItems.length <= 0) {
+			message = "Must select atleast one item \n";
+		}
+		if (message !== "") {
+			setMsg(message);
+			setMsgType("Error");
+		}
+		return message === "";
+	}
+	const remaingPay = () => {
+		var remainingAmt = poAmount;
+		for (var i = 0; i < payList.length; i++) {
+			remainingAmt -= payList[i].Amt;
+		}
+		return remainingAmt;
+	}
+	const payListContainAdvancePay = () => {
+		for (var i = 0; i < payList.length; i++) {
+			if (payList[i].extraInfo.startsWith('1st', 0)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	const basePaySubmit = (e) =>
 	{
 		e.preventDefault();
@@ -572,11 +801,12 @@ const NewPO = ({ setUserName }) => {
 			setMsgType("Error");
 			return;
 		}
+		if (!validatePay()) { return; }
 		var formBody = {
 			PayId: payId,
 			PoId: poId,
 			Note: payForm.current['PayNote'].value,
-			Amt: payForm.current['PayAmount'].value,
+			Amt: payType === 'F' ? remaingPay() : payForm.current['PayAmount'].value,
 			Frq: payType === 'P' ? payForm.current['PayFreq'].value : 0,
 			PaymentType: payType
 		}
@@ -600,6 +830,7 @@ const NewPO = ({ setUserName }) => {
 			setMsgType("Error");
 			return;
 		}
+		if (!validatePay()) { return; }
 		var formBody = {
 			PayId: payId,
 			PoId: poId,
@@ -629,6 +860,7 @@ const NewPO = ({ setUserName }) => {
 			setMsgType("Error");
 			return;
 		}
+		if (!validateItemPay()) { return; }
 		console.log("Submit button is clicked." );
 		var formBody = {
 			PayId: payId,
@@ -728,6 +960,10 @@ const NewPO = ({ setUserName }) => {
 	const openTab = (e, id) =>
 	{
 		e.preventDefault(); 
+		if (id === 'Payments') {
+			payForm.current['PaymentType'].value = 'P';
+			openPaymentTab(e,'Advance');
+		}
 		var tabContent = document.getElementsByClassName("tab-content");
 		for (var i = 0; i < tabContent.length; i++) {
 			tabContent[i].style.display = "none";
@@ -749,7 +985,7 @@ const NewPO = ({ setUserName }) => {
 			setPayType('W');
 		}
 		if (id === 'Advance' && (!payId || payId <= 0)) {
-			setPayType('A');
+			setPayType('P');
 		}
 		var tabContent = document.getElementsByClassName("payment-tab-content");
 		for (var i = 0; i < tabContent.length; i++) {
@@ -803,16 +1039,21 @@ const NewPO = ({ setUserName }) => {
 	const calculateDisplayVariables = () => {
 		var itemNameList = [];
 		var itemCompletionDayList = [];
-		var payList = [];
+		var tempPayList = [];
 		var payCompletionDayList = [];
 		for (var i = 0; i < itemList.length; i++) {
 			itemNameList.push(itemList[i].liTitle);
 			itemCompletionDayList.push(itemList[i].liItemCompletionInDays);
-        }
+		}
+		for (var i = 0; i > payList.length; i++)
+		{
+			tempPayList.push(payList[i].amt);
+			payCompletionDayList.push(i);
+		}
 		setItemDayArray( itemCompletionDayList);
 		setItemNameList(itemNameList);
 		setPayDayList(payCompletionDayList);
-		setPaymentDisplayList(payList);
+		setPaymentDisplayList(tempPayList);
 
 	}
 
@@ -872,33 +1113,18 @@ const NewPO = ({ setUserName }) => {
 							</div>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <InputField name="PoNotificationPeriod" type="number" label="Notification period (in Days)" value={poNotificationPeriod} />
+                                    <InputNumberField name="PoNotificationPeriod" type="number" label="Notification period (in Days)" value={poNotificationPeriod} />
                                 </div>
                                 <div className="col-md-4">
-                                    <InputField name="PoCompletionDurationInDays" type="number" label="Total completion time (in Days)" value={poCompletionInDays} />
+                                    <InputNumberField name="PoCompletionDurationInDays" type="number" label="Total completion time (in Days)" value={poCompletionInDays} />
                                 </div>
                                 <div className="col-md-4">
-                                    <InputField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)} value={poDiscount} />
+									<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)} value={poDiscount} />
                                 </div>
 							</div>
 							<div className="row">
 								<div className="col-md-4">
-									<InputField name="autoCalculateAmount" type="checkbox"
-										label="Uncheck the box if you want to provide the aggreement amount."
-										onChange={(e) => { setAutoCalculateOn(e.target.checked === true ? 1 : 0) }}
-										value='true'
-									/>
-								</div>
-								<div className="col-md-4">
 									Total Amount {poAmount}
-								</div>
-								<div className="col-md-4">
-									{autoCalculateOn !== 1 ?
-										<InputField name="PoAmount" type="number"
-											label="Amount"
-											onChange={(e) => { setPoAmount(e.target.value) }}
-											value={poAmount}
-										/> : <></>}
 								</div>
 							</div>
                             <div className="row">
@@ -970,13 +1196,13 @@ const NewPO = ({ setUserName }) => {
                                                 <InputField name="ItemDescription" type="text" label="Description" value={itemDescription} />
                                             </div>
                                             <div className="col-md-2">
-                                                <InputField name="ItemRate" type="number" label="Rate" onChange={(e) => updateAmount()} value={itemRate} />
+                                                <InputNumberField name="ItemRate" type="decimal" label="Rate" onChange={(e) => updateAmount()} value={itemRate} />
                                             </div>
                                             <div className="col-md-2">
-                                                <InputField name="ItemQty" type="number" label="Quantity" onChange={(e) => updateAmount()} value={itemQuantity} />
+                                                <InputNumberField name="ItemQty" type="number" label="Quantity" onChange={(e) => updateAmount()} value={itemQuantity} />
                                             </div>
                                             <div className="col-md-2">
-                                                <InputField name="ItemCompDays" type="number" label="Days To Complete" value={itemDaysToComplete} />
+                                                <InputNumberField name="ItemCompDays" type="number" label="Days To Complete" value={itemDaysToComplete} />
                                             </div>
                                             <div className="col-md-1">
                                                 Total: {itemTotal}
@@ -1080,7 +1306,7 @@ const NewPO = ({ setUserName }) => {
 
                                             <div className="col-md-6">
 
-                                                <InputField name="TaxPercent" type="number" label="Percent" value={taxPercent} />
+												<InputNumberField name="TaxPercent" type="decimal" label="Percent" value={taxPercent} />
 
                                             </div>
 
@@ -1190,12 +1416,17 @@ const NewPO = ({ setUserName }) => {
 
                                                     <div className="offset-md-2 col-md-8">
                                                         <div className="form-group" style={{ padding: '5px' }}>
-                                                            <label style={{ fontsize: '20px', color: 'black' }} >Select Type</label>
-                                                            <select className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
-                                                                <option value='A' >Advance Payment</option>
-                                                                <option value='P'>Part Payment</option>
-                                                                <option value='F'>Final Payment</option>
-                                                            </select>
+															<label style={{ fontsize: '20px', color: 'black' }} >Select Type</label>
+															{payList.length > 0 && payListContainAdvancePay() ?
+																<select name="PaymentType" className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
+																	<option value='P'>Part Payment</option>
+																	<option value='F'>Final Payment</option>
+																</select>
+																: <select name="PaymentType" className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
+																<option value='A' >Advance Payment</option>
+																<option value='P'>Part Payment</option>
+																<option value='F'>Final Payment</option>
+															</select>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1203,9 +1434,27 @@ const NewPO = ({ setUserName }) => {
                                                     <div className="col-md-3">
                                                         <InputField name="PayNote" type="text" label="Note" value={payPartNote} />
                                                     </div>
-                                                    <div className="col-md-3">
-                                                        <InputField name="PayAmount" type="number" label="Amount" value={payPartAmt} />
-                                                    </div>
+													<div className="col-md-3">
+														{payType === 'A' || payType === 'P' ? <InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
+															e.preventDefault()
+															payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
+														}} /> :<></>}
+														
+													</div>
+													<div className="col-md-3">
+														{payType === 'A' || payType === 'P' ? <InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
+															e.preventDefault();
+															payForm.current["PayPercent"].style.borderColor = "#ced4da";
+															payForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
+															if (Number(payForm.current["PayPercent"].value) > 100)
+															{
+																payForm.current["PayPercent"].style.borderColor = "red";
+																setMsg("Percent cannot be greater than 100");
+																setMsgType("Error");
+															}
+														}} /> : <>Remaining Amount:{remaingPay()}</>}
+														
+													</div>
                                                     <div className="col-md-3">
                                                         {payType === 'A' || payType === 'F' ? <></> :
                                                             <InputField name="PayFreq" type="number" value={payPartFrq}
@@ -1242,9 +1491,26 @@ const NewPO = ({ setUserName }) => {
                                                     <div className="col-md-3">
                                                         <InputField name="PayNote" type="text" label="Note" value={payPeriodicNote} />
                                                     </div>
-                                                    <div className="col-md-3">
-                                                        <InputField name="PayAmount" type="number" label="Amount" value={payPeriodicAmt} />
-                                                    </div>
+													<div className="col-md-3">
+														<InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
+															e.preventDefault()
+															payFrqForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
+														}} /> 
+
+													</div>
+													<div className="col-md-3">
+														<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
+															e.preventDefault();
+															payFrqForm.current["PayPercent"].style.borderColor = "#ced4da";
+															payFrqForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
+															if (Number(payFrqForm.current["PayPercent"].value) > 100) {
+																payFrqForm.current["PayPercent"].style.borderColor = "red";
+																setMsg("Percent cannot be greater than 100");
+																setMsgType("Error");
+															}
+														}} />
+
+													</div>
                                                     <div className="col-md-3">
                                                         <InputField name="PayFreq" type="number" label="Number of times you want to recieve" value={payPeriodicFrq} />
                                                     </div>
@@ -1266,9 +1532,26 @@ const NewPO = ({ setUserName }) => {
                                                     <div className="col-md-4">
                                                         <InputField name="PayNote" type="text" label="Note" value={payItemNote} />
                                                     </div>
-                                                    <div className="col-md-4">
-                                                        <InputField name="PayAmount" type="number" label="Amount" value={payItemAmt} />
-                                                    </div>
+													<div className="col-md-4">
+														<InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
+															e.preventDefault()
+															itemPayForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
+														}} />
+
+													</div>
+													<div className="col-md-4">
+														<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
+															e.preventDefault();
+															itemPayForm.current["PayPercent"].style.borderColor = "#ced4da";
+															itemPayForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
+															if (Number(itemPayForm.current["PayPercent"].value) > 100) {
+																itemPayForm.current["PayPercent"].style.borderColor = "red";
+																setMsg("Percent cannot be greater than 100");
+																setMsgType("Error");
+															}
+														}} />
+
+													</div>
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-6">
