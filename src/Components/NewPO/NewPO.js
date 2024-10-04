@@ -201,7 +201,7 @@ const NewPO = ({ setUserName }) => {
 			message += "Phone Number should start with +91 \n";
 			console.log("11112");
 		}
-		if (data.length === 13) {
+		if (data.length !== 13) {
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
 			message += "Phone Number length is incorrect \n";
 			console.log("11113");
