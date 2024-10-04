@@ -232,10 +232,16 @@ const NewPO = ({ setUserName }) => {
 			console.log("11117");
 		}
 		data = poForm.current['PoSellerGSTIN'].value;
-		if (data !== "" && ! /^ [A - Za - z0 - 9]{ 15 } $ /.test(data)) {
+		if (data !== "" && ! /^[A-Za-z0-9]{15}$/.test(data)) {
 			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
 			message += " Seller GSTIN should be 15 charcters and can contain only alphanumeric values. \n";
 			console.log("11118");
+		}
+		if (data === poForm.current['PoBuyerGSTIN'].value) {
+			poForm.current['PoBuyerGSTIN'].style.borderColor = 'red';
+			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
+			message += "Buyer GSTIN and seller GSTIN cannot be equal. \n";
+			console.log("11117");
 		}
 		data = poForm.current['PoSellerAddress'].value;
 		if (data !== "" && data.length>150) {
@@ -1171,7 +1177,7 @@ const NewPO = ({ setUserName }) => {
 					daysToAdd = 7;
 				} else if (payList[ind].extraInfo.startsWith("Monthly", 0)) {
 					daysToAdd = 30;
-				} else if (payList[ind].extraInfo.startsWith("Quaterly", 0)) {
+				} else if (payList[i].extraInfo.startsWith("Quaterly", 0)) {
 					daysToAdd = 120;
 				}
 				console.log(daysToAdd);
