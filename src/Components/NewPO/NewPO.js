@@ -169,7 +169,7 @@ const NewPO = ({ setUserName }) => {
 					setPoSellerGstin(res.data.poSellerGSTIN);
 					setPoBuyerCompany(res.data.poBuyerCompany);
 					setPoSellerCompany(res.data.poSellerCompany);
-					resetItem(res.data.poCompletionDurationInDays);
+					resetInputItem(res.data.poCompletionDurationInDays);
 				}
 			}).catch(err => {
 				console.log(err);
