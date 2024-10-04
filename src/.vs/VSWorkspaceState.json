@@ -1,12 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Components",
-    "\\Components\\CommonPages",
-    "\\Components\\FormParts",
-    "\\Components\\HomePage",
-    "\\Components\\LandingPage",
-    "\\Components\\NewPO"
+    "\\Components\\NewPO",
+    "\\Components\\Services"
   ],
   "PreviewInSolutionExplorer": false
 }

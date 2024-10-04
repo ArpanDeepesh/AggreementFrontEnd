@@ -11,10 +11,11 @@ import PurchaseOrder from "../Context/PurchaseOrder";
 import { useState } from "react";
 import DraftFlowPresentation from "../FlowPresentation/DraftFlowPresentation";
 import MessageDisplay from "../CommonPages/MessageDisplay";
-import AddItemAndPOAttachments from "../CommonPages/AddItemAndPOAttachments";
+import AddPOAttachments from "../CommonPages/AddPOAttachments";
 import DeleteConfirmation from "../CommonPages/DeleteConfirmation";
 import DisappearingMessage from "../CommonPages/DisappearingMessage";
 import InputNumberField from "../FormParts/InputNumberField";
+import AddAttachment from "../CommonPages/AddAttachment";
 
 const NewPO = ({ setUserName }) => {
 	const poForm = useRef(null);
@@ -41,6 +42,7 @@ const NewPO = ({ setUserName }) => {
 	const [itemQuantity, setItemQuantity] = useState();
 	const [itemDaysToComplete, setItemDaysToComplete] = useState();
 	const [itemTotal, setItemTotal] = useState();
+	const [itemAttachments, setItemAttachments] = useState([]);
 
 	const [itemList, setItemList] = useState([]);
 	const [itemIdToAttach, setItemIdToAttach] = useState(0);
@@ -199,9 +201,9 @@ const NewPO = ({ setUserName }) => {
 			message += "Phone Number should start with +91 \n";
 			console.log("11112");
 		}
-		if (data.lenght < 14) {
+		if (data.length === 13) {
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
-			message += "Phone Number lenght is incorrect \n";
+			message += "Phone Number length is incorrect \n";
 			console.log("11113");
 		}
 		if (data === "")
@@ -285,6 +287,20 @@ const NewPO = ({ setUserName }) => {
 			setMsgType("Error");
 		}
 		return message === "";
+	}
+	const closeDeleteConfirmation = () => {
+		setDeleteId(0);
+		if (deleteType === 'LI' || deleteType === 'IA') {
+			addValueInItemList();
+		} else if (deleteType === 'TAX') {
+			addValueInTaxList();
+		} else if (deleteType === 'TNC') {
+			addValueInTermList();
+		} else if (deleteType === 'PAY') {
+			addValueInPayList();
+		} else {
+			setPurchaseOrder(poId);
+		}
 	}
 
 	const handleSubmit = (e) => {
@@ -380,10 +396,17 @@ const NewPO = ({ setUserName }) => {
 		e.preventDefault();
 		setItemId(item.id);
 		setItemTitle(item.liTitle);
+		itemForm.current['ItemTitle'].value = item.liTitle;
 		setItemDescription(item.liDescription);
+		itemForm.current['ItemDescription'].value = item.liDescription;
 		setItemQuantity(item.liQuantity);
+		itemForm.current['ItemQty'].value = item.liQuantity;
+		
 		setItemRate(item.liRate);
+		itemForm.current['ItemRate'].value = item.liRate;
+		
 		setItemDaysToComplete(item.liItemCompletionInDays);
+		itemForm.current['ItemCompDays'].value = item.liItemCompletionInDays;
 		setItemTotal(item.liQuantity * item.liRate);
 	}
 	const validateItem = () => {
@@ -477,8 +500,31 @@ const NewPO = ({ setUserName }) => {
 							console.log(r);
 							if (r >0) {
 								setPoAmount(r);
-								addValueInItemList();
+								
 								resetItem(poCompletionInDays);
+								if (itemAttachments.length > 0) {
+									var attachmentformBody = {
+										ItemId: res,
+										AttachmentLinks: itemAttachments
+									};
+									sendPostRequest("api/POManagement/AddLineItemAttachment", UserProfile.getToken(), attachmentformBody).then(r => r.json()).then(resAtt => {
+										console.log(resAtt);
+										if (resAtt.length > 0) {
+											setMsgDis("Attachments added successfully.");
+											setItemAttachments([]);
+											addValueInItemList();
+										}
+
+									}).catch(err => {
+										console.log(err);
+										setMsg("Error Occured while adding attachment. Close the section and try after some time.");
+										setMsgType("Error");
+									});
+
+								} else {
+									addValueInItemList();
+								}
+								
 						}
 					}).catch(err => {
 						console.log(err);
@@ -1087,8 +1133,8 @@ const NewPO = ({ setUserName }) => {
 			<div className="row" style={{ paddingTop: "25px" }}>
 				<DisappearingMessage msg={msgDis} setMsg={setMsgDis }  />
 				<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-                <AddItemAndPOAttachments id={attachmentId} setId={setAttachmentId} type={attachmentParentType} />
-                <DeleteConfirmation deleteId={deleteId} setDeleteId={setDeleteId} type={deleteType} />
+				<AddPOAttachments id={attachmentId} setId={setAttachmentId} type={attachmentParentType} />
+				<DeleteConfirmation deleteId={deleteId} closeConfirmation={closeDeleteConfirmation} type={deleteType} />
                 <div className="col-md-8 scrollable-section">
                     <div className="">
 
@@ -1172,37 +1218,8 @@ const NewPO = ({ setUserName }) => {
                             </div>
                         </Form>
                     </div>
-                    {poId > 0 ? <div>
-                        <div className="row">
-                            <div className="col-md-8 tableHeader">Attachments</div>
-                            <div className="col-md-2 tableHeader">Attachment Type</div>
-                            <div className="col-md-2 tableHeader">Actions</div>
-                        </div>
-                        {attachmentList ? attachmentList.map((f, i) => < div className="row">
-                            <div className="col-md-8"><a href={f.link} target={"new"}> Attachment {i + 1}</a></div>
-                            <div className="col-md-2">{f.attachmentType}</div>
-                            <div className="col-md-2"><FormButton name="Remove" onClick={(e) => {
-                                e.preventDefault();
-                                setDeleteId(f.id);
-                                setDeleteType("OA");
-                            }} /></div>
-                        </div>) : <div className="row">
-                            No Attachments are present
-                        </div>}
-                        <div className="table">
-                            <div className="row tableHeader"><div className="col-md-12">Aggreement Remarks</div>
-                                <div className="col-md-2 ">Remark By</div>
-                                <div className="col-md-6 ">Remark</div>
-                                <div className="col-md-2 ">Attachments</div>
-                                <div className="col-md-2 ">Remark on</div>
-                            </div>
-                            {remarkList ? remarkList.map(x => <div className="row p-1">
-                                <div className="col-md-2">{x.createdBy} </div>
-                                <div className="col-md-6">{x.description} </div>
-                                <div className="col-md-2"> {x.attachments && x.attachments.length > 0 ? x.attachments.map(a => <div><a href={a.link} target={"new"}>Attachment{a.id}</a></div>) : <>No Attachments</>}</div>
-                                <div className="col-md-2">{x.remarkDate} </div>
-                            </div>) : <div className="row"> No remarks in Purchase Aggrement</div>}
-                        </div>
+                    
+					{poId > 0 ? <div>
                         <div className="tabs">
                             <div className="tab-buttons">
                                 <button className="tab-button active" onClick={(e) => { openTab(e, "Items") }}>Items</button>
@@ -1235,17 +1252,13 @@ const NewPO = ({ setUserName }) => {
                                         </div>
                                         <div className="row" style={{ textAlign: "right" }}>
                                             <div className="col-md-8">
-                                                {itemId > 0 ?
-                                                    <FormButton name="Add Attachment" onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setAttachmentParentType("I");
-                                                        setAttachmentId(itemId);
-
-                                                    }} /> : <></>}
+												<div className="row">
+													<AddAttachment fileLinkList={itemAttachments} setFileLinkList={setItemAttachments} />
+												</div>
 
                                             </div>
-                                            <div className="col-md-4">
-                                                <FormSubmitButton name="Add Item" />
+											<div className="col-md-4">
+												<FormSubmitButton name={itemId>0? "Save Edit":"Save New Item"} />
                                             </div>
 
                                         </div>
@@ -1294,22 +1307,21 @@ const NewPO = ({ setUserName }) => {
                                         </div>
                                         <div className="col-md-2">
                                             {x.attachments ? x.attachments.map((f, i) => < div className="col-md-12">
-                                                <a href={f.link} target={"new"}> Attachment {i + 1}</a>
-                                                <br />
-                                                <FormButton name="Remove" onClick={(e) => {
-                                                    e.preventDefault();
-                                                    setDeleteId(f.id);
-                                                    setDeleteType("IA");
-                                                }} />
+												<a href={f.link} target={"new"}> Att-{i + 1}</a> <span className="removeLink" onClick={(e) => {
+													e.preventDefault();
+													setDeleteId(f.id);
+													setDeleteType("IA");
+												}}> Remove </span>
                                             </div>) : <>No Attachments</>}
                                         </div>
                                         <div className="col-md-2">
-                                            <FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
-                                            <FormButton name="Remove" onClick={(e) => {
-                                                e.preventDefault();
-                                                setDeleteId(x.id);
-                                                setDeleteType("LI");
-                                            }} />
+											<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
+											<span className="removeLink" onClick={(e) => {
+												e.preventDefault();
+												setDeleteId(x.id);
+												setDeleteType("LI");
+											}}> Remove </span>
+                                            {/*<FormButton name="Remove"  />*/}
                                         </div>
                                     </div>) : <>No Item Is Present.</>}
 
@@ -1634,7 +1646,38 @@ const NewPO = ({ setUserName }) => {
                                     </div>) : <div className="row">No payments are Present.</div>}
                                 </div>
                             </div>
-                        </div>
+					</div>
+					 
+						<div className="row">
+							<div className="col-md-8 tableHeader">Attachments</div>
+							<div className="col-md-2 tableHeader">Attachment Type</div>
+							<div className="col-md-2 tableHeader">Actions</div>
+						</div>
+						{attachmentList && attachmentList.length ? attachmentList.map((f, i) => < div className="row">
+							<div className="col-md-8"><a href={f.link} target={"new"}> Attachment {i + 1}</a></div>
+							<div className="col-md-2">{f.attachmentType}</div>
+							<div className="col-md-2"><FormButton name="Remove" onClick={(e) => {
+								e.preventDefault();
+								setDeleteId(f.id);
+								setDeleteType("OA");
+							}} /></div>
+						</div>) : <div className="row">
+							No Attachments are present
+						</div>}
+						<div className="table">
+							<div className="row tableHeader"><div className="col-md-12">Aggreement Remarks</div>
+								<div className="col-md-2 ">Remark By</div>
+								<div className="col-md-6 ">Remark</div>
+								<div className="col-md-2 ">Attachments</div>
+								<div className="col-md-2 ">Remark on</div>
+							</div>
+							{remarkList && remarkList.length > 0 ? remarkList.map(x => <div className="row p-1">
+								<div className="col-md-2">{x.createdBy} </div>
+								<div className="col-md-6">{x.description} </div>
+								<div className="col-md-2"> {x.attachments && x.attachments.length > 0 ? x.attachments.map(a => <div><a href={a.link} target={"new"}>Attachment{a.id}</a></div>) : <>No Attachments</>}</div>
+								<div className="col-md-2">{x.remarkDate} </div>
+							</div>) : <div className="row"> No remarks in Purchase Aggrement</div>}
+						</div>
                     </div> : <></>}
 
                 </div>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormButton from "../FormParts/FormButton";
 
-const AddItemAndPOAttachments = ({ id, setId, type }) => {
+const AddPOAttachments = ({ id, setId, type }) => {
 
     const [remarkMsg, setRemarkMsg] = useState("");
 	const [attachments, setAttachments] = useState([]);
@@ -29,13 +29,6 @@ const AddItemAndPOAttachments = ({ id, setId, type }) => {
             AttachmentLinks: attachments
         };
         var address = 'api/POManagement/AddPurchaseOrderAttachment';
-        if (type === "I") {
-            address = 'api/POManagement/AddLineItemAttachment';
-            formBody = {
-                ItemId: id,
-                AttachmentLinks: attachments
-            };
-        }
         sendPostRequest(address, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
             console.log(res);
             if (res.length > 0) {
@@ -76,4 +69,4 @@ const AddItemAndPOAttachments = ({ id, setId, type }) => {
         </div>);
 };
 
-export default AddItemAndPOAttachments;
+export default AddPOAttachments;

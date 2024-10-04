@@ -137,3 +137,13 @@
     background-color: #f8f9fa;
     /*height:100vh;*/
 }
+.removeLink {
+    text-decoration-line:underline;
+    color:blue;
+    cursor:pointer;
+    font-size:10px;
+}
+    .removeLink:hover {
+        text-decoration-line: none;
+        color: #ced4da;
+    }
