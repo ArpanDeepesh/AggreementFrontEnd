@@ -139,7 +139,7 @@ const NewPO = ({ setUserName }) => {
 	}, []);
 	useEffect(() => {
 		calculateDisplayVariables();
-	}, [termList , payList])
+	}, [itemList, payList])
 	const setPurchaseOrder = (id) => {
 		getRequest('api/POManagement/GetPurchaseOrder?poId=' + id, UserProfile.getToken())
 			.then(r => r.json()).then(res => {
@@ -737,21 +737,45 @@ const NewPO = ({ setUserName }) => {
 		setPayItemAmt(0);
 		
 	}
+	const resetInputPayForms = () => {
+		setPayId(0);
+		payForm.current['PayNote'].value = "";
+		if (payType === 'A' || payType === 'P')
+		{
+			payForm.current['PayAmount'].value = '';
+			payForm.current['PayPercent'].value = '';
+		}
+		if (payType === 'P') {
+			payForm.current['PayFreq'].value = '';
+		}
+
+		payFrqForm.current['PayNote'].value = '';
+		payFrqForm.current['PayAmount'].value = '';
+		payFrqForm.current['PayPercent'].value = '';
+		payFrqForm.current['PayFreq'].value = '';
+		itemPayForm.current['PayNote'].value = '';
+		itemPayForm.current['PayAmount'].value = '';
+		itemPayForm.current['PayPercent'].value = '';
+
+	}
 	const validatePay = () => {
 		var message = "";
 		if (payType === 'F' || payType === 'P' || payType==='A') {
 			payForm.current['PayNote'].style.borderColor = '#ced4da';
-			payForm.current['PayAmount'].style.borderColor = '#ced4da';
+			
 			payForm.current['PaymentType'].style.borderColor = '#ced4da';
 			var data = payForm.current['PayNote'].value;
 			if (data === "") {
 				payForm.current['PayNote'].style.borderColor = 'red';
 				message += "Pay note cannot be empty \n";
 			}
-			data = payForm.current['PayAmount'].value;
-			if (data === "") {
-				payForm.current['PayAmount'].style.borderColor = 'red';
-				message += "Pay amount is required \n";
+			if (payType !== 'F') {
+				payForm.current['PayAmount'].style.borderColor = '#ced4da';
+				data = payForm.current['PayAmount'].value;
+				if (data === "") {
+					payForm.current['PayAmount'].style.borderColor = 'red';
+					message += "Pay amount is required \n";
+				}
 			}
 			if (payType === 'P') {
 				data = payForm.current['PayFreq'].value;
@@ -815,11 +839,14 @@ const NewPO = ({ setUserName }) => {
 		payFrqForm.current['PayFreq'].style.borderColor = '#ced4da';
 		var data = itemPayForm.current['PayNote'].value;
 		var message = "";
-
+		if (data === "") {
+			itemPayForm.current['PayNote'].style.borderColor = 'red';
+			message += "Note is required.\n";
+		}
 		data = itemPayForm.current['PayAmount'].value;
 		if (data === "") {
 			itemPayForm.current['PayAmount'].style.borderColor = 'red';
-			message = "Pay amount is required";
+			message = "Pay amount is required.\n";
 		}
 		if (selectedItems.length <= 0) {
 			message = "Must select atleast one item \n";
@@ -833,7 +860,7 @@ const NewPO = ({ setUserName }) => {
 	const remaingPay = () => {
 		var remainingAmt = poAmount;
 		for (var i = 0; i < payList.length; i++) {
-			remainingAmt -= payList[i].Amt;
+			remainingAmt -= payList[i].amt;
 		}
 		return remainingAmt;
 	}
@@ -943,7 +970,7 @@ const NewPO = ({ setUserName }) => {
 				console.log(res);
 				if (res.status === 0) {
 					setPayList(res.data);
-					calculateDisplayVariables();
+					//calculateDisplayVariables();
 				}
 			}).catch(err => {
 				console.log(err);
@@ -983,12 +1010,12 @@ const NewPO = ({ setUserName }) => {
 		}
 		else if (p.type === "Frequency Based")
 		{
-			
+			openPaymentTab(e, "Frequency");
 			if (p.extraInfo.includes("Monthly")) { setPayType('M'); }
 			else if (p.extraInfo.includes("Weekly")) { setPayType('W'); }
 			else if (p.extraInfo.includes("Quaterly"))
 			{ setPayType('Q'); }
-			openPaymentTab(e, "Frequency");
+			
 			setPayPeriodicAmt(p.amt);
 			setPayPeriodicNote(p.note);
 			itemPayForm.current["PayAmount"].value = p.amt;
@@ -1108,6 +1135,7 @@ const NewPO = ({ setUserName }) => {
 		setDraggedItem(null);
 	};
 	const calculateDisplayVariables = () => {
+		console.log("Calculate display variable is called " + payList.length);
 		var itemNameList = [];
 		var itemCompletionDayList = [];
 		var tempPayList = [];
@@ -1116,11 +1144,66 @@ const NewPO = ({ setUserName }) => {
 			itemNameList.push(itemList[i].liTitle);
 			itemCompletionDayList.push(itemList[i].liItemCompletionInDays);
 		}
-		for (var i = 0; i > payList.length; i++)
+		for (var ind = 0; ind < payList.length; ind++)
 		{
-			tempPayList.push(payList[i].amt);
-			payCompletionDayList.push(i);
+			console.log("Adding Payment "+ind);
+			if (payList[ind].type === 'Base payment') {
+				console.log('Base payment');
+				tempPayList.push(payList[ind].amt);
+				if (payList[ind].extraInfo.startsWith('1st', 0)) {
+					payCompletionDayList.push(1);
+					console.log('Advance payment');
+				}
+				else if (payList[ind].extraInfo.startsWith('Final', 0)) {
+					
+					payCompletionDayList.push(Number(poCompletionInDays));
+					console.log('Final payment');
+				} else {
+					payCompletionDayList.push(Number(payList[ind].extraInfo.split(" ")[2]));
+					console.log('Part payment' + payList[ind].extraInfo.split(" "));
+				}
+			}
+			else if (payList[ind].type === 'Frequency Based') {
+				var freq = Number(payList[ind].extraInfo.split(' ')[1]);
+				console.log("Freq" + freq);
+				var daysToAdd = 0;
+				if (payList[ind].extraInfo.startsWith("Weekly", 0)) {
+					daysToAdd = 7;
+				} else if (payList[ind].extraInfo.startsWith("Monthly", 0)) {
+					daysToAdd = 30;
+				} else if (payList[ind].extraInfo.startsWith("Quaterly", 0)) {
+					daysToAdd = 120;
+				}
+				console.log(daysToAdd);
+				for (var ix = 1; ix <= freq; ix++) {
+					tempPayList.push(payList[ind].amt);
+					payCompletionDayList.push(ix * daysToAdd);
+                }
+			} else if (payList[ind].type === 'Item Based') {
+				var allItems = payList[ind].extraInfo.split(',');
+				var maxDays = 0;
+				for (var i = 0; i < allItems.length; i++) {
+					for (var indI = 0; indI < itemList.length; indI++) {
+						if (itemList[indI].id === Number(allItems[i]))
+						{
+							if (maxDays < itemList[indI].liItemCompletionInDays) {
+								maxDays = itemList[indI].liItemCompletionInDays;
+							}
+						}
+                    }
+					
+				}
+				tempPayList.push(payList[ind].amt);
+				payCompletionDayList.push(maxDays);
+			}
+			
+			//payCompletionDayList.push(i);
 		}
+		console.log(tempPayList);
+		console.log(itemCompletionDayList);
+		console.log(itemNameList);
+		console.log(payCompletionDayList);
+
 		setItemDayArray( itemCompletionDayList);
 		setItemNameList(itemNameList);
 		setPayDayList(payCompletionDayList);
@@ -1222,10 +1305,12 @@ const NewPO = ({ setUserName }) => {
 					{poId > 0 ? <div>
                         <div className="tabs">
                             <div className="tab-buttons">
-                                <button className="tab-button active" onClick={(e) => { openTab(e, "Items") }}>Items</button>
-                                <button className="tab-button" onClick={(e) => { openTab(e, "Taxes") }}>Taxes</button>
-                                <button className="tab-button" onClick={(e) => { openTab(e, "Terms") }}>Terms and Conditions</button>
-                                <button className="tab-button" onClick={(e) => { openTab(e, "Payments") }}>Payments</button>
+								<button className="tab-button active" onClick={(e) => {
+									openTab(e, "Items");
+								}}>Items</button>
+								<button className="tab-button" onClick={(e) => { openTab(e, "Taxes"); }}>Taxes</button>
+								<button className="tab-button" onClick={(e) => { openTab(e, "Terms"); }}>Terms and Conditions</button>
+								<button className="tab-button" onClick={(e) => { openTab(e, "Payments"); }}>Payments</button>
                             </div>
                             <div id="Items" className="tab-content active">
                                 <div className="table">
@@ -1439,9 +1524,18 @@ const NewPO = ({ setUserName }) => {
 
                                 <div className="payment-tabs">
                                     <div className="payment-tab-buttons">
-                                        <button className="payment-tab-button active" onClick={(e) => { openPaymentTab(e, 'Advance') }}>Basic Payment</button>
-                                        <button className="payment-tab-button" onClick={(e) => { openPaymentTab(e, 'Frequency') }}>Frequency Based</button>
-                                        <button className="payment-tab-button" onClick={(e) => { openPaymentTab(e, 'ItemBased') }} >Items Based</button>
+										<button className="payment-tab-button active" onClick={(e) => {
+											openPaymentTab(e, 'Advance');
+											resetInputPayForms();
+										}}>Basic Payment</button>
+										<button className="payment-tab-button" onClick={(e) => {
+											openPaymentTab(e, 'Frequency');
+											resetInputPayForms();
+										}}>Frequency Based</button>
+										<button className="payment-tab-button" onClick={(e) => {
+											openPaymentTab(e, 'ItemBased');
+											resetInputPayForms();
+										}} >Items Based</button>
 
                                     </div>
 
@@ -1454,7 +1548,11 @@ const NewPO = ({ setUserName }) => {
                                                     <div className="offset-md-2 col-md-8">
                                                         <div className="form-group" style={{ padding: '5px' }}>
 															<label style={{ fontsize: '20px', color: 'black' }} >Select Type</label>
-															<select name="PaymentType" className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
+															<select name="PaymentType" className="form-control" onChange={(e) => {
+																e.preventDefault();
+																setPayType(e.target.value);
+																resetInputPayForms();
+															}} selected={payType}>
 																<option value='A' >Advance Payment</option>
 																<option value='P'>Part Payment</option>
 																<option value='F'>Final Payment</option>
@@ -1495,7 +1593,7 @@ const NewPO = ({ setUserName }) => {
                                                 </div>
                                                 <div className="row">
                                                     <div className="offset-md-9 col-md-3">
-                                                        <FormSubmitButton name="Add Payment" />
+														<FormSubmitButton name={payId && payId>0?"Save Payment Changes":"Add Payment"} />
                                                     </div>
                                                 </div>
                                             </Form>
@@ -1626,17 +1724,19 @@ const NewPO = ({ setUserName }) => {
                                     <div className="row tableHeader">
                                         <div className="col-md-3 ">Note</div>
                                         <div className="col-md-2 ">Amt</div>
-                                        <div className="col-md-1 ">PaymentType</div>
+                                        {/*<div className="col-md-1 ">PaymentType</div>*/}
                                         <div className="col-md-3 ">Extra Information</div>
-                                        <div className="col-md-2 ">Action</div>
+                                        <div className="col-md-3 ">Action</div>
                                     </div>
                                     {payList && payList.length > 0 ? payList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
                                         <div className="col-md-3">{x.note}</div>
                                         <div className="col-md-2">{x.amt}</div>
-                                        <div className="col-md-1">{x.type}</div>
+                                      {/*  <div className="col-md-1">{x.type}</div>*/}
                                         <div className="col-md-3">{x.extraInfo}</div>
-                                        <div className="col-md-2">
-                                            <FormSubmitButton name="Edit" onClick={(e) => { editPay(e, x) }} />
+                                        <div className="col-md-3">
+											
+											{x.extraInfo.startsWith("Final payment", 0) ? <></> :
+												<FormSubmitButton name="Edit" onClick={(e) => { editPay(e, x) }} />}
                                             <FormButton name="Remove" onClick={(e) => {
                                                 e.preventDefault();
                                                 setDeleteId(x.payId);

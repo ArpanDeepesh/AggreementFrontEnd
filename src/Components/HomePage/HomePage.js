@@ -119,64 +119,47 @@ const HomePage = ({ setUserName }) => {
                         <h4>Draft Contracts</h4>
                         <div className="table mr-1">
                             <div className="row tableHeader">
-                                <div className="col-md-1">
+                                <div className="col-md-2">
                                     Title
                                 </div>
-                                <div className="col-md-1">
-                                    Seller
-                                </div>
-                                <div className="col-md-1">
+                                <div className="col-md-2">
                                     Buyer
+                                </div>
+                                <div className="col-md-2">
+                                    Seller
                                 </div>
                                 <div className="col-md-1">
                                     Status
                                 </div>
                                 <div className="col-md-2">
-                                    Delay Statements
+                                    Last Modified
                                 </div>
-                                <div className="col-md-2">
-                                    Work Done
-                                </div>
-                                <div className="col-md-2">
-                                    Amount Received
-                                </div>
-                                <div className="col-md-2">
+                                <div className="col-md-3">
                                     Action
                                 </div>
                             </div>
                             {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
-                                    <div className="col-md-1">
-                                        {tempPO.title}
+                                    <div className="col-md-2">
+                                    {tempPO.editLock === true ?
+                                        <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
+                                        className="delayIcon" /> :
+                                        <img src={"./greenunlock.png"} width={20} height={20} alt="Contract is unlocked"
+                                            className="delayIcon"/>} {tempPO.title}
                                     </div>
-                                <div className="col-md-1">
+                                <div className="col-md-2">
                                     {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
                                 </div>
-                                <div className="col-md-1">
+                                <div className="col-md-2">
                                     {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                 </div>
                                     <div className="col-md-1">
-                                    { tempPO.status}
+                                    {tempPO.status}
                                     </div>
                                 <div className="col-md-2">
                                     {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
-                                    {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
-                                        <img src={"./info.png"} width={20} height={20} alt="Alter icon"
-                                            className="delayIcon"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
-                                                setDelayMsg(tempPO.delaysAndWaitingResponse);
-                                            }} /> 
-                                        : <></>}
+                                    {tempPO.modifiedOn}
                                     </div>
-                                <div className="col-md-2">
-                                    
-                                    <PieChart dataArray={tempPO.workDoneStatus}/>
-                                    </div>
-                                    <div className="col-md-2">
-                                    <PieChart dataArray={tempPO.paymentStatus} />
-                                    </div>
-                                <div className="col-md-2">
+                                <div className="col-md-3">
                                     {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO.poId)} /> :
                                         <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO.poId)} />
                                             <FormButton name="Details" onClick={(e) => {
