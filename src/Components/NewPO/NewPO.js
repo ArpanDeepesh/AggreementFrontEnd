@@ -237,7 +237,7 @@ const NewPO = ({ setUserName }) => {
 			message += " Seller GSTIN should be 15 charcters and can contain only alphanumeric values. \n";
 			console.log("11118");
 		}
-		if (data === poForm.current['PoBuyerGSTIN'].value) {
+		if (data!=="" && data === poForm.current['PoBuyerGSTIN'].value) {
 			poForm.current['PoBuyerGSTIN'].style.borderColor = 'red';
 			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
 			message += "Buyer GSTIN and seller GSTIN cannot be equal. \n";
