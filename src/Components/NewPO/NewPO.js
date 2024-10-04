@@ -48,6 +48,7 @@ const NewPO = ({ setUserName }) => {
 	const [itemIdToAttach, setItemIdToAttach] = useState(0);
 
 	//OP related
+	const [editMode, setEditMode] = useState(1);
 	const [poId, setPoId] = useState();
 	const [poTitle, setPoTitle] = useState();
 	const [poRaiseForPhNo, setPoRaisedForPhNo] = useState();
@@ -109,7 +110,7 @@ const NewPO = ({ setUserName }) => {
 
 	useEffect(() => {
 		
-		console.log("New PO is created");
+		console.log("New PO is created"); console.log("Arpan Value Edit Mode-" + editMode);
 		console.log(PurchaseOrder.getRaisedBy());
 		setUserName(UserProfile.getName());
 		setPoAmount(0);
@@ -124,10 +125,9 @@ const NewPO = ({ setUserName }) => {
 		setPoCompletionInDays(1);
 		console.log(PurchaseOrder.getPoId() + PurchaseOrder.getPurchaseOrderEditFlag());
 		console.log(PurchaseOrder.getPurchaseOrderEditFlag() === 1)
-		if (PurchaseOrder.getPoId().toString() !== "0" && PurchaseOrder.getPoId()>0) {
+		if ( Number(PurchaseOrder.getPoId())>0) {
 
 			setPurchaseOrder(PurchaseOrder.getPoId());
-			
 			addValueInItemList();
 			addValueInTaxList();
 			addValueInTermList();
@@ -136,6 +136,7 @@ const NewPO = ({ setUserName }) => {
 		} else {
 			console.log("Order not present");
 		}
+		console.log("Arpan Value Edit Mode-" + editMode);
 	}, []);
 	useEffect(() => {
 		calculateDisplayVariables();
@@ -152,23 +153,28 @@ const NewPO = ({ setUserName }) => {
 				}
 				lockPurchaseOrder(res.data.id);
 				console.log(res);
-				if (res.status === 0) {
+				if (Number(res.status) === 0) {
+					
 					setPoId(res.data.id);
-					setPoRaisedForPhNo(PurchaseOrder.getRaisedBy() === "Seller" ? res.data.poSellerPhoneNumber :res.data.poBuyerPhoneNumber );
+					setPoRaisedForPhNo(PurchaseOrder.getRaisedBy() === "Seller" ? res.data.poSellerPhoneNumber : res.data.poBuyerPhoneNumber);
+					
 					setPoTitle(res.data.poTitle);
 					setPoAmount(res.data.poTotalAmount);
 					setPoDescription(res.data.poDescription);
 					setPoNotificationPeriod(res.data.poNotificationPeriod);
 					setPoDiscount(res.data.poDiscount);
+					
 					setPoCompletionInDays(res.data.poCompletionDurationInDays);
 					setRemarkList(res.data.remarks);
 					setAttachmentList(res.data.attachments);
 					setPoBuyerAddress(res.data.poBuyerAddress);
 					setPoSellerAddress(res.data.poSellerAddress);
+					
 					setPoBuyerGstin(res.data.poBuyerGSTIN);
 					setPoSellerGstin(res.data.poSellerGSTIN);
 					setPoBuyerCompany(res.data.poBuyerCompany);
 					setPoSellerCompany(res.data.poSellerCompany);
+					setEditMode(0);
 					resetInputItem(res.data.poCompletionDurationInDays);
 				}
 			}).catch(err => {
@@ -1031,6 +1037,7 @@ const NewPO = ({ setUserName }) => {
 
 	const submitBtnClicked = (e) => {
 		console.log("btn is clicked");
+		
 	}
 	const publishBtnClicked = (e) => {
 		e.preventDefault();
@@ -1236,60 +1243,79 @@ const NewPO = ({ setUserName }) => {
                             <div className="row">
                                 <div className="col-md-4">
 									<InputField name="PoRaisedForPhoneNumber" type="tel"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Phone Number" : "Seller Phone Number"} value={poRaiseForPhNo} />
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Phone Number" : "Seller Phone Number"}
+										value={poRaiseForPhNo} readOnlyValue={editMode === 0} />
                                 </div>
                                 <div className="col-md-4">
-                                    <InputField name="PoTitle" type="tel" label="Title" value={poTitle} />
+									<InputField name="PoTitle" type="tel" label="Title" value={poTitle} readOnlyValue={editMode === 0} />
                                 </div>
                                 <div className="col-md-4">
-                                    <InputField name="PoDescription" type="tel" label="Description" value={poDescription} />
+									<InputField name="PoDescription" type="tel" label="Description" value={poDescription} readOnlyValue={editMode === 0} />
                                 </div>
 							</div>
 							<div className="row">
 								<div className="col-md-4">
-									<InputField name="PoBuyerGSTIN" type="text" label={PurchaseOrder.getRaisedBy() === "Seller"?"Buyer GSTIN":"Your GSTIN"} value={poBuyerGstin} />
+									<InputField name="PoBuyerGSTIN" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer GSTIN" : "Your GSTIN"}
+										value={poBuyerGstin}
+									readOnlyValue={editMode === 0}									/>
 								</div>
 								<div className="col-md-4">
 									<InputField name="PoBuyerAddress" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"} value={poBuyerAddress} />
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"}
+										value={poBuyerAddress} readOnlyValue={editMode === 0}/>
 								</div>
 								<div className="col-md-4">
 									<InputField name="PoBuyerCompany" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"} value={poBuyerCompany} />
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"}
+										value={poBuyerCompany} readOnlyValue={editMode === 0}/>
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-4">
-									<InputField name="PoSellerGSTIN" type="text" label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"} value={poSellerGstin} />
+									<InputField name="PoSellerGSTIN" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"}
+										value={poSellerGstin} readOnlyValue={editMode === 0} />
 								</div>
 								<div className="col-md-4">
 									<InputField name="PoSellerAddress" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Address" : "Your Address"} value={poSellerAddress} />
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Address" : "Your Address"}
+										value={poSellerAddress} readOnlyValue={editMode === 0} />
 								</div>
 								<div className="col-md-4">
 									<InputField name="PoSellerCompany" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"} value={poSellerCompany} />
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"}
+										value={poSellerCompany} readOnlyValue={editMode === 0}/>
 								</div>
 							</div>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <InputNumberField name="PoNotificationPeriod" type="number" label="Notification period (in Days)" value={poNotificationPeriod} />
+									<InputNumberField name="PoNotificationPeriod" type="number" label="Notification period (in Days)"
+										value={poNotificationPeriod} readOnlyValue={editMode === 0}/>
                                 </div>
                                 <div className="col-md-4">
-                                    <InputNumberField name="PoCompletionDurationInDays" type="number" label="Total completion time (in Days)" value={poCompletionInDays} />
+									<InputNumberField name="PoCompletionDurationInDays" type="number" label="Total completion time (in Days)"
+										value={poCompletionInDays} readOnlyValue={editMode === 0}/>
                                 </div>
                                 <div className="col-md-4">
-									<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)} value={poDiscount} />
+									<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)}
+										value={poDiscount} readOnlyValue={editMode === 0}/>
                                 </div>
 							</div>
 							<div className="row">
 								<div className="col-md-4">
-									Total Amount {poAmount}
+									{poId > 0 && editMode === 0 ? <>Total Amount {poAmount}</> : <></>}
 								</div>
 							</div>
                             <div className="row">
-                                <div className="col-md-3">
-                                    <FormSubmitButton name="Create Order" onClick={(e) => submitBtnClicked(e)} />
+								<div className="col-md-3">
+									{poId > 0 && editMode === 0 ? <FormButton name="Edit Contract" onClick={(e) => {
+										e.preventDefault();
+										setEditMode(1);
+										alert("Current Edit mode " + editMode);
+									}} /> : <FormSubmitButton name={poId > 0 ? "Save" : "Create Order"} onClick={(e) => submitBtnClicked(e)} />}
+									
+                                    
                                 </div>
                                 <div className="col-md-3">
                                     {poId && poId > 0 ? <FormButton name="Publish" onClick={(e) => publishBtnClicked(e)} /> : <></>}
@@ -1307,8 +1333,8 @@ const NewPO = ({ setUserName }) => {
                             </div>
                         </Form>
                     </div>
-                    
-					{poId > 0 ? <div>
+
+					{poId > 0 && editMode === 0 ? <div>
                         <div className="tabs">
                             <div className="tab-buttons">
 								<button className="tab-button active" onClick={(e) => {
