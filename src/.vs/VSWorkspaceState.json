@@ -1,8 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Components\\NewPO",
-    "\\Components\\Services"
+    "\\Components",
+    "\\Components\\CommonPages",
+    "\\Components\\FormParts",
+    "\\Components\\HomePage",
+    "\\Components\\NewPO"
   ],
+  "SelectedNode": "\\Components\\DefaultLayout.js",
   "PreviewInSolutionExplorer": false
 }

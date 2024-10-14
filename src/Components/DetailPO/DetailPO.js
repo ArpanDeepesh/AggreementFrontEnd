@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
+import FormButton from "../FormParts/FormButton";
 import { getRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import PurchaseOrder from "../Context/PurchaseOrder";
@@ -49,7 +50,7 @@ const DetailPO = ({ setUserName }) => {
 						Agreement Details <br />
 						{po.status === "Raised" ? <div className="row p-1">
 							<div className="col-md-3">
-								<FormSubmitButton name="Accept" onClick={(e) => {
+								<FormButton name="Accept" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(poId);
 									setRemarkType("O");
@@ -58,7 +59,7 @@ const DetailPO = ({ setUserName }) => {
 								}} />
 							</div>
 							<div className="col-md-3">
-								<FormSubmitButton name="Reconsider" onClick={(e) => {
+								<FormButton name="Reconsider" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(poId);
 									setRemarkType("O");
@@ -67,16 +68,16 @@ const DetailPO = ({ setUserName }) => {
 								}} />
 							</div>
 							<div className="col-md-3">
-								<FormSubmitButton name="Decline" onClick={(e) => {
-									e.preventDefault();
-									setOpenRemark(poId);
-									setRemarkType("O");
-									setRemarkAction("Decline Agreement");
-									console.log("Add remark clicked");
-								}} />
+								{/*<FormSubmitButton name="Decline" onClick={(e) => {*/}
+								{/*	e.preventDefault();*/}
+								{/*	setOpenRemark(poId);*/}
+								{/*	setRemarkType("O");*/}
+								{/*	setRemarkAction("Decline Agreement");*/}
+								{/*	console.log("Add remark clicked");*/}
+								{/*}} />*/}
 							</div>
 							<div className="col-md-3">
-								<FormSubmitButton name="Remark" onClick={(e) => {
+								<FormButton name="Remark" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(poId);
 									setRemarkType("O");
@@ -85,9 +86,9 @@ const DetailPO = ({ setUserName }) => {
 								}} />
 							</div>
 						</div> : <></>}
-						{po.status === "Active" ? <div className="row p-1">
+						{po.status === "Active" && po.raisedById !== PurchaseOrder.getRaisedBy() ? <div className="row p-1">
 							<div className="col-md-3">
-								<FormSubmitButton name="Remark" onClick={(e) => {
+								<FormButton name="Remark" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(poId);
 									setRemarkType("O");
@@ -99,8 +100,20 @@ const DetailPO = ({ setUserName }) => {
 					</div>
 				</div>
 				<div className="row">
-					<div className="col-md-3"><strong>Seller:</strong><br /> {po.raisedByName} <br />{po.raisedByPhoneNo}</div>
-					<div className="col-md-3"><strong>Buyer:</strong><br /> {po.raisedForName}<br />{po.raisedForPhoneNo}</div>
+					<div className="col-md-3"><strong>Seller:</strong>
+						<br /> Name:{po.sellerName}
+						<br />Phone Number:{po.sellerPhoneNo}
+						<br />Company:{po.sellerCompany}
+						<br />Address:{po.sellerAddress}
+						<br />GSTIN:{po.sellerGSTIN}
+					</div>
+					<div className="col-md-3"><strong>Buyer:</strong>
+						<br /> Name: {po.buyerName}
+						<br />Phone Number:{po.buyerPhoneNo}
+						<br />Company:{po.buyerCompany}
+						<br />Address:{po.buyerAddress}
+						<br />GSTIN:{po.buyerGSTIN}
+					</div>
 					<div className="col-md-3"><strong>Title:</strong><br />{po.title}</div>
 					<div className="col-md-3"><strong>Amount:</strong><br /> {po.poAmount} INR</div>
 				</div>
@@ -164,7 +177,7 @@ const DetailPO = ({ setUserName }) => {
 									console.log("Add remark clicked");
 								}} /> : <></>}
 								{x.lineItemStatus === "Active" && UserProfile.getUserId().toString() === po.raisedById.toString() ?
-									<FormSubmitButton name="Claim" onClick={(e) => {
+									<FormButton name="Claim" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
@@ -172,7 +185,7 @@ const DetailPO = ({ setUserName }) => {
 										console.log("Add remark clicked");
 									}} /> : <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.raisedForId.toString() ?
-									<FormSubmitButton name="Complete" onClick={(e) => {
+									<FormButton name="Complete" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
@@ -180,7 +193,7 @@ const DetailPO = ({ setUserName }) => {
 										console.log("Add remark clicked");
 									}} /> : <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.raisedById.toString() ?
-									<FormSubmitButton name="Not Completed" onClick={(e) => {
+									<FormButton name="Not Completed" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
@@ -243,7 +256,7 @@ const DetailPO = ({ setUserName }) => {
 							<div className="col-md-2"> {x.dueDate}</div>
 							<div className="col-md-2"> {x.lineItemsRelation.length > 0 ? x.lineItemsRelation.map(ri => <span>{ri}</span>) : <>Not related with Item</>}</div>
 							<div className="col-md-2">
-								{po.status === "Active" && x.paymentStatus !== "Completed" ?<> <FormSubmitButton name="Add Remark" onClick={(e) => {
+								{po.status === "Active" && x.paymentStatus !== "Completed" ? <> <FormButton name="Add Remark" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(x.paymentId);
 									setRemarkType("P");
@@ -251,7 +264,7 @@ const DetailPO = ({ setUserName }) => {
 									console.log("Add remark clicked");
 								}} /> </> : <></>}
 								{po.status === "Active" && x.paymentStatus !== "Completed"
-									&& po.raisedForId.toString() === UserProfile.getUserId().toString() ? <FormSubmitButton name="Pay" onClick={(e) => {
+									&& po.buyerId.toString() === UserProfile.getUserId().toString() ? <FormButton name="Pay" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(x.paymentId);
 									setRemarkType("P");
@@ -260,8 +273,8 @@ const DetailPO = ({ setUserName }) => {
 								}} />:<></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Active"
-									&& UserProfile.getUserId().toString() === po.raisedById.toString()
-									? <FormSubmitButton name="Ask For" onClick={(e) => {
+									&& UserProfile.getUserId().toString() === po.sellerId.toString()
+									? <FormButton name="Ask For" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
@@ -270,8 +283,8 @@ const DetailPO = ({ setUserName }) => {
 									}} /> : <></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Waiting"
-									&& UserProfile.getUserId().toString() === po.raisedForId.toString()
-									? <FormSubmitButton name="Decline" onClick={(e) => {
+									&& UserProfile.getUserId().toString() === po.buyerId.toString()
+									? <FormButton name="Decline" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
@@ -280,8 +293,8 @@ const DetailPO = ({ setUserName }) => {
 									}} /> : <></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Claimed"
-									&& UserProfile.getUserId().toString() === po.raisedById.toString()
-									? <FormSubmitButton name="Received" onClick={(e) => {
+									&& UserProfile.getUserId().toString() === po.sellerId.toString()
+									? <FormButton name="Received" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
@@ -290,8 +303,8 @@ const DetailPO = ({ setUserName }) => {
 									}} /> : <></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Claimed"
-									&& UserProfile.getUserId().toString() === po.raisedById.toString()
-									? <FormSubmitButton name="Not Received" onClick={(e) => {
+									&& UserProfile.getUserId().toString() === po.sellerId.toString()
+									? <FormButton name="Not Received" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");

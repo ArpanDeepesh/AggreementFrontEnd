@@ -12,13 +12,15 @@ import { useNavigate } from "react-router-dom";
 const AddRemark = ({ id, setId, type,actionText }) => {
 
     const remarkForm = useRef(null);
-    const [remarkMsg, setRemarkMsg] = useState("");
+	const [remarkMsg, setRemarkMsg] = useState("");
+	const [displayForm, setDisplayForm] = useState(1);
 	const [remarkAttachments, setRemarkAttachments] = useState([]);
 	const navigate = useNavigate();
     const closeModule = (e) => {
         e.preventDefault();
         setId(0);
-        setRemarkMsg("");
+		setRemarkMsg("");
+		setDisplayForm(1);
 		setRemarkAttachments([]);
 		if (type === "O") {
 			navigate("/Home");
@@ -43,6 +45,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 				if (actionText === "Submit Remark") {
 					setRemarkMsg("Remark Added Successfully. Close the remark section.");
 					remarkForm.current["remarkText"].value = "";
+					setDisplayForm(0);
 				} else if (actionText === "Decline Agreement") {
 					declineBtnClicked();
 				} else if (actionText === "Accept Agreement") {
@@ -85,6 +88,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is declined");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 				
 			}
 
@@ -100,6 +104,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is sent for reconsideration");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -114,6 +119,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is Accepted");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -128,6 +134,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Item completion claim raised.");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -142,6 +149,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Item receival is accepted");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -156,6 +164,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Item receival is declined");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -170,6 +179,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Payment status is cahanges");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -184,6 +194,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Waiting for receival acceptance.");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -198,6 +209,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Payment ask is invalid.");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -212,6 +224,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Payment is received");
 				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 			}
 
 		}).catch(err => {
@@ -221,31 +234,38 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 
 
     return (
-        <div className={id === 0 ? "modalOverlay hidden" : "modalOverlay"}>
-            <div className="modalContent">
-                <button className="closeButton" onClick={(e) => { closeModule(e) }}>X</button>
-                <Form ref={remarkForm} onSubmit={(e) => { e.preventDefault() }}>
-                    <div className="row">
+		<div className={id === 0 ? "modalOverlay hidden" : "modalOverlay"}>
+			
+			<div className="modalContent" >
+				<button className="closeButton" onClick={(e) => { closeModule(e) }}>X</button>
+				<div className="row">
+					<div className="col-md-12">
+						{remarkMsg && remarkMsg.includes("Successfully") ?
+							<span style={{ color: "green" }}>{remarkMsg}</span> : <span style={{ color: "red" }}>{remarkMsg}</span>}
+					</div>
+				</div>
+				{displayForm ===1?<div>
+					<Form ref={remarkForm} onSubmit={(e) => { e.preventDefault() }}>
+						<div className="row">
 
-                        <div className="col-md-12">
-                            {remarkMsg && remarkMsg.includes("Successfully") ? <span style={{ color: "green" }}>{remarkMsg}</span> : <span style={{ color: "red" }}>{remarkMsg}</span>}
-                        </div>
-                        <div className="col-md-12">
-                            {type === "I" ? <span>Adding Item Remark</span> : type === "P" ? <span>Adding Payment Remark</span> :
-                                < span > Adding Purchase Agreement Remark</span>}
-                        </div>
+                        
+							<div className="col-md-12">
+								{type === "I" ? <span>Adding Item Remark</span> : type === "P" ? <span>Adding Payment Remark</span> :
+									< span > Adding Purchase Agreement Remark</span>}
+							</div>
                     
-                        <div className="col-md-12">
-                            <InputField name="remarkText" label="Provide Remark"  /> 
-                        </div>
-                        <div className="col-md-12">
-                            <FormSubmitButton name={actionText} onClick={(e) => { submitRemark(e,id,type)  }} />
-                        </div>
-                    </div>
-                </Form>
-                <div className="row">
-                    <AddAttachment fileLinkList={remarkAttachments} setFileLinkList={setRemarkAttachments }  />
-                </div>
+							<div className="col-md-12">
+								<InputField name="remarkText" label="Provide Remark"  /> 
+							</div>
+							<div className="col-md-12">
+								<FormSubmitButton name={actionText} onClick={(e) => { submitRemark(e,id,type)  }} />
+							</div>
+						</div>
+					</Form>
+					<div className="row">
+						<AddAttachment fileLinkList={remarkAttachments} setFileLinkList={setRemarkAttachments }  />
+					</div>
+				</div>:<></>}
             </div>
         </div>);
 };

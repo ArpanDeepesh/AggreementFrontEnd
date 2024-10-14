@@ -47,21 +47,32 @@ const HomePage = ({ setUserName }) => {
             }
         }).catch(err => console.log(err));
     }, []);
-    const editPurchaseOrder = (e, id) => {
+    const editPurchaseOrder = (e, po) => {
         e.preventDefault();
-        PurchaseOrder.setPoId(id);
+        PurchaseOrder.setPoId(po.poId);
         PurchaseOrder.setPurchaseOrderEditFlag(1);
+        if (po.sellerId.toString() === UserProfile.getUserId()) {
+            PurchaseOrder.setRaisedBy("Buyer");
+        } else {
+            PurchaseOrder.setRaisedBy("Seller");
+        }
+        
         navigate("/New");
 
     }
 
-    const copyPurchaseOrder = (e, id) => {
+    const copyPurchaseOrder = (e, po) => {
         e.preventDefault();
-        getRequest("api/POManagement/CopyPurchaseOrder?poId="+id, UserProfile.getToken()).then(rr => rr.text()).then(res => {
+        getRequest("api/POManagement/CopyPurchaseOrder?poId="+po.poId, UserProfile.getToken()).then(rr => rr.text()).then(res => {
             //console.log(res);
             if (res > 0) {
                 PurchaseOrder.setPoId(res);
                 PurchaseOrder.setPurchaseOrderEditFlag(1);
+                if (po.sellerId.toString() === UserProfile.getUserId()) {
+                    PurchaseOrder.setRaisedBy("Buyer");
+                } else {
+                    PurchaseOrder.setRaisedBy("Seller");
+                }
                 navigate("/New");
             }
             
@@ -160,8 +171,8 @@ const HomePage = ({ setUserName }) => {
                                     {tempPO.modifiedOn}
                                     </div>
                                 <div className="col-md-3">
-                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO.poId)} /> :
-                                        <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO.poId)} />
+                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} /> :
+                                        <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
                                             <FormButton name="Details" onClick={(e) => {
                                                 e.preventDefault();
                                                 console.log("Calling Respond Button");
@@ -234,9 +245,9 @@ const HomePage = ({ setUserName }) => {
                                     <PieChart dataArray={tempPO.paymentStatus} />
                                 </div>
                                 <div className="col-md-2">
-                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={ (e)=>editPurchaseOrder(e,tempPO.poId)} /> :
+                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={ (e)=>editPurchaseOrder(e,tempPO)} /> :
                                         <>
-                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO.poId)} />
+                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
                                             <FormButton name="Respond" onClick={(e) => {
                                                 e.preventDefault();
                                                 console.log("Calling Respond Button");
