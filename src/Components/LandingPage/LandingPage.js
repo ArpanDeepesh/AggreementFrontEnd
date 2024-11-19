@@ -30,18 +30,19 @@ const LandingPage= ()=>{
 							<div className="">
 							{displayLogin === 1 ? <LoginPage setDisplayLogin={setDisplayLogin} /> : <RegisterPage displayLogin={displayLogin} setDisplayLogin={setDisplayLogin} />}
 							</div>
-						</div>
-						<div className="col-md-6 col-sm-12">
-							<div className="d-sm-none d-md-block">
+					</div>
+					<div className="col-md-6 col-sm-12" >
+						<div>
+							<div className="d-sm-none d-md-block" >
 								<div className="row m-4">
 									<div className="col-md-12 col-sm-12">
-										<img src={"./ParagraphText.png"} alt="Landing Page Image showing business" width={"80%"} />
+										<img src={"./ParagraphText.png"} alt="Landing Page Image showing business" width={"72%"} />
 									</div>
 								</div>
 								<div className="row m-4">
 									<div className="col-md-12">
 										<center style={{ fontSize: "30px" }}>
-											Streamlined tracking and reconciliation for your purchase agreements
+											Streamlined tracking and reconciliation for your purchase agreements (POs and PIs)
 										</center>
 									</div>
 								</div>
@@ -112,6 +113,8 @@ const LandingPage= ()=>{
 									</div>
 								</div>
 							</div>
+						</div>
+							
 						</div>
 					</div>
 				</div>

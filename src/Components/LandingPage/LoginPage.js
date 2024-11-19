@@ -58,19 +58,38 @@ const LoginPage = ({ setDisplayLogin })=>{
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
 			<Form ref={usrForm} onSubmit={handleSubmit} >
-				<div style={{ textAlign: 'left', padding:'5px' }}>
-					<InputField name="userId" type="text" label="Phone Number" value="+91"/>
-					<InputField name="userPass" type="password" label="Password" />
-					<div className="row" style={{ textAlign: "center" }}>
-						<div className="col-md-6"><FormSubmitButton name="Login" /></div>
-						<div className="col-md-6"><FormButton name="Register" onClick={(e) => {
-							e.preventDefault();
-							setDisplayLogin(0);
-						}} myClass="landingPageBtn" /></div>
+				<div style={{ textAlign: 'left', padding: '5px' }}>
+					<div className="row">
+						<div className="col-md-12" style={{ marginBottom:"10px" }}>
+							<h2>Login to Your Account</h2>
+						</div>
+						<div className="col-md-12" style={{ marginBottom: "10px" }}>
+
+							<InputField name="userId" type="text" label="Phone Number" value="+91" />
+						</div>
+						<div className="col-md-12" style={{ marginBottom: "10px" }}>
+							<InputField name="userPass" type="password" label="Password" />
+						</div>
+						<div className='col-md-12'>
+							<div className="row">
+								<div className="col-md-6" >
+									<FormSubmitButton name="Login" myStyle={{ margin: '5px', width: '100%' }} />
+								</div>
+								<div className="col-md-6">
+									<FormButton name="Register" onClick={(e) => {
+										e.preventDefault();
+										setDisplayLogin(0);
+									}} myClass="landingPageBtn" myStyle={{ margin: '5px', width: '100%' }} />
+								</div>
+							</div>
+						</div>
+						
+						
 					</div>
 					<div className="row" style={{ textAlign: "center" }}>
 						<div className="col-md-12">
-							<span className="landingPageLink" onClick={(e) => {
+							<span className="landingPageLink"
+								onClick={(e) => {
 								e.preventDefault();
 								setDisplayLogin(2);
 							}} >

@@ -14,6 +14,10 @@ import DetailPO from './DetailPO/DetailPO';
 import PurchaseOrder from './Context/PurchaseOrder';
 import CheckPODetails from './DetailPO/CheckPODetails';
 import { getRequest } from '../Components/Services/POContractBackendAPI';
+import TermsAndCondtitions from './LandingPage/TermsAndConditions';
+import PrivacyPolicy from './LandingPage/PrivacyPolicy';
+import AboutUs from './LandingPage/AboutUs';
+import Test from './LandingPage/Test';
 
 
 const DefaultLayout = () => {
@@ -72,6 +76,10 @@ const DefaultLayout = () => {
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/Home" element={<HomePage setUserName={setLoggedInUsername} />} />
                         <Route path="/ValidateUser" element={<ValidateOTP />} />
+                        <Route path="/Terms" element={<TermsAndCondtitions />} />
+                        <Route path="/Policy" element={<PrivacyPolicy />} />
+                        <Route path="/AboutUs" element={<AboutUs />} />
+                        <Route path="/test" element={<Test />} />
                         <Route path="/UpdateUser" element={<UpdateUser setUserName={setLoggedInUsername } />} />
                         <Route path="/LogOut" element={<LogOut setUserName={setLoggedInUsername } />} />
                         <Route path="/New" element={<NewPO setUserName={setLoggedInUsername } />} />
