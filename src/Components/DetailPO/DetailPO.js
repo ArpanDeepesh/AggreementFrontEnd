@@ -176,7 +176,7 @@ const DetailPO = ({ setUserName }) => {
 									setRemarkType("I");
 									console.log("Add remark clicked");
 								}} /> : <></>}
-								{x.lineItemStatus === "Active" && UserProfile.getUserId().toString() === po.raisedById.toString() ?
+								{x.lineItemStatus === "Active" && UserProfile.getUserId().toString() === po.sellerId.toString() ?
 									<FormButton name="Claim" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
@@ -184,7 +184,7 @@ const DetailPO = ({ setUserName }) => {
 										setRemarkAction("Claim Item Delivery");
 										console.log("Add remark clicked");
 									}} /> : <></>}
-								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.raisedForId.toString() ?
+								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
 									<FormButton name="Complete" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
@@ -192,7 +192,7 @@ const DetailPO = ({ setUserName }) => {
 										setRemarkAction("Accept Item Delivery");
 										console.log("Add remark clicked");
 									}} /> : <></>}
-								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.raisedById.toString() ?
+								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
 									<FormButton name="Not Completed" onClick={(e) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
