@@ -263,7 +263,7 @@ const DetailPO = ({ setUserName }) => {
 									setRemarkAction("Submit Remark");
 									console.log("Add remark clicked");
 								}} /> </> : <></>}
-								{po.status === "Active" && x.paymentStatus !== "Completed"
+								{po.status === "Active" && x.paymentStatus !== "Completed" && x.paymentStatus!=="Claimed"
 									&& po.buyerId.toString() === UserProfile.getUserId().toString() ? <FormButton name="Pay" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(x.paymentId);

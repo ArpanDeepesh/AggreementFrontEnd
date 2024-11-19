@@ -109,7 +109,9 @@ const NewPO = ({ setUserName }) => {
 	
 
 	useEffect(() => {
-		
+		if (UserProfile.getLoginStatus() !== "1") {
+			navigate("/");
+		}
 		console.log("New PO is created"); console.log("Arpan Value Edit Mode-" + editMode);
 		console.log(PurchaseOrder.getRaisedBy());
 		setUserName(UserProfile.getName());
