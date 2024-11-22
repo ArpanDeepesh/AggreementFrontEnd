@@ -52,6 +52,8 @@ const DetailPO = ({ setUserName }) => {
 				});
 
 		} else {
+			console.log("Navigating to Home");
+			console.log(PurchaseOrder.getPoId());
 			navigate("/Home");
 		}
 	}
