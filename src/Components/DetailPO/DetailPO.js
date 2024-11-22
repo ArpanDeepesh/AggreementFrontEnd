@@ -39,8 +39,8 @@ const DetailPO = ({ setUserName }) => {
 		}
 	}, []);
 	const downloadClicked = () => {
-		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
-			getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+		if (poId>0) {
+			getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + poId, UserProfile.getToken())
 				.then(r => r.json()).then(res => {
 					console.log(res.data);
 					if (res.data !== "") {
