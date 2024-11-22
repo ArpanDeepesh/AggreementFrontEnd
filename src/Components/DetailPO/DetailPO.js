@@ -108,7 +108,7 @@ const DetailPO = ({ setUserName }) => {
 						{po.status !== "Raised" && po.status !== "Draft" ? <div className="col-md-3">
 							<FormSubmitButton name="Download" onClick={(e) => {
 								e.preventDefault();
-								
+								downloadClicked();
 							}} />
 						</div>:<></>}
 					</div>
