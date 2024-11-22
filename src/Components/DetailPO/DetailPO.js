@@ -44,8 +44,8 @@ const DetailPO = ({ setUserName }) => {
 				.then(r => r.json()).then(res => {
 					console.log(res.data);
 					if (res.data !== "") {
-						console.log("We got it....");
 						console.log(res.data);
+						window.open(res.data, '_blank', 'noopener,noreferrer');
 					}
 				}).catch(err => {
 					console.log(err);
