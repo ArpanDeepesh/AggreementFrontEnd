@@ -38,7 +38,23 @@ const DetailPO = ({ setUserName }) => {
 			navigate("/Home");
 		}
 	}, []);
-	
+	const downloadClicked = () => {
+		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
+			getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+				.then(r => r.json()).then(res => {
+					console.log(res.data);
+					if (res.data !== "") {
+						console.log("We got it....");
+						console.log(res.data);
+					}
+				}).catch(err => {
+					console.log(err);
+				});
+
+		} else {
+			navigate("/Home");
+		}
+	}
 
 	return (
 		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
@@ -67,15 +83,7 @@ const DetailPO = ({ setUserName }) => {
 									console.log("Add remark clicked");
 								}} />
 							</div>
-							<div className="col-md-3">
-								{/*<FormSubmitButton name="Decline" onClick={(e) => {*/}
-								{/*	e.preventDefault();*/}
-								{/*	setOpenRemark(poId);*/}
-								{/*	setRemarkType("O");*/}
-								{/*	setRemarkAction("Decline Agreement");*/}
-								{/*	console.log("Add remark clicked");*/}
-								{/*}} />*/}
-							</div>
+
 							<div className="col-md-3">
 								<FormButton name="Remark" onClick={(e) => {
 									e.preventDefault();
@@ -97,6 +105,12 @@ const DetailPO = ({ setUserName }) => {
 								}} />
 							</div>
 						</div> : <></>}
+						{po.status !== "Raised" && po.status !== "Draft" ? <div className="col-md-3">
+							<FormSubmitButton name="Download" onClick={(e) => {
+								e.preventDefault();
+								
+							}} />
+						</div>:<></>}
 					</div>
 				</div>
 				<div className="row">

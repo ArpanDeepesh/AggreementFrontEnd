@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Components",
+    "\\Components\\CommonPages",
+    "\\Components\\FormParts",
     "\\Components\\LandingPage"
   ],
-  "SelectedNode": "\\Components\\DefaultLayout.js",
+  "SelectedNode": "\\Components\\FormParts\\btn.css",
   "PreviewInSolutionExplorer": false
 }
