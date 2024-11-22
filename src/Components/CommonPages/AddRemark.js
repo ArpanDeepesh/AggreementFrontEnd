@@ -68,6 +68,8 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 					invalidPaymentAskBtnClicked();
 				} else if (actionText === "Payment Not Received") {
 					askForPayOrNotDoneBtnClicked();
+				} else if (actionText === "Complete Aggrement") {
+					completeBtnClicked();
 				}
 			}
 
@@ -78,7 +80,23 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 		
         
     }
+	const completeBtnClicked = () => {
+		console.log("btn is clicked");
+		var formBody = {}
+		sendPostRequest('api/POManagement/CompletePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+			console.log(res);
+			if (res > 0) {
+				setRemarkMsg("Status Changed Successfully. Agreement is declined");
+				remarkForm.current["remarkText"].value = "";
+				setDisplayForm(0);
 
+			}
+
+		}).catch(err => {
+			console.log(err);
+		});
+		
+	}
 	const declineBtnClicked = () => {
 
 		console.log("btn is clicked");

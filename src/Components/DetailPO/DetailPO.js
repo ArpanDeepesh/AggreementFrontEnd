@@ -112,7 +112,15 @@ const DetailPO = ({ setUserName }) => {
 								e.preventDefault();
 								downloadClicked();
 							}} />
-						</div>:<></>}
+						</div> : <></>}
+						{po.status !== "Raised" && po.status !== "Draft" && po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
+							<FormButton name="Complete" onClick={(e) => {
+								e.preventDefault();
+								setOpenRemark(poId);
+								setRemarkType("O");
+								setRemarkAction("Complete Aggrement");
+							}} />
+						</div> : <></>}
 					</div>
 				</div>
 				<div className="row">
