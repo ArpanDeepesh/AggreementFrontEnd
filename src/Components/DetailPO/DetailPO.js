@@ -113,7 +113,8 @@ const DetailPO = ({ setUserName }) => {
 								downloadClicked();
 							}} />
 						</div> : <></>}
-						{po.status !== "Raised" && po.status !== "Draft" && po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
+						{po.status !== "Raised" && po.status !== "Draft" && po.status !== "Completed"
+							&& po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
 							<FormButton name="Complete" onClick={(e) => {
 								e.preventDefault();
 								setOpenRemark(poId);

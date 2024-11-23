@@ -36,6 +36,7 @@ const HomePage = ({ setUserName }) => {
                 console.log(res);
                 console.log("raised By you is set")
                 setRaisedByList(res.data);
+                openTab()
             }
         }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=false", UserProfile.getToken()).then(rr => rr.json()).then(res => {
@@ -78,9 +79,24 @@ const HomePage = ({ setUserName }) => {
             
         }).catch(err => console.log(err));
     }
+    const openTab = (e, id) => {
+        e.preventDefault();
+        var tabContent = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+            tabContent[i].classList.remove("active");
+        }
+        var tabButtons = document.getElementsByClassName("tab-button");
+        for (var i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].classList.remove("active");
+        }
+        document.getElementById(id).style.display = "block";
+        document.getElementById(id).classList.add("active");
+        e.currentTarget.classList.add("active");
+    }
 
     return (
-        <div className="d-flex h-100" style={{ overflowY: "scroll" }}>
+        <div className="h-100" style={{ overflowY: "scroll" }}>
             <DelayMsgs msgList={delayMsg} setMsgList={setDelayMsg} />
             <div className="mt-1" >
                 <div className="row mb-1">
@@ -127,139 +143,221 @@ const HomePage = ({ setUserName }) => {
                 </div>
                 <div className="row">
                     <div className="col-md-12 col-xs-12">
-                        <h4>Draft Contracts</h4>
-                        <div className="table mr-1">
-                            <div className="row tableHeader">
-                                <div className="col-md-2">
-                                    Title
-                                </div>
-                                <div className="col-md-2">
-                                    Buyer
-                                </div>
-                                <div className="col-md-2">
-                                    Seller
-                                </div>
-                                <div className="col-md-1">
-                                    Status
-                                </div>
-                                <div className="col-md-2">
-                                    Last Modified
-                                </div>
-                                <div className="col-md-3">
-                                    Action
-                                </div>
+                        <div className="tabs">
+                            <div className="tab-buttons">
+                                <button className="tab-button" onClick={(e) => { openTab(e, "DraftAggrements"); }}>Draft</button>
+                                <button className="tab-button" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Active</button>
+                                <button className="tab-button" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Finished</button>
                             </div>
-                            {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
-                                    <div className="col-md-2">
-                                    {tempPO.editLock === true ?
-                                        <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
-                                        className="delayIcon" /> :
-                                        <img src={"./greenunlock.png"} width={20} height={20} alt="Contract is unlocked"
-                                            className="delayIcon"/>} {tempPO.title}
+                            <div id="DraftAggrements" className="tab-content active">
+                                <h4>Draft Contracts</h4>
+                                <div className="table mr-1">
+                                    <div className="d-none d-md-block">
+                                        <div className="row tableHeader ">
+                                            <div className="col-md-2">
+                                                Title
+                                            </div>
+                                            <div className="col-md-2">
+                                                Buyer
+                                            </div>
+                                            <div className="col-md-2">
+                                                Seller
+                                            </div>
+                                            <div className="col-md-1">
+                                                Status
+                                            </div>
+                                            <div className="col-md-2">
+                                                Last Modified
+                                            </div>
+                                            <div className="col-md-3">
+                                                Action
+                                            </div>
+                                        </div>
                                     </div>
-                                <div className="col-md-2">
-                                    {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
-                                </div>
-                                <div className="col-md-2">
-                                    {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
-                                </div>
-                                    <div className="col-md-1">
-                                    {tempPO.status}
+                                   
+                                        {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
+                                            <div className="col-md-2">
+                                                <strong className="d-block d-md-none">Title:</strong>
+                                                {tempPO.editLock === true ?
+                                                    <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
+                                                        className="delayIcon" /> :
+                                                    <img src={"./greenunlock.png"} width={20} height={20} alt="Contract is unlocked"
+                                                        className="delayIcon" />} {tempPO.title}
+                                            </div>
+                                            <div className="col-md-2">
+                                                <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                            </div>
+                                            <div className="col-md-2">
+                                                <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                            </div>
+                                            <div className="col-md-1">
+                                                <strong className="d-block d-md-none">Status:</strong>{tempPO.status}
+                                            </div>
+                                            <div className="col-md-2">
+                                                {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
+                                                <strong className="d-block d-md-none">Modified on:</strong>{tempPO.modifiedOn}
+                                            </div>
+                                            <div className="col-md-3">
+                                                {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} /> :
+                                                    <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                        <FormButton name="Details" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            console.log("Calling Respond Button");
+                                                            PurchaseOrder.setPoId(tempPO.poId);
+                                                            navigate("/Details");
+                                                        }} />
+                                                    </>}
+
+                                            </div>
+                                        </div>
+                                        ) : <div className="row tablebox">No Data present</div>}
+
                                     </div>
-                                <div className="col-md-2">
-                                    {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
-                                    {tempPO.modifiedOn}
-                                    </div>
-                                <div className="col-md-3">
-                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} /> :
-                                        <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
-                                            <FormButton name="Details" onClick={(e) => {
-                                                e.preventDefault();
-                                                console.log("Calling Respond Button");
-                                                PurchaseOrder.setPoId(tempPO.poId);
-                                                navigate("/Details");
-                                            }} />
-                                    </>}
-                                    
-                                    </div>
-                                </div>
-                            ) : <div className="row tablebox">No Data present</div>}
-                            
-                        </div>
-                        
-                    </div>
-                    <div className="col-md-12 col-xs-12">
-                        <h4>Other Contracts</h4>
-                        <div className="table ml-1 ">
-                            <div className="row tableHeader">
-                                <div className="col-md-1">
-                                    Title
-                                </div>
-                                <div className="col-md-1">
-                                    Seller
-                                </div>
-                                <div className="col-md-1">
-                                    Buyer
-                                </div>
-                                <div className="col-md-1">
-                                    Status
-                                </div>
-                                <div className="col-md-2">
-                                    Delay Statements
-                                </div>
-                                <div className="col-md-2">
-                                    Work Done
-                                </div>
-                                <div className="col-md-2">
-                                    Amount Spent
-                                </div>
-                                <div className="col-md-2">
-                                    Action
-                                </div>
+
+                                
                             </div>
-                            {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => <div className="row tablebox">
-                                <div className="col-md-1">
-                                    {tempPO.title}
-                                </div>
-                                <div className="col-md-1">
-                                    {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
-                                </div>
-                                <div className="col-md-1">
-                                    {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
-                                </div>
-                                <div className="col-md-1">
-                                    {tempPO.status}
-                                </div>
-                                <div className="col-md-2">
-                                    {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
-                                        <img src={"./info.png"} width={20} height={20} alt="Alter icon" onClick={(e) => {
-                                            e.preventDefault();
-                                            console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
-                                            setDelayMsg(tempPO.delaysAndWaitingResponse);
-                                        }} /> : <></>}
-                                </div>
-                                <div className="col-md-2">
-                                    <PieChart dataArray={tempPO.workDoneStatus} />
-                                </div>
-                                <div className="col-md-2">
-                                    <PieChart dataArray={tempPO.paymentStatus} />
-                                </div>
-                                <div className="col-md-2">
-                                    {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={ (e)=>editPurchaseOrder(e,tempPO)} /> :
-                                        <>
-                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
-                                            <FormButton name="Respond" onClick={(e) => {
-                                                e.preventDefault();
-                                                console.log("Calling Respond Button");
-                                                PurchaseOrder.setPoId(tempPO.poId);
-                                                navigate("/Details")
-                                            }} />
-                                        </>}
+                            <div id="ActiveAggrements" className="tab-content">
+                                <h4>Active Or Waiting Contracts</h4>
+                                <div className="table ml-1 ">
+                                    <div className="d-none d-md-block">
+                                    <div className="row tableHeader">
+                                        <div className="col-md-1">
+                                            Title
+                                        </div>
+                                        <div className="col-md-1">
+                                            Seller
+                                        </div>
+                                        <div className="col-md-1">
+                                            Buyer
+                                        </div>
+                                        <div className="col-md-1">
+                                            Status
+                                        </div>
+                                        <div className="col-md-2">
+                                            Delay Statements
+                                        </div>
+                                        <div className="col-md-2">
+                                            Work Done
+                                        </div>
+                                        <div className="col-md-2">
+                                            Amount Spent
+                                        </div>
+                                        <div className="col-md-2">
+                                            Action
+                                        </div>
+                                        </div>
+                                    </div>
+                                    {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className = "row tablebox" >
+                                        <div className="col-md-1">
+                                            <strong className="d-block d-md-none">Title:</strong>{tempPO.title}
+                                        </div>
+                                        <div className="col-md-1">
+                                            <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                        </div>
+                                        <div className="col-md-1">
+                                            <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                        </div>
+                                        <div className="col-md-1">
+                                            <strong className="d-block d-md-none">Status:</strong>{tempPO.status}
+                                        </div>
+                                        <div className="col-md-2"><strong className="d-block d-md-none">Statements:</strong>
+                                            {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
+                                                <img src={"./info.png"} width={20} height={20} alt="Alter icon" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
+                                                    setDelayMsg(tempPO.delaysAndWaitingResponse);
+                                                }} /> : <></>}
+                                        </div>
+                                        <div className="col-md-2">
+                                            <strong className="d-block d-md-none">Work graph:</strong>
+                                            <PieChart dataArray={tempPO.workDoneStatus} />
+                                        </div>
+                                        <div className="col-md-2">
+                                            <strong className="d-block d-md-none">Payment graph:</strong>
+                                            <PieChart dataArray={tempPO.paymentStatus} />
+                                        </div>
+                                        <div className="col-md-2">
+                                            {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} /> :
+                                                <>
+                                                    <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                    <FormButton name="Respond" onClick={(e) => {
+                                                        e.preventDefault();
+                                                        console.log("Calling Respond Button");
+                                                        PurchaseOrder.setPoId(tempPO.poId);
+                                                        navigate("/Details")
+                                                    }} />
+                                                </>}
+
+                                        </div>
+                                    </div>:<></>
+                                    ) : <div className="row tablebox">No Data present</div>}
 
                                 </div>
                             </div>
-                            ) : <div className="row tablebox">No Data present</div>}
+                            <div id="CompletedAggrements" className="tab-content">
+                                <h4>Completed Or Expired Contracts</h4>
+                                <div className="table ml-1 ">
+                                    <div className="d-none d-md-block">
+                                    <div className="row tableHeader">
+                                        <div className="col-md-1">
+                                            Title
+                                        </div>
+                                        <div className="col-md-1">
+                                            Seller
+                                        </div>
+                                        <div className="col-md-1">
+                                            Buyer
+                                        </div>
+                                        <div className="col-md-1">
+                                            Status
+                                        </div>
+                                        <div className="col-md-2">
+                                            Delay Statements
+                                        </div>
+                                        <div className="col-md-2">
+                                            Work Done
+                                        </div>
+                                        <div className="col-md-2">
+                                            Amount Spent
+                                        </div>
+                                        <div className="col-md-2">
+                                            Action
+                                        </div>
+                                        </div>
+                                    </div>
+                                    {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Completed" || tempPO.status === "Expired" ?
+                                        <div className="row tablebox">
+                                            <div className="col-md-3">
+                                                <strong className="d-block d-md-none">Title:</strong>
+                                            {tempPO.title}
+                                        </div>
+                                            <div className="col-md-3">
+                                                <strong className="d-block d-md-none">Buyer:</strong>
+                                            {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                        </div>
+                                            <div className="col-md-3">
+                                                <strong className="d-block d-md-none">Seller:</strong>
+                                            {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                        </div>
+                                            <div className="col-md-1">
+                                                <strong className="d-block d-md-none">Status:</strong>
+                                            {tempPO.status}
+                                        </div>
+                                            <div className="col-md-2">
+                                                <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                <FormButton name="Detail" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    console.log("Calling Respond Button");
+                                                    PurchaseOrder.setPoId(tempPO.poId);
+                                                    navigate("/Details")
+                                                }} />
 
+                                        </div>
+                                    </div>:<></>
+                                    ) : <div className="row tablebox">No Data present</div>}
+
+                                </div>
+                                </div>
                         </div>
                     </div>
                 </div>

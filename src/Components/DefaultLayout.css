@@ -61,3 +61,16 @@ footer {
     color: #ff8400;
     font-weight:800 !important;
 }
+.scrollable-mobile {
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 85vh; /* Limit height for mobile scrolling */
+    margin-top:5px;
+}
+
+/* Disable scrolling for larger screens */
+@media (min-width: 992px) {
+    .scrollable-mobile {
+        overflow-y: visible;
+        max-height: none;
+    }
+}

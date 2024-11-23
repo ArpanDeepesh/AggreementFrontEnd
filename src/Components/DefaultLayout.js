@@ -70,7 +70,7 @@ const DefaultLayout = () => {
                     </div>
                 }
             </header>
-            <main className="appMainBody">
+            <main className="appMainBody scrollable-mobile">
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<LandingPage />} />

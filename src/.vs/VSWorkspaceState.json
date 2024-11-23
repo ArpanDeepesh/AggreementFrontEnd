@@ -3,9 +3,9 @@
     "",
     "\\Components",
     "\\Components\\CommonPages",
+    "\\Components\\DetailPO",
     "\\Components\\FormParts",
     "\\Components\\LandingPage"
   ],
-  "SelectedNode": "\\Components\\FormParts\\btn.css",
   "PreviewInSolutionExplorer": false
 }

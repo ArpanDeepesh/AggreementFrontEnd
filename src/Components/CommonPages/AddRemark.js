@@ -86,7 +86,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 		sendPostRequest('api/POManagement/CompletePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
-				setRemarkMsg("Status Changed Successfully. Agreement is declined");
+				setRemarkMsg("Status Changed Successfully. Agreement is completed");
 				remarkForm.current["remarkText"].value = "";
 				setDisplayForm(0);
 
