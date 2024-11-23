@@ -67,6 +67,12 @@ const DetailPO = ({ setUserName }) => {
 					<div className="col-md-12">
 						Agreement Details <br />
 						{po.status === "Raised" ? <div className="row p-1">
+							<div className="col-md-1">
+								<FormButton name="< Back" onClick={(e) => {
+									e.preventDefault();
+									navigate("/Home");
+								}} />
+							</div>
 							<div className="col-md-3">
 								<FormButton name="Accept" onClick={(e) => {
 									e.preventDefault();
@@ -97,6 +103,12 @@ const DetailPO = ({ setUserName }) => {
 							</div>
 						</div> : <></>}
 						{po.status === "Active" && po.raisedById !== PurchaseOrder.getRaisedBy() ? <div className="row p-1">
+							<div className="col-md-1">
+								<FormButton name="< Back" onClick={(e) => {
+									e.preventDefault();
+									navigate("/Home");
+								}} />
+							</div>
 							<div className="col-md-3">
 								<FormButton name="Remark" onClick={(e) => {
 									e.preventDefault();
@@ -106,22 +118,36 @@ const DetailPO = ({ setUserName }) => {
 									console.log("Add remark clicked");
 								}} />
 							</div>
+							{po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
+								<FormButton name="Complete" onClick={(e) => {
+									e.preventDefault();
+									setOpenRemark(poId);
+									setRemarkType("O");
+									setRemarkAction("Complete Aggrement");
+								}} />
+							</div> : <></>}
+							<div className="col-md-3">
+								<FormButton name="Download" onClick={(e) => {
+									e.preventDefault();
+									downloadClicked();
+								}} />
+							</div>
 						</div> : <></>}
-						{po.status !== "Raised" && po.status !== "Draft" ? <div className="col-md-3">
-							<FormButton name="Download" onClick={(e) => {
-								e.preventDefault();
-								downloadClicked();
-							}} />
+						{po.status === "Completed" || po.status === "Expired" ? <div className="row p-1">
+							<div className="col-md-1">
+								<FormButton name="< Back" onClick={(e) => {
+									e.preventDefault();
+									navigate("/Home");
+								}} />
+							</div>
+							<div className="col-md-3">
+								<FormButton name="Download" onClick={(e) => {
+									e.preventDefault();
+									downloadClicked();
+								}} />
+							</div>
 						</div> : <></>}
-						{po.status !== "Raised" && po.status !== "Draft" && po.status !== "Completed"
-							&& po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
-							<FormButton name="Complete" onClick={(e) => {
-								e.preventDefault();
-								setOpenRemark(poId);
-								setRemarkType("O");
-								setRemarkAction("Complete Aggrement");
-							}} />
-						</div> : <></>}
+						
 					</div>
 				</div>
 				<div className="row">

@@ -149,7 +149,7 @@ const HomePage = ({ setUserName }) => {
                                 <button className="tab-button" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Active</button>
                                 <button className="tab-button" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Finished</button>
                             </div>
-                            <div id="DraftAggrements" className="tab-content active">
+                            <div id="DraftAggrements" className="tab-content">
                                 <h4>Draft Contracts</h4>
                                 <div className="table mr-1">
                                     <div className="d-none d-md-block">
@@ -216,7 +216,7 @@ const HomePage = ({ setUserName }) => {
 
                                 
                             </div>
-                            <div id="ActiveAggrements" className="tab-content">
+                            <div id="ActiveAggrements" className="tab-content active">
                                 <h4>Active Or Waiting Contracts</h4>
                                 <div className="table ml-1 ">
                                     <div className="d-none d-md-block">
@@ -298,31 +298,22 @@ const HomePage = ({ setUserName }) => {
                                 <h4>Completed Or Expired Contracts</h4>
                                 <div className="table ml-1 ">
                                     <div className="d-none d-md-block">
-                                    <div className="row tableHeader">
-                                        <div className="col-md-1">
-                                            Title
-                                        </div>
-                                        <div className="col-md-1">
-                                            Seller
-                                        </div>
-                                        <div className="col-md-1">
-                                            Buyer
-                                        </div>
-                                        <div className="col-md-1">
-                                            Status
-                                        </div>
-                                        <div className="col-md-2">
-                                            Delay Statements
-                                        </div>
-                                        <div className="col-md-2">
-                                            Work Done
-                                        </div>
-                                        <div className="col-md-2">
-                                            Amount Spent
-                                        </div>
-                                        <div className="col-md-2">
-                                            Action
-                                        </div>
+                                        <div className="row tableHeader">
+                                            <div className="col-md-3">
+                                                Title
+                                            </div>
+                                            <div className="col-md-3">
+                                                Seller
+                                            </div>
+                                            <div className="col-md-3">
+                                                Buyer
+                                            </div>
+                                            <div className="col-md-1">
+                                                Status
+                                            </div>
+                                            <div className="col-md-2">
+                                                Action
+                                            </div>
                                         </div>
                                     </div>
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Completed" || tempPO.status === "Expired" ?
