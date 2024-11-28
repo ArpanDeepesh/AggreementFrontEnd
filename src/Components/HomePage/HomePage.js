@@ -104,7 +104,7 @@ const HomePage = ({ setUserName }) => {
                         <FormButton name="Sale Contract" onClick={(e) => {
                             PurchaseOrder.setRaisedBy("Seller");
                             navigate("/New");
-                        }} myClass="routingBtn"/>
+                        }} myClass="routingBtn" mystyle={{width:'80%'}} />
 
                     </div>
                     <div className="col-md-6 p-0 m-0" >
@@ -113,32 +113,6 @@ const HomePage = ({ setUserName }) => {
                             navigate("/New");
                         }} myClass="routingBtn"/>
 
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="bg-success" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
-                            Completed
-                        </div>
-                        
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="bg-primary" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
-                            Active
-                        </div>
-                        
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="bg-info" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
-                            Claimed
-                        </div>
-                        
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="bg-danger" style={{ color: "white", margin: '1px', fontSize: '12px' }}>
-                            Waiting
-                        </div>
-                        
                     </div>
                 </div>
                 <div className="row">
@@ -154,7 +128,7 @@ const HomePage = ({ setUserName }) => {
                                 <div className="table mr-1">
                                     <div className="d-none d-md-block">
                                         <div className="row tableHeader ">
-                                            <div className="col-md-2">
+                                            <div className="col-md-3">
                                                 Title
                                             </div>
                                             <div className="col-md-2">
@@ -166,7 +140,7 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-1">
                                                 Status
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-1">
                                                 Last Modified
                                             </div>
                                             <div className="col-md-3">
@@ -176,7 +150,7 @@ const HomePage = ({ setUserName }) => {
                                     </div>
                                    
                                         {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
-                                            <div className="col-md-2">
+                                            <div className="col-md-3">
                                                 <strong className="d-block d-md-none">Title:</strong>
                                                 {tempPO.editLock === true ?
                                                     <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
@@ -193,7 +167,7 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-1">
                                                 <strong className="d-block d-md-none">Status:</strong>{tempPO.status}
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-1">
                                                 {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
                                                 <strong className="d-block d-md-none">Modified on:</strong>{tempPO.modifiedOn}
                                             </div>
@@ -221,25 +195,25 @@ const HomePage = ({ setUserName }) => {
                                 <div className="table ml-1 ">
                                     <div className="d-none d-md-block">
                                     <div className="row tableHeader">
-                                        <div className="col-md-1">
+                                        <div className="col-md-2">
                                             Title
                                         </div>
-                                        <div className="col-md-1">
+                                        <div className="col-md-2">
                                             Seller
                                         </div>
-                                        <div className="col-md-1">
+                                        <div className="col-md-2">
                                             Buyer
                                         </div>
                                         <div className="col-md-1">
                                             Status
                                         </div>
-                                        <div className="col-md-2">
+                                        <div className="col-md-1">
                                             Delay Statements
                                         </div>
-                                        <div className="col-md-2">
+                                        <div className="col-md-1">
                                             Work Done
                                         </div>
-                                        <div className="col-md-2">
+                                        <div className="col-md-1">
                                             Amount Spent
                                         </div>
                                         <div className="col-md-2">
@@ -248,19 +222,19 @@ const HomePage = ({ setUserName }) => {
                                         </div>
                                     </div>
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className = "row tablebox" >
-                                        <div className="col-md-1">
+                                        <div className="col-md-2">
                                             <strong className="d-block d-md-none">Title:</strong>{tempPO.title}
                                         </div>
-                                        <div className="col-md-1">
+                                        <div className="col-md-2">
                                             <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
                                         </div>
-                                        <div className="col-md-1">
+                                        <div className="col-md-2">
                                             <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                         </div>
                                         <div className="col-md-1">
                                             <strong className="d-block d-md-none">Status:</strong>{tempPO.status}
                                         </div>
-                                        <div className="col-md-2"><strong className="d-block d-md-none">Statements:</strong>
+                                        <div className="col-md-1"><strong className="d-block d-md-none">Statements:</strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
                                                 <img src={"./info.png"} width={20} height={20} alt="Alter icon" onClick={(e) => {
                                                     e.preventDefault();
@@ -268,11 +242,11 @@ const HomePage = ({ setUserName }) => {
                                                     setDelayMsg(tempPO.delaysAndWaitingResponse);
                                                 }} /> : <></>}
                                         </div>
-                                        <div className="col-md-2">
+                                        <div className="col-md-1">
                                             <strong className="d-block d-md-none">Work graph:</strong>
                                             <PieChart dataArray={tempPO.workDoneStatus} />
                                         </div>
-                                        <div className="col-md-2">
+                                        <div className="col-md-1">
                                             <strong className="d-block d-md-none">Payment graph:</strong>
                                             <PieChart dataArray={tempPO.paymentStatus} />
                                         </div>
