@@ -36,7 +36,6 @@ const HomePage = ({ setUserName }) => {
                 console.log(res);
                 console.log("raised By you is set")
                 setRaisedByList(res.data);
-                openTab()
             }
         }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=false", UserProfile.getToken()).then(rr => rr.json()).then(res => {
@@ -86,7 +85,7 @@ const HomePage = ({ setUserName }) => {
             tabContent[i].style.display = "none";
             tabContent[i].classList.remove("active");
         }
-        var tabButtons = document.getElementsByClassName("tab-button");
+        var tabButtons = document.getElementsByClassName("tab-Hbutton");
         for (var i = 0; i < tabButtons.length; i++) {
             tabButtons[i].classList.remove("active");
         }
