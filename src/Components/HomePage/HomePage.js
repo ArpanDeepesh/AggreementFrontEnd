@@ -200,7 +200,7 @@ const HomePage = ({ setUserName }) => {
                                                 Status
                                             </div>
                                             <div className="col-md-1">
-                                                Delay Statements
+                                                Statements
                                             </div>
                                             <div className="col-md-1">
                                                 Work Done
@@ -243,11 +243,11 @@ const HomePage = ({ setUserName }) => {
                                             <PieChart dataArray={tempPO.paymentStatus} />
                                         </div>
                                         <div className="col-md-2" style={{ textAlign: "center" }}>
-                                            <div className="row">
-                                                <div className="col-md-6">
+                                            <div className="row m-0 p-0">
+                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
                                                     <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
                                                 </div>
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
                                                     <FormButton name="Respond" onClick={(e) => {
                                                         e.preventDefault();
                                                         console.log("Calling Respond Button");
@@ -307,11 +307,11 @@ const HomePage = ({ setUserName }) => {
                                             
                                         </div>
                                             <div className="col-md-4" style={{ textAlign: "center" }}>
-                                                <div className="row">
-                                                    <div className="col-md-6">
+                                                <div className="row m-0 p-0">
+                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
                                                         <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
                                                     </div>
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
                                                         <FormButton name="Detail" onClick={(e) => {
                                                             e.preventDefault();
                                                             console.log("Calling Respond Button");
