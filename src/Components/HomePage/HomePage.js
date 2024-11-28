@@ -140,10 +140,10 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-1">
                                                 Status
                                             </div>
-                                            <div className="col-md-1">
+                                            <div className="col-md-2">
                                                 Last Modified
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 Action
                                             </div>
                                         </div>
@@ -165,13 +165,13 @@ const HomePage = ({ setUserName }) => {
                                                 <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                             </div>
                                             <div className="col-md-1">
-                                                <strong className="d-block d-md-none">Status:</strong><span class="badge bg-secondary">{tempPO.status}</span>
+                                                <strong className="d-block d-md-none">Status:</strong><span class="badge bg-secondary text-light">{tempPO.status}</span>
                                             </div>
-                                            <div className="col-md-1">
+                                            <div className="col-md-2">
                                                 {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
                                                 <strong className="d-block d-md-none">Modified on:</strong>{tempPO.modifiedOn}
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} /> :
                                                     <> <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
                                                         <FormButton name="Details" onClick={(e) => {
@@ -303,7 +303,7 @@ const HomePage = ({ setUserName }) => {
                                         </div>
                                             <div className="col-md-1">
                                                 <strong className="d-block d-md-none">Status:</strong>
-                                                <span class="badge bg-secondary">{tempPO.status}</span>
+                                                <span class="badge bg-secondary text-light">{tempPO.status}</span>
                                             
                                         </div>
                                             <div className="col-md-4">
