@@ -273,16 +273,16 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-3">
                                                 Title
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 Seller
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 Buyer
                                             </div>
                                             <div className="col-md-1">
                                                 Status
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-4">
                                                 Action
                                             </div>
                                         </div>
@@ -293,11 +293,11 @@ const HomePage = ({ setUserName }) => {
                                                 <strong className="d-block d-md-none">Title:</strong>
                                             {tempPO.title}
                                         </div>
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 <strong className="d-block d-md-none">Buyer:</strong>
                                             {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
                                         </div>
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 <strong className="d-block d-md-none">Seller:</strong>
                                             {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                         </div>
@@ -306,7 +306,7 @@ const HomePage = ({ setUserName }) => {
                                                 <span class="badge bg-secondary">{tempPO.status}</span>
                                             
                                         </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-4">
                                                 <div className="col-md-6">
                                                     <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
                                                 </div>
