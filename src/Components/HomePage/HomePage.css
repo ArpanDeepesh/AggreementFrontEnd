@@ -43,7 +43,7 @@
     border-bottom: 1px solid #ccc;
 }
 
-.tab-button {
+.tab-Hbutton {
     flex: 1;
     padding: 10px 20px;
     cursor: pointer;
@@ -56,17 +56,17 @@
     margin:1px;
 }
 
-    .tab-button:focus {
+    .tab-Hbutton:focus {
         outline: none; /* Prevents border when button is clicked */
         box-shadow: none;
     }
 
-    .tab-button.active {
+    .tab-Hbutton.active {
         background-color: #007bff;
         color: #fff;
     }
 
-    .tab-button:hover {
+    .tab-Hbutton:hover {
         background-color: #e1e1e1;
     }
 

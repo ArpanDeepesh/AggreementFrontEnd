@@ -206,7 +206,7 @@ const HomePage = ({ setUserName }) => {
                                                 Work Done
                                             </div>
                                             <div className="col-md-1">
-                                                Amount Spent
+                                                Payments
                                             </div>
                                             <div className="col-md-2" style={{ textAlign: "center" }}>
                                                 Action
