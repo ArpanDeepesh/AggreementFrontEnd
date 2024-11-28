@@ -119,7 +119,7 @@ const HomePage = ({ setUserName }) => {
                         <div className="tabs">
                             <div className="tab-buttons">
                                 <button className="tab-Hbutton" onClick={(e) => { openTab(e, "DraftAggrements"); }}>Draft</button>
-                                <button className="tab-Hbutton" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Active</button>
+                                <button className="tab-Hbutton active" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Active</button>
                                 <button className="tab-Hbutton" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Finished</button>
                             </div>
                             <div id="DraftAggrements" className="tab-content">
