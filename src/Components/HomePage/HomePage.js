@@ -227,7 +227,9 @@ const HomePage = ({ setUserName }) => {
                                         </div>
                                         <div className="col-md-1"><strong className="d-block d-md-none">Statements:</strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
-                                                <img src={"./info.png"} width={20} height={20} alt="Alter icon" onClick={(e) => {
+                                                <img src={"./info.png"} width={20} height={20} alt="Alter icon"
+                                                    className="delayIcon" 
+                                                    onClick={(e) => {
                                                     e.preventDefault();
                                                     console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
                                                     setDelayMsg(tempPO.delaysAndWaitingResponse);
