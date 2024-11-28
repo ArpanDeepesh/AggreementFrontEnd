@@ -232,7 +232,7 @@ const HomePage = ({ setUserName }) => {
                                             <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                         </div>
                                         <div className="col-md-1">
-                                            <strong className="d-block d-md-none">Status:</strong> <span class="badge bg-success">{tempPO.status}</span>
+                                            <strong className="d-block d-md-none">Status:</strong> <span class="badge bg-success text-light">{tempPO.status}</span>
                                         </div>
                                         <div className="col-md-1"><strong className="d-block d-md-none">Statements:</strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
