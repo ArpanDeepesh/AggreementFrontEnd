@@ -119,9 +119,9 @@ const HomePage = ({ setUserName }) => {
                     <div className="col-md-12 col-xs-12">
                         <div className="tabs">
                             <div className="tab-buttons">
-                                <button className="tab-button" onClick={(e) => { openTab(e, "DraftAggrements"); }}>Draft</button>
-                                <button className="tab-button" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Active</button>
-                                <button className="tab-button" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Finished</button>
+                                <button className="tab-Hbutton" onClick={(e) => { openTab(e, "DraftAggrements"); }}>Draft</button>
+                                <button className="tab-Hbutton" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Active</button>
+                                <button className="tab-Hbutton" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Finished</button>
                             </div>
                             <div id="DraftAggrements" className="tab-content">
                                 <h4>Draft Contracts</h4>
@@ -170,7 +170,7 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-2">
                                                 {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
                                                 <strong className="d-block d-md-none">Modified on:</strong>{new Date(tempPO.modifiedOn)
-                                                    .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    .toLocaleString('en-US')}
                                             </div>
                                             <div className="col-md-2" style={{ textAlign: "center" }} >
                                                 <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} />
@@ -179,7 +179,6 @@ const HomePage = ({ setUserName }) => {
                                         ) : <div className="row tablebox">No Data present</div>}
 
                                     </div>
-
                                 
                             </div>
                             <div id="ActiveAggrements" className="tab-content active">
@@ -203,7 +202,7 @@ const HomePage = ({ setUserName }) => {
                                                 Statements
                                             </div>
                                             <div className="col-md-1">
-                                                Work Done
+                                                Completion
                                             </div>
                                             <div className="col-md-1">
                                                 Payments
