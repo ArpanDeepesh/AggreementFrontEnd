@@ -143,7 +143,7 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-2">
                                                 Last Modified
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-2" style={{ textAlign: "center" }}>
                                                 Action
                                             </div>
                                         </div>
@@ -169,9 +169,10 @@ const HomePage = ({ setUserName }) => {
                                             </div>
                                             <div className="col-md-2">
                                                 {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
-                                                <strong className="d-block d-md-none">Modified on:</strong>{tempPO.modifiedOn}
+                                                <strong className="d-block d-md-none">Modified on:</strong>{new Date(tempPO.modifiedOn)
+                                                    .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-2" style={{ textAlign: "center" }} >
                                                 <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} />
                                             </div>
                                         </div>
@@ -185,31 +186,31 @@ const HomePage = ({ setUserName }) => {
                                 <h4>Active Or Waiting Contracts</h4>
                                 <div className="table ml-1 ">
                                     <div className="d-none d-md-block">
-                                    <div className="row tableHeader">
-                                        <div className="col-md-2">
-                                            Title
-                                        </div>
-                                        <div className="col-md-2">
-                                            Seller
-                                        </div>
-                                        <div className="col-md-2">
-                                            Buyer
-                                        </div>
-                                        <div className="col-md-1">
-                                            Status
-                                        </div>
-                                        <div className="col-md-1">
-                                            Delay Statements
-                                        </div>
-                                        <div className="col-md-1">
-                                            Work Done
-                                        </div>
-                                        <div className="col-md-1">
-                                            Amount Spent
-                                        </div>
-                                        <div className="col-md-2">
-                                            Action
-                                        </div>
+                                        <div className="row tableHeader">
+                                            <div className="col-md-2">
+                                                Title
+                                            </div>
+                                            <div className="col-md-2">
+                                                Seller
+                                            </div>
+                                            <div className="col-md-2">
+                                                Buyer
+                                            </div>
+                                            <div className="col-md-1">
+                                                Status
+                                            </div>
+                                            <div className="col-md-1">
+                                                Delay Statements
+                                            </div>
+                                            <div className="col-md-1">
+                                                Work Done
+                                            </div>
+                                            <div className="col-md-1">
+                                                Amount Spent
+                                            </div>
+                                            <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                Action
+                                            </div>
                                         </div>
                                     </div>
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className = "row tablebox" >
@@ -241,7 +242,7 @@ const HomePage = ({ setUserName }) => {
                                             <strong className="d-block d-md-none">Payment graph:</strong>
                                             <PieChart dataArray={tempPO.paymentStatus} />
                                         </div>
-                                        <div className="col-md-2">
+                                        <div className="col-md-2" style={{ textAlign: "center" }}>
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
@@ -281,7 +282,7 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-1">
                                                 Status
                                             </div>
-                                            <div className="col-md-4">
+                                            <div className="col-md-4" style={{ textAlign: "center" }}>
                                                 Action
                                             </div>
                                         </div>
@@ -305,7 +306,7 @@ const HomePage = ({ setUserName }) => {
                                                 <span class="badge bg-secondary text-light">{tempPO.status}</span>
                                             
                                         </div>
-                                            <div className="col-md-4">
+                                            <div className="col-md-4" style={{ textAlign: "center" }}>
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
