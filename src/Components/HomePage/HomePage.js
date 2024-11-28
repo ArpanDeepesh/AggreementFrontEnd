@@ -165,7 +165,7 @@ const HomePage = ({ setUserName }) => {
                                                 <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                             </div>
                                             <div className="col-md-1">
-                                                <strong className="d-block d-md-none">Status:</strong>{tempPO.status}
+                                                <strong className="d-block d-md-none">Status:</strong><span class="badge bg-secondary">{tempPO.status}</span>
                                             </div>
                                             <div className="col-md-1">
                                                 {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
@@ -232,7 +232,7 @@ const HomePage = ({ setUserName }) => {
                                             <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                         </div>
                                         <div className="col-md-1">
-                                            <strong className="d-block d-md-none">Status:</strong>{tempPO.status}
+                                            <strong className="d-block d-md-none">Status:</strong> <span class="status-badge status-active">{tempPO.status}</span>
                                         </div>
                                         <div className="col-md-1"><strong className="d-block d-md-none">Statements:</strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
@@ -251,16 +251,13 @@ const HomePage = ({ setUserName }) => {
                                             <PieChart dataArray={tempPO.paymentStatus} />
                                         </div>
                                         <div className="col-md-2">
-                                            {tempPO.status === "Draft" ? <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} /> :
-                                                <>
-                                                    <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
-                                                    <FormButton name="Respond" onClick={(e) => {
-                                                        e.preventDefault();
-                                                        console.log("Calling Respond Button");
-                                                        PurchaseOrder.setPoId(tempPO.poId);
-                                                        navigate("/Details")
-                                                    }} />
-                                                </>}
+                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                            <FormButton name="Respond" onClick={(e) => {
+                                                e.preventDefault();
+                                                console.log("Calling Respond Button");
+                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                navigate("/Details")
+                                            }} />
 
                                         </div>
                                     </div>:<></>
@@ -306,17 +303,21 @@ const HomePage = ({ setUserName }) => {
                                         </div>
                                             <div className="col-md-1">
                                                 <strong className="d-block d-md-none">Status:</strong>
-                                            {tempPO.status}
+                                                <span class="badge bg-secondary">{tempPO.status}</span>
+                                            
                                         </div>
                                             <div className="col-md-2">
-                                                <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
-                                                <FormButton name="Detail" onClick={(e) => {
-                                                    e.preventDefault();
-                                                    console.log("Calling Respond Button");
-                                                    PurchaseOrder.setPoId(tempPO.poId);
-                                                    navigate("/Details")
-                                                }} />
-
+                                                <div className="col-md-6">
+                                                    <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <FormButton name="Detail" onClick={(e) => {
+                                                        e.preventDefault();
+                                                        console.log("Calling Respond Button");
+                                                        PurchaseOrder.setPoId(tempPO.poId);
+                                                        navigate("/Details")
+                                                    }} />
+                                                </div>
                                         </div>
                                     </div>:<></>
                                     ) : <div className="row tablebox">No Data present</div>}
