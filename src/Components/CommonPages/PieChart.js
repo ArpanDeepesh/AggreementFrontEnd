@@ -1,5 +1,21 @@
 import "./PieChart.css";
+import { Chart } from "react-google-charts";
 const PieChart = ({ dataArray }) => {
+
+    const options = {
+        pieHole: 0.4, pieSliceText: "none",
+        is3D: false,
+        legend: "none",
+        colors: ["#28A745", "#F15A29", "#007BFF", "#ff0000"],
+        tooltip: {
+            textStyle: {
+                fontSize: 14, // Increase tooltip font size
+                bold: false,   // Make text bold
+                color: "#000", // Change tooltip text color
+            },
+        },
+    };
+
     var total = 0;
     var waiting = 0;
     var completed = 0;
@@ -18,13 +34,26 @@ const PieChart = ({ dataArray }) => {
             claimed += dataArray[i].pay;
         }
     }
-
-    return (<>{dataArray.length > 1 ? <> <div className="progress">
-        <div className="progress-bar bg-success" style={{ width: Math.round(completed * 100 / total).toString() + "%" }} >{Math.round(completed * 100 / total).toString()}%</div>
-        <div className="progress-bar bg-info" style={{ width: Math.round(claimed * 100 / total).toString() + "%" }} >{Math.round(claimed * 100 / total).toString()}%</div>
-        <div className="progress-bar bg-danger" style={{ width: Math.round(waiting * 100 / total).toString() + "%" }} >{Math.round(waiting * 100 / total).toString()}%</div>
-        <div className="progress-bar bg-primary" style={{ width: Math.round(active * 100 / total).toString() + "%" }} >{Math.round(active * 100 / total).toString()}%</div>
-    </div></> :<>No Data</>}
+    const data = [
+        ["Status", "Amount"],
+        ["Active", active],
+        ["Waiting", waiting],
+        ["Completed", completed],
+        ["Claimed", claimed], // CSS-style declaration
+    ];
+    return (<>{dataArray.length > 1 ? <>
+        <div style={{ display: "inline-block", width: '125px', height:'125px' }} >
+            <Chart
+                chartType="PieChart"
+                width="100%"
+                height="100%"
+                data={data}
+                options={options}
+            />
+            
+        </div>
+        
+    </> : <>No Data</>}
         </>
         );
 };

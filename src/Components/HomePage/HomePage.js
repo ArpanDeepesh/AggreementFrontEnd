@@ -149,7 +149,7 @@ const HomePage = ({ setUserName }) => {
                                     </div>
                                    
                                         {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
-                                            <div className="col-md-3">
+                                            <div className="col-md-3 d-flex align-items-center">
                                                 <strong className="d-block d-md-none">Title:</strong>
                                                 {tempPO.editLock === true ?
                                                     <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
@@ -157,21 +157,27 @@ const HomePage = ({ setUserName }) => {
                                                     <img src={"./greenunlock.png"} width={20} height={20} alt="Contract is unlocked"
                                                         className="delayIcon" />} {tempPO.title}
                                             </div>
-                                            <div className="col-md-2">
-                                                <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
-                                            </div>
-                                            <div className="col-md-2">
-                                                <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
-                                            </div>
-                                            <div className="col-md-1">
+                                            <div className="col-md-2 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+
+                                                </span>
+                                               </div>
+                                            <div className="col-md-2 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+
+                                                </span>
+                                           </div>
+                                            <div className="col-md-1 d-flex align-items-center">
                                                 <strong className="d-block d-md-none">Status:</strong><span class="badge bg-secondary text-light">{tempPO.status}</span>
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-2 d-flex align-items-center">
                                                 {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
                                                 <strong className="d-block d-md-none">Modified on:</strong>{new Date(tempPO.modifiedOn)
                                                     .toLocaleString('en-US')}
                                             </div>
-                                            <div className="col-md-2" style={{ textAlign: "center" }} >
+                                            <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
                                                 <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} />
                                             </div>
                                         </div>
@@ -183,7 +189,7 @@ const HomePage = ({ setUserName }) => {
                             <div id="ActiveAggrements" className="tab-content active">
                                 <h4>Active Or Waiting Contracts</h4>
                                 <div className="table ml-1 ">
-                                    <div className="d-none d-md-block">
+                                    <div className="d-none d-md-block align-items-center">
                                         <div className="row tableHeader">
                                             <div className="col-md-2">
                                                 Title
@@ -211,20 +217,25 @@ const HomePage = ({ setUserName }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className = "row tablebox" >
-                                        <div className="col-md-2">
+                                    {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className="row tablebox" >
+                                        <div className="col-md-2 d-flex align-items-center" >
                                             <strong className="d-block d-md-none">Title:</strong>{tempPO.title}
                                         </div>
-                                        <div className="col-md-2">
-                                            <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                        <div className="col-md-2 d-flex align-items-center">
+                                            <span>
+                                                <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                            </span>
                                         </div>
-                                        <div className="col-md-2">
-                                            <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                        <div className="col-md-2 d-flex align-items-center">
+                                            <span>
+                                                <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                            </span>
+                                            
                                         </div>
-                                        <div className="col-md-1">
+                                        <div className="col-md-1 d-flex align-items-center">
                                             <strong className="d-block d-md-none">Status:</strong> <span class="badge bg-success text-light">{tempPO.status}</span>
                                         </div>
-                                        <div className="col-md-1"><strong className="d-block d-md-none">Statements:</strong>
+                                        <div className="col-md-1 d-flex align-items-center"><strong className="d-block d-md-none">Statements:</strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
                                                 <img src={"./info.png"} width={20} height={20} alt="Alter icon"
                                                     className="delayIcon" 
@@ -242,7 +253,7 @@ const HomePage = ({ setUserName }) => {
                                             <strong className="d-block d-md-none">Payment graph:</strong>
                                             <PieChart dataArray={tempPO.paymentStatus} />
                                         </div>
-                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                        <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
                                             <div className="row m-0 p-0">
                                                 <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
                                                     <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
@@ -289,24 +300,30 @@ const HomePage = ({ setUserName }) => {
                                     </div>
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Completed" || tempPO.status === "Expired" ?
                                         <div className="row tablebox">
-                                            <div className="col-md-3">
+                                            <div className="col-md-3 d-flex align-items-center">
                                                 <strong className="d-block d-md-none">Title:</strong>
                                             {tempPO.title}
                                         </div>
-                                            <div className="col-md-2">
-                                                <strong className="d-block d-md-none">Buyer:</strong>
+                                            <div className="col-md-2 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-block d-md-none">Buyer:</strong>
                                             {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                                </span>
+                                                
                                         </div>
-                                            <div className="col-md-2">
-                                                <strong className="d-block d-md-none">Seller:</strong>
-                                            {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                            <div className="col-md-2 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-block d-md-none">Seller:</strong>
+                                                    {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                                </span>
+                                                
                                         </div>
-                                            <div className="col-md-1">
+                                            <div className="col-md-1 d-flex align-items-center">
                                                 <strong className="d-block d-md-none">Status:</strong>
                                                 <span class="badge bg-secondary text-light">{tempPO.status}</span>
                                             
                                         </div>
-                                            <div className="col-md-4" style={{ textAlign: "center" }}>
+                                            <div className="col-md-4 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
                                                 <div className="row m-0 p-0">
                                                     <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
                                                         <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />

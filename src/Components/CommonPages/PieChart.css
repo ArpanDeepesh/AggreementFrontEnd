@@ -1,3 +1,6 @@
 .progress {
     font-size:10px;
 }
+.google-visualization-tooltip {
+    pointer-events: none;
+}
