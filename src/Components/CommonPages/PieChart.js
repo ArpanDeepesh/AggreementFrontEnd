@@ -42,7 +42,7 @@ const PieChart = ({ dataArray }) => {
         ["Claimed", claimed], // CSS-style declaration
     ];
     return (<>{dataArray.length > 1 ? <>
-        <div style={{ display: "inline-block", width: '125px', height:'125px' }} >
+        <div style={{ display: "inline-block", width: '120px', height:'120px' }} >
             <Chart
                 chartType="PieChart"
                 width="100%"

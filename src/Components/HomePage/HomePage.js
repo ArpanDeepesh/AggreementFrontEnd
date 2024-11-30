@@ -149,35 +149,45 @@ const HomePage = ({ setUserName }) => {
                                     </div>
                                    
                                         {raisedByLst && raisedByLst.length > 0 ? raisedByLst.map(tempPO => <div className="row tablebox">
-                                            <div className="col-md-3 d-flex align-items-center">
-                                                <strong className="d-block d-md-none">Title:</strong>
-                                                {tempPO.editLock === true ?
-                                                    <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
-                                                        className="delayIcon" /> :
-                                                    <img src={"./greenunlock.png"} width={20} height={20} alt="Contract is unlocked"
-                                                        className="delayIcon" />} {tempPO.title}
-                                            </div>
-                                            <div className="col-md-2 d-flex align-items-center">
+                                            <div className="col-md-3 col-xs-12 d-flex align-items-center">
                                                 <span>
-                                                    <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                                    <strong className="d-inline d-md-none">Title: </strong>
+                                                    {tempPO.editLock === true ?
+                                                        <img src={"./redlock.png"} width={20} height={20} alt="Contract is locked"
+                                                            className="delayIcon" /> :
+                                                        <img src={"./greenunlock.png"} width={20} height={20} alt="Contract is unlocked"
+                                                            className="delayIcon" />} {tempPO.title}
+                                                </span>
+                                                
+                                            </div>
+                                            <div className="col-md-2 col-xs-12 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-inline d-md-none">Buyer: </strong>
+                                                    {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
 
                                                 </span>
                                                </div>
-                                            <div className="col-md-2 d-flex align-items-center">
+                                            <div className="col-md-2 col-xs-12 d-flex align-items-center">
                                                 <span>
-                                                    <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                                    <strong className="d-inline d-md-none">Seller: </strong>{tempPO.sellerName}<br />
+                                                    <span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
 
                                                 </span>
                                            </div>
-                                            <div className="col-md-1 d-flex align-items-center">
-                                                <strong className="d-block d-md-none">Status:</strong><span class="badge bg-secondary text-light">{tempPO.status}</span>
+                                            <div className="col-md-1 col-xs-12 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-inline d-md-none">Status: </strong>
+                                                    <span class="badge bg-secondary text-light">{tempPO.status}</span>
+                                                </span>
                                             </div>
-                                            <div className="col-md-2 d-flex align-items-center">
-                                                {/* {tempPO.delaysAndWaitingResponse ? tempPO.delaysAndWaitingResponse.map(x => <div style={{ fontSize:'8px' }}>{x}</div>):<></>}*/}
-                                                <strong className="d-block d-md-none">Modified on:</strong>{new Date(tempPO.modifiedOn)
-                                                    .toLocaleString('en-US')}
+                                            <div className="col-md-2 col-xs-12 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-inline d-md-none">Modified on: </strong>
+                                                    {new Date(tempPO.modifiedOn).toLocaleString('en-US')}
+                                                </span>
+                                                
                                             </div>
-                                            <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
+                                            <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
                                                 <FormButton name="Edit" onClick={(e) => editPurchaseOrder(e, tempPO)} />
                                             </div>
                                         </div>
@@ -206,11 +216,17 @@ const HomePage = ({ setUserName }) => {
                                             <div className="col-md-1">
                                                 Statements
                                             </div>
-                                            <div className="col-md-1">
-                                                Completion
+                                            <div className="col-md-1" style={{ textAlign: "center" }}>
+                                                <span style={{ marginLeft: '25px' }}>
+                                                    Completion
+                                                </span>
+                                                
                                             </div>
-                                            <div className="col-md-1">
-                                                Payments
+                                            <div className="col-md-1" style={{ textAlign: "center" }}>
+                                                <span style={{ marginLeft:'25px' }}>
+                                                    Payments
+                                                </span>
+                                                
                                             </div>
                                             <div className="col-md-2" style={{ textAlign: "center" }}>
                                                 Action
@@ -219,21 +235,21 @@ const HomePage = ({ setUserName }) => {
                                     </div>
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className="row tablebox" >
                                         <div className="col-md-2 d-flex align-items-center" >
-                                            <strong className="d-block d-md-none">Title:</strong>{tempPO.title}
+                                            <strong className="d-inline d-md-none">Title:</strong>{tempPO.title}
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center">
                                             <span>
-                                                <strong className="d-block d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                                <strong className="d-inline d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
                                             </span>
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center">
                                             <span>
-                                                <strong className="d-block d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                                <strong className="d-inline d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                             </span>
                                             
                                         </div>
                                         <div className="col-md-1 d-flex align-items-center">
-                                            <strong className="d-block d-md-none">Status:</strong> <span class="badge bg-success text-light">{tempPO.status}</span>
+                                            <strong className="d-inline d-md-none">Status:</strong> <span class="badge bg-success text-light">{tempPO.status}</span>
                                         </div>
                                         <div className="col-md-1 d-flex align-items-center"><strong className="d-block d-md-none">Statements:</strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
@@ -254,20 +270,36 @@ const HomePage = ({ setUserName }) => {
                                             <PieChart dataArray={tempPO.paymentStatus} />
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
-                                            <div className="row m-0 p-0">
-                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
-                                                    <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                            <div className="d-none d-md-block">
+                                                <div className="row m-0 p-0">
+                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
+                                                        <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                    </div>
+                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
+                                                        <FormButton name="Respond" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            console.log("Calling Respond Button");
+                                                            PurchaseOrder.setPoId(tempPO.poId);
+                                                            navigate("/Details")
+                                                        }} />
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
-                                                    <FormButton name="Respond" onClick={(e) => {
-                                                        e.preventDefault();
-                                                        console.log("Calling Respond Button");
-                                                        PurchaseOrder.setPoId(tempPO.poId);
-                                                        navigate("/Details")
-                                                    }} />
+                                            </div>
+                                            <div className="d-block d-md-none">
+                                                <div className="row m-0 p-0">
+                                                        <div className="col-xs-6 m-0 p-0">
+                                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                        </div>
+                                                        <div className="col-xs-6 m-0 p-0">
+                                                            <FormButton name="Respond" onClick={(e) => {
+                                                                e.preventDefault();
+                                                                console.log("Calling Respond Button");
+                                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                                navigate("/Details")
+                                                            }} />
+                                                        </div>
                                                 </div>
-                                        </div>
-                                            
+                                            </div>
                                             
 
                                         </div>
@@ -301,42 +333,66 @@ const HomePage = ({ setUserName }) => {
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Completed" || tempPO.status === "Expired" ?
                                         <div className="row tablebox">
                                             <div className="col-md-3 d-flex align-items-center">
-                                                <strong className="d-block d-md-none">Title:</strong>
-                                            {tempPO.title}
-                                        </div>
-                                            <div className="col-md-2 d-flex align-items-center">
                                                 <span>
-                                                    <strong className="d-block d-md-none">Buyer:</strong>
-                                            {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                                    <strong className="d-inline d-md-none">Title: </strong>
+                                                    {tempPO.title}
                                                 </span>
                                                 
                                         </div>
                                             <div className="col-md-2 d-flex align-items-center">
                                                 <span>
-                                                    <strong className="d-block d-md-none">Seller:</strong>
+                                                    <strong className="d-inline d-md-none">Buyer: </strong>
+                                                    {tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                                </span>
+                                                
+                                        </div>
+                                            <div className="col-md-2 d-flex align-items-center">
+                                                <span>
+                                                    <strong className="d-inline d-md-none">Seller: </strong>
                                                     {tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                                 </span>
                                                 
                                         </div>
                                             <div className="col-md-1 d-flex align-items-center">
-                                                <strong className="d-block d-md-none">Status:</strong>
-                                                <span class="badge bg-secondary text-light">{tempPO.status}</span>
-                                            
-                                        </div>
+                                                <span>
+                                                    <strong className="d-inline d-md-none">Status: </strong>
+                                                    <span class="badge bg-secondary text-light">{tempPO.status}</span>
+                                                </span>
+                                            </div>
                                             <div className="col-md-4 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
-                                                <div className="row m-0 p-0">
-                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
-                                                        <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
-                                                    </div>
-                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
-                                                        <FormButton name="Detail" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            console.log("Calling Respond Button");
-                                                            PurchaseOrder.setPoId(tempPO.poId);
-                                                            navigate("/Details")
-                                                        }} />
+                                                <div className="d-none d-md-block">
+                                                    <div className="row m-0 p-0 ">
+                                                        <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
+                                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                        </div>
+                                                        <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
+                                                            <FormButton name="Detail" onClick={(e) => {
+                                                                e.preventDefault();
+                                                                console.log("Calling Respond Button");
+                                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                                navigate("/Details")
+                                                            }} />
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                
+                                                <div className="d-block d-md-none">
+                                                    <div className="row m-0 p-0 ">
+                                                        <div className="col-xs-6 m-0 p-0" style={{ textAlign: "center" }}>
+                                                            <FormButton name="Copy" onClick={(e) => copyPurchaseOrder(e, tempPO)} />
+                                                        </div>
+                                                        <div className="col-xs-6 m-0 p-0" style={{ textAlign: "center" }}>
+                                                            <FormButton name="Detail" onClick={(e) => {
+                                                                e.preventDefault();
+                                                                console.log("Calling Respond Button");
+                                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                                navigate("/Details")
+                                                            }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
                                         </div>
                                     </div>:<></>
                                     ) : <div className="row tablebox">No Data present</div>}
