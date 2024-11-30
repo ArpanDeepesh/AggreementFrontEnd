@@ -1239,99 +1239,111 @@ const NewPO = ({ setUserName }) => {
 						<Form ref={poForm} onSubmit={handleSubmit}>
 							<div className="row">
 								<div className="col-md-12">
-									{PurchaseOrder.getRaisedBy() === "Seller" ? "Sales Contract" : "Purchase Contract"}
+									<h2 style={{ color: '#007bff', textAlign: 'left', fontSize: '24px', fontWeight:'700' }}>
+										{PurchaseOrder.getRaisedBy() === "Seller" ? "Sales Contract" : "Purchase Contract"}
+									</h2>
 								</div>
 							</div>
+							
                             <div className="row">
-                                <div className="col-md-4">
+                                
+                                <div className="col-md-6">
+									<InputField name="PoTitle" type="tel" label="Title" value={poTitle} readOnlyValue={editMode === 0} />
+								</div>
+								<div className="col-md-6">
+									<InputField name="PoDescription" type="tel" label="Description" value={poDescription} readOnlyValue={editMode === 0} />
+								</div>
+                                
+							</div>
+							<div className="row">
+								<div className="col-md-6">
 									<InputField name="PoRaisedForPhoneNumber" type="tel"
 										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Phone Number" : "Seller Phone Number"}
 										value={poRaiseForPhNo} readOnlyValue={editMode === 0} />
-                                </div>
-                                <div className="col-md-4">
-									<InputField name="PoTitle" type="tel" label="Title" value={poTitle} readOnlyValue={editMode === 0} />
-                                </div>
-                                <div className="col-md-4">
-									<InputField name="PoDescription" type="tel" label="Description" value={poDescription} readOnlyValue={editMode === 0} />
-                                </div>
+								</div>
+								
+								<div className="col-md-6">
+									<InputNumberField name="PoCompletionDurationInDays" type="number" label="Total completion time (in Days)"
+										value={poCompletionInDays} readOnlyValue={editMode === 0} />
+								</div>
+								
 							</div>
 							<div className="row">
-								<div className="col-md-4">
-									<InputField name="PoBuyerGSTIN" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer GSTIN" : "Your GSTIN"}
-										value={poBuyerGstin}
-									readOnlyValue={editMode === 0}									/>
-								</div>
-								<div className="col-md-4">
-									<InputField name="PoBuyerAddress" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"}
-										value={poBuyerAddress} readOnlyValue={editMode === 0}/>
-								</div>
-								<div className="col-md-4">
-									<InputField name="PoBuyerCompany" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"}
-										value={poBuyerCompany} readOnlyValue={editMode === 0}/>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-4">
-									<InputField name="PoSellerGSTIN" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"}
-										value={poSellerGstin} readOnlyValue={editMode === 0} />
-								</div>
-								<div className="col-md-4">
+								<div className="col-md-6">
 									<InputField name="PoSellerAddress" type="text"
 										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Address" : "Your Address"}
 										value={poSellerAddress} readOnlyValue={editMode === 0} />
 								</div>
-								<div className="col-md-4">
-									<InputField name="PoSellerCompany" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"}
-										value={poSellerCompany} readOnlyValue={editMode === 0}/>
+								<div className="col-md-6">
+									<InputField name="PoBuyerAddress" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"}
+										value={poBuyerAddress} readOnlyValue={editMode === 0} />
 								</div>
-							</div>
-                            <div className="row">
-                                <div className="col-md-4">
-									<InputNumberField name="PoNotificationPeriod" type="number" label="Notification period (in Days)"
-										value={poNotificationPeriod} readOnlyValue={editMode === 0}/>
-                                </div>
-                                <div className="col-md-4">
-									<InputNumberField name="PoCompletionDurationInDays" type="number" label="Total completion time (in Days)"
-										value={poCompletionInDays} readOnlyValue={editMode === 0}/>
-                                </div>
-                                <div className="col-md-4">
-									<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)}
-										value={poDiscount} readOnlyValue={editMode === 0}/>
-                                </div>
+								
+								
 							</div>
 							<div className="row">
-								<div className="col-md-4">
-									{poId > 0 && editMode === 0 ? <>Total Amount {poAmount}</> : <></>}
+								<div className="col-md-6">
+									<InputField name="PoSellerGSTIN" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"}
+										value={poSellerGstin} readOnlyValue={editMode === 0} />
+								</div>
+								
+								<div className="col-md-6">
+									<InputField name="PoBuyerGSTIN" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer GSTIN" : "Your GSTIN"}
+										value={poBuyerGstin}
+										readOnlyValue={editMode === 0} />
+								</div>
+								
+							</div>
+							<div className="row">
+								<div className="col-md-6">
+									<InputField name="PoSellerCompany" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"}
+										value={poSellerCompany} readOnlyValue={editMode === 0} />
+								</div>
+								<div className="col-md-6">
+									<InputField name="PoBuyerCompany" type="text"
+										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"}
+										value={poBuyerCompany} readOnlyValue={editMode === 0} />
+								</div>
+                                
+							</div>
+							<div className="row">
+								<div className="col-md-6">
+									<InputNumberField name="PoNotificationPeriod" type="number" label="Notify after (in Days)"
+										value={poNotificationPeriod} readOnlyValue={editMode === 0} />
+								</div>
+
+								<div className="col-md-6">
+									<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)}
+										value={poDiscount} readOnlyValue={editMode === 0} />
+								</div>
+								
+							</div>
+							<div className="row">
+								<div className="col-md-6" style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', paddingTop: '10px', paddingBottom: '10px', color:"#007bff" }}>
+									{poId > 0 && editMode === 0 ? <>Total Amount: {poAmount}</> : <></>}
 								</div>
 							</div>
-                            <div className="row">
-								<div className="col-md-3">
-									{poId > 0 && editMode === 0 ? <FormButton name="Edit Contract" onClick={(e) => {
+							<div className="row" style={{ paddingBottom: '10px' }}>
+								
+								<div className="col-md-4 col-xs-12">
+									{poId > 0 && editMode === 0 ? <FormButton name="Edit Details" myStyle={{width:'100%'}} onClick={(e) => {
 										e.preventDefault();
 										setEditMode(1);
 										alert("Current Edit mode " + editMode);
-									}} /> : <FormSubmitButton name={poId > 0 ? "Save" : "Create Order"} onClick={(e) => submitBtnClicked(e)} />}
-									
-                                    
-                                </div>
-                                <div className="col-md-3">
-                                    {poId && poId > 0 ? <FormButton name="Publish" onClick={(e) => publishBtnClicked(e)} /> : <></>}
+									}} /> : <FormSubmitButton name={poId > 0 ? "Save" : "Create Order"} myStyle={{ width: '100%' }} onClick={(e) => submitBtnClicked(e)} />}
 								</div>
-								<div className="col-md-3">
-									{poId && poId > 0 ? <FormButton name="Unlock" onClick={(e) => unlockPurchaseOrder(e)} /> : <></>}
+								<div className="col-md-4 col-xs-12">
+									{poId && poId > 0 ? <FormButton name="Back" myStyle={{ width: '100%' }} onClick={(e) => unlockPurchaseOrder(e)} /> : <></>}
 								</div>
-                                <div className="col-md-3">
-                                    {poId && poId > 0 ? <FormButton name="Add Attachments" onClick={(e) => {
-                                        e.preventDefault();
-                                        setAttachmentParentType("N");
-                                        setAttachmentId(poId);
-                                    }} /> : <></>}
-                                </div>
+                                <div className="col-md-4 col-xs-12">
+									{poId && poId > 0 ? <FormButton name="Publish" myStyle={{ width: '100%' }} onClick={(e) => publishBtnClicked(e)} /> : <></>}
+								</div>
+								
+
                             </div>
                         </Form>
                     </div>
@@ -1362,29 +1374,40 @@ const NewPO = ({ setUserName }) => {
                                             <div className="col-md-2">
                                                 <InputNumberField name="ItemQty" type="number" label="Quantity" onChange={(e) => updateAmount()} value={itemQuantity} />
                                             </div>
-                                            <div className="col-md-2">
+                                            <div className="col-md-3">
                                                 <InputNumberField name="ItemCompDays" type="number" label="Days To Complete" value={itemDaysToComplete} />
                                             </div>
-                                            <div className="col-md-1">
-                                                Total: {itemTotal}
-                                            </div>
-                                        </div>
-                                        <div className="row" style={{ textAlign: "right" }}>
-                                            <div className="col-md-8">
+                                            
+										</div>
+										<div className="row" style={{ textAlign: "left", paddingTop: '20px' }}>
+											<div className="col-md-2" style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color:"#007bff"}}>
+												Total: {itemTotal}
+											</div>
+                                            <div className="col-md-10">
 												<div className="row">
-													<AddAttachment fileLinkList={itemAttachments} setFileLinkList={setItemAttachments} />
+													<div className="col-md-2 p-0" style={{ textAlign: "right" }}>
+													<strong>Attachments:</strong>
+													</div>
+													<div className="col-md-10 p-0" style={{ textAlign: "left"}}>
+														<AddAttachment fileLinkList={itemAttachments} setFileLinkList={setItemAttachments} />
+													</div>
 												</div>
 
-                                            </div>
-											<div className="col-md-4">
-												<FormSubmitButton name={itemId>0? "Save Edit":"Save New Item"} />
-                                            </div>
+											</div>
+											
 
-                                        </div>
+										</div>
+										<div className="row">
+											<div className="col-md-8">
+											</div>
+											<div className="col-md-4" style={{ textAlign: "right" }}>
+												<FormSubmitButton name={itemId > 0 ? "Save Edit" : "Save New Item"} />
+											</div>
+										</div>
                                     </Form>
                                 </div>
 
-                                <div className="table">
+								<div className="table" style={{ textAlign: "left" }}>
                                     <div className="row tableHeader">
                                         <div className="col-md-2 ">
                                             Title
@@ -1396,10 +1419,10 @@ const NewPO = ({ setUserName }) => {
                                             Rate
                                         </div>
                                         <div className="col-md-1 ">
-                                            Quanitity
+                                            Qty
                                         </div>
                                         <div className="col-md-1 ">
-                                            Sub Total
+                                            Total
                                         </div>
                                         <div className="col-md-2 ">
                                             Attachments
@@ -1433,13 +1456,18 @@ const NewPO = ({ setUserName }) => {
 												}}> Remove </span>
                                             </div>) : <>No Attachments</>}
                                         </div>
-                                        <div className="col-md-2">
-											<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
-											<span className="removeLink" onClick={(e) => {
-												e.preventDefault();
-												setDeleteId(x.id);
-												setDeleteType("LI");
-											}}> Remove </span>
+										<div className="col-md-2">
+											<span>
+												<div style={{ display: "inline-block", width:"50%" }}>
+													<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
+												</div>
+												<span className="removeLink" onClick={(e) => {
+													e.preventDefault();
+													setDeleteId(x.id);
+													setDeleteType("LI");
+												}}> Remove </span>
+											</span>
+											
                                             {/*<FormButton name="Remove"  />*/}
                                         </div>
                                     </div>) : <>No Item Is Present.</>}
@@ -1466,7 +1494,7 @@ const NewPO = ({ setUserName }) => {
 
                                             </div>
 
-                                            <div className="col-md-12" style={{ textAlign: "right" }}>
+											<div className="col-md-12" style={{ textAlign: "right", paddingTop:'20px' }}>
                                                 <FormSubmitButton name="Add Tax" />
                                             </div>
                                         </div>
@@ -1492,13 +1520,17 @@ const NewPO = ({ setUserName }) => {
                                         <div className="col-md-5">
                                             {x.percent}
                                         </div>
-                                        <div className="col-md-2">
-                                            <FormButton name="Edit" onClick={(e) => { editTax(e, x) }} />
-                                            <FormButton name="Remove" onClick={(e) => {
-                                                e.preventDefault();
-                                                setDeleteId(x.taxId);
-                                                setDeleteType("TAX");
-                                            }} />
+										<div className="col-md-2">
+											<span>
+												<div style={{ display: "inline-block", width: "50%" }}>
+													<FormButton name="Edit" onClick={(e) => { editTax(e, x) }} />
+												</div>
+												<span className="removeLink" onClick={(e) => {
+													e.preventDefault();
+													setDeleteId(x.taxId);
+													setDeleteType("TAX");
+												}}> Remove </span>
+											</span>
                                         </div>
                                     </div>) : <div className="row">No Tax Info Is Present.</div>}
 
@@ -1509,7 +1541,7 @@ const NewPO = ({ setUserName }) => {
                                 <div className="table">
                                     <Form ref={termForm} onSubmit={termSubmit}>
                                         <div className="row">
-                                            <div className="col-md-10">
+                                            <div className="col-md-12">
                                                 <InputField name="TermText" type="text" label="Term" value={termValue} />
                                             </div>
                                         </div>
@@ -1541,13 +1573,17 @@ const NewPO = ({ setUserName }) => {
                                         <div className="col-md-5">
                                             {x.val}
                                         </div>
-                                        <div className="col-md-2">
-                                            <FormSubmitButton name="Edit" onClick={(e) => { editTerm(e, x) }} />
-                                            <FormButton name="Remove" onClick={(e) => {
-                                                e.preventDefault();
-                                                setDeleteId(x.termId);
-                                                setDeleteType("TNC");
-                                            }} />
+										<div className="col-md-2">
+											<span>
+												<div style={{ display: "inline-block", width: "50%" }}>
+													<FormButton name="Edit" onClick={(e) => { editTerm(e, x) }} />
+												</div>
+												<span className="removeLink" onClick={(e) => {
+													e.preventDefault();
+													setDeleteId(x.termId);
+													setDeleteType("TNC");
+												}}> Remove </span>
+											</span>
                                         </div>
                                     </div>) : <div className="row">No terms and conditions are Present.</div>}
 
@@ -1767,21 +1803,34 @@ const NewPO = ({ setUserName }) => {
                                         <div className="col-md-2">{x.amt}</div>
                                       {/*  <div className="col-md-1">{x.type}</div>*/}
                                         <div className="col-md-3">{x.extraInfo}</div>
-                                        <div className="col-md-3">
-											
-											{x.extraInfo.startsWith("Final payment", 0) ? <></> :
-												<FormSubmitButton name="Edit" onClick={(e) => { editPay(e, x) }} />}
-                                            <FormButton name="Remove" onClick={(e) => {
-                                                e.preventDefault();
-                                                setDeleteId(x.payId);
-                                                setDeleteType("PAY");
-                                            }} />
+										<div className="col-md-3">
+
+											<span>
+												<div style={{ display: "inline-block", width: "50%" }}>
+													{x.extraInfo.startsWith("Final payment", 0) ? <></> :
+														<FormButton name="Edit" onClick={(e) => { editPay(e, x) }} />}
+												</div>
+												<span className="removeLink" onClick={(e) => {
+													e.preventDefault();
+													setDeleteId(x.payId);
+													setDeleteType("PAY");
+												}}> Remove </span>
+											</span>
                                         </div>
                                     </div>) : <div className="row">No payments are Present.</div>}
                                 </div>
                             </div>
 					</div>
-					 
+
+						<div className="row">
+							<div className="col-md-3" style={{ paddingBottom: '10px', paddingTop:'10px' }}>
+								{poId && poId > 0 ? <FormButton name="Extra Documents" myStyle={{ width: '100%' }} onClick={(e) => {
+									e.preventDefault();
+									setAttachmentParentType("N");
+									setAttachmentId(poId);
+								}} /> : <></>}
+							</div>
+						</div>
 						<div className="row">
 							<div className="col-md-8 tableHeader">Attachments</div>
 							<div className="col-md-2 tableHeader">Attachment Type</div>

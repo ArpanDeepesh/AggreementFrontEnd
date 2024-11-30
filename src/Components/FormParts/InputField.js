@@ -4,7 +4,7 @@ import "./InputField.css";
 
 const InputField = (props) => {
     return (<div className="form-group" style={{ textAlign: 'left' }}>
-        <label style={{ fontsize: '20px', color: 'black'  }} >{props.label}</label>
+        <label style={{ fontsize: '20px', color: 'black', fontWeight:'700' }} >{props.label}</label>
         {props.type === "checkbox" ?
             props.onChange ? <input name={props.name}
                 placeholder={props.label}
