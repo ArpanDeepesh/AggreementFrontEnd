@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\HomePage\\HomePage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\HomePage\\HomePage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\DetailPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\DetailPO\\DetailPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
@@ -174,7 +174,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 14,
           "Children": [
             {
               "$type": "Document",
@@ -230,7 +230,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "DefaultLayout.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DefaultLayout.js",
               "RelativeDocumentMoniker": "Components\\DefaultLayout.js",
@@ -239,18 +239,17 @@
               "ViewState": "AQIAADwAAAAAAAAAAAAAAEgAAAA6AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-08-03T14:27:14.228Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "HomePage.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\HomePage\\HomePage.js",
               "RelativeDocumentMoniker": "Components\\HomePage\\HomePage.js",
               "ToolTip": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\HomePage\\HomePage.js",
               "RelativeToolTip": "Components\\HomePage\\HomePage.js",
-              "ViewState": "AQIAAEABAAAAAAAAAADwv0UBAAB1AAAA",
+              "ViewState": "AQIAAEABAAAAAAAAAADwv0gBAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-19T09:25:51.244Z",
               "IsPinned": true,
@@ -258,7 +257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "PieChart.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\PieChart.js",
               "RelativeDocumentMoniker": "Components\\CommonPages\\PieChart.js",
@@ -266,8 +265,7 @@
               "RelativeToolTip": "Components\\CommonPages\\PieChart.js",
               "ViewState": "AQIAAAEAAAAAAAAAAADwvwYAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-20T08:17:10.141Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-20T08:17:10.141Z"
             },
             {
               "$type": "Document",
@@ -355,15 +353,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "NewPO.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js",
               "RelativeDocumentMoniker": "Components\\NewPO\\NewPO.js",
               "ToolTip": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js",
               "RelativeToolTip": "Components\\NewPO\\NewPO.js",
-              "ViewState": "AQIAADUFAAAAAAAAAAAEwEQFAABJAAAA",
+              "ViewState": "AQIAADwHAAAAAAAAAAAEwBkHAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T12:50:32.393Z"
+              "WhenOpened": "2024-09-19T12:50:32.393Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -463,7 +462,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "btn.css",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\FormParts\\btn.css",
               "RelativeDocumentMoniker": "Components\\FormParts\\btn.css",
@@ -471,8 +470,7 @@
               "RelativeToolTip": "Components\\FormParts\\btn.css",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-10-02T08:25:29.735Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-02T08:25:29.735Z"
             },
             {
               "$type": "Document",
@@ -488,7 +486,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "HomePage.css",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\HomePage\\HomePage.css",
               "RelativeDocumentMoniker": "Components\\HomePage\\HomePage.css",
@@ -496,8 +494,7 @@
               "RelativeToolTip": "Components\\HomePage\\HomePage.css",
               "ViewState": "AQIAAEsAAAAAAAAAAAAAAE8AAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-08-22T14:49:22.923Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-22T14:49:22.923Z"
             },
             {
               "$type": "Document",
@@ -561,7 +558,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "DetailPO.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\DetailPO.js",
               "RelativeDocumentMoniker": "Components\\DetailPO\\DetailPO.js",
@@ -569,8 +566,7 @@
               "RelativeToolTip": "Components\\DetailPO\\DetailPO.js",
               "ViewState": "AQIAACgAAAAAAAAAAAAUwEoAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T13:38:13.668Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-19T13:38:13.668Z"
             },
             {
               "$type": "Document",
@@ -634,7 +630,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "PieChart.css",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\PieChart.css",
               "RelativeDocumentMoniker": "Components\\CommonPages\\PieChart.css",
@@ -642,8 +638,7 @@
               "RelativeToolTip": "Components\\CommonPages\\PieChart.css",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-09-20T09:24:47.171Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-20T09:24:47.171Z"
             },
             {
               "$type": "Document",

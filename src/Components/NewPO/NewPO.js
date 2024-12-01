@@ -56,6 +56,7 @@ const NewPO = ({ setUserName }) => {
 	const [poNotificationPeriod, setPoNotificationPeriod] = useState();
 	const [poCompletionInDays, setPoCompletionInDays] = useState();
 	const [poDiscount, setPoDiscount] = useState();
+	const [poCurrency, setPoCurrency] = useState();
 	const [poSellerGstin, setPoSellerGstin] = useState();
 	const [poSellerAddress, setPoSellerAddress] = useState();
 	const [poSellerCompany, setPoSellerCompany] = useState();
@@ -124,6 +125,7 @@ const NewPO = ({ setUserName }) => {
 		setPoRaisedForPhNo("+91");
 		setPoNotificationPeriod(0);
 		setPoDiscount(0);
+		setPoCurrency('INR');
 		setPoCompletionInDays(1);
 		console.log(PurchaseOrder.getPoId() + PurchaseOrder.getPurchaseOrderEditFlag());
 		console.log(PurchaseOrder.getPurchaseOrderEditFlag() === 1)
@@ -165,6 +167,7 @@ const NewPO = ({ setUserName }) => {
 					setPoDescription(res.data.poDescription);
 					setPoNotificationPeriod(res.data.poNotificationPeriod);
 					setPoDiscount(res.data.poDiscount);
+					setPoCurrency(res.data.poCurrency);
 					
 					setPoCompletionInDays(res.data.poCompletionDurationInDays);
 					setRemarkList(res.data.remarks);
@@ -1323,11 +1326,26 @@ const NewPO = ({ setUserName }) => {
 								
 							</div>
 							<div className="row">
-								<div className="col-md-6" style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', paddingTop: '10px', paddingBottom: '10px', color:"#007bff" }}>
+								<div className="col-md-6">
+									<div className="form-group" style={{ textAlign: 'left' }}>
+										<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
+										<select name="PoCurrency" className="form-control" readOnly={editMode === 0} value={poCurrency}>
+											<option value="USD" >USD</option>
+											<option value="INR">INR</option>
+											<option value="AUD">AUD</option>
+											<option value="RUB">RUB</option>
+											<option value="CNY">CNY</option>
+											<option value="GBP">GBP</option>
+											<option value="JPY">JPY</option>
+											<option value="EUR">EUR</option>
+										</select>
+									</div>
+								</div>
+								<div className="col-md-6" style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', paddingTop: '10px', paddingBottom: '10px', color: "#007bff" }}>
 									{poId > 0 && editMode === 0 ? <>Total Amount: {poAmount}</> : <></>}
 								</div>
 							</div>
-							<div className="row" style={{ paddingBottom: '10px' }}>
+							<div className="row" style={{ paddingBottom: '10px', paddingTop:'10px' }}>
 								
 								<div className="col-md-4 col-xs-12">
 									{poId > 0 && editMode === 0 ? <FormButton name="Edit Details" myStyle={{width:'100%'}} onClick={(e) => {
@@ -1642,7 +1660,8 @@ const NewPO = ({ setUserName }) => {
 														
 													</div>
 													<div className="col-md-3">
-														{payType === 'A' || payType === 'P' ? <InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
+														{payType === 'A' || payType === 'P' ?
+															<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
 															e.preventDefault();
 															payForm.current["PayPercent"].style.borderColor = "#ced4da";
 															payForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
@@ -1652,13 +1671,15 @@ const NewPO = ({ setUserName }) => {
 																setMsg("Percent cannot be greater than 100");
 																setMsgType("Error");
 															}
-														}} /> : <>Remaining Amount:{remaingPay()}</>}
+															}} /> : <><div style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color: "#007bff" }}>
+																Remaining Amount:{remaingPay()}
+															</div> </>}
 														
 													</div>
                                                     <div className="col-md-3">
                                                         {payType === 'A' || payType === 'F' ? <></> :
                                                             <InputField name="PayFreq" type="number" value={payPartFrq}
-                                                                label="Number of days from start date you want to receive this payment" />}
+                                                                label="Payment due (in days)" />}
                                                     </div>
                                                 </div>
                                                 <div className="row">
@@ -1789,21 +1810,21 @@ const NewPO = ({ setUserName }) => {
                                             </Form>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="table">
+								</div>
+								<div className="table" style={{ textAlign: "left" }}>
                                     <div className="row tableHeader">
-                                        <div className="col-md-3 ">Note</div>
-                                        <div className="col-md-2 ">Amt</div>
+                                        <div className="col-md-4 ">Note</div>
+                                        <div className="col-md-3 ">Amt</div>
                                         {/*<div className="col-md-1 ">PaymentType</div>*/}
-                                        <div className="col-md-3 ">Extra Information</div>
-                                        <div className="col-md-3 ">Action</div>
+										<div className="col-md-3 ">Extra Information</div>
+										<div className="col-md-2" style={{ textAlign: "center" }}>Action</div>
                                     </div>
                                     {payList && payList.length > 0 ? payList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-3">{x.note}</div>
-                                        <div className="col-md-2">{x.amt}</div>
+                                        <div className="col-md-4">{x.note}</div>
+                                        <div className="col-md-3">{x.amt}</div>
                                       {/*  <div className="col-md-1">{x.type}</div>*/}
                                         <div className="col-md-3">{x.extraInfo}</div>
-										<div className="col-md-3">
+										<div className="col-md-2">
 
 											<span>
 												<div style={{ display: "inline-block", width: "50%" }}>
