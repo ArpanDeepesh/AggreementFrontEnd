@@ -340,7 +340,7 @@ const NewPO = ({ setUserName }) => {
 			PoStartDate: new Date().toJSON(),
 			PoTotalAmount: poAmount,
 			PoDiscount: poForm.current['PoDiscount'].value,
-			PoCurrency: poCurrency,
+			PoCurrency: poForm.current['PoCurrency'].value,
 			PoBuyerGSTIN: poForm.current['PoBuyerGSTIN'].value,
 			PoSellerGSTIN: poForm.current['PoSellerGSTIN'].value,
 			PoBuyerAddress: poForm.current['PoBuyerAddress'].value,
@@ -1330,7 +1330,7 @@ const NewPO = ({ setUserName }) => {
 								<div className="col-md-6">
 									<div className="form-group" style={{ textAlign: 'left' }}>
 										<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
-										<select name="PoCurrency" className="form-control" readOnly={editMode === 0} value={poCurrency} onChange={(e) => {
+										<select name="PoCurrency" className="form-control" disabled={editMode === 0} value={poCurrency} onChange={(e) => {
 											e.preventDefault();
 											setPoCurrency(e.target.value);
 										}}>
@@ -1345,11 +1345,11 @@ const NewPO = ({ setUserName }) => {
 										</select>
 									</div>
 								</div>
-								<div className="col-md-6" style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', paddingTop: '10px', paddingBottom: '10px', color: "#007bff" }}>
-									{poId > 0 && editMode === 0 ? <>Total Amount: {poAmount}</> : <></>}
+								<div className="col-md-6" style={{ textAlign: "center", paddingTop: '35px', fontWeight: '700', fontSize: '20px', paddingBottom: '10px', color: "#007bff" }}>
+									{poId > 0 && editMode === 0 ? <>Total Amount: {poCurrency} {poAmount} </> : <></>}
 								</div>
 							</div>
-							<div className="row" style={{ paddingBottom: '10px', paddingTop:'10px' }}>
+							<div className="row" style={{ paddingBottom: '20px', paddingTop:'20px' }}>
 								
 								<div className="col-md-4 col-xs-12">
 									{poId > 0 && editMode === 0 ? <FormButton name="Edit Details" myStyle={{width:'100%'}} onClick={(e) => {
@@ -1402,27 +1402,19 @@ const NewPO = ({ setUserName }) => {
                                             
 										</div>
 										<div className="row" style={{ textAlign: "left", paddingTop: '20px' }}>
-											<div className="col-md-2" style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color:"#007bff"}}>
-												Total: {itemTotal}
+											<div className="col-md-4" style={{ textAlign: "center", fontWeight: '700', fontSize: '20px', color: "#007bff", paddingTop:'30px' }}>
+												Total: {poCurrency} {itemTotal} 
 											</div>
-                                            <div className="col-md-10">
-												<div className="row">
-													<div className="col-md-2 p-0" style={{ textAlign: "right" }}>
-													<strong>Attachments:</strong>
-													</div>
-													<div className="col-md-10 p-0" style={{ textAlign: "left"}}>
-														<AddAttachment fileLinkList={itemAttachments} setFileLinkList={setItemAttachments} />
-													</div>
-												</div>
+                                            <div className="col-md-8">
+												<label style={{ fontsize: '20px', color: 'black', fontWeight: '700', paddingLeft: '18px' }} >Attachments</label>
+												<AddAttachment fileLinkList={itemAttachments} setFileLinkList={setItemAttachments} />
 
 											</div>
 											
 
 										</div>
 										<div className="row">
-											<div className="col-md-8">
-											</div>
-											<div className="col-md-4" style={{ textAlign: "right" }}>
+											<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
 												<FormSubmitButton name={itemId > 0 ? "Save Edit" : "Save New Item"} />
 											</div>
 										</div>
@@ -1448,28 +1440,28 @@ const NewPO = ({ setUserName }) => {
                                         </div>
                                         <div className="col-md-2 ">
                                             Attachments
-                                        </div>
-                                        <div className="col-md-2 ">
+										</div>
+										<div className="col-md-2 " style={{ textAlign: "center" }}>
                                             Actions
                                         </div>
                                     </div>
                                     {itemList && itemList.length > 0 ? itemList.map(x => < div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-2">
+										<div className="col-md-2 d-flex align-items-center">
                                             {x.liTitle}
                                         </div>
-                                        <div className="col-md-3">
+										<div className="col-md-3 d-flex align-items-center">
                                             {x.liDescription}
                                         </div>
-                                        <div className="col-md-1">
+										<div className="col-md-1 d-flex align-items-center">
                                             {x.liRate}
                                         </div>
-                                        <div className="col-md-1">
+										<div className="col-md-1 d-flex align-items-center">
                                             {x.liQuantity}
                                         </div>
-                                        <div className="col-md-1">
+										<div className="col-md-1 d-flex align-items-center">
                                             {x.liRate * x.liQuantity}
                                         </div>
-                                        <div className="col-md-2">
+										<div className="col-md-2 d-flex align-items-center">
                                             {x.attachments ? x.attachments.map((f, i) => < div className="col-md-12">
 												<a href={f.link} target={"new"}> Att-{i + 1}</a> <span className="removeLink" onClick={(e) => {
 													e.preventDefault();
@@ -1521,25 +1513,25 @@ const NewPO = ({ setUserName }) => {
                                             </div>
                                         </div>
                                     </Form>
-                                </div>
-                                <div className="table">
+								</div>
+								<div className="table" style={{ textAlign: "left" }}>
                                     <div className="row tableHeader">
                                         <div className="col-md-5 ">
                                             Title
                                         </div>
                                         <div className="col-md-5 ">
                                             Percent
-                                        </div>
-                                        <div className="col-md-2 ">
+										</div>
+										<div className="col-md-2 " style={{ textAlign: "center" }}>
                                             Action
                                         </div>
                                     </div>
 
                                     {taxList && taxList.length > 0 ? taxList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-5">
+										<div className="col-md-5 d-flex align-items-center">
                                             {x.title}
                                         </div>
-                                        <div className="col-md-5">
+										<div className="col-md-5 d-flex align-items-center">
                                             {x.percent}
                                         </div>
 										<div className="col-md-2">
@@ -1567,15 +1559,15 @@ const NewPO = ({ setUserName }) => {
                                                 <InputField name="TermText" type="text" label="Term" value={termValue} />
                                             </div>
                                         </div>
-                                        <div className="row" style={{ textAlign: "right" }}>
+										<div className="row" style={{ textAlign: "right", paddingTop: '20px' }}>
                                             <div className="col-md-8">
                                                 <FormButton name="Add Attachment" onClick={(e) => {
                                                     e.preventDefault();
                                                     setAttachmentParentType("T");
                                                     setAttachmentId(poId);
                                                 }} />
-                                            </div>
-                                            <div className="col-md-4">
+											</div>
+											<div className="col-md-4" >
                                                 <FormSubmitButton name="Add Term" />
                                             </div>
 
@@ -1584,15 +1576,15 @@ const NewPO = ({ setUserName }) => {
                                 </div>
                                 <div className="table">
                                     <div className="row tableHeader">
-                                        <div className="col-md-8 ">
+                                        <div className="col-md-10 ">
                                             Terms and Conditions
-                                        </div>
-                                        <div className="col-md-2 ">
+										</div>
+										<div className="col-md-2 " style={{ textAlign: "center" }}>
                                             Actions
                                         </div>
                                     </div>
                                     {termList && termList.length > 0 ? termList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-5">
+										<div className="col-md-10 d-flex align-items-center">
                                             {x.val}
                                         </div>
 										<div className="col-md-2">
@@ -1632,14 +1624,14 @@ const NewPO = ({ setUserName }) => {
                                     </div>
 
                                     <div id="Advance" className="payment-tab-content active">
-                                        <h2>Basic Payment</h2>
+										<h4 style={{ color: "#007bff" }}>Basic Payment</h4>
                                         <div className="table">
                                             <Form ref={payForm} onSubmit={basePaySubmit}>
                                                 <div className="row">
 
                                                     <div className="offset-md-2 col-md-8">
-                                                        <div className="form-group" style={{ padding: '5px' }}>
-															<label style={{ fontsize: '20px', color: 'black' }} >Select Type</label>
+														<div className="form-group" style={{ padding: '5px', textAlign: "left" }}>
+															<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Select Type</label>
 															<select name="PaymentType" className="form-control" onChange={(e) => {
 																e.preventDefault();
 																setPayType(e.target.value);
@@ -1686,8 +1678,8 @@ const NewPO = ({ setUserName }) => {
                                                                 label="Payment due (in days)" />}
                                                     </div>
                                                 </div>
-                                                <div className="row">
-                                                    <div className="offset-md-9 col-md-3">
+												<div className="row">
+													<div className="offset-md-9 col-md-3" style={{ paddingTop:'20px' }}>
 														<FormSubmitButton name={payId && payId>0?"Save Payment Changes":"Add Payment"} />
                                                     </div>
                                                 </div>
@@ -1696,14 +1688,14 @@ const NewPO = ({ setUserName }) => {
                                     </div>
 
                                     <div id="Frequency" className="payment-tab-content">
-                                        <h2>Frequency Based</h2>
+										<h4 style={{ color: "#007bff" }}>Frequency Based</h4>
                                         <div className="table">
                                             <Form ref={payFrqForm} onSubmit={frequencyPaySubmit}>
                                                 <div className="row">
 
                                                     <div className="offset-md-2 col-md-8">
-                                                        <div className="form-group" style={{ padding: '5px' }}>
-                                                            <label style={{ fontsize: '20px', color: 'black' }} >Select Type</label>
+														<div className="form-group" style={{ padding: '5px', textAlign: "left" }}>
+															<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Select Type</label>
                                                             <select className="form-control" onChange={(e) => { setPayType(e.target.value) }} selected={payType}>
                                                                 <option value='W' >Weekly</option>
                                                                 <option value='M'>Monthly</option>
@@ -1737,11 +1729,11 @@ const NewPO = ({ setUserName }) => {
 
 													</div>
                                                     <div className="col-md-3">
-                                                        <InputField name="PayFreq" type="number" label="Number of times you want to recieve" value={payPeriodicFrq} />
+                                                        <InputField name="PayFreq" type="number" label="Number of payments" value={payPeriodicFrq} />
                                                     </div>
                                                 </div>
                                                 <div className="row">
-                                                    <div className="offset-md-9 col-md-3">
+													<div className="offset-md-9 col-md-3" style={{ paddingTop: '20px' }}>
                                                         <FormSubmitButton name="Add Payment" />
                                                     </div>
                                                 </div>
@@ -1749,8 +1741,8 @@ const NewPO = ({ setUserName }) => {
                                         </div>
                                     </div>
 
-                                    <div id="ItemBased" className="payment-tab-content">
-                                        <h2>Item Based Payment</h2>
+									<div id="ItemBased" className="payment-tab-content">
+										<h4 style={{ color:"#007bff" }}>Item Based Payment</h4>
                                         <div className="table">
                                             <Form ref={itemPayForm} onSubmit={itemPaySubmit}>
                                                 <div className="row">
@@ -1777,8 +1769,8 @@ const NewPO = ({ setUserName }) => {
 														}} />
 
 													</div>
-                                                </div>
-                                                <div className="row">
+												</div>
+												<div className="row" style={{ paddingTop:"20px" }}>
                                                     <div className="col-md-6">
                                                         <div className="section" onDrop={() => handleDrop('available')} onDragOver={(e) => e.preventDefault()}>
                                                             <h2>Available Items</h2>
@@ -1807,7 +1799,7 @@ const NewPO = ({ setUserName }) => {
                                                     </div>
                                                 </div>
                                                 <div className="row">
-                                                    <div className="offset-md-9 col-md-3">
+													<div className="offset-md-9 col-md-3" style={{ paddingTop: '20px' }}>
                                                         <FormSubmitButton name="Add Payment" />
                                                     </div>
                                                 </div>
@@ -1824,10 +1816,10 @@ const NewPO = ({ setUserName }) => {
 										<div className="col-md-2" style={{ textAlign: "center" }}>Action</div>
                                     </div>
                                     {payList && payList.length > 0 ? payList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-                                        <div className="col-md-4">{x.note}</div>
-                                        <div className="col-md-3">{x.amt}</div>
+										<div className="col-md-4 d-flex align-items-center" >{x.note}</div>
+										<div className="col-md-3 d-flex align-items-center">{x.amt}</div>
                                       {/*  <div className="col-md-1">{x.type}</div>*/}
-                                        <div className="col-md-3">{x.extraInfo}</div>
+										<div className="col-md-3 d-flex align-items-center">{x.extraInfo}</div>
 										<div className="col-md-2">
 
 											<span>
@@ -1846,9 +1838,12 @@ const NewPO = ({ setUserName }) => {
                                 </div>
                             </div>
 					</div>
-
+						
 						<div className="row">
-							<div className="col-md-3" style={{ paddingBottom: '10px', paddingTop:'10px' }}>
+							<div className="col-md-9 p-0">
+								<h4 style={{ paddingTop: "10px", textAlign: "left", color: '#007bff' }}>Agreement Attachments</h4>
+							</div>
+							<div className="col-md-3" style={{ paddingBottom: '10px', paddingTop: '10px', textAlign: "right" }}>
 								{poId && poId > 0 ? <FormButton name="Extra Documents" myStyle={{ width: '100%' }} onClick={(e) => {
 									e.preventDefault();
 									setAttachmentParentType("N");
@@ -1872,8 +1867,9 @@ const NewPO = ({ setUserName }) => {
 						</div>) : <div className="row">
 							No Attachments are present
 						</div>}
+						<h4 style={{ textAlign: "left", paddingBottom:'10px', color:'#007bff' }}>Agreement Remarks</h4>
 						<div className="table">
-							<div className="row tableHeader"><div className="col-md-12">Aggreement Remarks</div>
+							<div className="row tableHeader">
 								<div className="col-md-2 ">Remark By</div>
 								<div className="col-md-6 ">Remark</div>
 								<div className="col-md-2 ">Attachments</div>
