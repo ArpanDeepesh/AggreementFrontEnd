@@ -340,6 +340,7 @@ const NewPO = ({ setUserName }) => {
 			PoStartDate: new Date().toJSON(),
 			PoTotalAmount: poAmount,
 			PoDiscount: poForm.current['PoDiscount'].value,
+			PoCurrency: poCurrency,
 			PoBuyerGSTIN: poForm.current['PoBuyerGSTIN'].value,
 			PoSellerGSTIN: poForm.current['PoSellerGSTIN'].value,
 			PoBuyerAddress: poForm.current['PoBuyerAddress'].value,
@@ -1329,7 +1330,10 @@ const NewPO = ({ setUserName }) => {
 								<div className="col-md-6">
 									<div className="form-group" style={{ textAlign: 'left' }}>
 										<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
-										<select name="PoCurrency" className="form-control" readOnly={editMode === 0} value={poCurrency}>
+										<select name="PoCurrency" className="form-control" readOnly={editMode === 0} value={poCurrency} onChange={(e) => {
+											e.preventDefault();
+											setPoCurrency(e.target.value);
+										}}>
 											<option value="USD" >USD</option>
 											<option value="INR">INR</option>
 											<option value="AUD">AUD</option>
