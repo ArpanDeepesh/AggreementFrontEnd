@@ -1237,7 +1237,7 @@ const NewPO = ({ setUserName }) => {
 				<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
 				<AddPOAttachments id={attachmentId} setId={setAttachmentId} type={attachmentParentType} />
 				<DeleteConfirmation deleteId={deleteId} closeConfirmation={closeDeleteConfirmation} type={deleteType} />
-                <div className="col-md-8 scrollable-section">
+                <div className="col-md-9 scrollable-section">
                     <div className="">
 
 						<Form ref={poForm} onSubmit={handleSubmit}>
@@ -1885,7 +1885,7 @@ const NewPO = ({ setUserName }) => {
                     </div> : <></>}
 
                 </div>
-                <div className="col-md-4 fixed-section">
+                <div className="col-md-3 fixed-section">
 
                     <DraftFlowPresentation days={poCompletionInDays} itemDaysArray={itemDayArray} itemList={itemNameList} payDaysArray={payDayList} payList={paymentDisplayList} />
                 </div>
