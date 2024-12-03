@@ -1,13 +1,31 @@
 .item-content {
-    text-align:right
+    text-align: center;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    margin:2px;
+    width:100%;
 }
 .pay-content {
-    text-align: left
+    text-align: center;
+    border: 2px solid #007bff;
+    margin: 2px;
+    border-radius: 5px;
+    width: 100%;
 }
 .start-end {
-    background-color: #d3d3d3;
-    border-radius: 5px
+    background-color: #007bff;
+    border-radius: 5px;
+    color:white;
 }
 .number {
-    font-size:small
+    font-size: 12px;
+    border-left: 2px solid #007bff;
+    border-right: 2px solid #007bff;
+    color: #007bff;
+    font-weight:700;
+}
+.treeEleListDisplay {
+    list-style:none;
+    padding:0;
+    margin:0;
 }

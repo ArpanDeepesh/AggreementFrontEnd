@@ -1237,7 +1237,7 @@ const NewPO = ({ setUserName }) => {
 				<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
 				<AddPOAttachments id={attachmentId} setId={setAttachmentId} type={attachmentParentType} />
 				<DeleteConfirmation deleteId={deleteId} closeConfirmation={closeDeleteConfirmation} type={deleteType} />
-                <div className="col-md-9 scrollable-section">
+                <div className="col-md-8 scrollable-section">
                     <div className="">
 
 						<Form ref={poForm} onSubmit={handleSubmit}>
@@ -1645,17 +1645,20 @@ const NewPO = ({ setUserName }) => {
                                                     </div>
                                                 </div>
                                                 <div className="row">
-                                                    <div className="col-md-3">
+                                                    <div className={payType === 'F'?'col-md-6':"col-md-3"}>
                                                         <InputField name="PayNote" type="text" label="Note" value={payPartNote} />
                                                     </div>
-													<div className="col-md-3">
+													<div className={payType === 'F'?'col-md-6':"col-md-3"}>
 														{payType === 'A' || payType === 'P' ? <InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
 															e.preventDefault()
 															payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
-														}} /> :<></>}
+														}} /> : <></>}
+														{payType === 'F' ? <><div style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color: "#007bff", paddingTop:'20px' }}>
+															<span>Remaining Amount: {poCurrency} {(Math.round(remaingPay() * 100) / 100).toFixed(2)}</span> 
+														</div></>:<></>}
 														
 													</div>
-													<div className="col-md-3">
+													<div className={payType !== 'F' ? 'col-md-3' : ""}>
 														{payType === 'A' || payType === 'P' ?
 															<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
 															e.preventDefault();
@@ -1667,13 +1670,11 @@ const NewPO = ({ setUserName }) => {
 																setMsg("Percent cannot be greater than 100");
 																setMsgType("Error");
 															}
-															}} /> : <><div style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color: "#007bff" }}>
-																Remaining Amount:{remaingPay()}
-															</div> </>}
+															}} /> : <> </>}
 														
 													</div>
-                                                    <div className="col-md-3">
-                                                        {payType === 'A' || payType === 'F' ? <></> :
+													<div className={payType!== 'F' ? 'col-md-3' : ""}>
+														{payType === 'A' || payType === 'F' ? <></> :
                                                             <InputField name="PayFreq" type="number" value={payPartFrq}
                                                                 label="Payment due (in days)" />}
                                                     </div>
@@ -1885,9 +1886,9 @@ const NewPO = ({ setUserName }) => {
                     </div> : <></>}
 
                 </div>
-                <div className="col-md-3 fixed-section">
+				<div className="col-md-4 scrollable-section">
 
-                    <DraftFlowPresentation days={poCompletionInDays} itemDaysArray={itemDayArray} itemList={itemNameList} payDaysArray={payDayList} payList={paymentDisplayList} />
+					<DraftFlowPresentation days={poCompletionInDays} itemDaysArray={itemDayArray} itemList={itemNameList} payDaysArray={payDayList} payList={paymentDisplayList} cur={poCurrency} />
                 </div>
             </div>
         </>

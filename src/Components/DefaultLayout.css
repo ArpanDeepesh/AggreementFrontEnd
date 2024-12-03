@@ -74,3 +74,15 @@ footer {
         max-height: none;
     }
 }
+.headLinks {
+    width:100%;
+    text-align:left;
+    margin-left:20px;
+}
+.headLinks a {
+    color:white;
+}
+.headLinks a:hover {
+    color: white;
+
+}

@@ -52,6 +52,12 @@ const DefaultLayout = () => {
                             <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span>
                         </a>
                     </div>
+                    <div className="headLinks">
+                        <a href="/">Home</a>&nbsp;&nbsp;
+                        <a href="/AboutUs">About us</a>&nbsp;&nbsp;
+                        <a href="/Policy">Privacy policy</a>&nbsp;&nbsp;
+                        <a href="/Terms">Terms and condition</a>
+                    </div>
                     {loggedInUserName !== "" ? <div className="user-info">
                         <span className="me-3">Logged in as <strong>{loggedInUserName}</strong></span>
                         <a href="\LogOut" className="text-white text-decoration-none" onClick={(e) => {
@@ -66,6 +72,12 @@ const DefaultLayout = () => {
                             <a href="\" className="text-white text-decoration-none">
                                 <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span></a>
                         </div>
+                        <div className="headLinks">
+                            <a href="/">Home</a>&nbsp;&nbsp;
+                            <a href="/AboutUs">About us</a>&nbsp;&nbsp;
+                            <a href="/Policy">Privacy policy</a>&nbsp;&nbsp;
+                            <a href="/Terms">Terms and condition</a>
+                        </div>
                         
                     </div>
                 }
@@ -76,9 +88,9 @@ const DefaultLayout = () => {
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/Home" element={<HomePage setUserName={setLoggedInUsername} />} />
                         <Route path="/ValidateUser" element={<ValidateOTP />} />
-                        <Route path="/Terms" element={<TermsAndCondtitions />} />
-                        <Route path="/Policy" element={<PrivacyPolicy />} />
-                        <Route path="/AboutUs" element={<AboutUs />} />
+                        <Route path="/Terms" element={<TermsAndCondtitions setUserName={setLoggedInUsername} />} />
+                        <Route path="/Policy" element={<PrivacyPolicy setUserName={setLoggedInUsername} />} />
+                        <Route path="/AboutUs" element={<AboutUs setUserName={setLoggedInUsername} />} />
                         <Route path="/test" element={<Test />} />
                         <Route path="/UpdateUser" element={<UpdateUser setUserName={setLoggedInUsername } />} />
                         <Route path="/LogOut" element={<LogOut setUserName={setLoggedInUsername } />} />
