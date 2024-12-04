@@ -38,6 +38,19 @@ const DetailPO = ({ setUserName }) => {
 			navigate("/Home");
 		}
 	}, []);
+	const reloadAggrement = () => {
+		getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + poId, UserProfile.getToken())
+			.then(r => r.json()).then(res => {
+				console.log(res.data);
+				if (res.data) {
+					setPoId(res.data.poId);
+					setPo(res.data);
+					PurchaseOrder.resetData();
+				}
+			}).catch(err => {
+				console.log(err);
+			});
+	}
 	const downloadClicked = () => {
 		if (poId>0) {
 			getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + poId, UserProfile.getToken())
@@ -61,12 +74,12 @@ const DetailPO = ({ setUserName }) => {
 	return (
 		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
 			{po && po.poId > 0 ? <div className="table" style={{ textAlign: "left" }}>
-				<AddRemark id={openRemark} setId={setOpenRemark} type={remarkType} actionText={remarkAction} />
+				<AddRemark id={openRemark} setId={setOpenRemark} type={remarkType} actionText={remarkAction} reloadAction={reloadAggrement} />
 				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList }/>
 				<div className="row">
 					<div className="col-md-12">
 						<h4 style={{ textAlign: "left", color: '#007bff' }}>Agreement Details </h4>
-						{po.status === "Raised" ? <div className="row p-1">
+						{po.status === "Raised" ? <div className="row p-1" style={{ textAlign: "center" }}>
 							<div className="col-md-1">
 								<FormButton name="< Back" onClick={(e) => {
 									e.preventDefault();
@@ -177,7 +190,7 @@ const DetailPO = ({ setUserName }) => {
 						<br /> {po.notificationPeriodInDays} days</div>
 					<div className="col-md-3">
 						{po.status === 'Active' || po.status === 'Complete' ? <strong style={{ color: "#007bff" }}>Completion Date</strong>
-							: <strong style={{ color: "#007bff" }}>If PO is accepted today. It is expected to be completed by </strong>}
+							: <strong style={{ color: "#007bff" }}>Expected Completion </strong>}
 						
 						<br /> {po.expectedCompletionDate}</div>
 					<div className="col-md-3"><strong style={{ color: "#007bff" }}>Discount</strong><br /> {po.discount}</div>

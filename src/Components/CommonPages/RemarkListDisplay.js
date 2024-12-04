@@ -9,8 +9,8 @@ const RemarkListDisplay = ({ remarkLst, setRemarkLst }) => {
             <div className="modalContent">
                 <button className="closeButton" onClick={(e) => { closeModule (e)} }>X</button>
                 <p><ul>{remarkLst ? remarkLst.map(x => <li>
-                    <p>
-                        <strong>x.createdBy</strong>
+                    <p style={{ textAlign: "left" }}>
+                        <strong>Created By {x.createdBy}</strong>
                         <br />
                         <span style={{ fontSize: "70%" }}>{x.remarkDate}</span>
                         <br />

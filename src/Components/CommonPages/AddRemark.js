@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PurchaseOrder from "../Context/PurchaseOrder";
 
-const AddRemark = ({ id, setId, type,actionText }) => {
+const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 
     const remarkForm = useRef(null);
 	const [remarkMsg, setRemarkMsg] = useState("");
@@ -26,7 +26,7 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 		if (type === "O") {
 			navigate("/Home");
 		} else {
-			PurchaseOrder.setPoId(id);
+			reloadAction();
 			navigate("/Details");
 		}
 		
@@ -41,6 +41,9 @@ const AddRemark = ({ id, setId, type,actionText }) => {
             ParentId: id,
 			AttachmentLinks: remarkAttachments
 		};
+		if (actionText === "Accept Agreement") {
+			formBody['Remark'] += " remark is provided at " + remarkForm.current["remarkPlace"].value + " on " + Date().toString();
+		}
 		sendPostRequest('api/POManagement/AddRemarks', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res > 0) {
@@ -273,10 +276,13 @@ const AddRemark = ({ id, setId, type,actionText }) => {
 								{type === "I" ? <span>Adding Item Remark</span> : type === "P" ? <span>Adding Payment Remark</span> :
 									< span > Adding Purchase Agreement Remark</span>}
 							</div>
-                    
 							<div className="col-md-12">
-								<InputField name="remarkText" label="Provide Remark"  /> 
+								<InputField name="remarkText" label="Provide Remark" />
 							</div>
+							{actionText === "Accept Agreement" ? <div className="col-md-12">
+								<InputField name="remarkPlace" label="Place" />
+							</div> :<></>  }
+							
 							<div className="col-md-12">
 								<FormSubmitButton name={actionText} onClick={(e) => { submitRemark(e,id,type)  }} />
 							</div>
