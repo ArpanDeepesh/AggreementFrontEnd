@@ -81,15 +81,6 @@ const NewPO = ({ setUserName }) => {
 	//Payment related
 	const [payId, setPayId] = useState();
 	const [payType, setPayType] = useState();
-	const [payPartNote, setPayPartNote] = useState();
-	const [payPartAmt, setPayPartAmt] = useState();
-	const [payPartFrq, setPayPartFrq] = useState();
-	const [payPeriodicNote, setPayPeriodicNote] = useState();
-	const [payPeriodicAmt, setPayPeriodicAmt] = useState();
-	const [payPeriodicFrq, setPayPeriodicFrq] = useState();
-	const [payItemNote, setPayItemNote] = useState();
-	const [payItemAmt, setPayItemAmt] = useState();
-	
 
 	const [payList, setPayList] = useState([]);
 
@@ -574,6 +565,25 @@ const NewPO = ({ setUserName }) => {
 				console.log(err);
 			});
 	}
+	const addValueInItemListByPoId = () => {
+		getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + poId, UserProfile.getToken())
+			.then(r => r.json()).then(res => {
+				console.log(res);
+				if (res.status === 0) {
+					setItemList(res.data);
+					var tempItemList = [];
+					for (var i = 0; i < res.data.length; i++) {
+						tempItemList.push({ displayTxt: res.data[i].liTitle, value: res.data[i].id });
+					}
+					//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
+					setAvailableItems(tempItemList);
+					setSelectedItems([]);
+
+				}
+			}).catch(err => {
+				console.log(err);
+			});
+	}
 
 	const addValueInTaxList = () => {
 		getRequest('api/POManagement/GetPurchaseOrderTaxes?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
@@ -616,6 +626,10 @@ const NewPO = ({ setUserName }) => {
 		if (data === "") {
 			taxForm.current['TaxTitle'].style.borderColor = 'red';
 			message+="Tax title cannot be empty \n"
+		}
+		if (data.length> 50) {
+			taxForm.current['TaxTitle'].style.borderColor = 'red';
+			message += "Tax title cannot be more than 50 characters \n"
 		}
 		if (message !== "")
 		{
@@ -703,6 +717,10 @@ const NewPO = ({ setUserName }) => {
 			termForm.current['TermText'].style.borderColor = 'red';
 			message = "Cannot submit term without value";
 		}
+		if (data.length > 1000) {
+			termForm.current['TermText'].style.borderColor = 'red';
+			message = "Lenght of each term cannot be more than 1000 characters";
+		}
 		if (message !== "") {
 			setMsg(message);
 			setMsgType("Error");
@@ -744,15 +762,6 @@ const NewPO = ({ setUserName }) => {
 
 	const resetPayForms = () => {
 		setPayId(0);
-		setPayPartNote("");
-		setPayPartAmt(0);
-		setPayPartFrq(0);
-
-		setPayPeriodicNote("");
-		setPayPeriodicAmt(0);
-		setPayPeriodicFrq(0);
-		setPayItemNote("");
-		setPayItemAmt(0);
 		
 	}
 	const resetInputPayForms = () => {
@@ -774,6 +783,7 @@ const NewPO = ({ setUserName }) => {
 		itemPayForm.current['PayNote'].value = '';
 		itemPayForm.current['PayAmount'].value = '';
 		itemPayForm.current['PayPercent'].value = '';
+		addValueInItemListByPoId();
 
 	}
 	const validatePay = () => {
@@ -995,35 +1005,78 @@ const NewPO = ({ setUserName }) => {
 			});
 	}
 	const editPay = (e, p) => {
+		resetPayForms();
 		e.preventDefault();
 		console.log(p);
 		setPayId(p.payId);
 		if (p.type === "Base payment") {
 			openPaymentTab(e, "Advance");
+			payForm.current["PayNote"].value = p.note;
 			if (p.extraInfo.includes("1st")) {
-				setPayType('A'); setPayPartAmt(p.amt);
+				setPayType('A');
+				//setPayPartPercent(Number(p.amt) * 100 / Number(poAmount));
+				//setPayPartAmt(p.amt);
+				
 				payForm.current["PayAmount"].value = p.amt;
-				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount); }
+				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			}
 			else if (p.extraInfo.includes("Final")) { setPayType('F'); }
 			else if (p.extraInfo.includes("number")) {
+				var freq = p.extraInfo.split(" ")[2];
 				setPayType('P');
-				setPayPartFrq(0);
-				setPayPartAmt(p.amt);
+				//setPayPartFrq(Number(freq));
+				//setPayPartPercent(Number(p.amt) * 100 / Number(poAmount));
+				//setPayPartAmt(p.amt);
+				payForm.current["PayFreq"].value = Number(freq);
 				payForm.current["PayAmount"].value = p.amt;
+				//payForm.current["PayAmount"].value = p.amt;
 				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
 			}
 			//setPayType('A');
 			
 			
-			setPayPartNote(p.note);
+			
 			
 		} else if (p.type === "Item Based") {
 			openPaymentTab(e, "ItemBased");
-			setPayType('I')
-			setPayItemAmt(p.amt);
-			setPayItemNote(p.note);
-			payFrqForm.current["PayAmount"].value = p.amt;
-			payFrqForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			setPayType('I');
+			itemPayForm.current["PayNote"].value = p.note;
+			itemPayForm.current["PayAmount"].value = p.amt;
+			itemPayForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			var selectedItemIds=p.extraInfo.split(',');
+			var tempSelectedList = [];
+			var tempAvailableItems = [];
+
+			for (var i = 0; i < selectedItemIds.length; i++) {
+				for (var j = 0; j < itemList.length; j++) {
+					if (selectedItemIds[i] === itemList[j].id.toString())
+					{
+						tempSelectedList.push({ displayTxt: itemList[j].liTitle, value: itemList[j].id });
+						break;
+					}
+                }
+				
+			}
+			for (var i = 0; i < itemList.length; i++) {
+				var foundFlag = 0;
+				for (var j = 0; j <  selectedItemIds.length; j++) {
+					if (selectedItemIds[j] === itemList[i].id.toString()) {
+						foundFlag = 1;
+						break;
+					}
+					
+				}
+				if (foundFlag === 0) {
+					tempAvailableItems.push({ displayTxt: itemList[i].liTitle, value: itemList[i].id });
+				}
+
+			}
+			//for (var i = 0; i < availableItems.length; i++) {
+			//	//tempItemList.push({ displayTxt: itemList[i].liTitle, value: itemList[i].id });
+			//}
+			//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
+			setAvailableItems(tempAvailableItems);
+			setSelectedItems(tempSelectedList);
 			
 		}
 		else if (p.type === "Frequency Based")
@@ -1033,11 +1086,12 @@ const NewPO = ({ setUserName }) => {
 			else if (p.extraInfo.includes("Weekly")) { setPayType('W'); }
 			else if (p.extraInfo.includes("Quaterly"))
 			{ setPayType('Q'); }
-			
-			setPayPeriodicAmt(p.amt);
-			setPayPeriodicNote(p.note);
-			itemPayForm.current["PayAmount"].value = p.amt;
-			itemPayForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			var freq = p.extraInfo.split(" ")[1];
+			console.log(freq);
+			payFrqForm.current["PayNote"].value = p.note;
+			payFrqForm.current["PayAmount"].value = p.amt;
+			payFrqForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
+			payFrqForm.current["PayFreq"].value = Number(freq);
 		}
 	}
 
@@ -1104,6 +1158,9 @@ const NewPO = ({ setUserName }) => {
 		if (id === 'Advance' && (!payId || payId <= 0)) {
 			setPayType('P');
 		}
+		//if (id === 'ItemBased' && (!payId || payId <= 0)) {
+		//	addValueInItemListByPoId();
+		//}
 		var tabContent = document.getElementsByClassName("payment-tab-content");
 		for (var i = 0; i < tabContent.length; i++) {
 			tabContent[i].style.display = "none";
@@ -1609,16 +1666,21 @@ const NewPO = ({ setUserName }) => {
                                 <div className="payment-tabs">
                                     <div className="payment-tab-buttons">
 										<button className="payment-tab-button active" onClick={(e) => {
-											openPaymentTab(e, 'Advance');
+											setPayId(0);
 											resetInputPayForms();
+											setPayType('P');
+											openPaymentTab(e, 'Advance');
 										}}>Basic Payment</button>
 										<button className="payment-tab-button" onClick={(e) => {
-											openPaymentTab(e, 'Frequency');
+											setPayId(0);
 											resetInputPayForms();
+											setPayType('W');
+											openPaymentTab(e, 'Frequency');
 										}}>Frequency Based</button>
 										<button className="payment-tab-button" onClick={(e) => {
-											openPaymentTab(e, 'ItemBased');
+											setPayId(0);
 											resetInputPayForms();
+											openPaymentTab(e, 'ItemBased');
 										}} >Items Based</button>
 
                                     </div>
@@ -1646,37 +1708,46 @@ const NewPO = ({ setUserName }) => {
                                                 </div>
                                                 <div className="row">
                                                     <div className={payType === 'F'?'col-md-6':"col-md-3"}>
-                                                        <InputField name="PayNote" type="text" label="Note" value={payPartNote} />
+                                                        <InputField name="PayNote" type="text" label="Note"  />
                                                     </div>
-													<div className={payType === 'F'?'col-md-6':"col-md-3"}>
-														{payType === 'A' || payType === 'P' ? <InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
-															e.preventDefault()
-															payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
-														}} /> : <></>}
+													<div className={payType === 'F' ? 'col-md-6' : "col-md-3"}>
+														<span className={payType === 'A' || payType === 'P' ? "d-block" : "d-none"}>
+															<InputField name="PayPercent" type="decimal" label="Percent" 
+																onChange={(e) => {
+																	e.preventDefault();
+																	payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
+																}} />
+														</span>
+														{/*{payType === 'A' || payType === 'P' ? <InputField name="PayPercent" type="decimal" label="Percent" value={payPartPercent}*/}
+														{/*	onChange={(e) => {*/}
+														{/*		e.preventDefault();*/}
+														{/*	payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;*/}
+														{/*}} /> : <></>}*/}
 														{payType === 'F' ? <><div style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color: "#007bff", paddingTop:'20px' }}>
 															<span>Remaining Amount: {poCurrency} {(Math.round(remaingPay() * 100) / 100).toFixed(2)}</span> 
 														</div></>:<></>}
 														
 													</div>
 													<div className={payType !== 'F' ? 'col-md-3' : ""}>
-														{payType === 'A' || payType === 'P' ?
-															<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
-															e.preventDefault();
-															payForm.current["PayPercent"].style.borderColor = "#ced4da";
-															payForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
-															if (Number(payForm.current["PayPercent"].value) > 100)
-															{
-																payForm.current["PayPercent"].style.borderColor = "red";
-																setMsg("Percent cannot be greater than 100");
-																setMsgType("Error");
-															}
-															}} /> : <> </>}
+														<span className={payType === 'A' || payType === 'P' ?"d-block":"d-none"}>
+															<InputField name="PayAmount" type="decimal" label="Amount" onChange={(e) => {
+																e.preventDefault();
+																payForm.current["PayPercent"].style.borderColor = "#ced4da";
+																payForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
+																if (Number(payForm.current["PayPercent"].value) > 100) {
+																	payForm.current["PayPercent"].style.borderColor = "red";
+																	setMsg("Percent cannot be greater than 100");
+																	setMsgType("Error");
+																}
+															}} />
+														</span>
 														
 													</div>
-													<div className={payType!== 'F' ? 'col-md-3' : ""}>
-														{payType === 'A' || payType === 'F' ? <></> :
-                                                            <InputField name="PayFreq" type="number" value={payPartFrq}
-                                                                label="Payment due (in days)" />}
+													<div className={payType !== 'F' ? 'col-md-3' : ""}>
+														<span className={payType === 'A' || payType === 'F' ? "d-none" : "d-block"}>
+															<InputField name="PayFreq" type="number"
+																label="Payment due (in days)" />
+														</span>
                                                     </div>
                                                 </div>
 												<div className="row">
@@ -1707,17 +1778,19 @@ const NewPO = ({ setUserName }) => {
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-3">
-                                                        <InputField name="PayNote" type="text" label="Note" value={payPeriodicNote} />
+                                                        <InputField name="PayNote" type="text" label="Note" />
                                                     </div>
 													<div className="col-md-3">
-														<InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
+														<InputField name="PayPercent" type="decimal" label="Percent"
+															
+															onChange={(e) => {
 															e.preventDefault()
 															payFrqForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
 														}} /> 
 
 													</div>
 													<div className="col-md-3">
-														<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
+														<InputField name="PayAmount" type="decimal" label="Amount"  onChange={(e) => {
 															e.preventDefault();
 															payFrqForm.current["PayPercent"].style.borderColor = "#ced4da";
 															payFrqForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);
@@ -1730,7 +1803,7 @@ const NewPO = ({ setUserName }) => {
 
 													</div>
                                                     <div className="col-md-3">
-                                                        <InputField name="PayFreq" type="number" label="Number of payments" value={payPeriodicFrq} />
+                                                        <InputField name="PayFreq" type="number" label="Number of payments"  />
                                                     </div>
                                                 </div>
                                                 <div className="row">
@@ -1748,17 +1821,19 @@ const NewPO = ({ setUserName }) => {
                                             <Form ref={itemPayForm} onSubmit={itemPaySubmit}>
                                                 <div className="row">
                                                     <div className="col-md-4">
-                                                        <InputField name="PayNote" type="text" label="Note" value={payItemNote} />
+                                                        <InputField name="PayNote" type="text" label="Note"  />
                                                     </div>
 													<div className="col-md-4">
-														<InputField name="PayPercent" type="decimal" label="Percent" onChange={(e) => {
+														<InputField name="PayPercent" type="decimal" label="Percent"
+															
+															onChange={(e) => {
 															e.preventDefault()
 															itemPayForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
 														}} />
 
 													</div>
 													<div className="col-md-4">
-														<InputField name="PayAmount" type="decimal" label="Amount" value={payPartAmt} onChange={(e) => {
+														<InputField name="PayAmount" type="decimal" label="Amount"  onChange={(e) => {
 															e.preventDefault();
 															itemPayForm.current["PayPercent"].style.borderColor = "#ced4da";
 															itemPayForm.current["PayPercent"].value = Number(e.target.value) * 100 / Number(poAmount);

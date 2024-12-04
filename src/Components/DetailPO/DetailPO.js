@@ -79,14 +79,14 @@ const DetailPO = ({ setUserName }) => {
 				<div className="row">
 					<div className="col-md-12">
 						<h4 style={{ textAlign: "left", color: '#007bff' }}>Agreement Details </h4>
-						{po.status === "Raised" ? <div className="row p-1" style={{ textAlign: "center" }}>
+						{po.status === "Raised"  ? <div className="row p-1" style={{ textAlign: "center" }}>
 							<div className="col-md-1">
 								<FormButton name="< Back" onClick={(e) => {
 									e.preventDefault();
 									navigate("/Home");
 								}} />
 							</div>
-							<div className="col-md-3">
+							<div className={po.raisedById.toString() !== UserProfile.getUserId().toString() ? "col-md-3" : " d-none"}>
 								<FormButton name="Accept" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(poId);
