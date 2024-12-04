@@ -37,6 +37,7 @@ const CheckPODetails = () => {
 									}
 									UserProfile.setLoginStatus("1");
 									UserProfile.setToken(res.token);
+									UserProfile.setContactNumber(rph);
 									PurchaseOrder.setPoId(rpi);
 									navigate("/UpdateUser");
 								}).catch(err => {
