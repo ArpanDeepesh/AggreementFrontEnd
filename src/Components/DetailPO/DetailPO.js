@@ -95,22 +95,22 @@ const DetailPO = ({ setUserName }) => {
 									console.log("Add remark clicked");
 								}} />
 							</div>
+							<div className={po.raisedById.toString() === UserProfile.getUserId().toString()
+								&& po.sellerId === po.buyerId ? "col-md-3" : " d-none"}>
+								<FormButton name="Accept" onClick={(e) => {
+									e.preventDefault();
+									setOpenRemark(poId);
+									setRemarkType("O");
+									setRemarkAction("Accept Agreement");
+									console.log("Add remark clicked");
+								}} />
+							</div>
 							<div className="col-md-3">
 								<FormButton name="Reconsider" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(poId);
 									setRemarkType("O");
 									setRemarkAction("Reconsider Agreement");
-									console.log("Add remark clicked");
-								}} />
-							</div>
-
-							<div className="col-md-3">
-								<FormButton name="Remark" onClick={(e) => {
-									e.preventDefault();
-									setOpenRemark(poId);
-									setRemarkType("O");
-									setRemarkAction("Submit Remark");
 									console.log("Add remark clicked");
 								}} />
 							</div>
@@ -123,13 +123,7 @@ const DetailPO = ({ setUserName }) => {
 								}} />
 							</div>
 							<div className="col-md-3">
-								<FormButton name="Remark" onClick={(e) => {
-									e.preventDefault();
-									setOpenRemark(poId);
-									setRemarkType("O");
-									setRemarkAction("Submit Remark");
-									console.log("Add remark clicked");
-								}} />
+								
 							</div>
 							{po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
 								<FormButton name="Complete" onClick={(e) => {
@@ -388,8 +382,17 @@ const DetailPO = ({ setUserName }) => {
 					</div>
 					<div className="col-md-12 pt-2 ">
 						<div className="row">
-							<div className="col-md-12 p-0">
+							<div className="col-md-6 p-0">
 								<h4 style={{ textAlign: "left", color: '#007bff' }}>Agreement Remarks</h4>
+							</div>
+							<div className="col-md-6" style={{ textAlign: "right" }}>
+								<FormButton name="Additional Remarks" onClick={(e) => {
+									e.preventDefault();
+									setOpenRemark(poId);
+									setRemarkType("O");
+									setRemarkAction("Submit Remark");
+									console.log("Add remark clicked");
+								}} />
 							</div>
 						</div>
 						<div className="row tableHeader">
