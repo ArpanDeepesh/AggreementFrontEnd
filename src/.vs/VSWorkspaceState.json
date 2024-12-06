@@ -2,8 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\Components",
+    "\\Components\\CommonPages",
+    "\\Components\\DetailPO",
+    "\\Components\\LandingPage",
     "\\Components\\NewPO"
   ],
-  "SelectedNode": "\\Components\\NewPO\\NewPO.js",
+  "SelectedNode": "\\Components\\DetailPO\\DetailPO.js",
   "PreviewInSolutionExplorer": false
 }

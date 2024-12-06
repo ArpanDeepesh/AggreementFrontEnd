@@ -199,28 +199,34 @@ const DetailPO = ({ setUserName }) => {
 							</div>
 						</div>
 						<div className="row tableHeader">
-							<div className="col-md-3 ">Item Title</div>
+							<div className="col-md-2 ">Item Title</div>
 							<div className="col-md-1 ">Status</div>
 							<div className="col-md-3 ">Item Description</div>
+							<div className="col-md-1 ">Attachments</div>
 							<div className="col-md-1 ">Item Quanitity</div>
 							<div className="col-md-1 ">Item Rate</div>
 							<div className="col-md-1 ">Sub Total</div>
-							<div className="col-md-2 ">Actions</div>
+							<div className="col-md-2 ">Comments/Actions</div>
 						</div>
 						{po.poLineItems && po.poLineItems.length > 0 ? po.poLineItems.map(x => <div className="row p-1 tablebox">
-							<div className="col-md-3">{x.remarks && x.remarks.length > 0 ?
-								<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
-									onClick={(e) => {
-										e.preventDefault();
-										setRemarkList(x.remarks);
-									}}
-								/> : <></>}{x.title}</div>
+							<div className="col-md-2">{x.title}</div>
 							<div className="col-md-1"> {x.lineItemStatus}</div>
 							<div className="col-md-3"> {x.description}</div>
+							<div className="col-md-1 ">{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
+								{x.itemAttachments.map((f, i) => <li>
+									<a href={f.link} target={"new"}> Att-{i + 1}</a>
+								</li>)}</ul> : <span style={{ fontSize:"70%" }}>No Attachments</span>}</div>
 							<div className="col-md-1"> {x.quantity}</div>
 							<div className="col-md-1"> {x.rate}</div>
 							<div className="col-md-1"> {x.quantity * x.rate}</div>
 							<div className="col-md-2">
+								{x.remarks && x.remarks.length > 0 ?
+									<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
+										onClick={(e) => {
+											e.preventDefault();
+											setRemarkList(x.remarks);
+										}}
+									/> : <></>}
 								<span>
 									{po.status === "Active" && x.lineItemStatus !== "Completed" ? <div style={{ display: "inline-block" }}><FormButton name="Remarks" onClick={(e) => {
 									e.preventDefault();
@@ -300,28 +306,46 @@ const DetailPO = ({ setUserName }) => {
 						</div>
 						<div className="row tableHeader">
 
-							<div className="col-md-2 ">Amount</div>
+							<div className="col-md-2 ">
+								<div className="row">
+									<div className="col-md-3">Seq.</div>
+									<div className="col-md-9">Amount</div>
+							</div> </div>
 							<div className="col-md-1 ">Status </div>
-							<div className="col-md-3 ">Note</div>
+							<div className="col-md-2 ">Note</div>
 							<div className="col-md-2 ">Due Date</div>
 							<div className="col-md-2 ">Related Line Items</div>
-							<div className="col-md-2 ">Action</div>
+							<div className="col-md-1 ">Remarks</div>
+							<div className="col-md-2 ">Comments/Action</div>
 
 						</div>
-						{po.poPayments && po.poPayments.length > 0 ? po.poPayments.map(x => <div className="row p-1 tablebox">
+						{po.poPayments && po.poPayments.length > 0 ? po.poPayments.map((x, ind) => <div className="row p-1 tablebox">
 
-							<div className="col-md-2">{x.remarks && x.remarks.length > 0 ?
-								<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
-									onClick={(e) => {
-										e.preventDefault();
-										setRemarkList(x.remarks);
-									}}
-								/> : <></>}{x.paymentAmount}</div>
+							<div className="col-md-2">
+								<div className="row">
+									<div className="col-md-3">
+										{ind+1}
+									</div>
+									<div className="col-md-9">
+										{x.paymentAmount}
+									</div>
+								</div>
+							</div>
 							<div className="col-md-1">{x.paymentStatus} </div>
-							<div className="col-md-3">{x.paymentNotes} </div>
+							<div className="col-md-2">{x.paymentNotes} </div>
 							<div className="col-md-2"> {x.dueDate}</div>
 							<div className="col-md-2"> {x.lineItemsRelation.length > 0 ? x.lineItemsRelation.map(ri => <span>{ri}</span>) : <>Not related with Item</>}</div>
+							<div className="col-md-1">
+								{x.remarks && x.remarks.length > 0 ?
+									<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
+										onClick={(e) => {
+											e.preventDefault();
+											setRemarkList(x.remarks);
+										}}
+									/> : <span style={{ fontSize:"70%" }}>No remarks</span>}
+							</div>
 							<div className="col-md-2">
+								
 								{po.status === "Active" && x.paymentStatus !== "Completed" ? <><div style={{ display: "inline-block" }}> <FormButton name="Remarks" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(x.paymentId);

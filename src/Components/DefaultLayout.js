@@ -44,6 +44,14 @@ const DefaultLayout = () => {
             <header className="bg-primary text-white py-2 pl-4 pr-4 pt-2 pb-2">
                 {/*<a href="\LogOut" className="text-white text-decoration-none"> Logout</a>*/}
                 {UserProfile.getLoginStatus() === "1" ? <div className="d-flex justify-content-between align-items-center">
+                    <div class="hamburger" id="hamburger" onClick={e => {
+                        e.preventDefault();
+                        document.getElementById("menu").classList.toggle('active');
+                    }}>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
                     <div className="logo">
                         <a href="\" className="text-white text-decoration-none" onClick={(e) => {
                             unlockPurchaseOrder();
@@ -52,32 +60,75 @@ const DefaultLayout = () => {
                             <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span>
                         </a>
                     </div>
-                    <div className="headLinks">
-                        <a href="/">Home</a>&nbsp;&nbsp;
-                        <a href="/AboutUs">About us</a>&nbsp;&nbsp;
-                        <a href="/Policy">Privacy policy</a>&nbsp;&nbsp;
-                        <a href="/Terms">Terms and condition</a>
+                    <div style={{ width:"100%" }}>
+                    
+                    <nav>
+                        
+                            <ul class="menu" id="menu" style={{ marginBottom: "0" }}>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <a href="/AboutUs">About us</a>
+                                </li>
+                                <li>
+                                    <a href="/Policy">Privacy policy</a>
+                                </li>
+                                <li>
+                                    <a href="/Terms">Terms and condition</a>
+                                </li>
+                                <li>
+                                    <span className="d-inline d-md-none">
+                                        <a href="\LogOut" className="text-white text-decoration-none" onClick={(e) => {
+                                            unlockPurchaseOrder();
+                                            PurchaseOrder.resetData();
+                                        }}> Logout</a></span>
+                                </li>
+                        </ul>
+                        
+                    </nav>
                     </div>
                     {loggedInUserName !== "" ? <div className="user-info">
-                        <span className="me-3">Logged in as <strong>{loggedInUserName}</strong></span>
+                        <span className="me-4"><strong>{loggedInUserName}</strong></span>
+                        <span className="d-none d-md-block">
                         <a href="\LogOut" className="text-white text-decoration-none" onClick={(e) => {
                             unlockPurchaseOrder();
                             PurchaseOrder.resetData();
-                        }}> Logout</a>
+                        }}> Logout</a></span>
                     </div>:<></>}
                     
                 </div> :
                     <div className="d-flex justify-content-between align-items-center">
+                        <div class="hamburger" id="hamburger" onClick={e => {
+                            e.preventDefault();
+                            document.getElementById("menu").classList.toggle('active');
+                        }}>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
                         <div className="logo">
                             <a href="\" className="text-white text-decoration-none">
                                 <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span></a>
                         </div>
-                        <div className="headLinks">
-                            <a href="/">Home</a>&nbsp;&nbsp;
-                            <a href="/AboutUs">About us</a>&nbsp;&nbsp;
-                            <a href="/Policy">Privacy policy</a>&nbsp;&nbsp;
-                            <a href="/Terms">Terms and condition</a>
-                        </div>
+                        <div style={{ width: "100%" }}>
+                        <nav>
+
+                                <ul class="menu" id="menu" style={{ marginBottom: "0" }}>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <a href="/AboutUs">About us</a>
+                                </li>
+                                <li>
+                                    <a href="/Policy">Privacy policy</a>
+                                </li>
+                                <li>
+                                    <a href="/Terms">Terms and condition</a>
+                                </li>
+                            </ul>
+                        </nav></div>
                         
                     </div>
                 }
