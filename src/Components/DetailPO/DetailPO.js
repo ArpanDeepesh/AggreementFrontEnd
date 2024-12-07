@@ -362,7 +362,8 @@ const DetailPO = ({ setUserName }) => {
 									
 								}} /> </div></> : <></>}
 								{po.status === "Active" && x.paymentStatus !== "Completed" && x.paymentStatus!=="Claimed"
-									&& po.buyerId.toString() === UserProfile.getUserId().toString() ?<div style={{ display: "inline-block" }}> <FormButton name="Pay" onClick={(e) => {
+									&& po.buyerId.toString() === UserProfile.getUserId().toString() ? <div style={{ display: "inline-block" }}>
+									<FormButton name="Claim" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(x.paymentId);
 									setRemarkType("P");
