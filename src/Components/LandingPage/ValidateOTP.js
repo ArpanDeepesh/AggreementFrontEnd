@@ -24,13 +24,11 @@ const ValidateOTP = () => {
 		if (!validateOTP()) {
 			return;
 		}
-		console.log("Submit button is clicked.");
 		var formBody = {
 			PhoneNumber: UserProfile.getContactNumber(),
 			OTP: usrForm.current['OTPValidationValue'].value,
 		};
 		validateOTPRequest(formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res.token===null && res.message === 'Invalid Info')
 			{
 				setMsg("Invalid OTP.");

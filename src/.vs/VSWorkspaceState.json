@@ -4,6 +4,7 @@
     "\\Components",
     "\\Components\\CommonPages",
     "\\Components\\DetailPO",
+    "\\Components\\HomePage",
     "\\Components\\LandingPage",
     "\\Components\\NewPO"
   ],

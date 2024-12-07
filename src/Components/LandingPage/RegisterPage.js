@@ -24,9 +24,8 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 		if (!validatePhoneNumber()) {
 			return;
 		}
-		console.log("Submit button is clicked.");
+
 		sendAuthNotificationRequest(usrForm.current['PhoneNumber'].value).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res === true) {
 				UserProfile.setContactNumber(usrForm.current['PhoneNumber'].value);
 				navigate("/ValidateUser");

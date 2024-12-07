@@ -25,13 +25,13 @@ const LoginPage = ({ setDisplayLogin })=>{
 		if (!validatePhoneNumber()) {
 			return;
 		}
-		console.log("Submit button is clicked.");
+
 		var postBody = {
 			UserId:usrForm.current['userId'].value,
 			Password:usrForm.current['userPass'].value
 		};
 		loginRequest(postBody).then(r => r.json()).then(res => {
-			console.log(res);
+
 			if (res.token === null && res.message === 'Invalid Info') {
 				setMsg("Invalid Credentials.");
 				setMsgType("Error");

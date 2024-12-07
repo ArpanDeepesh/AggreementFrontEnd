@@ -24,7 +24,6 @@ const DetailPO = ({ setUserName }) => {
 		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
 			getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 				.then(r => r.json()).then(res => {
-					console.log(res.data);
 					if (res.data) {
 						setPoId(res.data.poId);
 						setPo(res.data);
@@ -41,7 +40,6 @@ const DetailPO = ({ setUserName }) => {
 	const reloadAggrement = () => {
 		getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + poId, UserProfile.getToken())
 			.then(r => r.json()).then(res => {
-				console.log(res.data);
 				if (res.data) {
 					setPoId(res.data.poId);
 					setPo(res.data);
@@ -55,9 +53,7 @@ const DetailPO = ({ setUserName }) => {
 		if (poId>0) {
 			getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + poId, UserProfile.getToken())
 				.then(r => r.json()).then(res => {
-					console.log(res.data);
 					if (res.data !== "") {
-						console.log(res.data);
 						window.open(res.data, '_blank', 'noopener,noreferrer');
 					}
 				}).catch(err => {
@@ -65,8 +61,6 @@ const DetailPO = ({ setUserName }) => {
 				});
 
 		} else {
-			console.log("Navigating to Home");
-			console.log(PurchaseOrder.getPoId());
 			navigate("/Home");
 		}
 	}
@@ -92,7 +86,7 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(poId);
 									setRemarkType("O");
 									setRemarkAction("Accept Agreement");
-									console.log("Add remark clicked");
+
 								}} />
 							</div>
 							<div className={po.raisedById.toString() === UserProfile.getUserId().toString()
@@ -102,7 +96,7 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(poId);
 									setRemarkType("O");
 									setRemarkAction("Accept Agreement");
-									console.log("Add remark clicked");
+
 								}} />
 							</div>
 							<div className="col-md-3">
@@ -111,7 +105,7 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(poId);
 									setRemarkType("O");
 									setRemarkAction("Reconsider Agreement");
-									console.log("Add remark clicked");
+	
 								}} />
 							</div>
 						</div> : <></>}
@@ -199,19 +193,32 @@ const DetailPO = ({ setUserName }) => {
 							</div>
 						</div>
 						<div className="row tableHeader">
-							<div className="col-md-2 ">Item Title</div>
-							<div className="col-md-1 ">Status</div>
-							<div className="col-md-3 ">Item Description</div>
+							<div className="col-md-3 ">
+								<div className="row">
+								<div className="col-md-2 p-0">S. No.</div>
+									<div className="col-md-7">Title</div>
+									<div className="col-md-2 ">Status</div>
+								</div>
+							</div>
+							<div className="col-md-2 ">Description</div>
 							<div className="col-md-1 ">Attachments</div>
-							<div className="col-md-1 ">Item Quanitity</div>
-							<div className="col-md-1 ">Item Rate</div>
+							<div className="col-md-1 ">Quanitity</div>
+							<div className="col-md-1 ">Rate</div>
 							<div className="col-md-1 ">Sub Total</div>
-							<div className="col-md-2 ">Comments/Actions</div>
+							<div className="col-md-1 ">Remarks</div>
+							<div className="col-md-2 ">Actions</div>
 						</div>
-						{po.poLineItems && po.poLineItems.length > 0 ? po.poLineItems.map(x => <div className="row p-1 tablebox">
-							<div className="col-md-2">{x.title}</div>
-							<div className="col-md-1"> {x.lineItemStatus}</div>
-							<div className="col-md-3"> {x.description}</div>
+						{po.poLineItems && po.poLineItems.length > 0 ? po.poLineItems.map((x,ind) => <div className="row p-1 tablebox">
+							<div className="col-md-3">
+								<div className="row">
+									<div className="col-md-2 p-0">{ind+1}</div>
+									<div className="col-md-7 ">{x.title}</div>
+									<div className="col-md-2">
+										<span class="badge bg-secondary text-light">{x.lineItemStatus}</span>
+									</div>
+								</div>
+							</div>
+							<div className="col-md-2"> {x.description}</div>
 							<div className="col-md-1 ">{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
 								{x.itemAttachments.map((f, i) => <li>
 									<a href={f.link} target={"new"}> Att-{i + 1}</a>
@@ -219,20 +226,21 @@ const DetailPO = ({ setUserName }) => {
 							<div className="col-md-1"> {x.quantity}</div>
 							<div className="col-md-1"> {x.rate}</div>
 							<div className="col-md-1"> {x.quantity * x.rate}</div>
+							<div className="col-md-1"> {x.remarks && x.remarks.length > 0 ?
+								<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
+									onClick={(e) => {
+										e.preventDefault();
+										setRemarkList(x.remarks);
+									}}
+								/> : <span style={{ fontSize: "70%" }}>No remarks</span>}</div>
 							<div className="col-md-2">
-								{x.remarks && x.remarks.length > 0 ?
-									<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
-										onClick={(e) => {
-											e.preventDefault();
-											setRemarkList(x.remarks);
-										}}
-									/> : <></>}
+								
 								<span>
 									{po.status === "Active" && x.lineItemStatus !== "Completed" ? <div style={{ display: "inline-block" }}><FormButton name="Remarks" onClick={(e) => {
 									e.preventDefault();
 									setOpenRemark(x.lineItemId);
 									setRemarkType("I");
-									console.log("Add remark clicked");
+									
 										}} /></div> : <></>}
 
 										{x.lineItemStatus === "Active" && UserProfile.getUserId().toString() === po.sellerId.toString() ?
@@ -241,7 +249,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
 										setRemarkAction("Claim Item Delivery");
-										console.log("Add remark clicked");
+										
 									}} /> </div>: <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
 										<div style={{ display: "inline-block" }}><FormButton name="Complete" onClick={(e) => {
@@ -249,7 +257,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
 										setRemarkAction("Accept Item Delivery");
-										console.log("Add remark clicked");
+										
 									}} /></div> : <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
 										<div style={{ display: "inline-block" }}><FormButton name="Not Completed" onClick={(e) => {
@@ -257,7 +265,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
 										setRemarkAction("Unclaim Item Delivery");
-										console.log("Add remark clicked");
+										
 										}} /></div>: <></>}
 								</span>
 							</div>
@@ -270,14 +278,14 @@ const DetailPO = ({ setUserName }) => {
 							</div>
 						</div>
 						<div className="row tableHeader">
+							<div className="col-md-2 ">S. No.</div>
 							<div className="col-md-5 ">Tax Title</div>
 							<div className="col-md-5 ">Tax Percent</div>
-							<div className="col-md-2">Action</div>
 						</div>
-						{po.poTaxes && po.poTaxes.length > 0 ? po.poTaxes.map(x => <div className="row p-1 tablebox">
+						{po.poTaxes && po.poTaxes.length > 0 ? po.poTaxes.map((x, ind) => <div className="row p-1 tablebox">
+							<div className="col-md-2 ">{ind+1}</div>
 							<div className="col-md-5">{x.name} </div>
 							<div className="col-md-5"> {x.percent}</div>
-							<div className="col-md-2">No Actions </div>
 						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
 					</div>
 					<div className="col-md-12 pt-2 ">
@@ -287,14 +295,12 @@ const DetailPO = ({ setUserName }) => {
 							</div>
 						</div>
 						<div className="row">
-							<div className="col-md-1 tableHeader">Sequence</div>
-							<div className="col-md-8 tableHeader">Terms And Conditions</div>
-							<div className="col-md-3 tableHeader">Remark</div>
+							<div className="col-md-1 tableHeader">S. No.</div>
+							<div className="col-md-11 tableHeader">Terms And Conditions</div>
 						</div>
-						{po.poTermsAndConditions && po.poTermsAndConditions.length > 0 ? po.poTermsAndConditions.map(x => <div className="row p-1 tablebox">
-							<div className="col-md-1">{x.sequence} </div>
-							<div className="col-md-8"> {x.description}</div>
-							<div className="col-md-3"> No Action </div>
+						{po.poTermsAndConditions && po.poTermsAndConditions.length > 0 ? po.poTermsAndConditions.map((x,ind) => <div className="row p-1 tablebox">
+							<div className="col-md-1">{ind+1} </div>
+							<div className="col-md-11"> {x.description}</div>
 						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
 					</div>
 
@@ -307,31 +313,33 @@ const DetailPO = ({ setUserName }) => {
 						<div className="row tableHeader">
 
 							<div className="col-md-2 ">
-								<div className="row">
-									<div className="col-md-3">Seq.</div>
-									<div className="col-md-9">Amount</div>
+								<div className="row" style={{ textAlign: "left" }}>
+									<div className="col-md-3 p-0">S. No.</div>
+									<div className="col-md-9 p-0">Amount</div>
 							</div> </div>
 							<div className="col-md-1 ">Status </div>
 							<div className="col-md-2 ">Note</div>
 							<div className="col-md-2 ">Due Date</div>
 							<div className="col-md-2 ">Related Line Items</div>
 							<div className="col-md-1 ">Remarks</div>
-							<div className="col-md-2 ">Comments/Action</div>
+							<div className="col-md-2 ">Action</div>
 
 						</div>
 						{po.poPayments && po.poPayments.length > 0 ? po.poPayments.map((x, ind) => <div className="row p-1 tablebox">
 
 							<div className="col-md-2">
 								<div className="row">
-									<div className="col-md-3">
+									<div className="col-md-3 p-0">
 										{ind+1}
 									</div>
-									<div className="col-md-9">
+									<div className="col-md-9 p-0">
 										{x.paymentAmount}
 									</div>
 								</div>
 							</div>
-							<div className="col-md-1">{x.paymentStatus} </div>
+							<div className="col-md-1">
+								<span class="badge bg-secondary text-light">{x.paymentStatus} </span>
+							</div>
 							<div className="col-md-2">{x.paymentNotes} </div>
 							<div className="col-md-2"> {x.dueDate}</div>
 							<div className="col-md-2"> {x.lineItemsRelation.length > 0 ? x.lineItemsRelation.map(ri => <span>{ri}</span>) : <>Not related with Item</>}</div>
@@ -351,7 +359,7 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(x.paymentId);
 									setRemarkType("P");
 									setRemarkAction("Submit Remark");
-									console.log("Add remark clicked");
+									
 								}} /> </div></> : <></>}
 								{po.status === "Active" && x.paymentStatus !== "Completed" && x.paymentStatus!=="Claimed"
 									&& po.buyerId.toString() === UserProfile.getUserId().toString() ?<div style={{ display: "inline-block" }}> <FormButton name="Pay" onClick={(e) => {
@@ -359,7 +367,7 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(x.paymentId);
 									setRemarkType("P");
 									setRemarkAction("Accept Payment Sent");
-									console.log("Add remark clicked");
+									
 								}} /></div>:<></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Active"
@@ -369,7 +377,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
 										setRemarkAction("Ask For Payment");
-										console.log("Add remark clicked");
+										
 									}} /> </div>: <></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Waiting"
@@ -379,7 +387,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
 										setRemarkAction("Invalid Payment Ask");
-										console.log("Add remark clicked");
+										
 									}} /></div> : <></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Claimed"
@@ -389,7 +397,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
 										setRemarkAction("Accept Payment Received");
-										console.log("Add remark clicked");
+										
 									}} /></div> : <></>}
 								{po.status === "Active"
 									&& x.paymentStatus === "Claimed"
@@ -399,7 +407,7 @@ const DetailPO = ({ setUserName }) => {
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
 										setRemarkAction("Payment Not Received");
-										console.log("Add remark clicked");
+										
 									}} /> </div>: <></>}
 							</div>
 						</div>) : <div className="row"> No Payments in Purchase Agreement</div>}
@@ -415,19 +423,21 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(poId);
 									setRemarkType("O");
 									setRemarkAction("Submit Remark");
-									console.log("Add remark clicked");
+									
 								}} />
 							</div>
 						</div>
 						<div className="row tableHeader">
+							<div className="col-md-1">S. No.</div>
 							<div className="col-md-2 ">Remark By</div>
-							<div className="col-md-6 ">Remark</div>
+							<div className="col-md-5 ">Remark</div>
 							<div className="col-md-2 ">Attachments</div>
 							<div className="col-md-2 ">Remark on</div>
 						</div>
-						{po.poRemarks && po.poRemarks.length > 0 ? po.poRemarks.map(x => <div className="row p-1 tablebox">
+						{po.poRemarks && po.poRemarks.length > 0 ? po.poRemarks.map((x,ind) => <div className="row p-1 tablebox">
+							<div className="col-md-1">{ind+1}</div>
 							<div className="col-md-2">{x.createdBy} </div>
-							<div className="col-md-6">{x.description} </div>
+							<div className="col-md-5">{x.description} </div>
 							<div className="col-md-2"> {x.attachments && x.attachments.length > 0 ?
 								x.attachments.map(a => <div><a href={a.link} target={"new"}>Attachment{a.id}</a></div>) : <>No Attachments</>}</div>
 							<div className="col-md-2">{x.remarkDate} </div>

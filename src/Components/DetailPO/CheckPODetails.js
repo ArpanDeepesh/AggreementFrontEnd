@@ -15,14 +15,12 @@ const CheckPODetails = () => {
 		phoneNo = phoneNo.replace(/ /g, '+');
 		secret = secret.replace(/ /g, '+');
 		pOId = pOId.replace(/ /g, '+');
-		console.log(phoneNo + " --- " + secret + " --- " + pOId);
 		crypt({ Str: phoneNo, IsCrypted: true })
 			.then(rph => rph.text())
 			.then(rph => {
 				crypt({ Str: secret, IsCrypted: true })
 					.then(rsec => rsec.text())
 					.then(rsec => {
-						console.log(rsec);
 						crypt({ Str: pOId, IsCrypted: true })
 							.then(rpi => rpi.text())
 							.then(rpi => {
@@ -31,7 +29,6 @@ const CheckPODetails = () => {
 									OTP: rsec,
 								};
 								validateOTPRequest(formBody).then(r => r.json()).then(res => {
-									console.log(res);
 									if (res.token === null && res.message === 'Invalid Info') {
 										return;
 									}
@@ -46,7 +43,6 @@ const CheckPODetails = () => {
 								console.log(rpi);
 							}).catch(errPi => console.log(errPi));
 					}).catch(errSec => console.log(errSec));
-			console.log(rph);
 		}).catch(err => console.log(err));
 		
 	}, []);

@@ -26,10 +26,8 @@ const DefaultLayout = () => {
         checkConnection().then(rr => rr.text()).then(res => console.log(res)).catch(err => console.log(err));
     }, []);
     const unlockPurchaseOrder = () => {
-        console.log("Unlock button is clicked." + UserProfile.getUserId());
         if (PurchaseOrder.getPoId() > 0) {
             getRequest('api/POManagement/UnlockPO?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken()).then(r => r.json()).then(res => {
-                console.log(res);
                 if (res) {
                     console.log("Unlock done successfully.");
                 }

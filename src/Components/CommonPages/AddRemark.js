@@ -34,7 +34,6 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
     }
     const submitRemark = (e, id, type) => {
         e.preventDefault();
-        console.log("Remark Submit id:" + id + " type: " + type);
         var formBody = {
             Remark: remarkForm.current["remarkText"].value,
             Parent: type,
@@ -45,7 +44,6 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 			formBody['Remark'] += " remark is provided at " + remarkForm.current["remarkPlace"].value + " on " + Date().toString();
 		}
 		sendPostRequest('api/POManagement/AddRemarks', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				if (actionText === "Submit Remark") {
 					setRemarkMsg("Remark Added Successfully. Close the remark section.");
@@ -86,10 +84,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
         
     }
 	const completeBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/CompletePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is completed");
 				remarkForm.current["remarkText"].value = "";
@@ -104,10 +100,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 	}
 	const declineBtnClicked = () => {
 
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/DeclinePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is declined");
 				remarkForm.current["remarkText"].value = "";
@@ -120,10 +114,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const reconsiderBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/ReconsiderPurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is sent for reconsideration");
 				remarkForm.current["remarkText"].value = "";
@@ -135,10 +127,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const acceptBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/AcceptPurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Agreement is Accepted");
 				remarkForm.current["remarkText"].value = "";
@@ -150,10 +140,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const claimItemBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/ClaimItem?itemId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Item completion claim raised.");
 				remarkForm.current["remarkText"].value = "";
@@ -165,10 +153,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const completeItemBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/CompleteItemClaim?itemId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Item receival is accepted");
 				remarkForm.current["remarkText"].value = "";
@@ -180,10 +166,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const notCompleteItemBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/UnclaimItem?itemId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Item receival is declined");
 				remarkForm.current["remarkText"].value = "";
@@ -195,10 +179,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const askForPayOrNotDoneBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/AskForOrPayNotDone?payId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Payment status is cahanges");
 				remarkForm.current["remarkText"].value = "";
@@ -210,10 +192,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const paymentDoneRaiseForReceivalClaimBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/PaymentDoneAskForAcceptance?payId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Waiting for receival acceptance.");
 				remarkForm.current["remarkText"].value = "";
@@ -225,10 +205,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const invalidPaymentAskBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/InvalidPaymentAsk?payId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Payment ask is invalid.");
 				remarkForm.current["remarkText"].value = "";
@@ -240,10 +218,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		});
 	}
 	const receivePaymentAskBtnClicked = () => {
-		console.log("btn is clicked");
 		var formBody = {}
 		sendPostRequest('api/POManagement/PaymentReceived?payId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setRemarkMsg("Status Changed Successfully. Payment is received");
 				remarkForm.current["remarkText"].value = "";

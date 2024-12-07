@@ -22,7 +22,6 @@ const HomePage = ({ setUserName }) => {
         setUserName(UserProfile.getName());
         PurchaseOrder.resetData();
         getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
-            console.log(resD);
             setUserName(resD.data.name);
             UserProfile.setUserId(resD.data.id);
             UserProfile.setEmail(resD.data.email);
@@ -30,19 +29,14 @@ const HomePage = ({ setUserName }) => {
             UserProfile.setContactNumber(resD.data.phoneNumber);
         }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=true", UserProfile.getToken()).then(rr => rr.json()).then(res => {
-            //console.log(res);
+
             if (res.status === 0 && res.data.length > 0)
             {
-                console.log(res);
-                console.log("raised By you is set")
                 setRaisedByList(res.data);
             }
         }).catch(err => console.log(err));
         getRequest("api/POManagement/GetPOAssociatedWithUser?isRaisedBy=false", UserProfile.getToken()).then(rr => rr.json()).then(res => {
-            //console.log(res);
             if (res.status === 0 && res.data.length > 0) {
-                console.log(res);
-                console.log("raised for you is set")
                 setRaisedForList(res.data);
             }
         }).catch(err => console.log(err));
@@ -64,7 +58,6 @@ const HomePage = ({ setUserName }) => {
     const copyPurchaseOrder = (e, po) => {
         e.preventDefault();
         getRequest("api/POManagement/CopyPurchaseOrder?poId="+po.poId, UserProfile.getToken()).then(rr => rr.text()).then(res => {
-            //console.log(res);
             if (res > 0) {
                 PurchaseOrder.setPoId(res);
                 PurchaseOrder.setPurchaseOrderEditFlag(1);
@@ -257,7 +250,6 @@ const HomePage = ({ setUserName }) => {
                                                     className="delayIcon" 
                                                     onClick={(e) => {
                                                     e.preventDefault();
-                                                    console.log("Click is success" + tempPO.delaysAndWaitingResponse.length);
                                                     setDelayMsg(tempPO.delaysAndWaitingResponse);
                                                 }} /> : <></>}
                                         </div>
@@ -278,7 +270,6 @@ const HomePage = ({ setUserName }) => {
                                                     <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
                                                         <FormButton name="Respond" onClick={(e) => {
                                                             e.preventDefault();
-                                                            console.log("Calling Respond Button");
                                                             PurchaseOrder.setPoId(tempPO.poId);
                                                             navigate("/Details")
                                                         }} />
@@ -293,7 +284,6 @@ const HomePage = ({ setUserName }) => {
                                                         <div className="col-xs-6 m-0 p-0">
                                                             <FormButton name="Respond" onClick={(e) => {
                                                                 e.preventDefault();
-                                                                console.log("Calling Respond Button");
                                                                 PurchaseOrder.setPoId(tempPO.poId);
                                                                 navigate("/Details")
                                                             }} />
@@ -368,7 +358,6 @@ const HomePage = ({ setUserName }) => {
                                                         <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
                                                             <FormButton name="Detail" onClick={(e) => {
                                                                 e.preventDefault();
-                                                                console.log("Calling Respond Button");
                                                                 PurchaseOrder.setPoId(tempPO.poId);
                                                                 navigate("/Details")
                                                             }} />
@@ -384,7 +373,6 @@ const HomePage = ({ setUserName }) => {
                                                         <div className="col-xs-6 m-0 p-0" style={{ textAlign: "center" }}>
                                                             <FormButton name="Detail" onClick={(e) => {
                                                                 e.preventDefault();
-                                                                console.log("Calling Respond Button");
                                                                 PurchaseOrder.setPoId(tempPO.poId);
                                                                 navigate("/Details")
                                                             }} />

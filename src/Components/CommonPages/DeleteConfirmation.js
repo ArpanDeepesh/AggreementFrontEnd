@@ -19,7 +19,6 @@ const DeleteConfirmation = ({ deleteId, closeConfirmation,type}) => {
     }
     const submitAttachments = (e, id) => {
         e.preventDefault();
-        console.log("Remark Submit id:" + id);
         var address = "api/POManagement/";
         if (type === "OA") {
             address += "DeletePurchaseOrderAttachment?attachId="+id;
@@ -36,9 +35,7 @@ const DeleteConfirmation = ({ deleteId, closeConfirmation,type}) => {
         } else if (type === "PAY") {
             address += "DeletePay?payId=" + id;
         }
-        console.log(address);
         getRequest(address, UserProfile.getToken()).then(r => r.json()).then(res => {
-            console.log(res);
             if (res) {
                 setHideAcceptBtn(0);
                 if (type === "LI") {
@@ -77,8 +74,6 @@ const DeleteConfirmation = ({ deleteId, closeConfirmation,type}) => {
                         <div className="col-md-12">
                             {remarkMsg !== "" ? <>{remarkMsg}</> : <></>}
                         </div>
-                    
-                        
                 </div>
                 {hideAcceptBtn === 1 ?
                 <div className="row">

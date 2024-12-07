@@ -16,12 +16,11 @@ const LogOut = ({ setUserName}) => {
 		e.preventDefault();
 		UserProfile.resetUser();
 		setUserName("");
-		console.log("log out btn is clicked");
+
 		navigate('/');
 	}
 	const cancelBtnClicked = (e) => {
 		e.preventDefault();
-		console.log("cancel btn is clicked");
 		navigate('/Home');
 	}
 	return (

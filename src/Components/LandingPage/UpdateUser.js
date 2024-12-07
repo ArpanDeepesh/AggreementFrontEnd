@@ -25,7 +25,6 @@ const UpdateUser = ({ setUserName }) => {
 			UserProfile.setUserId(res.data.id);
 			UserProfile.setEmail(res.data.email);
 			UserProfile.setName(res.data.name);
-			console.log(res)
 		}).catch(err => console.log(err));
 	}, []);
 
@@ -39,7 +38,6 @@ const UpdateUser = ({ setUserName }) => {
 		if (!validateFeilds()) {
 			return;
 		}
-		console.log("Submit button is clicked.");
 		var formBody = {
 			Id: UserProfile.getUserId(),
 			Name: usrForm.current['UserName'].value,
@@ -62,9 +60,7 @@ const UpdateUser = ({ setUserName }) => {
 						return;
 					}
 					navigate('/Home');
-					console.log(resD)
 				}).catch(err => console.log(err));
-				console.log(res);
 			}
 			
 		}).catch(err => {
@@ -92,7 +88,6 @@ const UpdateUser = ({ setUserName }) => {
 		return newMsg === "";
 	}
 	const submitBtnClicked = (e) => {
-		console.log("btn is clicked");
 	}
 
 	return (

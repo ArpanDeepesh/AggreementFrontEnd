@@ -31,7 +31,6 @@ export const sendAuthNotificationRequest = (phoneNo) => {
     });
 }
 export const validateOTPRequest = (postbody) => {
-    console.log(postbody);
     if (postbody) {
         return fetch(baseAddress + "api/POManagerAuth/ValidateOTP", {
             method: "POST",
@@ -47,7 +46,6 @@ export const validateOTPRequest = (postbody) => {
 
 }
 export const loginRequest = (postbody) => {
-    console.log(postbody);
     if (postbody) {
         return fetch(baseAddress + "api/POManagerAuth/login", {
             method: "POST",
@@ -75,8 +73,6 @@ export const getRequest = (url,token) => {
     });
 }
 export const sendPostRequest = (url, token, postbody) => {
-    //console.log("url-"+url+"token-"+token+" body: "+JSON.stringify(postbody));
-    console.log(postbody);
     if (postbody) {
         return fetch(baseAddress + url, {
             method: "POST",

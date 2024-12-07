@@ -22,7 +22,7 @@ const AddPOAttachments = ({ id, setId, type }) => {
     }
     const submitAttachments = (e, id, type) => {
         e.preventDefault();
-        console.log("Remark Submit id:" + id + " type: " + type);
+
         var formBody = {
             OrderId: id,
             AttachmentType: type,
@@ -30,7 +30,6 @@ const AddPOAttachments = ({ id, setId, type }) => {
         };
         var address = 'api/POManagement/AddPurchaseOrderAttachment';
         sendPostRequest(address, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-            console.log(res);
             if (res.length > 0) {
                 setRemarkMsg("Attachments added successfully. Close this section if you dont want to add new files.");
                 

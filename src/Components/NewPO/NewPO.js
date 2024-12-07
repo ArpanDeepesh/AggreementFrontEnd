@@ -104,8 +104,6 @@ const NewPO = ({ setUserName }) => {
 		if (UserProfile.getLoginStatus() !== "1") {
 			navigate("/");
 		}
-		console.log("New PO is created"); console.log("Arpan Value Edit Mode-" + editMode);
-		console.log(PurchaseOrder.getRaisedBy());
 		setUserName(UserProfile.getName());
 		setPoAmount(0);
 		setAutoCalculateOn(1);
@@ -118,8 +116,6 @@ const NewPO = ({ setUserName }) => {
 		setPoDiscount(0);
 		setPoCurrency('INR');
 		setPoCompletionInDays(1);
-		console.log(PurchaseOrder.getPoId() + PurchaseOrder.getPurchaseOrderEditFlag());
-		console.log(PurchaseOrder.getPurchaseOrderEditFlag() === 1)
 		if ( Number(PurchaseOrder.getPoId())>0) {
 
 			setPurchaseOrder(PurchaseOrder.getPoId());
@@ -127,11 +123,10 @@ const NewPO = ({ setUserName }) => {
 			addValueInTaxList();
 			addValueInTermList();
 			addValueInPayList();
-			console.log("Order is already present");
+			
 		} else {
-			console.log("Order not present");
+			
 		}
-		console.log("Arpan Value Edit Mode-" + editMode);
 	}, []);
 	useEffect(() => {
 		calculateDisplayVariables();
@@ -147,7 +142,7 @@ const NewPO = ({ setUserName }) => {
 					return;
 				}
 				lockPurchaseOrder(res.data.id);
-				console.log(res);
+				
 				if (Number(res.status) === 0) {
 					
 					setPoId(res.data.id);
@@ -197,98 +192,94 @@ const NewPO = ({ setUserName }) => {
 		var data = poForm.current['PoRaisedForPhoneNumber'].value;
 		var isnum = /^\+91\d+$/.test(data);
 		var message = "";
-		console.log("1111");
+
 		if (!isnum) {
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
 			message += "Phone Number should start with +91 \n";
-			console.log("11112");
+
 		}
 		if (data.length !== 13) {
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
 			message += "Phone Number length is incorrect \n";
-			console.log("11113");
+
 		}
 		if (data === "")
 		{
 			poForm.current['PoRaisedForPhoneNumber'].style.borderColor = 'red';
 			message += "Phone Number is required \n";
-			console.log("11114");
+
 		}
 		data = poForm.current['PoTitle'].value;
 		if (data==="" || data.length > 99)
 		{
 			poForm.current['PoTitle'].style.borderColor = 'red';
 			message += " Title is required and cannot be more than 100 characters \n";
-			console.log("11115");
+
 		}
 		data = poForm.current['PoDescription'].value;
 		if (data !== "" && data.length > 1000) {
 			poForm.current['PoDescription'].style.borderColor = 'red';
 			message += " Description cannot be more than 1000 characters \n";
-			console.log("11116");
+
 		}
 		data = poForm.current['PoBuyerGSTIN'].value;
 		if (data!=="" && !/^[A-Za-z0-9]{15}$/.test(data)) {
 			poForm.current['PoBuyerGSTIN'].style.borderColor = 'red';
 			message += " Buyer GSTIN should be 15 charcters and can contain only alphanumeric values. \n";
-			console.log("11117");
+	
 		}
 		data = poForm.current['PoSellerGSTIN'].value;
 		if (data !== "" && ! /^[A-Za-z0-9]{15}$/.test(data)) {
 			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
 			message += " Seller GSTIN should be 15 charcters and can contain only alphanumeric values. \n";
-			console.log("11118");
+
 		}
 		if (data!=="" && data === poForm.current['PoBuyerGSTIN'].value) {
 			poForm.current['PoBuyerGSTIN'].style.borderColor = 'red';
 			poForm.current['PoSellerGSTIN'].style.borderColor = 'red';
 			message += "Buyer GSTIN and seller GSTIN cannot be equal. \n";
-			console.log("11117");
+
 		}
 		data = poForm.current['PoSellerAddress'].value;
 		if (data !== "" && data.length>150) {
 			poForm.current['PoSellerAddress'].style.borderColor = 'red';
 			message += " Seller address should be less than 150 characters \n";
-			console.log("11118");
+
 		}
 		data = poForm.current['PoBuyerAddress'].value;
 		if (data !== "" && data.length > 150) {
 			poForm.current['PoBuyerAddress'].style.borderColor = 'red';
 			message += " Buyer address should be less than 150 characters \n";
-			console.log("11120");
+
 		}
 		data = poForm.current['PoSellerCompany'].value;
 		if (data !== "" && data.length > 100) {
 			poForm.current['PoSellerCompany'].style.borderColor = 'red';
 			message += " Seller Company should be less than 100 characters \n";
-			console.log("11119");
 		}
 		data = poForm.current['PoBuyerCompany'].value;
 		if (data !== "" && data.length > 100) {
 			poForm.current['PoBuyerCompany'].style.borderColor = 'red';
 			message += " Buyer Company should be less than 100 characters \n";
-			console.log("11121");
 		}
 		data = poForm.current['PoNotificationPeriod'].value;
-		console.log("Notification Period" + data)
+
 		if (data==="" || Number(data) > Number(poForm.current['PoCompletionDurationInDays'].value)) {
-			console.log(poForm.current['PoCompletionDurationInDays'].value + "-----" + data);
-			console.log(data > poForm.current['PoCompletionDurationInDays'].value);
+
 			poForm.current['PoNotificationPeriod'].style.borderColor = 'red';
 			message += " Notification Period cannot be negative and can not be more than completion days \n";
-			console.log("11122");
 		}
 		data = poForm.current['PoCompletionDurationInDays'].value;
 		if (data === "" || Number(data) <= 0) {
 			poForm.current['PoCompletionDurationInDays'].style.borderColor = 'red';
 			message += " Completion days cannot be less than 1 \n";
-			console.log("11123");
+
 		}
 		data = poForm.current['PoDiscount'].value;
 		if (data === "" || Number(data) < 0) {
 			poForm.current['PoDiscount'].style.borderColor = 'red';
 			message += "Discount cannot be negative \n";
-			console.log("11123");
+
 		}
 		if (message !== "") {
 			setMsg(message);
@@ -316,10 +307,8 @@ const NewPO = ({ setUserName }) => {
 		
 		if (!validatePurchaseOrder())
 		{
-			console.log("Validation failed");
 			return;
 		}
-		console.log("Submit button is clicked."+ UserProfile.getUserId());
 		var formBody = {
 			Id: poId > 0 ? poId : 0,
 			PoSellerPhoneNumber: PurchaseOrder.getRaisedBy() === "Seller" ? UserProfile.getContactNumber() : poForm.current['PoRaisedForPhoneNumber'].value,
@@ -340,7 +329,6 @@ const NewPO = ({ setUserName }) => {
 			PoSellerCompany: poForm.current['PoSellerCompany'].value
 		};
 		sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrder', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				PurchaseOrder.setPoId(res);
 				setPoId(res);
@@ -358,9 +346,7 @@ const NewPO = ({ setUserName }) => {
 	const lockPurchaseOrder = (pId) => {
 		console.log("Unlock button is clicked." + UserProfile.getUserId());
 		getRequest('api/POManagement/LockPO?poId=' + pId, UserProfile.getToken()).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res) {
-				console.log("Setting purchae Id to " + pId);
 
 			}
 		}).catch(err => {
@@ -370,10 +356,8 @@ const NewPO = ({ setUserName }) => {
 	};
 	const unlockPurchaseOrder = (e) => {
 		e.preventDefault();
-		console.log("Unlock button is clicked." + UserProfile.getUserId());
 
 		getRequest('api/POManagement/UnlockPO?poId=' + poId, UserProfile.getToken()).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res) {
 				PurchaseOrder.resetData();
 				navigate("/Home");
@@ -401,7 +385,6 @@ const NewPO = ({ setUserName }) => {
 		itemForm.current['ItemCompDays'].value = defaultCompletionDays;
 	}
 	const editItem = (e, item) => {
-		console.log(item);
 		e.preventDefault();
 		setItemId(item.id);
 		setItemTitle(item.liTitle);
@@ -481,7 +464,6 @@ const NewPO = ({ setUserName }) => {
 		if (!validateItem()) {
 			return;
 		}
-		console.log("Submit button is clicked.");
 		var formBody = {
 			Id: itemId,
 			PurchaseOrderId: PurchaseOrder.getPoId(),
@@ -493,7 +475,6 @@ const NewPO = ({ setUserName }) => {
 			LineItemStatus: 0
 		}
 		sendPostRequest('api/POManagement/AddOrUpdateItem', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setMsgDis("New Item is added successfully.");
 				resetInputItem(poCompletionInDays);
@@ -506,7 +487,6 @@ const NewPO = ({ setUserName }) => {
 				{
 					getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId() , UserProfile.getToken())
 						.then(r => r.json()).then(r => {
-							console.log(r);
 							if (r >0) {
 								setPoAmount(r);
 								
@@ -517,7 +497,6 @@ const NewPO = ({ setUserName }) => {
 										AttachmentLinks: itemAttachments
 									};
 									sendPostRequest("api/POManagement/AddLineItemAttachment", UserProfile.getToken(), attachmentformBody).then(r => r.json()).then(resAtt => {
-										console.log(resAtt);
 										if (resAtt.length > 0) {
 											setMsgDis("Attachments added successfully.");
 											setItemAttachments([]);
@@ -549,7 +528,7 @@ const NewPO = ({ setUserName }) => {
 	{
 		getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 			.then(r => r.json()).then(res => {
-				console.log(res);
+
 				if (res.status===0) {
 					setItemList(res.data);
 					var tempItemList = [];
@@ -568,7 +547,6 @@ const NewPO = ({ setUserName }) => {
 	const addValueInItemListByPoId = () => {
 		getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + poId, UserProfile.getToken())
 			.then(r => r.json()).then(res => {
-				console.log(res);
 				if (res.status === 0) {
 					setItemList(res.data);
 					var tempItemList = [];
@@ -588,7 +566,7 @@ const NewPO = ({ setUserName }) => {
 	const addValueInTaxList = () => {
 		getRequest('api/POManagement/GetPurchaseOrderTaxes?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 			.then(r => r.json()).then(res => {
-				console.log(res);
+		
 				if (res.status === 0) {
 					setTaxList(res.data);
 				}
@@ -597,7 +575,7 @@ const NewPO = ({ setUserName }) => {
 			});
 	}
 	const editTax = (e, tax) => {
-		console.log(tax);
+
 		e.preventDefault();
 		setTaxId(tax.taxId);
 		setTaxTitle(tax.title);
@@ -650,7 +628,6 @@ const NewPO = ({ setUserName }) => {
 		{
 			return;
 		}
-		console.log("Submit button is clicked.");
 		var formBody = {
 			TaxId: taxId,
 			PoId: PurchaseOrder.getPoId(),
@@ -658,14 +635,12 @@ const NewPO = ({ setUserName }) => {
 			Title: taxForm.current['TaxTitle'].value
 		}
 		sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrderTaxes', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				resetTaxInputFields();
 				setMsgDis("Tax is added successfully in the purchase order");
 				if (autoCalculateOn === 1) {
 					getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 						.then(r => r.json()).then(res => {
-							console.log(res);
 							if (res >0) {
 								setPoAmount(res);
 								addValueInTaxList();
@@ -686,7 +661,6 @@ const NewPO = ({ setUserName }) => {
 	const addValueInTermList = () => {
 		getRequest('api/POManagement/GetPurchaseOrderTerms?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 			.then(r => r.json()).then(res => {
-				console.log(res);
 				if (res.status === 0) {
 					setTermList(res.data);
 				}
@@ -695,7 +669,6 @@ const NewPO = ({ setUserName }) => {
 			});
 	}
 	const editTerm = (e, term) => {
-		console.log(term);
 		e.preventDefault();
 		setTermId(term.termId);
 		setTermValue(term.val);
@@ -738,14 +711,12 @@ const NewPO = ({ setUserName }) => {
 		if (!validateTerms()) {
 			return;
 		}
-		console.log("Submit button is clicked.");
 		var formBody = {
 			TermId: termId,
 			PoId: PurchaseOrder.getPoId(),
 			Val: termForm.current['TermText'].value
 		}
 		sendPostRequest('api/POManagement/AddOrUpdateTermsAndConditions', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				//setTermId(res);
 				addValueInTermList();
@@ -917,9 +888,7 @@ const NewPO = ({ setUserName }) => {
 			Frq: payType === 'P' ? payForm.current['PayFreq'].value : 0,
 			PaymentType: payType
 		}
-		//console.log(formBody);
 		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setMsgDis("Payment added successfully");
 				addValueInPayList();
@@ -948,7 +917,6 @@ const NewPO = ({ setUserName }) => {
 		}
 		//console.log(formBody);
 		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setMsgDis("Payment added successfully");
 				addValueInPayList();
@@ -968,7 +936,6 @@ const NewPO = ({ setUserName }) => {
 			return;
 		}
 		if (!validateItemPay()) { return; }
-		console.log("Submit button is clicked." );
 		var formBody = {
 			PayId: payId,
 			PoId: poId,
@@ -982,7 +949,6 @@ const NewPO = ({ setUserName }) => {
 		 
 		//setMsg(JSON.stringify(formBody));
 		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentItemBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
 			if (res > 0) {
 				setMsgDis("Payment added successfully");
 				addValueInPayList();
@@ -995,7 +961,6 @@ const NewPO = ({ setUserName }) => {
 	const addValueInPayList = () => {
 		getRequest('api/POManagement/GetPurchaseOrderDraftPayments?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 			.then(r => r.json()).then(res => {
-				console.log(res);
 				if (res.status === 0) {
 					setPayList(res.data);
 					//calculateDisplayVariables();
@@ -1007,16 +972,12 @@ const NewPO = ({ setUserName }) => {
 	const editPay = (e, p) => {
 		resetPayForms();
 		e.preventDefault();
-		console.log(p);
 		setPayId(p.payId);
 		if (p.type === "Base payment") {
 			openPaymentTab(e, "Advance");
 			payForm.current["PayNote"].value = p.note;
 			if (p.extraInfo.includes("1st")) {
 				setPayType('A');
-				//setPayPartPercent(Number(p.amt) * 100 / Number(poAmount));
-				//setPayPartAmt(p.amt);
-				
 				payForm.current["PayAmount"].value = p.amt;
 				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
 			}
@@ -1024,18 +985,10 @@ const NewPO = ({ setUserName }) => {
 			else if (p.extraInfo.includes("number")) {
 				var freq = p.extraInfo.split(" ")[2];
 				setPayType('P');
-				//setPayPartFrq(Number(freq));
-				//setPayPartPercent(Number(p.amt) * 100 / Number(poAmount));
-				//setPayPartAmt(p.amt);
 				payForm.current["PayFreq"].value = Number(freq);
 				payForm.current["PayAmount"].value = p.amt;
-				//payForm.current["PayAmount"].value = p.amt;
 				payForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
 			}
-			//setPayType('A');
-			
-			
-			
 			
 		} else if (p.type === "Item Based") {
 			openPaymentTab(e, "ItemBased");
@@ -1071,10 +1024,6 @@ const NewPO = ({ setUserName }) => {
 				}
 
 			}
-			//for (var i = 0; i < availableItems.length; i++) {
-			//	//tempItemList.push({ displayTxt: itemList[i].liTitle, value: itemList[i].id });
-			//}
-			//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
 			setAvailableItems(tempAvailableItems);
 			setSelectedItems(tempSelectedList);
 			
@@ -1087,7 +1036,6 @@ const NewPO = ({ setUserName }) => {
 			else if (p.extraInfo.includes("Quaterly"))
 			{ setPayType('Q'); }
 			var freq = p.extraInfo.split(" ")[1];
-			console.log(freq);
 			payFrqForm.current["PayNote"].value = p.note;
 			payFrqForm.current["PayAmount"].value = p.amt;
 			payFrqForm.current["PayPercent"].value = Number(p.amt) * 100 / Number(poAmount);
@@ -1103,8 +1051,6 @@ const NewPO = ({ setUserName }) => {
 		e.preventDefault();
 		var paymentAmt = 0;
 		for (var i = 0; i < payList.length; i++) { paymentAmt += Number(payList[i].amt); }
-		console.log(paymentAmt);
-		console.log(poAmount);
 		if (Number(paymentAmt) < Number(poAmount))
 		{
 			setMsg("You need to add more amount in the payment list to make it equal to the contract amount.");
@@ -1118,7 +1064,7 @@ const NewPO = ({ setUserName }) => {
 		}
 		var formBody = {}
 		sendPostRequest('api/POManagement/RaisePurchaseOrder?poId='+poId, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			console.log(res);
+
 			if (res > 0) {
 				navigate("/Home");
 			}
@@ -1158,9 +1104,6 @@ const NewPO = ({ setUserName }) => {
 		if (id === 'Advance' && (!payId || payId <= 0)) {
 			setPayType('P');
 		}
-		//if (id === 'ItemBased' && (!payId || payId <= 0)) {
-		//	addValueInItemListByPoId();
-		//}
 		var tabContent = document.getElementsByClassName("payment-tab-content");
 		for (var i = 0; i < tabContent.length; i++) {
 			tabContent[i].style.display = "none";
@@ -1183,7 +1126,6 @@ const NewPO = ({ setUserName }) => {
 		{
 			getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 				.then(r => r.json()).then(res => {
-					console.log(res);
 					if (res > 0) {
 						setPoAmount(res);
 					}
@@ -1211,7 +1153,6 @@ const NewPO = ({ setUserName }) => {
 		setDraggedItem(null);
 	};
 	const calculateDisplayVariables = () => {
-		console.log("Calculate display variable is called " + payList.length);
 		var itemNameList = [];
 		var itemCompletionDayList = [];
 		var tempPayList = [];
@@ -1222,26 +1163,25 @@ const NewPO = ({ setUserName }) => {
 		}
 		for (var ind = 0; ind < payList.length; ind++)
 		{
-			console.log("Adding Payment "+ind);
+
 			if (payList[ind].type === 'Base payment') {
-				console.log('Base payment');
+
 				tempPayList.push(payList[ind].amt);
 				if (payList[ind].extraInfo.startsWith('1st', 0)) {
 					payCompletionDayList.push(1);
-					console.log('Advance payment');
+
 				}
 				else if (payList[ind].extraInfo.startsWith('Final', 0)) {
 					
 					payCompletionDayList.push(Number(poCompletionInDays));
-					console.log('Final payment');
+	
 				} else {
 					payCompletionDayList.push(Number(payList[ind].extraInfo.split(" ")[2]));
-					console.log('Part payment' + payList[ind].extraInfo.split(" "));
+					
 				}
 			}
 			else if (payList[ind].type === 'Frequency Based') {
 				var freq = Number(payList[ind].extraInfo.split(' ')[1]);
-				console.log("Freq" + freq);
 				var daysToAdd = 0;
 				if (payList[ind].extraInfo.startsWith("Weekly", 0)) {
 					daysToAdd = 7;
@@ -1250,7 +1190,7 @@ const NewPO = ({ setUserName }) => {
 				} else if (payList[i].extraInfo.startsWith("Quaterly", 0)) {
 					daysToAdd = 120;
 				}
-				console.log(daysToAdd);
+
 				for (var ix = 1; ix <= freq; ix++) {
 					tempPayList.push(payList[ind].amt);
 					payCompletionDayList.push(ix * daysToAdd);
@@ -1275,10 +1215,6 @@ const NewPO = ({ setUserName }) => {
 			
 			//payCompletionDayList.push(i);
 		}
-		console.log(tempPayList);
-		console.log(itemCompletionDayList);
-		console.log(itemNameList);
-		console.log(payCompletionDayList);
 
 		setItemDayArray( itemCompletionDayList);
 		setItemNameList(itemNameList);
@@ -1718,11 +1654,6 @@ const NewPO = ({ setUserName }) => {
 																	payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;
 																}} />
 														</span>
-														{/*{payType === 'A' || payType === 'P' ? <InputField name="PayPercent" type="decimal" label="Percent" value={payPartPercent}*/}
-														{/*	onChange={(e) => {*/}
-														{/*		e.preventDefault();*/}
-														{/*	payForm.current["PayAmount"].value = Number(e.target.value) * Number(poAmount) / 100;*/}
-														{/*}} /> : <></>}*/}
 														{payType === 'F' ? <><div style={{ textAlign: "left", fontWeight: '700', fontSize: '20px', color: "#007bff", paddingTop:'20px' }}>
 															<span>Remaining Amount: {poCurrency} {(Math.round(remaingPay() * 100) / 100).toFixed(2)}</span> 
 														</div></>:<></>}
