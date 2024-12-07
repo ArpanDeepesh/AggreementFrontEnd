@@ -8,7 +8,6 @@ import UserProfile from "../Context/UserProfile";
 import AddAttachment from "../CommonPages/AddAttachment";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PurchaseOrder from "../Context/PurchaseOrder";
 
 const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 

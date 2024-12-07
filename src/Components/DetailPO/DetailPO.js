@@ -248,7 +248,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Claim Item Delivery");
+										setRemarkAction("Claim Delivery");
 										
 									}} /> </div>: <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
@@ -256,7 +256,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Accept Item Delivery");
+										setRemarkAction("Accept Delivery");
 										
 									}} /></div> : <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
@@ -264,7 +264,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Unclaim Item Delivery");
+										setRemarkAction("Unclaim Delivery");
 										
 										}} /></div>: <></>}
 								</span>
@@ -367,7 +367,7 @@ const DetailPO = ({ setUserName }) => {
 									e.preventDefault();
 									setOpenRemark(x.paymentId);
 									setRemarkType("P");
-									setRemarkAction("Accept Payment Sent");
+									setRemarkAction("Claim Payment");
 									
 								}} /></div>:<></>}
 								{po.status === "Active"
@@ -377,7 +377,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
-										setRemarkAction("Ask For Payment");
+										setRemarkAction("Request Payment");
 										
 									}} /> </div>: <></>}
 								{po.status === "Active"
@@ -387,7 +387,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
-										setRemarkAction("Invalid Payment Ask");
+										setRemarkAction("Decline Payment");
 										
 									}} /></div> : <></>}
 								{po.status === "Active"
@@ -397,7 +397,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.paymentId);
 										setRemarkType("P");
-										setRemarkAction("Accept Payment Received");
+										setRemarkAction("Payment Received");
 										
 									}} /></div> : <></>}
 								{po.status === "Active"

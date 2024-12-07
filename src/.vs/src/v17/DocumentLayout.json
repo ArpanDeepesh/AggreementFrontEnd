@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\DetailPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\DetailPO\\DetailPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\AddRemark.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\CommonPages\\AddRemark.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\HomePage\\HomePage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\HomePage\\HomePage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\DetailPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\DetailPO\\DetailPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\NewPO\\NewPO.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -53,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\DeleteConfirmation.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\CommonPages\\DeleteConfirmation.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\AddRemark.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Components\\CommonPages\\AddRemark.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\AddPOAttachments.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -190,7 +190,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 20,
+          "SelectedChildIndex": 35,
           "Children": [
             {
               "$type": "Document",
@@ -246,7 +246,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "DefaultLayout.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DefaultLayout.js",
               "RelativeDocumentMoniker": "Components\\DefaultLayout.js",
@@ -260,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "HomePage.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\HomePage\\HomePage.js",
               "RelativeDocumentMoniker": "Components\\HomePage\\HomePage.js",
@@ -274,7 +274,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "POContractBackendAPI.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\Services\\POContractBackendAPI.js",
               "RelativeDocumentMoniker": "Components\\Services\\POContractBackendAPI.js",
@@ -299,13 +299,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 1,
               "Title": "AddRemark.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\AddRemark.js",
               "RelativeDocumentMoniker": "Components\\CommonPages\\AddRemark.js",
               "ToolTip": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\AddRemark.js",
               "RelativeToolTip": "Components\\CommonPages\\AddRemark.js",
-              "ViewState": "AQIAAOwAAAAAAAAAAADwv/cAAAAbAAAA",
+              "ViewState": "AQIAAAgAAAAAAAAAAADwvwkAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-20T09:50:57.381Z",
               "EditorCaption": ""
@@ -445,7 +445,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "NewPO.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\NewPO\\NewPO.js",
               "RelativeDocumentMoniker": "Components\\NewPO\\NewPO.js",
@@ -458,7 +458,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "CheckPODetails.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\CheckPODetails.js",
               "RelativeDocumentMoniker": "Components\\DetailPO\\CheckPODetails.js",
@@ -483,7 +483,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "DeleteConfirmation.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\CommonPages\\DeleteConfirmation.js",
               "RelativeDocumentMoniker": "Components\\CommonPages\\DeleteConfirmation.js",
@@ -545,7 +545,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "LoginPage.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\LandingPage\\LoginPage.js",
               "RelativeDocumentMoniker": "Components\\LandingPage\\LoginPage.js",
@@ -594,7 +594,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ValidateOTP.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\LandingPage\\ValidateOTP.js",
               "RelativeDocumentMoniker": "Components\\LandingPage\\ValidateOTP.js",
@@ -607,7 +607,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "UpdateUser.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\LandingPage\\UpdateUser.js",
               "RelativeDocumentMoniker": "Components\\LandingPage\\UpdateUser.js",
@@ -620,7 +620,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "RegisterPage.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\LandingPage\\RegisterPage.js",
               "RelativeDocumentMoniker": "Components\\LandingPage\\RegisterPage.js",
@@ -633,13 +633,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "DetailPO.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\DetailPO.js",
               "RelativeDocumentMoniker": "Components\\DetailPO\\DetailPO.js",
               "ToolTip": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\DetailPO\\DetailPO.js",
               "RelativeToolTip": "Components\\DetailPO\\DetailPO.js",
-              "ViewState": "AQIAAMIAAAAAAAAAAADwv9UAAAAlAAAA",
+              "ViewState": "AQIAAPcAAAAAAAAAAAAjwAwBAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-19T13:38:13.668Z",
               "EditorCaption": ""
@@ -718,7 +718,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "LogOut.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\Components\\LandingPage\\LogOut.js",
               "RelativeDocumentMoniker": "Components\\LandingPage\\LogOut.js",
@@ -743,7 +743,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "index.js",
               "DocumentMoniker": "C:\\Users\\arpan_svgrhg2\\OneDrive\\Desktop\\Deepu\\ContractApplication\\Porject\\GitBackend\\AggreementFrontEnd\\src\\index.js",
               "RelativeDocumentMoniker": "index.js",
