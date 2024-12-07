@@ -116,9 +116,6 @@ const DetailPO = ({ setUserName }) => {
 									navigate("/Home");
 								}} />
 							</div>
-							<div className="col-md-3">
-								
-							</div>
 							{po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
 								<FormButton name="Complete" onClick={(e) => {
 									e.preventDefault();
@@ -192,41 +189,60 @@ const DetailPO = ({ setUserName }) => {
 								<h4 style={{ textAlign: "left", color: '#007bff' }}>Line Items</h4>
 							</div>
 						</div>
-						<div className="row tableHeader">
-							<div className="col-md-3 ">
-								<div className="row">
-								<div className="col-md-2 p-0">S. No.</div>
-									<div className="col-md-7">Title</div>
-									<div className="col-md-2 ">Status</div>
+						<div className="d-none d-md-block">
+							<div className="row tableHeader ">
+								<div className="col-md-3 ">
+									<div className="row">
+										<div className="col-md-2 p-0">S. No.</div>
+										<div className="col-md-7 pl-0">Title</div>
+										<div className="col-md-2 pl-0">Status</div>
+									</div>
 								</div>
+								<div className="col-md-2 ">Description</div>
+								<div className="col-md-1 ">Attachments</div>
+								<div className="col-md-1 ">Quanitity</div>
+								<div className="col-md-1 ">Rate</div>
+								<div className="col-md-1 ">Sub Total</div>
+								<div className="col-md-1 ">Remarks</div>
+								<div className="col-md-2 ">Actions</div>
 							</div>
-							<div className="col-md-2 ">Description</div>
-							<div className="col-md-1 ">Attachments</div>
-							<div className="col-md-1 ">Quanitity</div>
-							<div className="col-md-1 ">Rate</div>
-							<div className="col-md-1 ">Sub Total</div>
-							<div className="col-md-1 ">Remarks</div>
-							<div className="col-md-2 ">Actions</div>
 						</div>
+						
 						{po.poLineItems && po.poLineItems.length > 0 ? po.poLineItems.map((x,ind) => <div className="row p-1 tablebox">
 							<div className="col-md-3">
 								<div className="row">
-									<div className="col-md-2 p-0">{ind+1}</div>
-									<div className="col-md-7 ">{x.title}</div>
-									<div className="col-md-2">
+									<div className="col-md-2 p-0">
+										<strong className="d-inline d-md-none">S.No.: </strong>
+										{ind + 1}</div>
+									<div className="col-md-7 pl-0">
+										<strong className="d-inline d-md-none">Title: </strong>
+										{x.title}</div>
+									<div className="col-md-2 pl-0">
+										<strong className="d-inline d-md-none">Status: </strong>
 										<span class="badge bg-secondary text-light">{x.lineItemStatus}</span>
 									</div>
 								</div>
 							</div>
-							<div className="col-md-2"> {x.description}</div>
-							<div className="col-md-1 ">{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Description: </strong>
+								{x.description}</div>
+							<div className="col-md-1 "><strong className="d-inline d-md-none">Attachments: </strong>
+								{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
 								{x.itemAttachments.map((f, i) => <li>
 									<a href={f.link} target={"new"}> Att-{i + 1}</a>
 								</li>)}</ul> : <span style={{ fontSize:"70%" }}>No Attachments</span>}</div>
-							<div className="col-md-1"> {x.quantity}</div>
-							<div className="col-md-1"> {x.rate}</div>
-							<div className="col-md-1"> {x.quantity * x.rate}</div>
-							<div className="col-md-1"> {x.remarks && x.remarks.length > 0 ?
+							<div className="col-md-1">
+								<strong className="d-inline d-md-none">Quanitity: </strong>
+								{x.quantity}</div>
+							<div className="col-md-1">
+								<strong className="d-inline d-md-none">Rate: </strong>
+								{x.rate}</div>
+							<div className="col-md-1">
+								<strong className="d-inline d-md-none">Sub Total: </strong>
+								{x.quantity * x.rate}</div>
+							<div className="col-md-1">
+								<strong className="d-inline d-md-none">Remarks: </strong>
+								{x.remarks && x.remarks.length > 0 ?
 								<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
 									onClick={(e) => {
 										e.preventDefault();
@@ -277,15 +293,23 @@ const DetailPO = ({ setUserName }) => {
 								<h4 style={{ textAlign: "left", color: '#007bff' }}>Taxes</h4>
 							</div>
 						</div>
-						<div className="row tableHeader">
-							<div className="col-md-2 ">S. No.</div>
-							<div className="col-md-5 ">Tax Title</div>
-							<div className="col-md-5 ">Tax Percent</div>
+						<div className="d-none d-md-block">
+							<div className="row tableHeader">
+								<div className="col-md-2 ">S. No.</div>
+								<div className="col-md-5 ">Tax Title</div>
+								<div className="col-md-5 ">Tax Percent</div>
+							</div>
 						</div>
 						{po.poTaxes && po.poTaxes.length > 0 ? po.poTaxes.map((x, ind) => <div className="row p-1 tablebox">
-							<div className="col-md-2 ">{ind+1}</div>
-							<div className="col-md-5">{x.name} </div>
-							<div className="col-md-5"> {x.percent}</div>
+							<div className="col-md-2 ">
+								<strong className="d-inline d-md-none">S.No.: </strong>
+								{ind + 1}</div>
+							<div className="col-md-5">
+								<strong className="d-inline d-md-none">Tax Title: </strong>
+								{x.name} </div>
+							<div className="col-md-5">
+								<strong className="d-inline d-md-none">Tax Percent: </strong>
+								{x.percent}</div>
 						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
 					</div>
 					<div className="col-md-12 pt-2 ">
@@ -299,8 +323,12 @@ const DetailPO = ({ setUserName }) => {
 							<div className="col-md-11 tableHeader">Terms And Conditions</div>
 						</div>
 						{po.poTermsAndConditions && po.poTermsAndConditions.length > 0 ? po.poTermsAndConditions.map((x,ind) => <div className="row p-1 tablebox">
-							<div className="col-md-1">{ind+1} </div>
-							<div className="col-md-11"> {x.description}</div>
+							<div className="col-md-1">
+								<strong className="d-inline d-md-none">S.No.: </strong>
+								{ind + 1} </div>
+							<div className="col-md-11">
+								<strong className="d-inline d-md-none">Terms And Conditions: </strong>
+								{x.description}</div>
 						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
 					</div>
 
@@ -310,11 +338,12 @@ const DetailPO = ({ setUserName }) => {
 								<h4 style={{ textAlign: "left", color: '#007bff' }}>Payments</h4>
 							</div>
 						</div>
+						<div className="d-none d-md-block">
 						<div className="row tableHeader">
 
 							<div className="col-md-2 ">
 								<div className="row" style={{ textAlign: "left" }}>
-									<div className="col-md-3 p-0">S. No.</div>
+									<div className="col-md-3 p-0"> S. No.</div>
 									<div className="col-md-9 p-0">Amount</div>
 							</div> </div>
 							<div className="col-md-1 ">Status </div>
@@ -324,26 +353,37 @@ const DetailPO = ({ setUserName }) => {
 							<div className="col-md-1 ">Remarks</div>
 							<div className="col-md-2 ">Action</div>
 
+							</div>
 						</div>
 						{po.poPayments && po.poPayments.length > 0 ? po.poPayments.map((x, ind) => <div className="row p-1 tablebox">
 
 							<div className="col-md-2">
 								<div className="row">
 									<div className="col-md-3 p-0">
+										<strong className="d-inline d-md-none">S.No.: </strong>
 										{ind+1}
 									</div>
 									<div className="col-md-9 p-0">
+										<strong className="d-inline d-md-none">Amount: </strong>
 										{x.paymentAmount}
 									</div>
 								</div>
 							</div>
 							<div className="col-md-1">
+								<strong className="d-inline d-md-none">Status: </strong>
 								<span class="badge bg-secondary text-light">{x.paymentStatus} </span>
 							</div>
-							<div className="col-md-2">{x.paymentNotes} </div>
-							<div className="col-md-2"> {x.dueDate}</div>
-							<div className="col-md-2"> {x.lineItemsRelation.length > 0 ? x.lineItemsRelation.map(ri => <span>{ri}</span>) : <>Not related with Item</>}</div>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Note: </strong>
+								{x.paymentNotes} </div>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Due Date: </strong>
+								{x.dueDate}</div>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Related Line Items: </strong>
+								{x.lineItemsRelation.length > 0 ? x.lineItemsRelation.map(ri => <span>{ri}</span>) : <>Not related with Item</>}</div>
 							<div className="col-md-1">
+								<strong className="d-inline d-md-none">Remarks: </strong>
 								{x.remarks && x.remarks.length > 0 ?
 									<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
 										onClick={(e) => {
@@ -428,20 +468,32 @@ const DetailPO = ({ setUserName }) => {
 								}} />
 							</div>
 						</div>
+						<div className="d-none d-md-block">
 						<div className="row tableHeader">
 							<div className="col-md-1">S. No.</div>
 							<div className="col-md-2 ">Remark By</div>
 							<div className="col-md-5 ">Remark</div>
 							<div className="col-md-2 ">Attachments</div>
 							<div className="col-md-2 ">Remark on</div>
+							</div>
 						</div>
 						{po.poRemarks && po.poRemarks.length > 0 ? po.poRemarks.map((x,ind) => <div className="row p-1 tablebox">
-							<div className="col-md-1">{ind+1}</div>
-							<div className="col-md-2">{x.createdBy} </div>
-							<div className="col-md-5">{x.description} </div>
-							<div className="col-md-2"> {x.attachments && x.attachments.length > 0 ?
+							<div className="col-md-1">
+								<strong className="d-inline d-md-none">S. No.: </strong>
+								{ind + 1}</div>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Remark By: </strong>
+								{x.createdBy} </div>
+							<div className="col-md-5">
+								<strong className="d-inline d-md-none">Remark: </strong>
+								{x.description} </div>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Attachments: </strong>
+								{x.attachments && x.attachments.length > 0 ?
 								x.attachments.map(a => <div><a href={a.link} target={"new"}>Attachment{a.id}</a></div>) : <>No Attachments</>}</div>
-							<div className="col-md-2">{x.remarkDate} </div>
+							<div className="col-md-2">
+								<strong className="d-inline d-md-none">Remark on: </strong>
+								{x.remarkDate} </div>
 						</div>) : <div className="row"> No remarks in Purchase Agreement</div>}
 					</div>
 				</div>
