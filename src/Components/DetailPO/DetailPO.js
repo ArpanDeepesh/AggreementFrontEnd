@@ -248,7 +248,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Claim Delivery");
+										setRemarkAction("Claim");
 										
 									}} /> </div>: <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
@@ -256,7 +256,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Accept Delivery");
+											setRemarkAction("Item Completed");
 										
 									}} /></div> : <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?
@@ -264,7 +264,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Unclaim Delivery");
+										setRemarkAction("Item Not Completed");
 										
 										}} /></div>: <></>}
 								</span>
