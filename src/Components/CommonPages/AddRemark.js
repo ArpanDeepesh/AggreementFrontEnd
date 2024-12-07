@@ -248,8 +248,8 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 
                         
 							<div className="col-md-12">
-								{type === "I" ? <span>Adding Item Remark</span> : type === "P" ? <span>Adding Payment Remark</span> :
-									< span > Adding Purchase Agreement Remark</span>}
+								{type === "I" ? <h4 className="addRemarkHeading">Adding Item Remark</h4> : type === "P" ? <h4 className="addRemarkHeading">Adding Payment Remark</h4> :
+									< h4 className="addRemarkHeading" > Adding Purchase Agreement Remark</h4>}
 							</div>
 							<div className="col-md-12">
 								<InputField name="remarkText" label="Provide Remark" />

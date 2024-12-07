@@ -1265,80 +1265,101 @@ const NewPO = ({ setUserName }) => {
 								</div>
 								
 							</div>
-							<div className="row">
-								<div className="col-md-6">
-									<InputField name="PoSellerAddress" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Address" : "Your Address"}
-										value={poSellerAddress} readOnlyValue={editMode === 0} />
-								</div>
-								<div className="col-md-6">
-									<InputField name="PoBuyerAddress" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"}
-										value={poBuyerAddress} readOnlyValue={editMode === 0} />
-								</div>
-								
-								
+							<div className="d-md-none" style={{ textAlign: "center" }}>
+								<img src={"./down-arrow.png"} alt="Expan Button" width={20} height={20}
+									onClick={(e) => {
+										e.preventDefault();
+										document.getElementById("mobileSection").classList.toggle("collapse");
+									}}
+								/>
 							</div>
-							<div className="row">
-								<div className="col-md-6">
-									<InputField name="PoSellerGSTIN" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"}
-										value={poSellerGstin} readOnlyValue={editMode === 0} />
-								</div>
-								
-								<div className="col-md-6">
-									<InputField name="PoBuyerGSTIN" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer GSTIN" : "Your GSTIN"}
-										value={poBuyerGstin}
-										readOnlyValue={editMode === 0} />
-								</div>
-								
-							</div>
-							<div className="row">
-								<div className="col-md-6">
-									<InputField name="PoSellerCompany" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"}
-										value={poSellerCompany} readOnlyValue={editMode === 0} />
-								</div>
-								<div className="col-md-6">
-									<InputField name="PoBuyerCompany" type="text"
-										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"}
-										value={poBuyerCompany} readOnlyValue={editMode === 0} />
-								</div>
-                                
-							</div>
-							<div className="row">
-								<div className="col-md-6">
-									<InputNumberField name="PoNotificationPeriod" type="number" label="Notify after (in Days)"
-										value={poNotificationPeriod} readOnlyValue={editMode === 0} />
-								</div>
-
-								<div className="col-md-6">
-									<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)}
-										value={poDiscount} readOnlyValue={editMode === 0} />
-								</div>
-								
-							</div>
-							<div className="row">
-								<div className="col-md-6">
-									<div className="form-group" style={{ textAlign: 'left' }}>
-										<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
-										<select name="PoCurrency" className="form-control" disabled={editMode === 0} value={poCurrency} onChange={(e) => {
-											e.preventDefault();
-											setPoCurrency(e.target.value);
-										}}>
-											<option value="USD" >USD</option>
-											<option value="INR">INR</option>
-											<option value="AUD">AUD</option>
-											<option value="RUB">RUB</option>
-											<option value="CNY">CNY</option>
-											<option value="GBP">GBP</option>
-											<option value="JPY">JPY</option>
-											<option value="EUR">EUR</option>
-										</select>
+							
+							<div className="collapse d-md-block" id="mobileSection">
+								<div className="row">
+									<div className="col-md-6">
+										<InputField name="PoSellerAddress" type="text"
+											label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Address" : "Your Address"}
+											value={poSellerAddress} readOnlyValue={editMode === 0} />
 									</div>
+									<div className="col-md-6">
+										<InputField name="PoBuyerAddress" type="text"
+											label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Address" : "Your Address"}
+											value={poBuyerAddress} readOnlyValue={editMode === 0} />
+									</div>
+								
+								
 								</div>
-								<div className="col-md-6" style={{ textAlign: "center", paddingTop: '35px', fontWeight: '700', fontSize: '20px', paddingBottom: '10px', color: "#007bff" }}>
+								<div className="row">
+									<div className="col-md-6">
+										<InputField name="PoSellerGSTIN" type="text"
+											label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller GSTIN" : "Your GSTIN"}
+											value={poSellerGstin} readOnlyValue={editMode === 0} />
+									</div>
+								
+									<div className="col-md-6">
+										<InputField name="PoBuyerGSTIN" type="text"
+											label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer GSTIN" : "Your GSTIN"}
+											value={poBuyerGstin}
+											readOnlyValue={editMode === 0} />
+									</div>
+								
+								</div>
+								<div className="row">
+									<div className="col-md-6">
+										<InputField name="PoSellerCompany" type="text"
+											label={PurchaseOrder.getRaisedBy() === "Buyer" ? "Seller Company Name" : "Your Company Name"}
+											value={poSellerCompany} readOnlyValue={editMode === 0} />
+									</div>
+									<div className="col-md-6">
+										<InputField name="PoBuyerCompany" type="text"
+											label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Company Name" : "Your Company Name"}
+											value={poBuyerCompany} readOnlyValue={editMode === 0} />
+									</div>
+                                
+								</div>
+								<div className="row">
+									<div className="col-md-6">
+										<InputNumberField name="PoNotificationPeriod" type="number" label="Notify after (in Days)"
+											value={poNotificationPeriod} readOnlyValue={editMode === 0} />
+									</div>
+
+									<div className="col-md-6">
+										<InputNumberField name="PoDiscount" type="number" label="Discount" onChange={(e) => onDiscountChange(e)}
+											value={poDiscount} readOnlyValue={editMode === 0} />
+									</div>
+								
+								</div>
+								<div className="row">
+									<div className="col-md-6">
+										<div className="form-group" style={{ textAlign: 'left' }}>
+											<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
+											<select name="PoCurrency" className="form-control" disabled={editMode === 0} value={poCurrency} onChange={(e) => {
+												e.preventDefault();
+												setPoCurrency(e.target.value);
+											}}>
+												<option value="USD" >USD</option>
+												<option value="INR">INR</option>
+												<option value="AUD">AUD</option>
+												<option value="RUB">RUB</option>
+												<option value="CNY">CNY</option>
+												<option value="GBP">GBP</option>
+												<option value="JPY">JPY</option>
+												<option value="EUR">EUR</option>
+											</select>
+										</div>
+									</div>
+									<div className="col-md-6" style={{ textAlign: "center", paddingTop: '35px', fontWeight: '700', fontSize: '20px', paddingBottom: '10px', color: "#007bff" }}>
+										<div className="d-none d-md-inline">
+											{poId > 0 && editMode === 0 ? <>Total Amount: {poCurrency} {poAmount} </> : <></>}
+										</div>
+										
+									</div>
+									
+								</div>
+							</div>
+							
+							<div className="row d-block d-md-none" >
+								<div className="col-xs-12" style={{ textAlign: "center", paddingTop: '35px', fontWeight: '700', fontSize: '20px', paddingBottom: '10px', color: "#007bff" }}>
 									{poId > 0 && editMode === 0 ? <>Total Amount: {poCurrency} {poAmount} </> : <></>}
 								</div>
 							</div>
@@ -1415,59 +1436,74 @@ const NewPO = ({ setUserName }) => {
                                 </div>
 
 								<div className="table" style={{ textAlign: "left" }}>
-                                    <div className="row tableHeader">
-                                        <div className="col-md-2 ">
-                                            Title
-                                        </div>
-                                        <div className="col-md-3 ">
-                                            Description
-                                        </div>
-                                        <div className="col-md-1 ">
-                                            Rate
-                                        </div>
-                                        <div className="col-md-1 ">
-                                            Qty
-                                        </div>
-                                        <div className="col-md-1 ">
-                                            Total
-                                        </div>
-                                        <div className="col-md-2 ">
-                                            Attachments
+									<div className="d-none d-md-block">
+										<div className="row tableHeader">
+											<div className="col-md-2 ">
+												Title
+											</div>
+											<div className="col-md-3 ">
+												Description
+											</div>
+											<div className="col-md-1 ">
+												Rate
+											</div>
+											<div className="col-md-1 ">
+												Qty
+											</div>
+											<div className="col-md-1 ">
+												Total
+											</div>
+											<div className="col-md-2 ">
+												Attachments
+											</div>
+											<div className="col-md-2 " style={{ textAlign: "center" }}>
+												Actions
+											</div>
 										</div>
-										<div className="col-md-2 " style={{ textAlign: "center" }}>
-                                            Actions
-                                        </div>
-                                    </div>
-                                    {itemList && itemList.length > 0 ? itemList.map(x => < div className="row" style={{ borderBottom: "1px solid black" }}>
+									</div>
+									{itemList && itemList.length > 0 ? itemList.map(x => < div className="row tablebox">
 										<div className="col-md-2 d-flex align-items-center">
-                                            {x.liTitle}
+											<span>
+												<strong className="d-inline d-md-none">Title: </strong>
+													{x.liTitle}
+											</span>
                                         </div>
 										<div className="col-md-3 d-flex align-items-center">
-                                            {x.liDescription}
+										<span>
+											<strong className="d-inline d-md-none">Description: </strong>
+                                            {x.liDescription}</span>
                                         </div>
 										<div className="col-md-1 d-flex align-items-center">
-                                            {x.liRate}
+											<span>
+											<strong className="d-inline d-md-none">Rate: </strong>
+                                            {x.liRate}</span>
                                         </div>
 										<div className="col-md-1 d-flex align-items-center">
-                                            {x.liQuantity}
+											<span>
+											<strong className="d-inline d-md-none">Qty: </strong>
+                                            {x.liQuantity}</span>
                                         </div>
 										<div className="col-md-1 d-flex align-items-center">
-                                            {x.liRate * x.liQuantity}
+											<span>
+											<strong className="d-inline d-md-none">Total: </strong>
+                                            {x.liRate * x.liQuantity}</span>
                                         </div>
 										<div className="col-md-2 d-flex align-items-center">
+											<span>
+											<strong className="d-inline d-md-none">Attachments: </strong>
                                             {x.attachments ? x.attachments.map((f, i) => < div className="col-md-12">
 												<a href={f.link} target={"new"}> Att-{i + 1}</a> <span className="removeLink" onClick={(e) => {
 													e.preventDefault();
 													setDeleteId(f.id);
 													setDeleteType("IA");
 												}}> Remove </span>
-                                            </div>) : <>No Attachments</>}
-                                        </div>
-										<div className="col-md-2">
+											</div>) : <span style={{ fontsize: "70%" }}>No Attachments</span>}
+											</span>
+
+										</div>
+										<div className="col-md-2" style={{ textAlign: "center" }}>
 											<span>
-												<div style={{ display: "inline-block", width:"50%" }}>
-													<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
-												</div>
+												<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
 												<span className="removeLink" onClick={(e) => {
 													e.preventDefault();
 													setDeleteId(x.id);
@@ -1508,30 +1544,34 @@ const NewPO = ({ setUserName }) => {
                                     </Form>
 								</div>
 								<div className="table" style={{ textAlign: "left" }}>
-                                    <div className="row tableHeader">
-                                        <div className="col-md-5 ">
-                                            Title
-                                        </div>
-                                        <div className="col-md-5 ">
-                                            Percent
+									<div className="d-none d-md-block">
+										<div className="row tableHeader">
+											<div className="col-md-5 ">
+												Title
+											</div>
+											<div className="col-md-5 ">
+												Percent
+											</div>
+											<div className="col-md-2 " style={{ textAlign: "center" }}>
+												Action
+											</div>
 										</div>
-										<div className="col-md-2 " style={{ textAlign: "center" }}>
-                                            Action
-                                        </div>
-                                    </div>
-
-                                    {taxList && taxList.length > 0 ? taxList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
+									</div>
+									{taxList && taxList.length > 0 ? taxList.map(x => <div className="row tablebox">
 										<div className="col-md-5 d-flex align-items-center">
-                                            {x.title}
+										<span>
+											<strong className="d-inline d-md-none">Title: </strong>
+                                            {x.title}</span>
                                         </div>
 										<div className="col-md-5 d-flex align-items-center">
-                                            {x.percent}
-                                        </div>
-										<div className="col-md-2">
 											<span>
-												<div style={{ display: "inline-block", width: "50%" }}>
-													<FormButton name="Edit" onClick={(e) => { editTax(e, x) }} />
-												</div>
+											<strong className="d-inline d-md-none">Percent: </strong>
+                                            {x.percent}</span>
+										</div>
+										<div className="col-md-2" style={{ textAlign: "center" }}>
+											<span>
+												<FormButton name="Edit" onClick={(e) => { editTax(e, x) }} />
+												
 												<span className="removeLink" onClick={(e) => {
 													e.preventDefault();
 													setDeleteId(x.taxId);
@@ -1567,24 +1607,26 @@ const NewPO = ({ setUserName }) => {
                                         </div>
                                     </Form>
                                 </div>
-                                <div className="table">
-                                    <div className="row tableHeader">
-                                        <div className="col-md-10 ">
-                                            Terms and Conditions
+								<div className="table">
+									<div className="d-none d-md-block">
+										<div className="row tableHeader">
+											<div className="col-md-10 ">
+												Terms and Conditions
+											</div>
+											<div className="col-md-2 " style={{ textAlign: "center" }}>
+												Actions
+											</div>
 										</div>
-										<div className="col-md-2 " style={{ textAlign: "center" }}>
-                                            Actions
-                                        </div>
-                                    </div>
-                                    {termList && termList.length > 0 ? termList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
+									</div>
+									{termList && termList.length > 0 ? termList.map(x => <div className="row tablebox">
 										<div className="col-md-10 d-flex align-items-center">
-                                            {x.val}
-                                        </div>
-										<div className="col-md-2">
+										<span>
+											<strong className="d-inline d-md-none">Terms or condition: </strong>
+                                            {x.val}</span>
+										</div>
+										<div className="col-md-2" style={{ textAlign: "center" }}>
 											<span>
-												<div style={{ display: "inline-block", width: "50%" }}>
-													<FormButton name="Edit" onClick={(e) => { editTerm(e, x) }} />
-												</div>
+												<FormButton name="Edit" onClick={(e) => { editTerm(e, x) }} />
 												<span className="removeLink" onClick={(e) => {
 													e.preventDefault();
 													setDeleteId(x.termId);
@@ -1815,25 +1857,36 @@ const NewPO = ({ setUserName }) => {
                                     </div>
 								</div>
 								<div className="table" style={{ textAlign: "left" }}>
-                                    <div className="row tableHeader">
-                                        <div className="col-md-4 ">Note</div>
-                                        <div className="col-md-3 ">Amt</div>
-                                        {/*<div className="col-md-1 ">PaymentType</div>*/}
-										<div className="col-md-3 ">Extra Information</div>
-										<div className="col-md-2" style={{ textAlign: "center" }}>Action</div>
-                                    </div>
-                                    {payList && payList.length > 0 ? payList.map(x => <div className="row" style={{ borderBottom: "1px solid black" }}>
-										<div className="col-md-4 d-flex align-items-center" >{x.note}</div>
-										<div className="col-md-3 d-flex align-items-center">{x.amt}</div>
+									<div className="d-none d-md-block">
+										<div className="row tableHeader">
+											<div className="col-md-4 ">Note</div>
+											<div className="col-md-3 ">Amt</div>
+											{/*<div className="col-md-1 ">PaymentType</div>*/}
+											<div className="col-md-3 ">Extra Information</div>
+											<div className="col-md-2" style={{ textAlign: "center" }}>Action</div>
+										</div>
+									</div>
+									{payList && payList.length > 0 ? payList.map(x => <div className="row tablebox">
+										<div className="col-md-4 d-flex align-items-center" >
+										<span>
+											<strong className="d-inline d-md-none">Note: </strong>
+											{x.note}</span></div>
+										<div className="col-md-3 d-flex align-items-center">
+										<span>
+											<strong className="d-inline d-md-none">Amount: </strong>
+											{x.amt}</span></div>
                                       {/*  <div className="col-md-1">{x.type}</div>*/}
-										<div className="col-md-3 d-flex align-items-center">{x.extraInfo}</div>
-										<div className="col-md-2">
+										<div className="col-md-3 d-flex align-items-center">
+										<span>
+											<strong className="d-inline d-md-none">Extra Information: </strong>
+												{x.extraInfo}</span></div>
+										<div className="col-md-2" style={{ textAlign: "center" }}>
 
 											<span>
 												<div style={{ display: "inline-block", width: "50%" }}>
 													{x.extraInfo.startsWith("Final payment", 0) ? <></> :
 														<FormButton name="Edit" onClick={(e) => { editPay(e, x) }} />}
-												</div>
+												</div><br/>
 												<span className="removeLink" onClick={(e) => {
 													e.preventDefault();
 													setDeleteId(x.payId);
@@ -1858,44 +1911,77 @@ const NewPO = ({ setUserName }) => {
 								}} /> : <></>}
 							</div>
 						</div>
-						<div className="row">
-							<div className="col-md-8 tableHeader">Attachments</div>
-							<div className="col-md-2 tableHeader">Attachment Type</div>
-							<div className="col-md-2 tableHeader">Actions</div>
+						<div className="d-none d-md-block">
+							<div className="row">
+								<div className="col-md-8 tableHeader">Attachments</div>
+								<div className="col-md-2 tableHeader">Attachment Type</div>
+								<div className="col-md-2 tableHeader">Actions</div>
+							</div>
 						</div>
-						{attachmentList && attachmentList.length ? attachmentList.map((f, i) => < div className="row">
-							<div className="col-md-8"><a href={f.link} target={"new"}> Attachment {i + 1}</a></div>
-							<div className="col-md-2">{f.attachmentType}</div>
-							<div className="col-md-2"><FormButton name="Remove" onClick={(e) => {
+						{attachmentList && attachmentList.length ? attachmentList.map((f, i) => < div className="row tablebox">
+							<div className="col-md-8">
+								<span>
+								<strong className="d-inline d-md-none">Attachments: </strong>
+								<a href={f.link} target={"new"}> Attachment {i + 1}</a></span></div>
+							<div className="col-md-2">
+								<span>
+								<strong className="d-inline d-md-none">Attachment Type: </strong>
+								{f.attachmentType}</span></div>
+							<div className="col-md-2">
+								<FormButton name="Remove" onClick={(e) => {
 								e.preventDefault();
 								setDeleteId(f.id);
 								setDeleteType("OA");
 							}} /></div>
-						</div>) : <div className="row">
+						</div>) : <div className="row tablebox">
 							No Attachments are present
 						</div>}
 						<h4 style={{ textAlign: "left", paddingBottom:'10px', color:'#007bff' }}>Agreement Remarks</h4>
 						<div className="table">
-							<div className="row tableHeader">
-								<div className="col-md-2 ">Remark By</div>
-								<div className="col-md-6 ">Remark</div>
-								<div className="col-md-2 ">Attachments</div>
-								<div className="col-md-2 ">Remark on</div>
+							<div className="d-none d-md-block">
+								<div className="row tableHeader">
+									<div className="col-md-2 ">Remark By</div>
+									<div className="col-md-6 ">Remark</div>
+									<div className="col-md-2 ">Attachments</div>
+									<div className="col-md-2 ">Remark on</div>
+								</div>
 							</div>
-							{remarkList && remarkList.length > 0 ? remarkList.map(x => <div className="row p-1">
-								<div className="col-md-2">{x.createdBy} </div>
-								<div className="col-md-6">{x.description} </div>
-								<div className="col-md-2"> {x.attachments && x.attachments.length > 0 ? x.attachments.map(a => <div><a href={a.link} target={"new"}>Attachment{a.id}</a></div>) : <>No Attachments</>}</div>
-								<div className="col-md-2">{x.remarkDate} </div>
-							</div>) : <div className="row"> No remarks in Purchase Aggrement</div>}
+							{remarkList && remarkList.length > 0 ? remarkList.map(x => <div className="row p-1 tablebox">
+								<div className="col-md-2">
+									<span>
+									<strong className="d-inline d-md-none">Remark By: </strong>
+									{x.createdBy}</span> </div>
+								<div className="col-md-6">
+									<span>
+									
+									<strong className="d-inline d-md-none">Remark: </strong>
+									{x.description}</span> </div>
+								<div className="col-md-2">
+								<span>
+									<strong className="d-inline d-md-none">Attachments: </strong>
+									{x.attachments && x.attachments.length > 0 ?
+										x.attachments.map(a => <div><a href={a.link} target={"new"}>Attachment{a.id}</a></div>) : <>No Attachments</>}</span>
+								</div>
+								<div className="col-md-2">
+								<span>
+									<strong className="d-inline d-md-none">Remark on: </strong>
+									{x.remarkDate} </span></div>
+							</div>) : <div className="row tablebox"> No remarks in Purchase Aggrement</div>}
 						</div>
                     </div> : <></>}
+					<img src={"./down-arrow.png"} className="d-inline d-md-none" alt="Expan Button" width={20} height={20}
+							onClick={(e) => {
+								e.preventDefault();
+								document.getElementById("mobileTreeSection").classList.toggle("d-none");
+							}}
+						/>
+				</div>
 
-                </div>
-				<div className="col-md-4 scrollable-section">
-
+				<div className="col-md-4 scrollable-section d-none d-md-block" id="mobileTreeSection">
 					<DraftFlowPresentation days={poCompletionInDays} itemDaysArray={itemDayArray} itemList={itemNameList} payDaysArray={payDayList} payList={paymentDisplayList} cur={poCurrency} />
-                </div>
+				</div>
+				
+				
             </div>
         </>
 	);
