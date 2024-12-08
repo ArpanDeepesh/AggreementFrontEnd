@@ -1245,16 +1245,16 @@ const NewPO = ({ setUserName }) => {
                             <div className="row">
                                 
                                 <div className="col-md-6">
-									<InputField name="PoTitle" type="tel" label="Title" value={poTitle} readOnlyValue={editMode === 0} />
+									<InputField name="PoTitle" type="text" label="Title" value={poTitle} readOnlyValue={editMode === 0} />
 								</div>
 								<div className="col-md-6">
-									<InputField name="PoDescription" type="tel" label="Description" value={poDescription} readOnlyValue={editMode === 0} />
+									<InputField name="PoDescription" type="text" label="Description" value={poDescription} readOnlyValue={editMode === 0} />
 								</div>
                                 
 							</div>
 							<div className="row">
 								<div className="col-md-6">
-									<InputField name="PoRaisedForPhoneNumber" type="tel"
+									<InputField name="PoRaisedForPhoneNumber" type="text"
 										label={PurchaseOrder.getRaisedBy() === "Seller" ? "Buyer Phone Number" : "Seller Phone Number"}
 										value={poRaiseForPhNo} readOnlyValue={editMode === 0} />
 								</div>
