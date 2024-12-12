@@ -65,6 +65,12 @@ const TreeDisplay = ({ displayTree, setDisplayTree, startDate, endDate, itemList
 			let pay_difference_In_Time =
 				date4.getTime() - date1.getTime();
 
+			// Calculating the no. of days between
+			// two dates
+			payCompDay =
+				Math.round
+				(pay_difference_In_Time / (1000 * 3600 * 24));
+			payCompletionDayList.push(payCompDay);
 		}
 
 		setItemDaysList(itemCompletionDayList);
