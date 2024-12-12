@@ -1,17 +1,6 @@
 import "./DraftFlowPresentation.css";
 
 const ActiveFlowPresentation = ({startDate,endDate,days,itemDaysArray, itemList, payDaysArray, payList,cur }) => {
-    //const totalNumberOfDays = 20;
-    //const itemDaysArray = [8, 8, 5, 18, 18];
-    //const itemList = ["Item1", "Item2", "Item3", "Item4", "Item5"];
-    //const payDaysArray = [5, 19];
-    //const payList = ["Pay1 5000", "Pay2 12000"];
-    console.log("Active Flow presentation");
-    console.log(itemDaysArray);
-    console.log(itemList);
-    console.log(payDaysArray);
-    console.log(payList);
-    console.log(cur);
     const getItemName = (i) =>
     {
         var txt = '';

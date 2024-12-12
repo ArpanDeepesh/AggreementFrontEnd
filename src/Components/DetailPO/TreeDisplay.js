@@ -31,14 +31,6 @@ const TreeDisplay = ({ displayTree, setDisplayTree, startDate, endDate, itemList
 				(Difference_In_Time / (1000 * 3600 * 24))
 		);
 
-		// To display the final no. of days (result)
-		console.log
-			("Total number of days between dates:\n" +
-				date1.toDateString() + " and " +
-				date2.toDateString() +
-				" is: " + days + " days");
-
-
 		var itemNameList = [];
 		var itemCompletionDayList = [];
 		var tempPayList = [];
@@ -73,24 +65,12 @@ const TreeDisplay = ({ displayTree, setDisplayTree, startDate, endDate, itemList
 			let pay_difference_In_Time =
 				date4.getTime() - date1.getTime();
 
-			// Calculating the no. of days between
-			// two dates
-			payCompDay =
-				Math.round
-				(pay_difference_In_Time / (1000 * 3600 * 24));
-			payCompletionDayList.push(payCompDay);
 		}
 
 		setItemDaysList(itemCompletionDayList);
 		setItemFinalNameList( itemNameList);
 		setPayDaysList (payCompletionDayList);
 		setPayAmtList(tempPayList);
-		console.log(itemDaysList);
-		console.log(itemFinalNameList);
-		console.log(payDaysList);
-		console.log(payAmtList);
-		///Steps to do-
-		//Deploy release32 write logic to pass all these values to the active Flow presentation.
 	}
     return (
         <div className={displayTree===1 ? "modalOverlay" : "modalOverlay hidden"}>

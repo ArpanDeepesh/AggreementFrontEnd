@@ -30,16 +30,8 @@ const DetailPO = ({ setUserName }) => {
 			getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 				.then(r => r.json()).then(res => {
 					if (res.data) {
-						console.log(res.data);
 						setPoId(res.data.poId);
 						setPo(res.data);
-
-
-
-
-
-
-
 						PurchaseOrder.resetData();
 					}
 				}).catch(err => {
