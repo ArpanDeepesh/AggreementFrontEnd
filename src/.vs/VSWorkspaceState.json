@@ -4,7 +4,10 @@
     "\\Components",
     "\\Components\\CommonPages",
     "\\Components\\DetailPO",
+    "\\Components\\FlowPresentation",
+    "\\Components\\HomePage",
     "\\Components\\NewPO"
   ],
+  "SelectedNode": "\\Components\\DetailPO\\TreeDisplay.js",
   "PreviewInSolutionExplorer": false
 }

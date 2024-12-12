@@ -8,6 +8,7 @@ import PurchaseOrder from "../Context/PurchaseOrder";
 import "./DetailPO.css";
 import AddRemark from "../CommonPages/AddRemark";
 import RemarkListDisplay from "../CommonPages/RemarkListDisplay";
+import TreeDisplay from "./TreeDisplay";
 
 const DetailPO = ({ setUserName }) => {
 	const [remarkList, setRemarkList] = useState();
@@ -16,17 +17,29 @@ const DetailPO = ({ setUserName }) => {
 	const [po, setPo] = useState();
 	const [openRemark, setOpenRemark] = useState();
 	const [remarkType, setRemarkType] = useState();
+	const [treeDisplay, setTreeDisplay] = useState();
 	const navigate = useNavigate();
+
+	var days = 0;
 	useEffect(() => {
 		setOpenRemark(0);
+		setTreeDisplay(0);
 		setUserName(UserProfile.getName());
 		setRemarkAction("Submit Remark");
 		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
 			getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 				.then(r => r.json()).then(res => {
 					if (res.data) {
+						console.log(res.data);
 						setPoId(res.data.poId);
 						setPo(res.data);
+
+
+
+
+
+
+
 						PurchaseOrder.resetData();
 					}
 				}).catch(err => {
@@ -41,6 +54,7 @@ const DetailPO = ({ setUserName }) => {
 		getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + poId, UserProfile.getToken())
 			.then(r => r.json()).then(res => {
 				if (res.data) {
+					console.log(res.data);
 					setPoId(res.data.poId);
 					setPo(res.data);
 					PurchaseOrder.resetData();
@@ -69,7 +83,9 @@ const DetailPO = ({ setUserName }) => {
 		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
 			{po && po.poId > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<AddRemark id={openRemark} setId={setOpenRemark} type={remarkType} actionText={remarkAction} reloadAction={reloadAggrement} />
-				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList }/>
+				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList} />
+				<TreeDisplay displayTree={treeDisplay} setDisplayTree={setTreeDisplay} startDate={po.startDate} endDate={po.expectedCompletionDate}
+					itemList={po.poLineItems} payList={po.poPayments} cur={po.poCurrency} />
 				<div className="row">
 					<div className="col-md-12">
 						<h4 style={{ textAlign: "left", color: '#007bff' }}>Agreement Details </h4>
@@ -114,6 +130,12 @@ const DetailPO = ({ setUserName }) => {
 								<FormButton name="< Back" onClick={(e) => {
 									e.preventDefault();
 									navigate("/Home");
+								}} />
+							</div>
+							<div className="col-md-3">
+								<FormButton name="Tree View" onClick={(e) => {
+									e.preventDefault();
+									setTreeDisplay(1);
 								}} />
 							</div>
 							{po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
@@ -166,7 +188,7 @@ const DetailPO = ({ setUserName }) => {
 					<div className="col-md-3"><strong style={{ color: "#007bff" }}>Title</strong>
 						<br />{po.title}</div>
 					<div className="col-md-3"><strong style={{ color: "#007bff" }}>Amount</strong>
-						<br /> {po.poAmount} INR</div>
+						<br /> {po.poAmount.toLocaleString("en-IN")} {po.poCurrency}</div>
 				</div>
 				<div className="row">
 					<div className="col-md-3"><strong style={{ color: "#007bff" }}>Description</strong>
@@ -176,8 +198,8 @@ const DetailPO = ({ setUserName }) => {
 					<div className="col-md-3">
 						{po.status === 'Active' || po.status === 'Complete' ? <strong style={{ color: "#007bff" }}>Completion Date</strong>
 							: <strong style={{ color: "#007bff" }}>Expected Completion </strong>}
-						
-						<br /> {po.expectedCompletionDate}</div>
+
+						<br /> {new Date(po.expectedCompletionDate).toLocaleString()}</div>
 					<div className="col-md-3"><strong style={{ color: "#007bff" }}>Discount</strong><br /> {po.discount}</div>
 				</div>
 				<div className="row">
@@ -194,12 +216,11 @@ const DetailPO = ({ setUserName }) => {
 								<div className="col-md-3 ">
 									<div className="row">
 										<div className="col-md-2 p-0">S. No.</div>
-										<div className="col-md-7 pl-0">Title</div>
-										<div className="col-md-2 pl-0">Status</div>
+										<div className="col-md-6 pl-0">Title</div>
+										<div className="col-md-3 pl-0">Status</div>
 									</div>
 								</div>
-								<div className="col-md-2 ">Description</div>
-								<div className="col-md-1 ">Attachments</div>
+								<div className="col-md-3 ">Description</div>
 								<div className="col-md-1 ">Quanitity</div>
 								<div className="col-md-1 ">Rate</div>
 								<div className="col-md-1 ">Sub Total</div>
@@ -214,32 +235,31 @@ const DetailPO = ({ setUserName }) => {
 									<div className="col-md-2 p-0">
 										<strong className="d-inline d-md-none">S.No.: </strong>
 										{ind + 1}</div>
-									<div className="col-md-7 pl-0">
+									<div className="col-md-6 pl-0">
 										<strong className="d-inline d-md-none">Title: </strong>
 										{x.title}</div>
-									<div className="col-md-2 pl-0">
+									<div className="col-md-3 pl-0">
 										<strong className="d-inline d-md-none">Status: </strong>
-										<span class="badge bg-secondary text-light">{x.lineItemStatus}</span>
+										<span class="badge text-light" style={x.lineItemStatus === "Completed" ? { backgroundColor: "#28A745" } :
+											x.lineItemStatus === "Waiting" ? { backgroundColor: "#F15A29" } : { backgroundColor: "#6c757d" }}>{x.lineItemStatus}</span>
+										
 									</div>
 								</div>
 							</div>
-							<div className="col-md-2">
+							<div className="col-md-3">
 								<strong className="d-inline d-md-none">Description: </strong>
-								{x.description}</div>
-							<div className="col-md-1 "><strong className="d-inline d-md-none">Attachments: </strong>
-								{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
-								{x.itemAttachments.map((f, i) => <li>
-									<a href={f.link} target={"new"}> Att-{i + 1}</a>
-								</li>)}</ul> : <span style={{ fontSize:"70%" }}>No Attachments</span>}</div>
+								{x.description}<br/>
+								<span style={{ fontSize: "70%" }}>Due Date: {new Date(x.itemCompletionDate).toLocaleString('en-US')}</span>
+							</div>
 							<div className="col-md-1">
 								<strong className="d-inline d-md-none">Quanitity: </strong>
 								{x.quantity}</div>
 							<div className="col-md-1">
 								<strong className="d-inline d-md-none">Rate: </strong>
-								{x.rate}</div>
+								{x.rate.toLocaleString("en-IN")}</div>
 							<div className="col-md-1">
 								<strong className="d-inline d-md-none">Sub Total: </strong>
-								{x.quantity * x.rate}</div>
+								{(x.quantity * x.rate).toLocaleString("en-IN")}</div>
 							<div className="col-md-1">
 								<strong className="d-inline d-md-none">Remarks: </strong>
 								{x.remarks && x.remarks.length > 0 ?
@@ -248,7 +268,14 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setRemarkList(x.remarks);
 									}}
-								/> : <span style={{ fontSize: "70%" }}>No remarks</span>}</div>
+									/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
+								<br />
+								<strong className="d-inline d-md-none">Attachments: </strong>
+								{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
+									{x.itemAttachments.map((f, i) => <li>
+										<a href={f.link} target={"new"}> Att-{i + 1}</a>
+									</li>)}</ul> : <span style={{ fontSize: "70%" }}>No Attachments</span>}
+							</div>
 							<div className="col-md-2">
 								
 								<span>
@@ -347,11 +374,10 @@ const DetailPO = ({ setUserName }) => {
 									<div className="col-md-9 p-0">Amount</div>
 							</div> </div>
 							<div className="col-md-1 ">Status </div>
-							<div className="col-md-2 ">Note</div>
-							<div className="col-md-2 ">Due Date</div>
+							<div className="col-md-3 ">Note</div>
 							<div className="col-md-2 ">Related Line Items</div>
 							<div className="col-md-1 ">Remarks</div>
-							<div className="col-md-2 ">Action</div>
+							<div className="col-md-3 ">Action</div>
 
 							</div>
 						</div>
@@ -365,20 +391,21 @@ const DetailPO = ({ setUserName }) => {
 									</div>
 									<div className="col-md-9 p-0">
 										<strong className="d-inline d-md-none">Amount: </strong>
-										{x.paymentAmount}
+										{x.paymentAmount.toLocaleString("en-IN")}
 									</div>
 								</div>
 							</div>
 							<div className="col-md-1">
 								<strong className="d-inline d-md-none">Status: </strong>
-								<span class="badge bg-secondary text-light">{x.paymentStatus} </span>
+								<span class="badge text-light" style={x.paymentStatus === "Completed" ? { backgroundColor: "#28A745" } :
+									x.paymentStatus === "Waiting" ? { backgroundColor: "#F15A29" } : { backgroundColor: "#6c757d" }}>{x.paymentStatus} </span>
 							</div>
-							<div className="col-md-2">
+							<div className="col-md-3">
 								<strong className="d-inline d-md-none">Note: </strong>
-								{x.paymentNotes} </div>
-							<div className="col-md-2">
-								<strong className="d-inline d-md-none">Due Date: </strong>
-								{x.dueDate}</div>
+								{x.paymentNotes}
+								<br />
+								<span style={{ fontSize: "70%" }}>Due Date: {new Date(x.dueDate).toLocaleString()}</span>
+							</div>
 							<div className="col-md-2">
 								<strong className="d-inline d-md-none">Related Line Items: </strong>
 								{x.lineItemsRelation.length > 0 ? x.lineItemsRelation.map(ri => <span>{ri}</span>) : <>Not related with Item</>}</div>
@@ -392,7 +419,7 @@ const DetailPO = ({ setUserName }) => {
 										}}
 									/> : <span style={{ fontSize:"70%" }}>No remarks</span>}
 							</div>
-							<div className="col-md-2">
+							<div className="col-md-3">
 								
 								{po.status === "Active" && x.paymentStatus !== "Completed" ? <><div style={{ display: "inline-block" }}> <FormButton name="Remarks" onClick={(e) => {
 									e.preventDefault();
