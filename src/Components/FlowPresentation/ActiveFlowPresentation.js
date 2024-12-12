@@ -61,14 +61,29 @@ const ActiveFlowPresentation = ({startDate,endDate,days,itemDaysArray, itemList,
                     {getItemName(index + 1) != "" || getPayName(index + 1) != "" ? <>
                         <div className="col-md-5 d-flex align-items-center">
                             <div className={getItemName(index + 1) != "" ? "item-content" : ""}>{getItemNameValue(index + 1)}</div>
-                        </div>
-                        <div className="col-md-2 number d-flex align-items-center justify-content-center p-0">
-                            {new Date(new Date(startDate).getTime() + (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString()}
-                        </div>
+                        </div>{
+                            new Date().toLocaleDateString() !== new Date(new Date(startDate).getTime() + (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString() ? <>
+                                <div className="col-md-2 number d-flex align-items-center justify-content-center p-0">
+                                {new Date(new Date(startDate).getTime() + (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                                </div></> : <>
+                                <div className="col-md-2 number d-flex align-items-center justify-content-center p-0" style={{ backgroundColor: "#28A745" }}>
+                                    {new Date(new Date(startDate).getTime() + (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                                </div></>
+                        }
                         <div className="col-md-5 d-flex align-items-center">
                             <div className={getPayName(index + 1) != "" ? "pay-content" : ""}> {getPayNameValue(index + 1)}</div>
                         </div>
+                    </> : <>{new Date().toLocaleDateString() === new Date(new Date(startDate).getTime() + (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString() ? <>
+                            <div className="col-md-5 d-flex align-items-center">
+                            </div>
+                            <div className="col-md-2 number d-flex align-items-center justify-content-center p-0"
+                                style={{ backgroundColor: "#28A745", color:"white" }}>
+                                {new Date(new Date(startDate).getTime() + (index + 1) * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                            </div>
+                            <div className="col-md-5 d-flex align-items-center">
+                            </div>
                     </> : <></>}
+                    </>}
                     
                 </div>
             ))}
