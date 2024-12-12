@@ -22,6 +22,12 @@ const HomePage = ({ setUserName }) => {
         setUserName(UserProfile.getName());
         PurchaseOrder.resetData();
         getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
+            if (resD.message && resD.message === "Unauthorized:User is invalid")
+            {
+                UserProfile.resetUser();
+                navigate("/");
+                return;
+            }
             setUserName(resD.data.name);
             UserProfile.setUserId(resD.data.id);
             UserProfile.setEmail(resD.data.email);
@@ -228,38 +234,50 @@ const HomePage = ({ setUserName }) => {
                                     </div>
                                     {raisedForLst && raisedForLst.length > 0 ? raisedForLst.map(tempPO => tempPO.status === "Active" || tempPO.status === "Raised" ? < div className="row tablebox" >
                                         <div className="col-md-2 d-flex align-items-center" >
-                                            <strong className="d-inline d-md-none">Title:</strong>{tempPO.title}
-                                        </div>
-                                        <div className="col-md-2 d-flex align-items-center">
                                             <span>
-                                                <strong className="d-inline d-md-none">Buyer:</strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                                <strong className="d-inline d-md-none">Title: </strong>
+                                                {tempPO.title}
                                             </span>
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center">
                                             <span>
-                                                <strong className="d-inline d-md-none">Seller:</strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
+                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.buyerPhoneNo}</span>
+                                            </span>
+                                        </div>
+                                        <div className="col-md-2 d-flex align-items-center">
+                                            <span>
+                                                <strong className="d-inline d-md-none">Seller: </strong>{tempPO.sellerName}<br /><span style={{ fontSize: '10px' }}>{tempPO.sellerPhoneNo}</span>
                                             </span>
                                             
                                         </div>
                                         <div className="col-md-1 d-flex align-items-center">
-                                            <strong className="d-inline d-md-none">Status:</strong> <span class="badge bg-success text-light">{tempPO.status}</span>
+
+                                            <span>
+                                                <strong className="d-inline d-md-none">Status: </strong> <span class="badge bg-success text-light">{tempPO.status}</span>
+                                            </span>
                                         </div>
-                                        <div className="col-md-1 d-flex align-items-center"><strong className="d-block d-md-none">Statements:</strong>
+                                        <div className="col-md-1 d-flex align-items-center">
+                                            <span>
+                                            <strong className="d-block d-md-none">Statements: </strong>
                                             {tempPO.delaysAndWaitingResponse && tempPO.delaysAndWaitingResponse.length ?
                                                 <img src={"./info.png"} width={20} height={20} alt="Alter icon"
                                                     className="delayIcon" 
                                                     onClick={(e) => {
                                                     e.preventDefault();
                                                     setDelayMsg(tempPO.delaysAndWaitingResponse);
-                                                }} /> : <></>}
+                                                        }} /> : <></>}
+                                            </span>
                                         </div>
                                         <div className="col-md-1">
-                                            <strong className="d-block d-md-none">Work graph:</strong>
-                                            <PieChart dataArray={tempPO.workDoneStatus} />
+                                        <span>
+                                            <strong className="d-block d-md-none">Work graph: </strong>
+                                                <PieChart dataArray={tempPO.workDoneStatus} />
+                                            </span>
                                         </div>
                                         <div className="col-md-1">
-                                            <strong className="d-block d-md-none">Payment graph:</strong>
-                                            <PieChart dataArray={tempPO.paymentStatus} />
+                                        <span>
+                                            <strong className="d-block d-md-none">Payment graph: </strong>
+                                            <PieChart dataArray={tempPO.paymentStatus} /></span>
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
                                             <div className="d-none d-md-block">

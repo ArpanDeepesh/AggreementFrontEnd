@@ -6,12 +6,12 @@ const PieChart = ({ dataArray }) => {
         pieHole: 0.4, pieSliceText: "none",
         is3D: false,
         legend: "none",
-        colors: ["#28A745", "#F15A29", "#007BFF", "#ff0000"],
+        colors: ["#d3d3d3", "#F15A29", "#28A745", "#ff0000"],
         tooltip: {
             textStyle: {
                 fontSize: 14, // Increase tooltip font size
                 bold: false,   // Make text bold
-                color: "#000", // Change tooltip text color
+                color: "#000", // Change tooltip text color 
             },
         },
     };
