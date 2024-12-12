@@ -264,7 +264,7 @@ const DetailPO = ({ setUserName }) => {
 										e.preventDefault();
 										setOpenRemark(x.lineItemId);
 										setRemarkType("I");
-										setRemarkAction("Claim");
+											setRemarkAction("Claim Delivery");
 										
 									}} /> </div>: <></>}
 								{x.lineItemStatus === "Waiting" && UserProfile.getUserId().toString() === po.buyerId.toString() ?

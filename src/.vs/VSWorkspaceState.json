@@ -4,10 +4,7 @@
     "\\Components",
     "\\Components\\CommonPages",
     "\\Components\\DetailPO",
-    "\\Components\\HomePage",
-    "\\Components\\LandingPage",
     "\\Components\\NewPO"
   ],
-  "SelectedNode": "\\Components\\DetailPO\\DetailPO.js",
   "PreviewInSolutionExplorer": false
 }

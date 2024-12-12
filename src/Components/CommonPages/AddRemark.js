@@ -54,19 +54,19 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 					acceptBtnClicked();
 				} else if (actionText === "Reconsider Agreement") {
 					reconsiderBtnClicked();
-				} else if (actionText === "Claim Item Delivery") {
+				} else if (actionText === "Claim Delivery") {
 					claimItemBtnClicked();
-				} else if (actionText === "Unclaim Item Delivery") {
+				} else if (actionText === "Item Not Completed") {
 					notCompleteItemBtnClicked();
-				} else if (actionText === "Accept Item Delivery") {
+				} else if (actionText === "Item Completed") {
 					completeItemBtnClicked();
-				} else if (actionText === "Ask For Payment") {
+				} else if (actionText === "Request Payment") {
 					askForPayOrNotDoneBtnClicked();
-				} else if (actionText === "Accept Payment Sent") {
+				} else if (actionText === "Claim Payment") {
 					paymentDoneRaiseForReceivalClaimBtnClicked();
-				} else if (actionText === "Accept Payment Received") {
+				} else if (actionText === "Payment Received") {
 					receivePaymentAskBtnClicked();
-				} else if (actionText === "Invalid Payment Ask") {
+				} else if (actionText === "Decline Payment") {
 					invalidPaymentAskBtnClicked();
 				} else if (actionText === "Payment Not Received") {
 					askForPayOrNotDoneBtnClicked();
