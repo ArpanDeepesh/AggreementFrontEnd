@@ -19,19 +19,29 @@ const DetailPO = ({ setUserName }) => {
 	const [remarkType, setRemarkType] = useState();
 	const [treeDisplay, setTreeDisplay] = useState();
 	const navigate = useNavigate();
-
-	var days = 0;
 	useEffect(() => {
+		console.log("1");
 		setOpenRemark(0);
+		console.log("2");
 		setTreeDisplay(0);
+		console.log("3");
 		setUserName(UserProfile.getName());
+		console.log("4");
 		setRemarkAction("Submit Remark");
+		console.log("5");
 		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
+			console.log("6");
+			console.log(PurchaseOrder.getPoId());
 			getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 				.then(r => r.json()).then(res => {
+					console.log("7");
+					console.log(res);
 					if (res.data) {
+						console.log("9");
 						setPoId(res.data.poId);
+						console.log("10");
 						setPo(res.data);
+						console.log("11");
 						PurchaseOrder.resetData();
 					}
 				}).catch(err => {
@@ -39,14 +49,15 @@ const DetailPO = ({ setUserName }) => {
 				});
 			
 		} else {
+			console.log("8");
 			navigate("/Home");
 		}
 	}, []);
 	const reloadAggrement = () => {
 		getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + poId, UserProfile.getToken())
 			.then(r => r.json()).then(res => {
+				console.log(res);
 				if (res.data) {
-					console.log(res.data);
 					setPoId(res.data.poId);
 					setPo(res.data);
 					PurchaseOrder.resetData();
@@ -76,12 +87,14 @@ const DetailPO = ({ setUserName }) => {
 			{po && po.poId > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<AddRemark id={openRemark} setId={setOpenRemark} type={remarkType} actionText={remarkAction} reloadAction={reloadAggrement} />
 				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList} />
-				<TreeDisplay displayTree={treeDisplay} setDisplayTree={setTreeDisplay} startDate={po.startDate} endDate={po.expectedCompletionDate}
-					itemList={po.poLineItems} payList={po.poPayments} cur={po.poCurrency} />
+				{
+					po.status !== "Raised" ? <TreeDisplay displayTree={treeDisplay} setDisplayTree={setTreeDisplay} startDate={po.startDate} endDate={po.expectedCompletionDate}
+						itemList={po.poLineItems} payList={po.poPayments} cur={po.poCurrency} />:<></>
+				}
 				<div className="row">
 					<div className="col-md-12">
 						<h4 style={{ textAlign: "left", color: '#007bff' }}>Agreement Details </h4>
-						{po.status === "Raised"  ? <div className="row p-1" style={{ textAlign: "center" }}>
+						{po.status === "Raised" ? <div className="row p-1" style={{ textAlign: "center" }}>
 							<div className="col-md-1">
 								<FormButton name="< Back" onClick={(e) => {
 									e.preventDefault();
@@ -113,7 +126,7 @@ const DetailPO = ({ setUserName }) => {
 									setOpenRemark(poId);
 									setRemarkType("O");
 									setRemarkAction("Reconsider Agreement");
-	
+
 								}} />
 							</div>
 						</div> : <></>}
@@ -264,7 +277,7 @@ const DetailPO = ({ setUserName }) => {
 								<br />
 								<strong className="d-inline d-md-none">Attachments: </strong>
 								{x.itemAttachments && x.itemAttachments.length > 0 ? <ul style={{ listStyle: "none", padding: 0 }}>
-									{x.itemAttachments.map((f, i) => <li>
+									{x.itemAttachments.map((f, i) => <li key={"lineItemAtt"+i}>
 										<a href={f.link} target={"new"}> Att-{i + 1}</a>
 									</li>)}</ul> : <span style={{ fontSize: "70%" }}>No Attachments</span>}
 							</div>
