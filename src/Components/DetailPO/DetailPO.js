@@ -20,28 +20,21 @@ const DetailPO = ({ setUserName }) => {
 	const [treeDisplay, setTreeDisplay] = useState();
 	const navigate = useNavigate();
 	useEffect(() => {
-		console.log("1");
+
 		setOpenRemark(0);
-		console.log("2");
+
 		setTreeDisplay(0);
-		console.log("3");
+
 		setUserName(UserProfile.getName());
-		console.log("4");
+
 		setRemarkAction("Submit Remark");
-		console.log("5");
 		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
-			console.log("6");
-			console.log(PurchaseOrder.getPoId());
+
 			getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
 				.then(r => r.json()).then(res => {
-					console.log("7");
-					console.log(res);
 					if (res.data) {
-						console.log("9");
 						setPoId(res.data.poId);
-						console.log("10");
 						setPo(res.data);
-						console.log("11");
 						PurchaseOrder.resetData();
 					}
 				}).catch(err => {
@@ -80,6 +73,20 @@ const DetailPO = ({ setUserName }) => {
 		} else {
 			navigate("/Home");
 		}
+	}
+	const checkIfCompletedAllowed = () => {
+		for (var i = 0; i < po.poLineItems.length; i++) {
+			if (po.poLineItems[i].lineItemStatus !== "Completed")
+			{
+				return false;
+			}
+		}
+		for (var i = 0; i < po.poPayments.length; i++) {
+			if (po.poPayments[i].paymentStatus !== "Completed") {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	return (
@@ -146,9 +153,15 @@ const DetailPO = ({ setUserName }) => {
 							{po.raisedById.toString() === UserProfile.getUserId().toString() ? <div className="col-md-3">
 								<FormButton name="Complete" onClick={(e) => {
 									e.preventDefault();
-									setOpenRemark(poId);
-									setRemarkType("O");
-									setRemarkAction("Complete Aggrement");
+									if (checkIfCompletedAllowed()) {
+										setOpenRemark(poId);
+										setRemarkType("O");
+										setRemarkAction("Complete Aggrement");
+									} else {
+										alert("All items and payments has to be completed before we complete the contract.")
+									}
+									
+									
 								}} />
 							</div> : <></>}
 							<div className="col-md-3">

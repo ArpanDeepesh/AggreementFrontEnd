@@ -63,8 +63,11 @@ const HomePage = ({ setUserName }) => {
 
     const copyPurchaseOrder = (e, po) => {
         e.preventDefault();
-        getRequest("api/POManagement/CopyPurchaseOrder?poId="+po.poId, UserProfile.getToken()).then(rr => rr.text()).then(res => {
+        console.log(po);
+        getRequest("api/POManagement/CopyPurchaseOrder?poId=" + po.poId, UserProfile.getToken()).then(rr => rr.text()).then(res => {
+            console.log(res);
             if (res > 0) {
+                console.log(res);
                 PurchaseOrder.setPoId(res);
                 PurchaseOrder.setPurchaseOrderEditFlag(1);
                 if (po.sellerId.toString() === UserProfile.getUserId()) {
@@ -204,10 +207,10 @@ const HomePage = ({ setUserName }) => {
                                                 Title
                                             </div>
                                             <div className="col-md-2">
-                                                Seller
+                                                Buyer
                                             </div>
                                             <div className="col-md-2">
-                                                Buyer
+                                                Seller
                                             </div>
                                             <div className="col-md-1">
                                                 Status
@@ -325,10 +328,10 @@ const HomePage = ({ setUserName }) => {
                                                 Title
                                             </div>
                                             <div className="col-md-2">
-                                                Seller
+                                                Buyer
                                             </div>
                                             <div className="col-md-2">
-                                                Buyer
+                                                Seller
                                             </div>
                                             <div className="col-md-1">
                                                 Status
