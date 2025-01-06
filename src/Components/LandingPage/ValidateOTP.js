@@ -56,11 +56,11 @@ const ValidateOTP = () => {
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<Form ref={usrForm} onSubmit={handleSubmit} className="d-flex h-100">
+			<Form ref={usrForm} onSubmit={handleSubmit} className="">
 				<div className="row flex-grow-1">
 					<div className="col-md-5 LandingPageMain">
 						<div className="d-flex h-100 justify-content-center align-items-center">
-							<div style={{ textAlign: 'left', marginTop: '-15em', width: "50%" }}>
+							<div style={{ textAlign: 'left', width: "100%" }}>
 								<InputField name="OTPValidationValue" type="text" label="OTP send on mobile or Email" />
 								<FormSubmitButton name="Validate OTP" />
 							</div>
