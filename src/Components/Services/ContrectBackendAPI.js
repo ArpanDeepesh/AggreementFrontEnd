@@ -1,5 +1,5 @@
 
-const baseAddress = "https://localhost:7083/";
+const baseAddress = "https://www.api.contrect.com/";
 
 export const checkConnection = () => {
     return fetch(baseAddress + 'api/General/Connect', {
