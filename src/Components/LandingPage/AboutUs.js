@@ -1,8 +1,9 @@
 import UserProfile from "../Context/UserProfile";
 import { useEffect } from "react";
-const AboutUs = ({ setUserName }) => {
+const AboutUs = ({ setUserName, setUserType }) => {
 	useEffect(() => {
 		setUserName(UserProfile.getName());
+		setUserType(UserProfile.getUserType());
 	}, [])
 	return (
 		<>

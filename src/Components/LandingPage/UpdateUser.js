@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
-import { sendPostRequest, getRequest } from "../Services/POContractBackendAPI";
+//import { sendPostRequest, getRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import PurchaseOrder from "../Context/PurchaseOrder";
 import { useState } from "react";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 
 
-const UpdateUser = ({ setUserName }) => {
+const UpdateUser = ({ setUserName, setUserType }) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
@@ -20,12 +20,13 @@ const UpdateUser = ({ setUserName }) => {
 		if (UserProfile.getLoginStatus() !== "1") {
 			navigate("/");
 		}
-		getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(res => {
-			setUserName(res.data.name);
-			UserProfile.setUserId(res.data.id);
-			UserProfile.setEmail(res.data.email);
-			UserProfile.setName(res.data.name);
-		}).catch(err => console.log(err));
+		//getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(res => {
+		//	setUserName(res.data.name);
+		//	setUserType()
+		//	UserProfile.setUserId(res.data.id);
+		//	UserProfile.setEmail(res.data.email);
+		//	UserProfile.setName(res.data.name);
+		//}).catch(err => console.log(err));
 	}, []);
 
 	const handleSubmit = (e) => {
@@ -47,25 +48,25 @@ const UpdateUser = ({ setUserName }) => {
 			Status: 'New',
 			UserTermAccepted: usrForm.current['UsrAcceptedTerms'].checked === true
 		};
-		sendPostRequest("api/POManagerAuth/UpdateClient", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res)
-			{
-				getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
-					setUserName(resD.data.name);
-					UserProfile.setUserId(resD.data.id);
-					UserProfile.setEmail(resD.data.email);
-					UserProfile.setName(resD.data.name);
-					if (PurchaseOrder.getPoId() > 0) {
-						navigate('/Details');
-						return;
-					}
-					navigate('/Home');
-				}).catch(err => console.log(err));
-			}
+		//sendPostRequest("api/POManagerAuth/UpdateClient", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res)
+		//	{
+		//		getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
+		//			setUserName(resD.data.name);
+		//			UserProfile.setUserId(resD.data.id);
+		//			UserProfile.setEmail(resD.data.email);
+		//			UserProfile.setName(resD.data.name);
+		//			if (PurchaseOrder.getPoId() > 0) {
+		//				navigate('/Details');
+		//				return;
+		//			}
+		//			navigate('/Home');
+		//		}).catch(err => console.log(err));
+		//	}
 			
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	};
 	const validateFeilds = () => {

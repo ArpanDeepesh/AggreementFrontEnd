@@ -10,14 +10,14 @@ var UserProfile = (function () {
         // Also set this in cookie/localStorage
     }
 
-    var getEmail = function () {
-        return localStorage.getItem("email");
-    };
+    //var getEmail = function () {
+    //    return localStorage.getItem("email");
+    //};
 
-    var setEmail = function (name) {
-        localStorage.setItem("email", name);
-        // Also set this in cookie/localStorage
-    };
+    //var setEmail = function (name) {
+    //    localStorage.setItem("email", name);
+    //    // Also set this in cookie/localStorage
+    //};
 
     var getToken = function () {
         return localStorage.getItem("token");
@@ -25,6 +25,13 @@ var UserProfile = (function () {
 
     var setToken = function (name) {
         localStorage.setItem("token", name);
+    };
+    var getUserType = function () {
+        return localStorage.getItem("user_type");
+    };
+
+    var setUserType= function (name) {
+        localStorage.setItem("user_type", name);
     };
     var getName = function () {
         return localStorage.getItem("display_name");
@@ -34,13 +41,13 @@ var UserProfile = (function () {
         localStorage.setItem("display_name", name);
     };
 
-    var getContactNumber = function () {
-        return localStorage.getItem("contact_number");
-    };
+    //var getContactNumber = function () {
+    //    return localStorage.getItem("contact_number");
+    //};
 
-    var setContactNumber = function (name) {
-        localStorage.setItem("contact_number", name);
-    };
+    //var setContactNumber = function (name) {
+    //    localStorage.setItem("contact_number", name);
+    //};
     var getLoginStatus = function () {
         return localStorage.getItem("user_login_status");
     };
@@ -50,11 +57,10 @@ var UserProfile = (function () {
     };
     var resetUser = function () {
         setName("");
-        setEmail("");
         setToken("");
-        setContactNumber("");
         setUserId("");
         setLoginStatus("0");
+        setUserType("");
 
     };
     return {
@@ -62,13 +68,11 @@ var UserProfile = (function () {
         setName: setName,
         getToken: getToken,
         setToken: setToken,
-        getEmail: getEmail,
-        setEmail: setEmail,
         resetUser: resetUser,
-        getContactNumber: getContactNumber,
-        setContactNumber: setContactNumber,
         getUserId: getUserId,
         setUserId: setUserId,
+        getUserType: getUserType,
+        setUserType: setUserType,
         getLoginStatus: getLoginStatus,
         setLoginStatus: setLoginStatus
     }

@@ -6,8 +6,8 @@
     "\\Components\\DetailPO",
     "\\Components\\FlowPresentation",
     "\\Components\\HomePage",
+    "\\Components\\LandingPage",
     "\\Components\\NewPO"
   ],
-  "SelectedNode": "\\Components\\NewPO\\NewPO.js",
   "PreviewInSolutionExplorer": false
 }

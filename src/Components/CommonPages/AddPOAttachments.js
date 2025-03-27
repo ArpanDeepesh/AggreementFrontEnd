@@ -1,5 +1,5 @@
 import "./MessageDisplay.css";
-import { sendPostRequest } from "../Services/POContractBackendAPI";
+//import { sendPostRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import AddAttachment from "../CommonPages/AddAttachment";
 import { useState } from "react";
@@ -29,16 +29,16 @@ const AddPOAttachments = ({ id, setId, type }) => {
             AttachmentLinks: attachments
         };
         var address = 'api/POManagement/AddPurchaseOrderAttachment';
-        sendPostRequest(address, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-            if (res.length > 0) {
-                setRemarkMsg("Attachments added successfully. Close this section if you dont want to add new files.");
+        //sendPostRequest(address, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+        //    if (res.length > 0) {
+        //        setRemarkMsg("Attachments added successfully. Close this section if you dont want to add new files.");
                 
-            }
+        //    }
 
-        }).catch(err => {
-            console.log(err);
-            setRemarkMsg("Error Occured.Close the section and try after some time.");
-        });
+        //}).catch(err => {
+        //    console.log(err);
+        //    setRemarkMsg("Error Occured.Close the section and try after some time.");
+        //});
 		
         
     }

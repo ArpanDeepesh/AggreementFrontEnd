@@ -36,3 +36,8 @@
         text-decoration-line: none;
         color:black;
     }
+.scrollable-section {
+    overflow-y: auto;
+    /* height: 100vh;*/
+    height: calc(100vh - 100px); /* Adjusting for header (60px) and footer (60px) height */
+}

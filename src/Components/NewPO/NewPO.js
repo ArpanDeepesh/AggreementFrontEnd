@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import FormButton from "../FormParts/FormButton";
-import { sendPostRequest, getRequest } from "../Services/POContractBackendAPI";
+//import { sendPostRequest, getRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import PurchaseOrder from "../Context/PurchaseOrder";
 import { useState } from "react";
@@ -17,7 +17,7 @@ import DisappearingMessage from "../CommonPages/DisappearingMessage";
 import InputNumberField from "../FormParts/InputNumberField";
 import AddAttachment from "../CommonPages/AddAttachment";
 
-const NewPO = ({ setUserName }) => {
+const NewPO = ({ setUserName, setUserType }) => {
 	const poForm = useRef(null);
 	const itemForm = useRef(null);
 	const taxForm = useRef(null);
@@ -105,6 +105,7 @@ const NewPO = ({ setUserName }) => {
 			navigate("/");
 		}
 		setUserName(UserProfile.getName());
+		setUserType(UserProfile.getUserType());
 		setPoAmount(0);
 		setAutoCalculateOn(1);
 		resetItem(0);
@@ -132,45 +133,45 @@ const NewPO = ({ setUserName }) => {
 		calculateDisplayVariables();
 	}, [itemList, payList])
 	const setPurchaseOrder = (id) => {
-		getRequest('api/POManagement/GetPurchaseOrder?poId=' + id, UserProfile.getToken())
-			.then(r => r.json()).then(res => {
-				if (res.data.poTitle === "Locked")
-				{
-					PurchaseOrder.resetData();
-					setMsg("Someone else is editing the purchase order. Please rediect to the home page.");
-					setMsgType("Info");
-					return;
-				}
-				lockPurchaseOrder(res.data.id);
+		//getRequest('api/POManagement/GetPurchaseOrder?poId=' + id, UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
+		//		if (res.data.poTitle === "Locked")
+		//		{
+		//			PurchaseOrder.resetData();
+		//			setMsg("Someone else is editing the purchase order. Please rediect to the home page.");
+		//			setMsgType("Info");
+		//			return;
+		//		}
+		//		lockPurchaseOrder(res.data.id);
 				
-				if (Number(res.status) === 0) {
+		//		if (Number(res.status) === 0) {
 					
-					setPoId(res.data.id);
-					setPoRaisedForPhNo(PurchaseOrder.getRaisedBy() === "Seller" ? res.data.poSellerPhoneNumber : res.data.poBuyerPhoneNumber);
+		//			setPoId(res.data.id);
+		//			setPoRaisedForPhNo(PurchaseOrder.getRaisedBy() === "Seller" ? res.data.poSellerPhoneNumber : res.data.poBuyerPhoneNumber);
 					
-					setPoTitle(res.data.poTitle);
-					setPoAmount(res.data.poTotalAmount);
-					setPoDescription(res.data.poDescription);
-					setPoNotificationPeriod(res.data.poNotificationPeriod);
-					setPoDiscount(res.data.poDiscount);
-					setPoCurrency(res.data.poCurrency);
+		//			setPoTitle(res.data.poTitle);
+		//			setPoAmount(res.data.poTotalAmount);
+		//			setPoDescription(res.data.poDescription);
+		//			setPoNotificationPeriod(res.data.poNotificationPeriod);
+		//			setPoDiscount(res.data.poDiscount);
+		//			setPoCurrency(res.data.poCurrency);
 					
-					setPoCompletionInDays(res.data.poCompletionDurationInDays);
-					setRemarkList(res.data.remarks);
-					setAttachmentList(res.data.attachments);
-					setPoBuyerAddress(res.data.poBuyerAddress);
-					setPoSellerAddress(res.data.poSellerAddress);
+		//			setPoCompletionInDays(res.data.poCompletionDurationInDays);
+		//			setRemarkList(res.data.remarks);
+		//			setAttachmentList(res.data.attachments);
+		//			setPoBuyerAddress(res.data.poBuyerAddress);
+		//			setPoSellerAddress(res.data.poSellerAddress);
 					
-					setPoBuyerGstin(res.data.poBuyerGSTIN);
-					setPoSellerGstin(res.data.poSellerGSTIN);
-					setPoBuyerCompany(res.data.poBuyerCompany);
-					setPoSellerCompany(res.data.poSellerCompany);
-					setEditMode(0);
-					resetInputItem(res.data.poCompletionDurationInDays);
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//			setPoBuyerGstin(res.data.poBuyerGSTIN);
+		//			setPoSellerGstin(res.data.poSellerGSTIN);
+		//			setPoBuyerCompany(res.data.poBuyerCompany);
+		//			setPoSellerCompany(res.data.poSellerCompany);
+		//			setEditMode(0);
+		//			resetInputItem(res.data.poCompletionDurationInDays);
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 
 	}
 	const validatePurchaseOrder = () => {
@@ -328,44 +329,44 @@ const NewPO = ({ setUserName }) => {
 			PoBuyerCompany: poForm.current['PoBuyerCompany'].value,
 			PoSellerCompany: poForm.current['PoSellerCompany'].value
 		};
-		sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrder', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				PurchaseOrder.setPoId(res);
-				setPoId(res);
-				setPurchaseOrder(res);
-				PurchaseOrder.setPurchaseOrderEditFlag(1);
-				setMsg("Purchase order is created successfully.");
-				setMsgType("Success");
-			}
+		//sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrder', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		PurchaseOrder.setPoId(res);
+		//		setPoId(res);
+		//		setPurchaseOrder(res);
+		//		PurchaseOrder.setPurchaseOrderEditFlag(1);
+		//		setMsg("Purchase order is created successfully.");
+		//		setMsgType("Success");
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	};
 	const lockPurchaseOrder = (pId) => {
 		console.log("Unlock button is clicked." + UserProfile.getUserId());
-		getRequest('api/POManagement/LockPO?poId=' + pId, UserProfile.getToken()).then(r => r.json()).then(res => {
-			if (res) {
+		//getRequest('api/POManagement/LockPO?poId=' + pId, UserProfile.getToken()).then(r => r.json()).then(res => {
+		//	if (res) {
 
-			}
-		}).catch(err => {
-			console.log(err);
-		});
+		//	}
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	};
 	const unlockPurchaseOrder = (e) => {
 		e.preventDefault();
 
-		getRequest('api/POManagement/UnlockPO?poId=' + poId, UserProfile.getToken()).then(r => r.json()).then(res => {
-			if (res) {
-				PurchaseOrder.resetData();
-				navigate("/Home");
-			}
+		//getRequest('api/POManagement/UnlockPO?poId=' + poId, UserProfile.getToken()).then(r => r.json()).then(res => {
+		//	if (res) {
+		//		PurchaseOrder.resetData();
+		//		navigate("/Home");
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	};
 	const resetItem = (defaultCompletionDays) => {
@@ -474,105 +475,105 @@ const NewPO = ({ setUserName }) => {
 			LiItemCompletionInDays: itemForm.current['ItemCompDays'].value,
 			LineItemStatus: 0
 		}
-		sendPostRequest('api/POManagement/AddOrUpdateItem', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setMsgDis("New Item is added successfully.");
-				resetInputItem(poCompletionInDays);
-				//setMsgType("Success");
-				if (itemIdToAttach === -1)
-				{
-					setItemIdToAttach(res);
-				}
-				if (autoCalculateOn === 1)
-				{
-					getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId() , UserProfile.getToken())
-						.then(r => r.json()).then(r => {
-							if (r >0) {
-								setPoAmount(r);
+		//sendPostRequest('api/POManagement/AddOrUpdateItem', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setMsgDis("New Item is added successfully.");
+		//		resetInputItem(poCompletionInDays);
+		//		//setMsgType("Success");
+		//		if (itemIdToAttach === -1)
+		//		{
+		//			setItemIdToAttach(res);
+		//		}
+		//		if (autoCalculateOn === 1)
+		//		{
+		//			getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId() , UserProfile.getToken())
+		//				.then(r => r.json()).then(r => {
+		//					if (r >0) {
+		//						setPoAmount(r);
 								
-								resetItem(poCompletionInDays);
-								if (itemAttachments.length > 0) {
-									var attachmentformBody = {
-										ItemId: res,
-										AttachmentLinks: itemAttachments
-									};
-									sendPostRequest("api/POManagement/AddLineItemAttachment", UserProfile.getToken(), attachmentformBody).then(r => r.json()).then(resAtt => {
-										if (resAtt.length > 0) {
-											setMsgDis("Attachments added successfully.");
-											setItemAttachments([]);
-											addValueInItemList();
-										}
+		//						resetItem(poCompletionInDays);
+		//						if (itemAttachments.length > 0) {
+		//							var attachmentformBody = {
+		//								ItemId: res,
+		//								AttachmentLinks: itemAttachments
+		//							};
+		//							sendPostRequest("api/POManagement/AddLineItemAttachment", UserProfile.getToken(), attachmentformBody).then(r => r.json()).then(resAtt => {
+		//								if (resAtt.length > 0) {
+		//									setMsgDis("Attachments added successfully.");
+		//									setItemAttachments([]);
+		//									addValueInItemList();
+		//								}
 
-									}).catch(err => {
-										console.log(err);
-										setMsg("Error Occured while adding attachment. Close the section and try after some time.");
-										setMsgType("Error");
-									});
+		//							}).catch(err => {
+		//								console.log(err);
+		//								setMsg("Error Occured while adding attachment. Close the section and try after some time.");
+		//								setMsgType("Error");
+		//							});
 
-								} else {
-									addValueInItemList();
-								}
+		//						} else {
+		//							addValueInItemList();
+		//						}
 								
-						}
-					}).catch(err => {
-						console.log(err);
-					});
-				}
-			}
-		}).catch(err => {
-			console.log(err);
-		});
+		//				}
+		//			}).catch(err => {
+		//				console.log(err);
+		//			});
+		//		}
+		//	}
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	};
 
 	const addValueInItemList = () =>
 	{
-		getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-			.then(r => r.json()).then(res => {
+		//getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
 
-				if (res.status===0) {
-					setItemList(res.data);
-					var tempItemList = [];
-					for (var i = 0; i < res.data.length; i++) {
-						tempItemList.push({ displayTxt: res.data[i].liTitle, value: res.data[i].id });
-                    }
-					//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
-					setAvailableItems(tempItemList);
-					setSelectedItems([]);
+		//		if (res.status===0) {
+		//			setItemList(res.data);
+		//			var tempItemList = [];
+		//			for (var i = 0; i < res.data.length; i++) {
+		//				tempItemList.push({ displayTxt: res.data[i].liTitle, value: res.data[i].id });
+  //                  }
+		//			//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
+		//			setAvailableItems(tempItemList);
+		//			setSelectedItems([]);
 					
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 	}
 	const addValueInItemListByPoId = () => {
-		getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + poId, UserProfile.getToken())
-			.then(r => r.json()).then(res => {
-				if (res.status === 0) {
-					setItemList(res.data);
-					var tempItemList = [];
-					for (var i = 0; i < res.data.length; i++) {
-						tempItemList.push({ displayTxt: res.data[i].liTitle, value: res.data[i].id });
-					}
-					//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
-					setAvailableItems(tempItemList);
-					setSelectedItems([]);
+		//getRequest('api/POManagement/GetPurchaseOrderItems?poId=' + poId, UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
+		//		if (res.status === 0) {
+		//			setItemList(res.data);
+		//			var tempItemList = [];
+		//			for (var i = 0; i < res.data.length; i++) {
+		//				tempItemList.push({ displayTxt: res.data[i].liTitle, value: res.data[i].id });
+		//			}
+		//			//res.data.foreach(x => tempItemList.push(x.liTitle + ":" + x.id));
+		//			setAvailableItems(tempItemList);
+		//			setSelectedItems([]);
 
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 	}
 
 	const addValueInTaxList = () => {
-		getRequest('api/POManagement/GetPurchaseOrderTaxes?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-			.then(r => r.json()).then(res => {
+		//getRequest('api/POManagement/GetPurchaseOrderTaxes?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
 		
-				if (res.status === 0) {
-					setTaxList(res.data);
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//		if (res.status === 0) {
+		//			setTaxList(res.data);
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 	}
 	const editTax = (e, tax) => {
 
@@ -634,39 +635,39 @@ const NewPO = ({ setUserName }) => {
 			Percent: taxForm.current['TaxPercent'].value,
 			Title: taxForm.current['TaxTitle'].value
 		}
-		sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrderTaxes', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				resetTaxInputFields();
-				setMsgDis("Tax is added successfully in the purchase order");
-				if (autoCalculateOn === 1) {
-					getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-						.then(r => r.json()).then(res => {
-							if (res >0) {
-								setPoAmount(res);
-								addValueInTaxList();
-								resetTax()
-							}
-						}).catch(err => {
-							console.log(err);
-						});
-				}
+		//sendPostRequest('api/POManagement/AddOrUpdatePurchaseOrderTaxes', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		resetTaxInputFields();
+		//		setMsgDis("Tax is added successfully in the purchase order");
+		//		if (autoCalculateOn === 1) {
+		//			getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+		//				.then(r => r.json()).then(res => {
+		//					if (res >0) {
+		//						setPoAmount(res);
+		//						addValueInTaxList();
+		//						resetTax()
+		//					}
+		//				}).catch(err => {
+		//					console.log(err);
+		//				});
+		//		}
 
-			}
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	};
 	const addValueInTermList = () => {
-		getRequest('api/POManagement/GetPurchaseOrderTerms?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-			.then(r => r.json()).then(res => {
-				if (res.status === 0) {
-					setTermList(res.data);
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//getRequest('api/POManagement/GetPurchaseOrderTerms?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
+		//		if (res.status === 0) {
+		//			setTermList(res.data);
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 	}
 	const editTerm = (e, term) => {
 		e.preventDefault();
@@ -716,18 +717,18 @@ const NewPO = ({ setUserName }) => {
 			PoId: PurchaseOrder.getPoId(),
 			Val: termForm.current['TermText'].value
 		}
-		sendPostRequest('api/POManagement/AddOrUpdateTermsAndConditions', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				//setTermId(res);
-				addValueInTermList();
-				setMsgDis("Term is added successfully in the purchase order");
-				termReset();
-				termInputReset();
-			}
+		//sendPostRequest('api/POManagement/AddOrUpdateTermsAndConditions', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		//setTermId(res);
+		//		addValueInTermList();
+		//		setMsgDis("Term is added successfully in the purchase order");
+		//		termReset();
+		//		termInputReset();
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	};
 
@@ -888,15 +889,15 @@ const NewPO = ({ setUserName }) => {
 			Frq: payType === 'P' ? payForm.current['PayFreq'].value : 0,
 			PaymentType: payType
 		}
-		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setMsgDis("Payment added successfully");
-				addValueInPayList();
-			}
+		//sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setMsgDis("Payment added successfully");
+		//		addValueInPayList();
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	}
 	const frequencyPaySubmit = (e) => {
 		e.preventDefault();
@@ -916,15 +917,15 @@ const NewPO = ({ setUserName }) => {
 			PaymentType: payType
 		}
 		//console.log(formBody);
-		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setMsgDis("Payment added successfully");
-				addValueInPayList();
-			}
+		//sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentFrequencyAndPartBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setMsgDis("Payment added successfully");
+		//		addValueInPayList();
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	}
 
 	const itemPaySubmit = (e) => {
@@ -948,26 +949,26 @@ const NewPO = ({ setUserName }) => {
         }
 		 
 		//setMsg(JSON.stringify(formBody));
-		sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentItemBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setMsgDis("Payment added successfully");
-				addValueInPayList();
-			}
+		//sendPostRequest('api/POManagement/AddOrUpdatePreApprovalPaymentItemBased', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setMsgDis("Payment added successfully");
+		//		addValueInPayList();
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	};
 	const addValueInPayList = () => {
-		getRequest('api/POManagement/GetPurchaseOrderDraftPayments?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-			.then(r => r.json()).then(res => {
-				if (res.status === 0) {
-					setPayList(res.data);
-					//calculateDisplayVariables();
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//getRequest('api/POManagement/GetPurchaseOrderDraftPayments?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
+		//		if (res.status === 0) {
+		//			setPayList(res.data);
+		//			//calculateDisplayVariables();
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 	}
 	const editPay = (e, p) => {
 		resetPayForms();
@@ -1063,15 +1064,15 @@ const NewPO = ({ setUserName }) => {
 			return;
 		}
 		var formBody = {}
-		sendPostRequest('api/POManagement/RaisePurchaseOrder?poId='+poId, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//sendPostRequest('api/POManagement/RaisePurchaseOrder?poId='+poId, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 
-			if (res > 0) {
-				navigate("/Home");
-			}
+		//	if (res > 0) {
+		//		navigate("/Home");
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 
 	}
 	const openTab = (e, id) =>
@@ -1124,14 +1125,14 @@ const NewPO = ({ setUserName }) => {
 		e.preventDefault();
 		if (autoCalculateOn === 1 && PurchaseOrder.getPurchaseOrderEditFlag() === 1)
 		{
-			getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-				.then(r => r.json()).then(res => {
-					if (res > 0) {
-						setPoAmount(res);
-					}
-				}).catch(err => {
-					console.log(err);
-				});
+			//getRequest('api/POManagement/AmountUpdatePurchaseOrder?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+			//	.then(r => r.json()).then(res => {
+			//		if (res > 0) {
+			//			setPoAmount(res);
+			//		}
+			//	}).catch(err => {
+			//		console.log(err);
+			//	});
 		}
 	}
 	const handleDragStart = (item, listType) => {
@@ -1395,127 +1396,7 @@ const NewPO = ({ setUserName }) => {
 								<button className="tab-button" onClick={(e) => { openTab(e, "Payments"); }}>Payments</button>
                             </div>
                             <div id="Items" className="tab-content active">
-                                <div className="table">
-                                    <Form ref={itemForm} onSubmit={itemSubmit}>
-                                        <div className="row">
-                                            <div className="col-md-2">
-                                                <InputField name="ItemTitle" type="text" label="Title" value={itemTitle} />
-                                            </div>
-                                            <div className="col-md-3">
-                                                <InputField name="ItemDescription" type="text" label="Description" value={itemDescription} />
-                                            </div>
-                                            <div className="col-md-2">
-                                                <InputNumberField name="ItemRate" type="decimal" label="Rate" onChange={(e) => updateAmount()} value={itemRate} />
-                                            </div>
-                                            <div className="col-md-2">
-                                                <InputNumberField name="ItemQty" type="number" label="Quantity" onChange={(e) => updateAmount()} value={itemQuantity} />
-                                            </div>
-                                            <div className="col-md-3">
-                                                <InputNumberField name="ItemCompDays" type="number" label="Days To Complete" value={itemDaysToComplete} />
-                                            </div>
-                                            
-										</div>
-										<div className="row" style={{ textAlign: "left", paddingTop: '20px' }}>
-											<div className="col-md-4" style={{ textAlign: "center", fontWeight: '700', fontSize: '20px', color: "#007bff", paddingTop:'30px' }}>
-												Total: {poCurrency} {itemTotal} 
-											</div>
-                                            <div className="col-md-8">
-												<label style={{ fontsize: '20px', color: 'black', fontWeight: '700', paddingLeft: '18px' }} >Attachments</label>
-												<AddAttachment fileLinkList={itemAttachments} setFileLinkList={setItemAttachments} />
-
-											</div>
-											
-
-										</div>
-										<div className="row">
-											<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
-												<FormSubmitButton name={itemId > 0 ? "Save Edit" : "Save New Item"} />
-											</div>
-										</div>
-                                    </Form>
-                                </div>
-
-								<div className="table" style={{ textAlign: "left" }}>
-									<div className="d-none d-md-block">
-										<div className="row tableHeader">
-											<div className="col-md-2 ">
-												Title
-											</div>
-											<div className="col-md-3 ">
-												Description
-											</div>
-											<div className="col-md-1 ">
-												Rate
-											</div>
-											<div className="col-md-1 ">
-												Qty
-											</div>
-											<div className="col-md-1 ">
-												Total
-											</div>
-											<div className="col-md-2 ">
-												Attachments
-											</div>
-											<div className="col-md-2 " style={{ textAlign: "center" }}>
-												Actions
-											</div>
-										</div>
-									</div>
-									{itemList && itemList.length > 0 ? itemList.map(x => < div className="row tablebox">
-										<div className="col-md-2 d-flex align-items-center">
-											<span>
-												<strong className="d-inline d-md-none">Title: </strong>
-													{x.liTitle}
-											</span>
-                                        </div>
-										<div className="col-md-3 d-flex align-items-center">
-										<span>
-											<strong className="d-inline d-md-none">Description: </strong>
-                                            {x.liDescription}</span>
-                                        </div>
-										<div className="col-md-1 d-flex align-items-center">
-											<span>
-											<strong className="d-inline d-md-none">Rate: </strong>
-                                            {x.liRate}</span>
-                                        </div>
-										<div className="col-md-1 d-flex align-items-center">
-											<span>
-											<strong className="d-inline d-md-none">Qty: </strong>
-                                            {x.liQuantity}</span>
-                                        </div>
-										<div className="col-md-1 d-flex align-items-center">
-											<span>
-											<strong className="d-inline d-md-none">Total: </strong>
-                                            {x.liRate * x.liQuantity}</span>
-                                        </div>
-										<div className="col-md-2 d-flex align-items-center">
-											<span>
-											<strong className="d-inline d-md-none">Attachments: </strong>
-                                            {x.attachments ? x.attachments.map((f, i) => < div className="col-md-12">
-												<a href={f.link} target={"new"}> Att-{i + 1}</a> <span className="removeLink" onClick={(e) => {
-													e.preventDefault();
-													setDeleteId(f.id);
-													setDeleteType("IA");
-												}}> Remove </span>
-											</div>) : <span style={{ fontsize: "70%" }}>No Attachments</span>}
-											</span>
-
-										</div>
-										<div className="col-md-2" style={{ textAlign: "center" }}>
-											<span>
-												<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
-												<span className="removeLink" onClick={(e) => {
-													e.preventDefault();
-													setDeleteId(x.id);
-													setDeleteType("LI");
-												}}> Remove </span>
-											</span>
-											
-                                            {/*<FormButton name="Remove"  />*/}
-                                        </div>
-                                    </div>) : <>No Item Is Present.</>}
-
-                                </div>
+                                
 
                             </div>
 

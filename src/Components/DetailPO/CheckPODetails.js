@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { crypt, validateOTPRequest } from "../Services/POContractBackendAPI";
+//import { crypt, validateOTPRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import PurchaseOrder from "../Context/PurchaseOrder";
 
@@ -15,35 +15,35 @@ const CheckPODetails = () => {
 		phoneNo = phoneNo.replace(/ /g, '+');
 		secret = secret.replace(/ /g, '+');
 		pOId = pOId.replace(/ /g, '+');
-		crypt({ Str: phoneNo, IsCrypted: true })
-			.then(rph => rph.text())
-			.then(rph => {
-				crypt({ Str: secret, IsCrypted: true })
-					.then(rsec => rsec.text())
-					.then(rsec => {
-						crypt({ Str: pOId, IsCrypted: true })
-							.then(rpi => rpi.text())
-							.then(rpi => {
-								var formBody = {
-									PhoneNumber: rph,
-									OTP: rsec,
-								};
-								validateOTPRequest(formBody).then(r => r.json()).then(res => {
-									if (res.token === null && res.message === 'Invalid Info') {
-										return;
-									}
-									UserProfile.setLoginStatus("1");
-									UserProfile.setToken(res.token);
-									UserProfile.setContactNumber(rph);
-									PurchaseOrder.setPoId(rpi);
-									navigate("/UpdateUser");
-								}).catch(err => {
-									console.log(err);
-								});
-								console.log(rpi);
-							}).catch(errPi => console.log(errPi));
-					}).catch(errSec => console.log(errSec));
-		}).catch(err => console.log(err));
+		//crypt({ Str: phoneNo, IsCrypted: true })
+		//	.then(rph => rph.text())
+		//	.then(rph => {
+		//		crypt({ Str: secret, IsCrypted: true })
+		//			.then(rsec => rsec.text())
+		//			.then(rsec => {
+		//				crypt({ Str: pOId, IsCrypted: true })
+		//					.then(rpi => rpi.text())
+		//					.then(rpi => {
+		//						var formBody = {
+		//							PhoneNumber: rph,
+		//							OTP: rsec,
+		//						};
+		//						validateOTPRequest(formBody).then(r => r.json()).then(res => {
+		//							if (res.token === null && res.message === 'Invalid Info') {
+		//								return;
+		//							}
+		//							UserProfile.setLoginStatus("1");
+		//							UserProfile.setToken(res.token);
+		//							UserProfile.setContactNumber(rph);
+		//							PurchaseOrder.setPoId(rpi);
+		//							navigate("/UpdateUser");
+		//						}).catch(err => {
+		//							console.log(err);
+		//						});
+		//						console.log(rpi);
+		//					}).catch(errPi => console.log(errPi));
+		//			}).catch(errSec => console.log(errSec));
+		//}).catch(err => console.log(err));
 		
 	}, []);
 	

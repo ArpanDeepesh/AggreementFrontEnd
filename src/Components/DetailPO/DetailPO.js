@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import FormButton from "../FormParts/FormButton";
-import { getRequest } from "../Services/POContractBackendAPI";
+//import { getRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import PurchaseOrder from "../Context/PurchaseOrder";
 import "./DetailPO.css";
@@ -10,7 +10,7 @@ import AddRemark from "../CommonPages/AddRemark";
 import RemarkListDisplay from "../CommonPages/RemarkListDisplay";
 import TreeDisplay from "./TreeDisplay";
 
-const DetailPO = ({ setUserName }) => {
+const DetailPO = ({ setUserName, setUserType }) => {
 	const [remarkList, setRemarkList] = useState();
 	const [poId, setPoId] = useState();
 	const [remarkAction, setRemarkAction] = useState();
@@ -26,20 +26,21 @@ const DetailPO = ({ setUserName }) => {
 		setTreeDisplay(0);
 
 		setUserName(UserProfile.getName());
+		setUserType(UserProfile.getUserType());
 
 		setRemarkAction("Submit Remark");
 		if (PurchaseOrder.getPoId() && PurchaseOrder.getPoId() > 0) {
 
-			getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
-				.then(r => r.json()).then(res => {
-					if (res.data) {
-						setPoId(res.data.poId);
-						setPo(res.data);
-						PurchaseOrder.resetData();
-					}
-				}).catch(err => {
-					console.log(err);
-				});
+			//getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + PurchaseOrder.getPoId(), UserProfile.getToken())
+			//	.then(r => r.json()).then(res => {
+			//		if (res.data) {
+			//			setPoId(res.data.poId);
+			//			setPo(res.data);
+			//			PurchaseOrder.resetData();
+			//		}
+			//	}).catch(err => {
+			//		console.log(err);
+			//	});
 			
 		} else {
 			console.log("8");
@@ -47,28 +48,28 @@ const DetailPO = ({ setUserName }) => {
 		}
 	}, []);
 	const reloadAggrement = () => {
-		getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + poId, UserProfile.getToken())
-			.then(r => r.json()).then(res => {
-				console.log(res);
-				if (res.data) {
-					setPoId(res.data.poId);
-					setPo(res.data);
-					PurchaseOrder.resetData();
-				}
-			}).catch(err => {
-				console.log(err);
-			});
+		//getRequest('api/POManagement/GetPurchaseOrderDetails?poId=' + poId, UserProfile.getToken())
+		//	.then(r => r.json()).then(res => {
+		//		console.log(res);
+		//		if (res.data) {
+		//			setPoId(res.data.poId);
+		//			setPo(res.data);
+		//			PurchaseOrder.resetData();
+		//		}
+		//	}).catch(err => {
+		//		console.log(err);
+		//	});
 	}
 	const downloadClicked = () => {
 		if (poId>0) {
-			getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + poId, UserProfile.getToken())
-				.then(r => r.json()).then(res => {
-					if (res.data !== "") {
-						window.open(res.data, '_blank', 'noopener,noreferrer');
-					}
-				}).catch(err => {
-					console.log(err);
-				});
+			//getRequest('api/POManagement/GetPurchaseOrderRportPDF?poId=' + poId, UserProfile.getToken())
+			//	.then(r => r.json()).then(res => {
+			//		if (res.data !== "") {
+			//			window.open(res.data, '_blank', 'noopener,noreferrer');
+			//		}
+			//	}).catch(err => {
+			//		console.log(err);
+			//	});
 
 		} else {
 			navigate("/Home");

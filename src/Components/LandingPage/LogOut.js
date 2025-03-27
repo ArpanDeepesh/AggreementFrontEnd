@@ -4,7 +4,7 @@ import FormSubmitButton from "../FormParts/FormSubmitButton";
 import UserProfile from "../Context/UserProfile";
 
 
-const LogOut = ({ setUserName}) => {
+const LogOut = ({ setUserName, setUserType }) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -16,6 +16,7 @@ const LogOut = ({ setUserName}) => {
 		e.preventDefault();
 		UserProfile.resetUser();
 		setUserName("");
+		setUserType("");
 
 		navigate('/');
 	}

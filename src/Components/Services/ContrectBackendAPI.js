@@ -1,8 +1,8 @@
 
-const baseAddress = "https://www.api.contrect.com/";
+const baseAddress = "https://localhost:7083/";
 
 export const checkConnection = () => {
-    return fetch(baseAddress + 'api/Common/Connect', {
+    return fetch(baseAddress + 'api/General/Connect', {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -25,18 +25,18 @@ export const sendAuthNotificationRequest = (phoneNo) => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
-            'ClientKey': 'POManagerFrontEnd',
+            'ClientKey': 'ContrectManagerFrontEnd',
         },
         //referrerPolicy: "unsafe-url"
     });
 }
 export const validateOTPRequest = (postbody) => {
     if (postbody) {
-        return fetch(baseAddress + "api/POManagerAuth/ValidateOTP", {
+        return fetch(baseAddress + "api/Auth/ValidateOTP", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'ClientKey': 'POManagerFrontEnd',
+                'ClientKey': 'ContrectManagerFrontEnd',
             },
             body: JSON.stringify(postbody),
             //referrerPolicy: "unsafe-url" 
@@ -47,11 +47,11 @@ export const validateOTPRequest = (postbody) => {
 }
 export const loginRequest = (postbody) => {
     if (postbody) {
-        return fetch(baseAddress + "api/POManagerAuth/login", {
+        return fetch(baseAddress + "api/Auth/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'ClientKey': 'POManagerFrontEnd',
+                'ClientKey': 'ContrectManagerFrontEnd',
             },
             body: JSON.stringify(postbody),
             //referrerPolicy: "unsafe-url" 
@@ -60,14 +60,50 @@ export const loginRequest = (postbody) => {
     return;
 
 }
+export const registerRequest = (postbody) => {
+    if (postbody) {
+        return fetch(baseAddress + "api/Auth/Register", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'ClientKey': 'ContrectManagerFrontEnd',
+            },
+            body: JSON.stringify(postbody),
+            //referrerPolicy: "unsafe-url" 
+        });
+    }
+    return;
+
+}
+export const getRequestAllowAll = (url) => {
+    return fetch(baseAddress + url, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        //referrerPolicy: "unsafe-url" 
+    });
+}
 export const getRequest = (url,token) => {
     return fetch(baseAddress + url, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
-            'ClientKey': 'POManagerFrontEnd',
+            'ClientKey': 'ContrectManagerFrontEnd',
             'Authorization': 'Bearer ' + token
             
+        },
+        //referrerPolicy: "unsafe-url" 
+    });
+}
+export const deleteRequest = (url, token) => {
+    return fetch(baseAddress + url, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'ClientKey': 'ContrectManagerFrontEnd',
+            'Authorization': 'Bearer ' + token
+
         },
         //referrerPolicy: "unsafe-url" 
     });
@@ -78,7 +114,7 @@ export const sendPostRequest = (url, token, postbody) => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'ClientKey': 'POManagerFrontEnd',
+                'ClientKey': 'ContrectManagerFrontEnd',
                 Authorization: 'Bearer ' + token
             },
             body: JSON.stringify(postbody),
@@ -89,7 +125,7 @@ export const sendPostRequest = (url, token, postbody) => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'ClientKey': 'POManagerFrontEnd',
+            'ClientKey': 'ContrectManagerFrontEnd',
             Authorization: 'Bearer ' + token
         },
         //referrerPolicy: "unsafe-url" 
@@ -97,11 +133,11 @@ export const sendPostRequest = (url, token, postbody) => {
 
 }
 export const uploadFile = (formData,token) => {
-    return fetch(baseAddress + "api/FileUpload/upload", {
+    return fetch(baseAddress + "api/General/upload", {
         method: "POST",
         body: formData,
         headers: {
-            'ClientKey': 'POManagerFrontEnd',
+            'ClientKey': 'ContrectManagerFrontEnd',
             Authorization: 'Bearer ' + token
         },
         //referrerPolicy: "unsafe-url"

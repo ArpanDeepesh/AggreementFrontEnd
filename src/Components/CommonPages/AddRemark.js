@@ -3,7 +3,7 @@ import { useRef } from "react";
 import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
-import { sendPostRequest } from "../Services/POContractBackendAPI";
+import { sendPostRequest } from "../Services/ContrectBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import AddAttachment from "../CommonPages/AddAttachment";
 import { useState } from "react";
@@ -42,101 +42,101 @@ const AddRemark = ({ id, setId, type, actionText, reloadAction }) => {
 		if (actionText === "Accept Agreement") {
 			formBody['Remark'] += " remark is provided at " + remarkForm.current["remarkPlace"].value + " on " + Date().toString();
 		}
-		sendPostRequest('api/POManagement/AddRemarks', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				if (actionText === "Submit Remark") {
-					setRemarkMsg("Remark Added Successfully. Close the remark section.");
-					remarkForm.current["remarkText"].value = "";
-					setDisplayForm(0);
-				} else if (actionText === "Decline Agreement") {
-					declineBtnClicked();
-				} else if (actionText === "Accept Agreement") {
-					acceptBtnClicked();
-				} else if (actionText === "Reconsider Agreement") {
-					reconsiderBtnClicked();
-				} else if (actionText === "Claim Delivery") {
-					claimItemBtnClicked();
-				} else if (actionText === "Item Not Completed") {
-					notCompleteItemBtnClicked();
-				} else if (actionText === "Item Completed") {
-					completeItemBtnClicked();
-				} else if (actionText === "Request Payment") {
-					askForPayOrNotDoneBtnClicked();
-				} else if (actionText === "Claim Payment") {
-					paymentDoneRaiseForReceivalClaimBtnClicked();
-				} else if (actionText === "Payment Received") {
-					receivePaymentAskBtnClicked();
-				} else if (actionText === "Decline Payment") {
-					invalidPaymentAskBtnClicked();
-				} else if (actionText === "Payment Not Received") {
-					askForPayOrNotDoneBtnClicked();
-				} else if (actionText === "Complete Aggrement") {
-					completeBtnClicked();
-				}
-			}
+		//sendPostRequest('api/POManagement/AddRemarks', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		if (actionText === "Submit Remark") {
+		//			setRemarkMsg("Remark Added Successfully. Close the remark section.");
+		//			remarkForm.current["remarkText"].value = "";
+		//			setDisplayForm(0);
+		//		} else if (actionText === "Decline Agreement") {
+		//			declineBtnClicked();
+		//		} else if (actionText === "Accept Agreement") {
+		//			acceptBtnClicked();
+		//		} else if (actionText === "Reconsider Agreement") {
+		//			reconsiderBtnClicked();
+		//		} else if (actionText === "Claim Delivery") {
+		//			claimItemBtnClicked();
+		//		} else if (actionText === "Item Not Completed") {
+		//			notCompleteItemBtnClicked();
+		//		} else if (actionText === "Item Completed") {
+		//			completeItemBtnClicked();
+		//		} else if (actionText === "Request Payment") {
+		//			askForPayOrNotDoneBtnClicked();
+		//		} else if (actionText === "Claim Payment") {
+		//			paymentDoneRaiseForReceivalClaimBtnClicked();
+		//		} else if (actionText === "Payment Received") {
+		//			receivePaymentAskBtnClicked();
+		//		} else if (actionText === "Decline Payment") {
+		//			invalidPaymentAskBtnClicked();
+		//		} else if (actionText === "Payment Not Received") {
+		//			askForPayOrNotDoneBtnClicked();
+		//		} else if (actionText === "Complete Aggrement") {
+		//			completeBtnClicked();
+		//		}
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-			setRemarkMsg("Error Occured.Close the section and try after some time.");
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//	setRemarkMsg("Error Occured.Close the section and try after some time.");
+		//});
 		
         
     }
 	const completeBtnClicked = () => {
 		var formBody = {}
-		sendPostRequest('api/POManagement/CompletePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setRemarkMsg("Status Changed Successfully. Agreement is completed");
-				remarkForm.current["remarkText"].value = "";
-				setDisplayForm(0);
+		//sendPostRequest('api/POManagement/CompletePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setRemarkMsg("Status Changed Successfully. Agreement is completed");
+		//		remarkForm.current["remarkText"].value = "";
+		//		setDisplayForm(0);
 
-			}
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 		
 	}
 	const declineBtnClicked = () => {
 
 		var formBody = {}
-		sendPostRequest('api/POManagement/DeclinePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setRemarkMsg("Status Changed Successfully. Agreement is declined");
-				remarkForm.current["remarkText"].value = "";
-				setDisplayForm(0);
+		//sendPostRequest('api/POManagement/DeclinePurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setRemarkMsg("Status Changed Successfully. Agreement is declined");
+		//		remarkForm.current["remarkText"].value = "";
+		//		setDisplayForm(0);
 				
-			}
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	}
 	const reconsiderBtnClicked = () => {
 		var formBody = {}
-		sendPostRequest('api/POManagement/ReconsiderPurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setRemarkMsg("Status Changed Successfully. Agreement is sent for reconsideration");
-				remarkForm.current["remarkText"].value = "";
-				setDisplayForm(0);
-			}
+		//sendPostRequest('api/POManagement/ReconsiderPurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setRemarkMsg("Status Changed Successfully. Agreement is sent for reconsideration");
+		//		remarkForm.current["remarkText"].value = "";
+		//		setDisplayForm(0);
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	}
 	const acceptBtnClicked = () => {
 		var formBody = {}
-		sendPostRequest('api/POManagement/AcceptPurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res > 0) {
-				setRemarkMsg("Status Changed Successfully. Agreement is Accepted");
-				remarkForm.current["remarkText"].value = "";
-				setDisplayForm(0);
-			}
+		//sendPostRequest('api/POManagement/AcceptPurchaseOrder?poId=' + id, UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+		//	if (res > 0) {
+		//		setRemarkMsg("Status Changed Successfully. Agreement is Accepted");
+		//		remarkForm.current["remarkText"].value = "";
+		//		setDisplayForm(0);
+		//	}
 
-		}).catch(err => {
-			console.log(err);
-		});
+		//}).catch(err => {
+		//	console.log(err);
+		//});
 	}
 	const claimItemBtnClicked = () => {
 		var formBody = {}

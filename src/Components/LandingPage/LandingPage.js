@@ -4,7 +4,7 @@ import {useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
-import { sendAuthNotificationRequest } from "../Services/POContractBackendAPI";
+//import { sendAuthNotificationRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";

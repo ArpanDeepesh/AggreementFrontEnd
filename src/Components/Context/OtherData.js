@@ -1,22 +1,22 @@
 var OtherData = (function () {
 
-    var getCityList = function () {
-        return localStorage.getItem("cityList");    // Or pull this from cookie/localStorage
+    var getData = function () {
+        return localStorage.getItem("data");    // Or pull this from cookie/localStorage
     };
 
-    var setCityList = function (name) {
-        localStorage.setItem("cityList", name);
+    var setData = function (name) {
+        localStorage.setItem("data", name);
         // Also set this in cookie/localStorage
     };
 
 
 
     var resetData = function () {
-        setCityList([]);
+        setData("");
     };
     return {
-        getCityList: getCityList,
-        setCityList: setCityList,
+        getData: getData,
+        setData: setData,
         resetData: resetData
     }
 

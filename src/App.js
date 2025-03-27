@@ -1,11 +1,11 @@
-import DefaultLayout from './Components/DefaultLayout';
+import NewLayout from './Components/NewLayout';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
     return (
         <div className="App">
-            <DefaultLayout />
+            <NewLayout />
         </div>
   );
 }

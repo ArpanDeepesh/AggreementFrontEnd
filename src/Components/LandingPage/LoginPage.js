@@ -5,9 +5,10 @@ import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import FormButton from "../FormParts/FormButton";
-import { loginRequest } from "../Services/POContractBackendAPI";
+//import { loginRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
+import { loginRequest } from "../Services/ContrectBackendAPI";
 
 
 const LoginPage = ({ setDisplayLogin })=>{
@@ -27,18 +28,22 @@ const LoginPage = ({ setDisplayLogin })=>{
 		}
 
 		var postBody = {
-			UserId:usrForm.current['userId'].value,
+			Contact:usrForm.current['userId'].value,
 			Password:usrForm.current['userPass'].value
 		};
 		loginRequest(postBody).then(r => r.json()).then(res => {
+			console.log(res);
 
-			if (res.token === null && res.message === 'Invalid Info') {
+			if (res.token === null && res.message === 'Error') {
 				setMsg("Invalid Credentials.");
 				setMsgType("Error");
 				return;
 			}
 			UserProfile.setLoginStatus("1");
 			UserProfile.setToken(res.token);
+			UserProfile.setName(res.name);
+			UserProfile.setUserType(res.userType);
+			UserProfile.setUserId(res.userId);
 			navigate("/Home");
 		}).catch(err => {
 			console.log(err);
@@ -90,8 +95,8 @@ const LoginPage = ({ setDisplayLogin })=>{
 						<div className="col-md-12">
 							<span className="landingPageLink"
 								onClick={(e) => {
-								e.preventDefault();
-								setDisplayLogin(2);
+									e.preventDefault();
+									navigate("/forgotPassword")
 							}} >
 							Forgot your password?
 						</span>

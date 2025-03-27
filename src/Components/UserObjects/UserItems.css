@@ -1,0 +1,142 @@
+/** {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 900px;
+    max-width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.left {
+    background-color: #3498db;
+    color: white;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+    .left h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .left img {
+        width: 80%;
+        max-width: 200px;
+    }
+
+    .left p {
+        font-size: 18px;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.feature {
+    text-align: center;
+}
+
+    .feature img {
+        width: 40px;
+        margin-bottom: 10px;
+    }
+
+    .feature p {
+        color: #fff;
+        font-size: 14px;
+    }
+
+.right {
+    padding: 40px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .right h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+.input-field {
+    margin-bottom: 20px;
+}
+
+    .input-field input {
+        width: 100%;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+    }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+    .actions button {
+        width: 48%;
+        padding: 15px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        .actions button:hover {
+            background-color: #2980b9;
+        }
+
+.forgot-password {
+    text-align: center;
+    color: #3498db;
+    text-decoration: none;
+}
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #aaa;
+}
+*/

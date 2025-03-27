@@ -1,6 +1,6 @@
 import "./MessageDisplay.css";
 import FormButton from "../FormParts/FormButton";
-import { getRequest } from "../Services/POContractBackendAPI";
+//import { getRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -35,33 +35,33 @@ const DeleteConfirmation = ({ deleteId, closeConfirmation,type}) => {
         } else if (type === "PAY") {
             address += "DeletePay?payId=" + id;
         }
-        getRequest(address, UserProfile.getToken()).then(r => r.json()).then(res => {
-            if (res) {
-                setHideAcceptBtn(0);
-                if (type === "LI") {
-                    setRemarkMsg("Line item deleted successfully. Close this section.");
-                } else if (type === "IA") {
-                    setRemarkMsg("Line item attachment deleted successfully. Close this section.");
-                } else if (type === "OA") {
-                    setRemarkMsg("Purchase attachment deleted successfully. Close this section.");
-                } else if (type === "TAX") {
-                    setRemarkMsg("Tax is deleted successfully. Close this section.");
-                } else if (type === "TNC") {
-                    setRemarkMsg("Term is deleted successfully. Close this section.");
-                } else if (type === "PAY") {
-                    setRemarkMsg("payment is deleted successfully. Close this section.");
-                } else
-                {
-                    setRemarkMsg("Attachments deleted successfully. Close this section.");
-                }
+        //getRequest(address, UserProfile.getToken()).then(r => r.json()).then(res => {
+        //    if (res) {
+        //        setHideAcceptBtn(0);
+        //        if (type === "LI") {
+        //            setRemarkMsg("Line item deleted successfully. Close this section.");
+        //        } else if (type === "IA") {
+        //            setRemarkMsg("Line item attachment deleted successfully. Close this section.");
+        //        } else if (type === "OA") {
+        //            setRemarkMsg("Purchase attachment deleted successfully. Close this section.");
+        //        } else if (type === "TAX") {
+        //            setRemarkMsg("Tax is deleted successfully. Close this section.");
+        //        } else if (type === "TNC") {
+        //            setRemarkMsg("Term is deleted successfully. Close this section.");
+        //        } else if (type === "PAY") {
+        //            setRemarkMsg("payment is deleted successfully. Close this section.");
+        //        } else
+        //        {
+        //            setRemarkMsg("Attachments deleted successfully. Close this section.");
+        //        }
                 
                 
-            }
+        //    }
 
-        }).catch(err => {
-            console.log(err);
-            setRemarkMsg("Error Occured.Close the section and try after some time.");
-        });
+        //}).catch(err => {
+        //    console.log(err);
+        //    setRemarkMsg("Error Occured.Close the section and try after some time.");
+        //});
 		
         
     }

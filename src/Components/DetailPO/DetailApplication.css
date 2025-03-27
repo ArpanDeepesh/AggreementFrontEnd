@@ -1,0 +1,35 @@
+.commentIcon {
+    cursor:pointer;
+}
+.headingStyle {
+    text-align: left;
+    color: #007bff
+}
+.invoiceDisplay {
+    border: 2px solid #007bff
+}
+
+details {
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+summary {
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 5px;
+    cursor: pointer;
+}
+
+details[open] {
+    background-color: #e3f2fd;
+}
+
+details div {
+    margin: 10px 0;
+    padding: 5px;
+}

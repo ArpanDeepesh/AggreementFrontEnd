@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import InputField from "../FormParts/InputField";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
-import { validateOTPRequest } from "../Services/POContractBackendAPI";
+import { validateOTPRequest } from "../Services/ContrectBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 
@@ -25,11 +25,11 @@ const ValidateOTP = () => {
 			return;
 		}
 		var formBody = {
-			PhoneNumber: UserProfile.getContactNumber(),
+			ContactId: UserProfile.getUserId(),
 			OTP: usrForm.current['OTPValidationValue'].value,
 		};
 		validateOTPRequest(formBody).then(r => r.json()).then(res => {
-			if (res.token===null && res.message === 'Invalid Info')
+			if (res.token===null && res.status !== 1)
 			{
 				setMsg("Invalid OTP.");
 				setMsgType("Error");
@@ -37,7 +37,10 @@ const ValidateOTP = () => {
 			}
 			UserProfile.setLoginStatus("1");
 			UserProfile.setToken(res.token);
-			navigate("/UpdateUser");
+			UserProfile.setName(res.name);
+			UserProfile.setUserType(res.userType);
+			UserProfile.setUserId(res.userId);
+			navigate("/Home");
 		}).catch(err => {
 			console.log(err);
 		});
