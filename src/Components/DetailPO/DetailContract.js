@@ -9,9 +9,11 @@ import OtherData from "../Context/OtherData";
 import Payment from "./Payment";
 import PaymentList from "./PaymentList";
 import AgreementNegotiation from "../CommonPages/AgreementNegotiation";
+import ReportDisplay from "../CommonPages/ReportDisplay";
 
 const DetailContract = ({ setUserName, setUserType }) => {
 	const [remarkList, setRemarkList] = useState();
+	const [agReportData, setAgReportData] = useState([]);
 	const [agreementObj, setAgreementObj] = useState();
 	const [itemList, setItemList] = useState();
 	const [buyerTermList, setBuyerTermList] = useState();
@@ -127,10 +129,10 @@ const DetailContract = ({ setUserName, setUserType }) => {
 			
 		}).catch(err => console.log(err));
 	}
-	const completeTxnNote = (id) => {
-		getRequest("?invId=" + id, UserProfile.getToken()).then(r => r.json()).then(res => {
+	const loadReportData = () => {
+		getRequest("api/business/ContractReport?agId=" + agreementObj.id, UserProfile.getToken()).then(r => r.json()).then(res => {
 			if (res.status === 1) {
-				loadInvoiceList(agreementObj.id);
+				setAgReportData(res.data);
 			} else {
 				console.log("Not able to generate note");
 			}
@@ -142,6 +144,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
 			{agreementObj && agreementObj.id > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList} />
+				<ReportDisplay reportData={agReportData} setReportData={setAgReportData} />
 				<Payment reloadMethod={() => loadInvoiceList(agreementObj.id)} data={paymentData} setData={setPaymentData} />
 				<PaymentList setDisplayList={setPayListDisplay} displayList={payListDisplay} payLst={payList} setPayLst={setPayList} />
 				<AgreementNegotiation
@@ -162,6 +165,12 @@ const DetailContract = ({ setUserName, setUserType }) => {
 										navigate("/Home");
 									}} />
 								</div>
+								<div className="col-md-3">
+									<FormButton name="Report" onClick={(e) => {
+										e.preventDefault();
+										loadReportData();
+									}} />
+								</div>
 							</div> : <></>}
 						{agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ?
 							<div className="row p-1" style={{ textAlign: "center" }}>
@@ -177,6 +186,12 @@ const DetailContract = ({ setUserName, setUserType }) => {
 										e.preventDefault();
 										OtherData.getData(JSON.stringify(agreementObj));
 										navigate("/DraftInvoice");
+									}} />
+								</div>
+								<div className="col-md-3">
+									<FormButton name="Report" onClick={(e) => {
+										e.preventDefault();
+										loadReportData();
 									}} />
 								</div>
 							</div> : <></>}
