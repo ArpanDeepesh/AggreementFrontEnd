@@ -39,13 +39,13 @@ const LoginPage = ({ setDisplayLogin })=>{
 				setMsgType("Error");
 				return;
 			}
-			if (res.status && res.status !== 1)
+			if (res.status !== 1)
 			{
 				setMsg("Invalid Credentials.");
 				setMsgType("Error");
 				return;
 			}
-			if (res && res.usrId===0 && res.token === null && res.message === 'Error') {
+			if (res.usrId===0 && res.token === null && res.message === 'Error') {
 				setMsg("Invalid Credentials.");
 				setMsgType("Error");
 				return;
