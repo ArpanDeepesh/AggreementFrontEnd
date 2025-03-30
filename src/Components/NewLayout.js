@@ -179,7 +179,7 @@ const NewLayout = () => {
             </main>
             <footer>
                 <div>
-                    Contract Agreement &copy; Musedaq 2024
+                    Contract Agreement &copy; Musedaq Fintech Pvt. Ltd. 2024 (Last Updated:30 March 2025 1:03PM (IST))
                 </div>
             </footer>
 
