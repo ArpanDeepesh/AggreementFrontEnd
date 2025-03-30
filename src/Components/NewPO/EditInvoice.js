@@ -69,7 +69,7 @@ const EditInvoice = () => {
 		var postBody = {
 			Id: item.id,
 			AgItemId: item.agItemId,
-			InvoiceId: agreementObj.id,
+			InvoiceId: invoiceObj.id,
 			QuantityDelivered: Number(addInvoiceForm.current['QuantityDelivered'].value),
 			Rate: Number(addInvoiceForm.current['Rate'].value),
 			Note: addInvoiceForm.current['Note' ].value,
@@ -128,6 +128,7 @@ const EditInvoice = () => {
 		sendPostRequest("api/Business/MakeInvoice", UserProfile.getToken(), postBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res.status === 1) {
+				OtherData.setData(JSON.stringify(agreementObj));
 				navigate("/DetailContract");
 			} else {
 				setMsg("Not able to save data");
@@ -153,6 +154,20 @@ const EditInvoice = () => {
 			{invoiceObj && invoiceObj.id && invoiceObj.id > 0 ?
 				<div>
 					<div className="table">
+						<div className="row">
+							<div className="col-md-1">
+								<FormButton name="Back" onClick={(e) => {
+									e.preventDefault();
+									OtherData.setData(JSON.stringify(agreementObj));
+									navigate("/DetailContract");
+								}} />
+							</div>
+							<div className="col-md-11">
+								<h4 style={{ color: "#007bff" }}>
+									Edit invoice
+								</h4>
+							</div>
+						</div>
 						<Form ref={addInvoiceForm} onSubmit={handleSubmit}>
 
 							<div className="row">
@@ -193,7 +208,7 @@ const EditInvoice = () => {
 							</div>
 
 							<div className="table" style={{ textAlign: "left" }}>
-								<h3>Item List</h3>
+								<h4 style={{ color: "#007bff" }}>Item List</h4>
 								<div className="d-none d-md-block">
 									<div className="row tableHeader">
 										<div className="col-md-1 ">

@@ -40,9 +40,10 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 				Attachments: remarkAttachments
 			};
 			sendPostRequest("api/Business/AcceptAgreement", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-				if (res.status == 1) {
+				if (res.status === 1) {
 					getRequest("api/Business/StartContract?agreementId=" + data.id, UserProfile.getToken()).then(r => r.json()).then(res => {
 						if (res.status === 1) {
+							setDisplayForm(0);
 							setRemarkMsg("Contract started");
 						} else
 						{
@@ -59,9 +60,10 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 		} else if (type === "AR") {
 
 			sendPostRequest("api/Business/AcceptAgreement", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-				if (res.status == 1) {
+				if (res.status === 1) {
 					getRequest("api/Business/RejectAgreement?agreementId=" + data.id, UserProfile.getToken()).then(r => r.json()).then(res => {
 						if (res.status === 1) {
+							setDisplayForm(0);
 							setRemarkMsg("Contract Rejected");
 						} else {
 							console.log("Not able to launch the contract");

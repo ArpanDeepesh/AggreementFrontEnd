@@ -122,9 +122,25 @@ const EditTxnNote = () => {
 			{txnNoteObj && txnNoteObj.id && txnNoteObj.id > 0 ?
 				<div>
 					<div className="table">
+						<div className="row">
+							<div className="col-md-1">
+								<FormButton name="Back" onClick={(e) => {
+									e.preventDefault();
+									OtherData.setData(JSON.stringify(agreementObj));
+									navigate("/DetailContract");
+								}} />
+							</div>
+							<div className="col-md-11">
+								<h4 style={{ color: "#007bff" }}>
+									Edit transaction note
+								</h4>
+							</div>
+						</div>
+						<div className="row" style={{ border: "solid 1px #007bff" }}>
+						</div>
 						<Form ref={addInvoiceForm} >
 
-							<div className="row">
+							<div className="row" style={{ padding:"5px" }}>
 								<div className="col-md-4">
 
 									<InputNumberField name="PanalityPercent" type="decimal" label="Panality Percent" value={txnNoteObj.panalityPercent}/>
@@ -142,7 +158,9 @@ const EditTxnNote = () => {
 								</div>
 
 							</div>
-							<div className="row">
+							<div className="row" style={{ border: "solid 1px #007bff" }}>
+							</div>
+							<div className="row" style={{ padding: "5px" }}>
 								<div className="col-md-3">
 									{item && item.id > 0 ? <>
 										{item.itemHsnCsnUin}
@@ -185,9 +203,11 @@ const EditTxnNote = () => {
 								</div>
 
 							</div>
+							<div className="row" style={{ border: "solid 1px #007bff" }}>
+							</div>
 
 							<div className="table" style={{ textAlign: "left" }}>
-								<h3>Item List</h3>
+								<h4 style={{ color: "#007bff" }}>Item List</h4>
 								<div className="d-none d-md-block">
 									<div className="row tableHeader">
 										<div className="col-md-1 ">

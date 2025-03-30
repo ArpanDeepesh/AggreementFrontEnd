@@ -49,6 +49,8 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 			console.log(res);
 			setItemList(res.data);
 			checkItemsAccepted(res.data);
+			checkTermAccepted(buyerTermList);
+			checkTermAccepted(sellerTermList);
 		}).catch(err => console.log(err));
 	}
 	const loadBuyerTermList = (pid) => {
@@ -56,6 +58,8 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 			console.log(res);
 			setBuyerTermList(res.data);
 			checkTermAccepted(res.data);
+			checkTermAccepted(sellerTermList);
+			checkItemsAccepted(itemList);
 		}).catch(err => console.log(err));
 	}
 	const loadSellerTermList = (pid) => {
@@ -63,6 +67,8 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 			console.log(res);
 			setSellerTermList(res.data);
 			checkTermAccepted(res.data);
+			checkTermAccepted(buyerTermList);
+			checkItemsAccepted(itemList);
 		}).catch(err => console.log(err));
 	}
 	const reloadMethod = () => {
@@ -129,7 +135,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 						<h4 className="headingStyle">Agreement Details </h4>
 						{ agreementObj.buyer.usrId.toString() === UserProfile.getUserId().toString() ?
 							<div className="row p-1" style={{ textAlign: "center" }}>
-							<div className="col-md-1">
+								<div className="col-md-1" style={{ textAlign:"left" }}>
 								<FormButton name="< Back" onClick={(e) => {
 									e.preventDefault();
 									navigate("/Home");
