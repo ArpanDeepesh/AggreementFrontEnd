@@ -33,8 +33,13 @@ const LoginPage = ({ setDisplayLogin })=>{
 		};
 		loginRequest(postBody).then(r => r.json()).then(res => {
 			console.log(res);
-
-			if (res.status !== 1 && res.usrId===0 && res.token === null && res.message === 'Error') {
+			if (res.message === "Unauthorized:User is invalid")
+			{
+				setMsg("Invalid Credentials.");
+				setMsgType("Error");
+				return;
+			}
+			if (res.status && res.status !== 1 && res.usrId===0 && res.token === null && res.message === 'Error') {
 				setMsg("Invalid Credentials.");
 				setMsgType("Error");
 				return;
