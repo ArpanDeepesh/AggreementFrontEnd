@@ -248,7 +248,7 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 							</div>
 						</div>
 						<div className="col-md-2">
-							<InputNumberField name="ItemTax" type="decimal" label="Tax" onChange={(e) => console.log("Rate Changed")} value={itemTax} />
+							<InputNumberField name="ItemTax" type="decimal" label="Tax (%)" onChange={(e) => console.log("Rate Changed")} value={itemTax} />
 						</div>
 
 					</div>

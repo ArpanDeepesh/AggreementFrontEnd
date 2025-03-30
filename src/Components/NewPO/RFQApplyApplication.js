@@ -285,7 +285,7 @@ const RFQApplyApplication = () => {
 
 										<span id={"editRate" + x.id} style={{ display: "none" }}>
 											<InputNumberField name={"sellerDaysToComplete" + x.id} type="number" label="Days to complete" />
-											<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax" />
+											<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
 											<InputNumberField name={"sellerRate" + x.id} type="decimal" label="Proposed Rate" />
 											<div className="form-group" style={{ textAlign: 'left' }}>
 												<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>

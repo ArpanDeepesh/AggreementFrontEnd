@@ -353,7 +353,7 @@ const DraftAgreement = () => {
 											{x.itemTax} 
 										</span>
 										<span id={"editTax" + x.id} style={{ display: "none" }}>
-											<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax" />
+											<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
 										</span>
 									</div>
 									<div className="col-md-1 d-flex align-items-center">
