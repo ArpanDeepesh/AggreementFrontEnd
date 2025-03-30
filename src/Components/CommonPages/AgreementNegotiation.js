@@ -132,9 +132,11 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 						}
 						else if (type === "SIN" || type === "BIN") {
 							url = "api/Business/UpdateAgreementRate";
+							console.log(data);
+							console.log(url);
 							postBody = {
 								Id: type === "SIN" ? data.sellerRateId : (type === "BIN" ? data.buyerRateId : 0),
-								ItemId: data.itemId,
+								ItemId: data.id,
 								ItemTax: 0,
 								CompletionDays: remarkForm.current["itemCompletion"] ? remarkForm.current["itemCompletion"].value : data.ldPercent,
 								RateType: type === "SIN" ? 2 : 3,
@@ -145,6 +147,7 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 							console.log(postBody);
 							sendPostRequest(url, UserProfile.getToken(), postBody).then(x => x.json()).then(res => {
 								if (res.status === 1) {
+									console.log(res);
 									setDisplayForm(0);
 									setRemarkMsg("Status is changed successfully");
 								} else {
