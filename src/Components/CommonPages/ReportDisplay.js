@@ -3,7 +3,7 @@ import LineGraph from "./LineGraph";
 import BarGraph from "./BarGraph";
 import PieChartAdvance from "./PieChartAdvance";
 import ColumnGraphDayProgress from "./ColumnGraphDayProgress";
-const ReportDisplay = ({ reportData, setReportData,totalInvoice }) => {
+const ReportDisplay = ({ reportData, setReportData }) => {
     const closeModule = (e) => {
         e.preventDefault();
         setReportData([]);
@@ -22,10 +22,16 @@ const ReportDisplay = ({ reportData, setReportData,totalInvoice }) => {
 
             <button className="closeButton" onClick={(e) => { closeModule(e) }}>X</button>
             <div className="modalReportContent">
-                <LineGraph dataArray={reportData} />
-                <BarGraph dataArray={tempData} />
-                <PieChartAdvance initial={reportData[0].advance} left={reportData[reportData.length - 1].advance} />
-                <ColumnGraphDayProgress totalValue={reportData[0].totalWorkDue} invoiceRaised={totalInvoice} invoiceCleared={reportData[reportData.length - 1].totalRaised} cashOutflow={reportData[reportData.length - 1].totalPaid }/>
+                {/*<LineGraph dataArray={reportData} />*/}
+                {/*<BarGraph dataArray={tempData} />*/}
+                public string Day
+                public decimal AdvancePaid 
+                public decimal AdvanceTotalRaised 
+                public decimal CashOutFlow 
+                public decimal InvoiceRaisedTotal 
+                public decimal InvoiceCleared 
+                <PieChartAdvance initial={reportData.advanceTotalRaised} left={reportData.advancePaid} />
+                <ColumnGraphDayProgress totalValue={reportData.totalValue} invoiceRaised={reportData.invoiceRaisedTotal} invoiceCleared={reportData.invoiceCleared} cashOutflow={reportData.cashOutFlow}/>
             </div>
         </div> :<></>}
         </>

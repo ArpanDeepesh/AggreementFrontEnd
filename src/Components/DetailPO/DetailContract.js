@@ -131,13 +131,13 @@ const DetailContract = ({ setUserName, setUserType }) => {
 		}).catch(err => console.log(err));
 	}
 	const loadReportData = () => {
-		getRequest("api/business/ContractReport?agId=" + agreementObj.id, UserProfile.getToken()).then(r => r.json()).then(res => {
+		getRequest("api/business/ContractDayReport?agId=" + agreementObj.id, UserProfile.getToken()).then(r => r.json()).then(res => {
 			if (res.status === 1) {
-				var invVal = 0;
-				for (var i = 0; i < invoiceList.length; i++) {
-					invVal += invoiceList[i].invoiceAmount;
-				}
-				setInvoiceTotal(invVal);
+				var total = 0;
+				for (var i = 0; i < itemList.length; i++) {
+					total+=itemList[i].itemQuantityDelivered * itemList[i].itemProposedRate;
+                }
+				res.data["totalValue"] = total;
 				setAgReportData(res.data);
 			} else {
 				console.log("Not able to generate note");
@@ -150,7 +150,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
 			{agreementObj && agreementObj.id > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList} />
-				<ReportDisplay reportData={agReportData} setReportData={setAgReportData} totalInvoice={invoiceTotal }/>
+				<ReportDisplay reportData={agReportData} setReportData={setAgReportData}/>
 				<Payment reloadMethod={() => loadInvoiceList(agreementObj.id)} data={paymentData} setData={setPaymentData} />
 				<PaymentList setDisplayList={setPayListDisplay} displayList={payListDisplay} payLst={payList} setPayLst={setPayList} />
 				<AgreementNegotiation
