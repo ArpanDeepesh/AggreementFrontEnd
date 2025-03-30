@@ -15,7 +15,8 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 	const itemForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
-	const [itemList, setItemList] = useState([]);
+	const [sellerItemList, setSellerItemList] = useState([]);
+	const [buyerItemList, setBuyerItemList] = useState([]);
 	const [itemId, setItemId] = useState();
 	const [itemTitle, setItemTitle] = useState();
 	const [itemHsnCsnUin, setItemHsnCsnUin] = useState();
@@ -54,15 +55,23 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 				setItemCurrencyOptions(res.data);
 			}
 		}).catch(err => console.log(err));
-		getRequest("api/Auth/GetCatalogItem", UserProfile.getToken()).then(x => x.json()).then(res => {
-			console.log(res);
-			setItemList(res.data);
-		}).catch(err => console.log(err));
+		loadItemList();
 	}, []);
 	const loadItemList = () => {
 		getRequest("api/Auth/GetCatalogItem", UserProfile.getToken()).then(x => x.json()).then(res => {
 			console.log(res);
-			setItemList(res.data);
+			var buyList = [];
+			var sellList = [];
+			for (var i = 0; i < res.data.length; i++) {
+				if (res.data[i].itemType === "Seller") {
+					sellList.push(res.data[i]);
+				} else
+				{
+					buyList.push(res.data[i]);
+				}
+			}
+			setBuyerItemList(buyList);
+			setSellerItemList(sellList);
 		}).catch(err => console.log(err));
 	}
 	const resetItemForm = () => {
@@ -188,6 +197,10 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 			<MessageDisplay msg={msg} setMsg={setMsg} />
 			<DeleteItemConfirmation msg={deleteMsg} setMsg={setDeleteMsg} action={deleteAction} data={deleteData} />
 			<div className="table">
+				<div className="row">
+					<div className="col-md-1" style={{ textAlign:"left" }}><FormButton name="Back" onClick={(e) => { navigate("/home") }} /></div>
+					<div className="col-md-11"><h4 style={{ color: "#007bff" }}> Create catalog</h4></div>
+				</div>
 				<Form ref={itemForm} onSubmit={handleSubmit}>
 					<div className="row">
 						<div className="col-md-2">
@@ -199,9 +212,11 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 										setItemType(e.target.value);
 									}} selected={itemType}>
 									<option value="-99" selected >-Select-</option>
-									{itemTypeOption && itemTypeOption.length > 0 ?
-										itemTypeOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
-										<></>}
+									{/*{itemTypeOption && itemTypeOption.length > 0 ?*/}
+									{/*	itemTypeOption.map(x => <option value={x.id} >{x.typeValue}</option>) :*/}
+									{/*	<></>}*/}
+									<option value={1} >To Sell</option>
+									<option value={2} >To Buy</option>
 								</select>
 							</div>
 						</div>
@@ -295,11 +310,12 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 						</div>
 					</div>
 				</div>
-				{itemList && itemList.length > 0 ? itemList.map(x => < div className="row tablebox">
+				<h5 style={{ color: "#007bff" }}>Buy List</h5>
+				{buyerItemList && buyerItemList.length > 0 ? buyerItemList.map(x => < div className="row tablebox">
 					<div className="col-md-1 d-flex align-items-center">
 						<span>
 							<strong className="d-inline d-md-none">Code: </strong>
-							{x.itemHsnCsnUin}<br />({x.itemType})</span>
+							{x.itemHsnCsnUin}</span>
 					</div>
 					<div className="col-md-2 d-flex align-items-center">
 						<span>
@@ -349,7 +365,61 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 						{/*<FormButton name="Remove"  />*/}
 					</div>
 				</div>) : <>No Item Is Present.</>}
+				<h5 style={{ color: "#007bff" }}>Sell List</h5>
+				{sellerItemList && sellerItemList.length > 0 ? sellerItemList.map(x => < div className="row tablebox">
+					<div className="col-md-1 d-flex align-items-center">
+						<span>
+							<strong className="d-inline d-md-none">Code: </strong>
+							{x.itemHsnCsnUin}</span>
+					</div>
+					<div className="col-md-2 d-flex align-items-center">
+						<span>
+							<strong className="d-inline d-md-none">Title: </strong>
+							{x.itemTitle}
+						</span>
+					</div>
+					<div className="col-md-3 d-flex align-items-center">
+						<span>
+							<strong className="d-inline d-md-none">Description: </strong>
+							{x.itemDescription}</span>
+					</div>
+					<div className="col-md-1 d-flex align-items-center">
+						<span>
+							<strong className="d-inline d-md-none">Rate: </strong>
+							{x.itemRate}<br /><span style={{ fontSize: '10px' }}>{x.currency}/{x.sellingUnit}</span></span>
+					</div>
 
+					<div className="col-md-1 d-flex align-items-center">
+						<span>
+							<strong className="d-inline d-md-none">Tax: </strong>
+							{x.itemTax}</span>
+					</div>
+					<div className="col-md-2 d-flex align-items-center">
+						<span>
+							<strong className="d-inline d-md-none">Attachments: </strong>
+							{x.catalogAttachments ? x.catalogAttachments.map((i) => < div className="col-md-12" style={{ marginBottom: "2px" }}>
+								<a href={i.link} target={"new"}><img src={i.link} width={50} height={50} /></a> <span className="removeLink" onClick={(e) => {
+									e.preventDefault();
+									setDeleteMsg("Are you sure you want to delete the attachment ?");
+									setDeleteData("api/Auth/DeleteItemAttachment?attachId=" + i.id + "&itemId=" + x.id);
+								}}> Remove </span>
+							</div>) : <span style={{ fontsize: "70%" }}>No Attachments</span>}
+						</span>
+
+					</div>
+					<div className="col-md-2" style={{ textAlign: "center" }}>
+						<span>
+							<FormButton name="Edit" onClick={(e) => { editItem(e, x) }} />
+							<span className="removeLink" onClick={(e) => {
+								e.preventDefault();
+								setDeleteMsg("Are you sure you want to delete the attachment ?");
+								setDeleteData("api/Auth/DeleteCatalogItem?itemId=" + x.id);
+							}}> Remove </span>
+						</span>
+
+						{/*<FormButton name="Remove"  />*/}
+					</div>
+				</div>) : <>No Item Is Present.</>}
 			</div>
 		</div>
 	</>);

@@ -299,17 +299,18 @@ const handleSubmitAddItem = (e) => {
 			<DeleteItemConfirmation msg={deleteMsg} setMsg={setDeleteMsg} action={deleteAction} data={deleteData} />
 			<div className="table">
 				<div className="row">
-					<div className="col-md-4">
+					<div className="col-md-1" style={{ textAlign: "left" }}>
 						<FormButton name="Back" onClick={(e) => {
 							e.preventDefault();
 							navigate("/home");
 						}} />
 					</div>
 					<div className="col-md-4">
-						<FormButton name="Publish" onClick={(e) => {
+						{proposalId > 0 ? <FormButton name="Publish" onClick={(e) => {
 							e.preventDefault();
 							publishProposal();
-						}} />
+						}} /> :<></>}
+						
 					</div>
 				</div>
 				<Form ref={proposalForm} onSubmit={handleSubmit}>
@@ -334,7 +335,7 @@ const handleSubmitAddItem = (e) => {
 							<InputNumberField name="ProposalLdPercent" type="text" label="LD Percent" value={termLDPercent} />
 						</div>
 						<div className="col-md-2">
-							<InputNumberField name="ProposalLdAppliedAfterDays" type="text" label="LD duration" value={termLDDays} />
+							<InputNumberField name="ProposalLdAppliedAfterDays" type="text" label="LD duration (in days)" value={termLDDays} />
 						</div>
 						<div className="col-md-3">
 							<InputNumberField name="ProposalCompletionInDays" type="text" label="Completion (in days)" value={proposalCompletion} />

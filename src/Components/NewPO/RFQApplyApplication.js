@@ -190,61 +190,69 @@ const RFQApplyApplication = () => {
 				<div>
 					<div className="table">
 						<div className="row">
-							<div className="col-md-4">
+							<div className="col-md-1" style={{ textAlign:"left" }}>
 								<FormButton name="Back" onClick={(e) => {
 									e.preventDefault();
 									navigate("/home");
 								}} />
 							</div>
-							<div className="col-md-4">
-								<FormButton name="Publish" onClick={(e) => {
-									e.preventDefault();
-									publishProposal();
-								}} />
+							<div className="col-md-11" >
+								<h4 style={{ color: "#007bff", paddingTop:"5px"  }}>Apply for proposal</h4>
 							</div>
+							{/*<div className="col-md-4">*/}
+							{/*	<FormButton name="Publish" onClick={(e) => {*/}
+							{/*		e.preventDefault();*/}
+							{/*		publishProposal();*/}
+							{/*	}} />*/}
+							{/*</div>*/}
+						</div>
+						<div className="row" style={{ border: "solid 1px #007bff" }}>
 						</div>
 						<Form ref={proposalForm} onSubmit={handleSubmit}>
 
-							<div className="row">
+							<div className="row" style={{ padding:"5px" }}>
 
-								<div className="col-md-2">
-									<strong>LD Percent: </strong>{proposalObj.proposalLdPercent}
+								<div className="col-md-1">
+									<strong>LD: </strong><br />{proposalObj.proposalLdPercent} %
 
 								</div>
-								<div className="col-md-2">
-									<strong>LD Days: </strong>{proposalObj.proposalCompletionInDays}
+								<div className="col-md-1">
+									<strong>LD duration: </strong><br />{proposalObj.proposalCompletionInDays} days
 								</div>
 								<div className="col-md-2">
-									<strong>Agreement Duration: </strong>{proposalObj.proposalCompletionInDays}
+									<strong>Agreement duration: </strong><br />{proposalObj.proposalCompletionInDays} days
 								</div>
-								<div className="col-md-2">
-									<InputNumberField name="Advance" type="text" label="Advance" />
+								<div className="col-md-4">
+									<InputNumberField name="Advance" type="text" label="Advance (%)" />
 								</div>
-							</div>
-							<div className="row">
-								<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
+								<div className="col-md-4" style={{ textAlign: "right" }}>
+								<br/>
 									<FormSubmitButton name={agreementId > 0 ? "Edit Agreement" : "Save New Agreement"} />
 								</div>
 							</div>
+							<div className="row" style={{ border: "solid 1px #007bff" }}>
+							</div>
 							
 							<div className="table" style={{ textAlign: "left" }}>
-								<h3>Item List</h3>
+								<h4 style={{ color: "#007bff" }}>Item List</h4>
 								<div className="d-none d-md-block">
 									<div className="row tableHeader">
-										<div className="col-md-2 ">
+										<div className="col-md-1 ">
 											Code
 										</div>
-										<div className="col-md-2 ">
+										<div className="col-md-1 ">
 											Title
 										</div>
 										<div className="col-md-3 ">
 											Description
 										</div>
-										<div className="col-md-3 ">
+										<div className="col-md-1 ">
 											Quantity
 										</div>
-
-										<div className="col-md-2 " style={{ textAlign: "center" }}>
+										<div className="col-md-5 " style={{ textAlign: "center" }}>
+											Seller Rate
+										</div>
+										<div className="col-md-1 " style={{ textAlign: "center" }}>
 											Actions
 										</div>
 									</div>
@@ -268,51 +276,61 @@ const RFQApplyApplication = () => {
 									</div>
 									<div className="col-md-1 d-flex align-items-center">
 										<span>
-											<strong className="d-inline d-md-none">Quanityt: </strong>
+											<strong className="d-inline d-md-none">Quantity: </strong>
 											{x.itemQuantity}</span>
 									</div>
-									<div className="col-md-5 d-flex align-items-center">
+									<div className="col-md-5 align-items-center" style={{ textAlign: "center" }}>
 										<span id={"displayRate" + x.id}>
-											
+											<strong className="d-inline d-md-none">Rate: </strong>
 											{x.sellerRate && x.sellerRate > 0 ? <span>
-												Tax:{x.sellerTax}
+												Tax:{x.sellerTax} %
 												<br />
-												Time toComplete:{x.sellerDaysToComplete}
+												Time to complete:{x.sellerDaysToComplete} days
 												<br/>
 												Rate:{x.sellerRate} {getCurrencyName(x.sellerCurrency)}/{getUnitName(x.sellerUnit)}
-											</span> : <>Not present</>}
+											</span> : <span>Not present</span>}
 										</span>
 
 										<span id={"editRate" + x.id} style={{ display: "none" }}>
-											<InputNumberField name={"sellerDaysToComplete" + x.id} type="number" label="Days to complete" />
-											<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
-											<InputNumberField name={"sellerRate" + x.id} type="decimal" label="Proposed Rate" />
-											<div className="form-group" style={{ textAlign: 'left' }}>
-												<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
-												<select name={"sellerCurrency" + x.id} className="form-control"
-													onChange={(e) => {
-														e.preventDefault();
-														//setItemRateCurrency(e.target.value);
-													}}>
-													<option value="-99" selected >-Select-</option>
-													{itemCurrencyOption && itemCurrencyOption.length > 0 ?
-														itemCurrencyOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
-														<></>}
-												</select>
+											<div className="row">
+												<div className="col-md-6">
+													<InputNumberField name={"sellerRate" + x.id} type="decimal" label="Proposed Rate" />
+													<div className="form-group" style={{ textAlign: 'left' }}>
+														<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
+														<select name={"sellerCurrency" + x.id} className="form-control"
+															onChange={(e) => {
+																e.preventDefault();
+																//setItemRateCurrency(e.target.value);
+															}}>
+															<option value="-99" selected >-Select-</option>
+															{itemCurrencyOption && itemCurrencyOption.length > 0 ?
+																itemCurrencyOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
+																<></>}
+														</select>
+													</div>
+													<div className="form-group" style={{ textAlign: 'left' }}>
+														<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Unit</label>
+														<select name={"sellerUnit" + x.id} className="form-control"
+															onChange={(e) => {
+																e.preventDefault();
+																//setItemRateCurrency(e.target.value);
+															}}>
+															<option value="-99" selected >-Select-</option>
+															{itemUnitOption && itemUnitOption.length > 0 ?
+																itemUnitOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
+																<></>}
+														</select>
+													</div>
+												</div>
+												<div className="col-md-6">
+													<InputNumberField name={"sellerDaysToComplete" + x.id} type="number" label="Days to complete" />
+													<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
+												</div>
+												
 											</div>
-											<div className="form-group" style={{ textAlign: 'left' }}>
-												<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Unit</label>
-												<select name={"sellerUnit" + x.id} className="form-control"
-													onChange={(e) => {
-														e.preventDefault();
-														//setItemRateCurrency(e.target.value);
-													}}>
-													<option value="-99" selected >-Select-</option>
-													{itemUnitOption && itemUnitOption.length > 0 ?
-														itemUnitOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
-														<></>}
-												</select>
-											</div>
+											
+											
+											
 										</span>
 										<span id={"saveBtn" + x.id} style={{ display: "none" }}>
 											<FormButton name="Save" onClick={(e) => {

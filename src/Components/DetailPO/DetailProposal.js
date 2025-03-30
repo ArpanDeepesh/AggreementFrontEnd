@@ -113,7 +113,7 @@ const DetailProposal = ({ setUserName, setUserType }) => {
 					<div className="col-md-12">
 						<h4 className="headingStyle">Agreement Details </h4>
 						{rfq.proposalStatus === "Active" ? <div className="row p-1" style={{ textAlign: "center" }}>
-							<div className="col-md-1">
+							<div className="col-md-1" style={{ textAlign: "left" }}>
 								<FormButton name="Back" onClick={(e) => {
 									e.preventDefault();
 									OtherData.resetData();

@@ -1,15 +1,28 @@
 import "./AddAttachment.css";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import Form from "react-bootstrap/Form";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import UserProfile from "../Context/UserProfile";
 import { uploadFile } from "../Services/ContrectBackendAPI";
 import InputField from "../FormParts/InputField";
 
 const AddAttachment = ({ fileLinkList, setFileLinkList }) => {
     const attachmentForm = useRef(null);
+    const [attMsg, setAttMsg] = useState("");
     const addFile = (e) => {
         e.preventDefault();
+        if (!attachmentForm.current['uploadFile'].files[0])
+        {
+            console.log("No file1");
+            setAttMsg("No file is added. Please select a file before adding.");
+            return;
+        }
+        console.log(attachmentForm.current['title'].value==="");
+        if (attachmentForm.current['title'].value === "") {
+            console.log("No file2");
+            setAttMsg("No file is added.Please Provide title.");
+            return;
+        }
         var formData = new FormData();
         formData.append("file", attachmentForm.current['uploadFile'].files[0]);
         formData.append("tempName", attachmentForm.current['title'].value);
@@ -21,8 +34,9 @@ const AddAttachment = ({ fileLinkList, setFileLinkList }) => {
                     link: res.url
                 }];
                 setFileLinkList(newLinkList);
+                setAttMsg("there are " + newLinkList.length +" attachments in the list.")
                 attachmentForm.current['title'].value = "";
-                attachmentForm.current['uploadFile'].value = "";
+                attachmentForm.current['uploadFile'].value="";
             }
         }).catch(err => {
             console.log(err);
@@ -33,6 +47,7 @@ const AddAttachment = ({ fileLinkList, setFileLinkList }) => {
         <div>
             <div class="row">
                 <div className="col-md-10">
+                    {attMsg}
                     <Form ref={attachmentForm} onSubmit={(e) => { e.preventDefault() }}>
                         <div class="input-group">
                             <div className="col-md-2">
@@ -45,8 +60,8 @@ const AddAttachment = ({ fileLinkList, setFileLinkList }) => {
                             </div>
                             <div className="col-md-3">
                                 <label></label>
-                                
                                 <FormSubmitButton name="Add File" onClick={(e) => { addFile(e) }} myStyle={{ marginLeft: "5px" }} />
+                                
                             </div>
                         </div>
                     </Form>

@@ -254,7 +254,7 @@ const DraftAgreement = () => {
 				<div>
 					<div className="table">
 						<div className="row">
-							<div className="col-md-4">
+							<div className="col-md-1" style={{ textAlign: "left" }}>
 								<FormButton name="Back" onClick={(e) => {
 									e.preventDefault();
 									navigate("/home");
@@ -267,27 +267,40 @@ const DraftAgreement = () => {
 								}} />
 							</div>
 						</div>
+						<div className="row" style={{ border: "solid 1px #007bff" }}>
+						</div>
 						<Form ref={proposalForm} onSubmit={handleSubmit}>
 
-							<div className="row">
+							<div className="row" style={{ padding:"5px" }}>
 
-								<div className="col-md-2">
-									<strong>LD Percent: </strong>{agreementObj.ldPercent}
+								<div className="col-md-1">
+									<strong>LD: </strong>
+									<br />
+									{agreementObj.ldPercent} %
 
 								</div>
-								<div className="col-md-2">
-									<strong>LD Days: </strong>{agreementObj.ldDays}
+								<div className="col-md-1">
+									<strong>LD duration: </strong>
+									<br />
+									{agreementObj.ldDays} Days
 								</div>
 								<div className="col-md-2">
-									<strong>Agreement Duration: </strong>{agreementObj.contractDuration}
+									<strong>Agreement duration: </strong>
+									<br />
+									{agreementObj.contractDuration} Days
 								</div>
-								<div className="col-md-2">
-									<strong>Advance: </strong>{agreementObj.advance}
+								<div className="col-md-4">
+									<InputNumberField name="Advance" type="decimal" label="Advance" value={agreementObj.advance} />
+								</div>
+								<div className="col-md-4" style={{ textAlign: "right" }}>
+								<br/>
+									<FormSubmitButton name={agreementId > 0 ? "Edit Agreement" : "Save New Agreement"} />
 								</div>
 							</div>
-
+							<div className="row" style={{ border: "solid 1px #007bff" }}>
+							</div>
 							<div className="table" style={{ textAlign: "left" }}>
-								<h3>Item List</h3>
+								<h4 style={{ color:"#007bff" }}>Item List</h4>
 								<div className="d-none d-md-block">
 									<div className="row tableHeader">
 										<div className="col-md-1 ">
@@ -376,9 +389,7 @@ const DraftAgreement = () => {
 
 							</div>
 							<div className="row">
-								<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
-									<FormSubmitButton name={agreementId > 0 ? "Edit Agreement" : "Save New Agreement"} />
-								</div>
+								
 							</div>
 						</Form>
 					</div>
@@ -446,7 +457,7 @@ const DraftAgreement = () => {
 							</div>
 						</Form>
 						<div className="table" style={{ textAlign: "left" }}>
-							<h3>Buyers Term List</h3>
+							
 							<div className="d-none d-md-block">
 								<div className="row tableHeader">
 									<div className="col-md-2 ">
@@ -464,6 +475,7 @@ const DraftAgreement = () => {
 									</div>
 								</div>
 							</div>
+							<h4 style={{ color: "#007bff" }}>Buyers Term List</h4>
 							{buyerTermList && buyerTermList.length > 0 ? buyerTermList.map(x => < div className="row tablebox">
 								<div className="col-md-2 d-flex align-items-center">
 									<span>
@@ -489,6 +501,7 @@ const DraftAgreement = () => {
 								<div className="col-md-2" style={{ textAlign: "center" }}>
 								</div>
 							</div>) : <>No Item Is Present.</>}
+							<h4 style={{ color: "#007bff" }}>Seller Term List</h4>
 							{sellerTermList && sellerTermList.length > 0 ? sellerTermList.map(x => < div className="row tablebox">
 								<div className="col-md-2 d-flex align-items-center">
 									<span>

@@ -119,16 +119,24 @@ const UserTermConditions = () => {
 						<div className="col-md-1">
 							<FormButton name="Back" onClick={(e) => { navigate("/userTerms") }} />
 						</div>
-						<div className="col-md-11"><h2>Group Name:{termGroup.groupName}</h2></div>
+						<div className="col-md-11"><h4 style={{ color:"#007bff" }}>Group Name: {termGroup.groupName}</h4></div>
 					</div>
-					<div className="row">
-						<div className="col-md-6">{termGroup.description}</div>
-						<div className="col-md-2">Group type:{termGroup.typeName}</div>
-						<div className="col-md-2">LD percent:{termGroup.ldPercentOnlyForBuying}</div>
-						<div className="col-md-2">LD days:{termGroup.ldAppliedInDaysOnlyForBuying}</div>
-					</div></> :<>"loading Data"</> }
-				
+					<div className="row" style={{ border: "solid 1px #007bff" }}></div>
+					<div className="row" style={{ paddingTop: "5px", paddingBottom: "5px", textAlign:"left" }}>
+						<div className="col-md-6"><strong>Description:</strong> {termGroup.description}</div>
+						<div className="col-md-2"><strong>Group type:</strong> {termGroup.typeName}</div>
+						<div className="col-md-2"><strong>LD percent:</strong> {termGroup.ldPercentOnlyForBuying}</div>
+						<div className="col-md-2"><strong>LD days:</strong> {termGroup.ldAppliedInDaysOnlyForBuying}</div>
+						</div>
+					</> : <>"loading Data"</>}
+				<div className="row" style={{ border:"solid 1px #007bff" }}>
+				</div>
 				<Form ref={termForm} onSubmit={handleSubmit}>
+					<div className="row">
+						<h4 style={{ color: "#007bff" }}>
+						Add terms in group
+						</h4>
+					</div>
 					<div className="row">
 						<div className="col-md-4">
 							<InputField name="TermTitle" type="text" label="Title" value={termTitle} />
