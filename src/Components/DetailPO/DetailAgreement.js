@@ -210,14 +210,14 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 								setRemarkType("BAN");
 							}} />
 						</> : <></>}
-						{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && agreementObj.status === "Waiting for Buyer or 1st party" ? <>
+						{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && agreementObj.status === "Waiting for Buyer" ? <>
 							<FormButton name="Negotiate" onClick={(e) => {
 								e.preventDefault();
 								setRemarkData(agreementObj);
 								setRemarkType("BAN");
 							}} />
 						</> : <></>}
-						{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && agreementObj.status === "Waiting for seller or 2nd party" ? <>
+						{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && agreementObj.status === "Waiting for Seller" ? <>
 							<FormButton name="Accept" onClick={(e) => {
 								e.preventDefault();
 								setRemarkData(agreementObj);
@@ -338,7 +338,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 										setRemarkType("BIN");
 									}} />
 								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.itemStatus === "Waiting for Buyer or 1st party" ? <>
+								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.itemStatus === "Waiting for Buyer" ? <>
 									{x.sellerRate === x.buyerRate && x.sellerItemCompletion === x.buyerItemCompletion ? <FormButton name="Accept" onClick={(e) => {
 										e.preventDefault();
 										setRemarkData(x);
@@ -350,7 +350,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 										setRemarkType("BIN");
 									}} />
 								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && x.itemStatus === "Waiting for seller or 2nd party" ? <>
+								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && x.itemStatus === "Waiting for Seller" ? <>
 									{x.sellerRate === x.buyerRate && x.sellerItemCompletion === x.buyerItemCompletion ? <FormButton name="Accept" onClick={(e) => {
 										e.preventDefault();
 										setRemarkData(x);
@@ -417,7 +417,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 								</span></div>
 							<div className="col-md-1">
 								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString()
-									&& (x.termStatus === "Proposed" || x.termStatus === "Waiting for seller or 2nd party") ? <>
+									&& (x.termStatus === "Proposed" || x.termStatus === "Waiting for Seller") ? <>
 										<FormButton name="Accept" onClick={(e) => {
 											e.preventDefault();
 											setRemarkData(x);
@@ -429,7 +429,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 											setRemarkType("BTSN");
 										}} />
 								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.termStatus === "Waiting for Buyer or 1st party" ? <>
+								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.termStatus === "Waiting for Buyer" ? <>
 									<FormButton name="Negotiate" onClick={(e) => {
 										e.preventDefault();
 										setRemarkData(x);
@@ -488,7 +488,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 								</span></div>
 							<div className="col-md-1">
 								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString()
-									&& (x.termStatus === "Proposed" || x.termStatus === "Waiting for Buyer or 1st party") ? <>
+									&& (x.termStatus === "Proposed" || x.termStatus === "Waiting for Buyer") ? <>
 										<FormButton name="Accept" onClick={(e) => {
 											e.preventDefault();
 											setRemarkData(x);
@@ -500,7 +500,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 											setRemarkType("STBN");
 										}} />
 								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && x.termStatus === "Waiting for seller or 2nd party" ? <>
+								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && x.termStatus === "Waiting for Seller" ? <>
 									<FormButton name="Negotiate" onClick={(e) => {
 										e.preventDefault();
 										setRemarkData(x);

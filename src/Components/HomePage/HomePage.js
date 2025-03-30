@@ -373,8 +373,8 @@ const HomePage = ({ setUserName, setUserType}) => {
                                         tempPO.status === "Draft"
                                         || tempPO.status === "Proposed"
                                         || tempPO.status === "Accepted"
-                                        || tempPO.status === "Waiting for seller or 2nd party"
-                                        || tempPO.status === "Waiting for Buyer or 1st party"
+                                        || tempPO.status === "Waiting for Seller"
+                                        || tempPO.status === "Waiting for Buyer"
                                     ) ? < div className="row tablebox" >
                                         <div className="col-md-3 d-flex align-items-center">
                                             <span>

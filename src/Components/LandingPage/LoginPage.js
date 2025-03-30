@@ -34,7 +34,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 		loginRequest(postBody).then(r => r.json()).then(res => {
 			console.log(res);
 
-			if (res.token === null && res.message === 'Error') {
+			if (res.status !== 1 && res.usrId===0 && res.token === null && res.message === 'Error') {
 				setMsg("Invalid Credentials.");
 				setMsgType("Error");
 				return;

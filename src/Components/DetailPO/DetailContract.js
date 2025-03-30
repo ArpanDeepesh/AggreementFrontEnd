@@ -382,7 +382,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 													</div>
 												</div>
 												<div className="col-md-3">
-													{(x.txnNote.noteStatus === "Waiting for seller or 2nd party" || x.txnNote.noteStatus === "Active" ) && agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ? <>
+													{(x.txnNote.noteStatus === "Waiting for Seller" || x.txnNote.noteStatus === "Active" ) && agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ? <>
 														<FormButton name="Negotiate" onClick={(e) => {
 															e.preventDefault();
 															setRemarkType("TSN");
@@ -395,7 +395,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 															setRemarkData(x.txnNote);
 														}} />
 													</> : <></>}
-													{x.txnNote.noteStatus === "Waiting for Buyer or 1st party" && agreementObj.buyer.usrId.toString() === UserProfile.getUserId().toString() ? <>
+													{x.txnNote.noteStatus === "Waiting for Buyer" && agreementObj.buyer.usrId.toString() === UserProfile.getUserId().toString() ? <>
 														<FormButton name="Negotiate" onClick={(e) => {
 															e.preventDefault();
 															setRemarkType("TBN");
@@ -471,7 +471,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 																						setRemarkData(y);
 																					}} />
 																				</> : <></>}
-																				{y.noteStatus === "Waiting for seller or 2nd party" && agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ? <>
+																				{y.noteStatus === "Waiting for Seller" && agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ? <>
 																					<FormButton name="Negotiate" onClick={(e) => {
 																						e.preventDefault();
 																						setRemarkType("TISN");
@@ -486,7 +486,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 																					</> : <></>}
 																					
 																				</> : <></>}
-																				{y.noteStatus === "Waiting for Buyer or 1st party" && agreementObj.buyer.usrId.toString() === UserProfile.getUserId().toString() ? <>
+																				{y.noteStatus === "Waiting for Buyer" && agreementObj.buyer.usrId.toString() === UserProfile.getUserId().toString() ? <>
 																					<FormButton name="Negotiate" onClick={(e) => {
 																						e.preventDefault();
 																						setRemarkType("TIBN");

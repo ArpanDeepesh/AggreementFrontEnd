@@ -303,7 +303,9 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 								</> : <></>}
 								{type === "TIBN" ? <>
 									<div className="row">
-
+										<div className="col-md-12">
+											{data.sellerProposedRate}
+										</div>
 										<div className="col-md-12">
 											<InputField name="remarkText" label="Provide Remark" />
 										</div>
@@ -320,7 +322,9 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 								</> : <></>}
 								{type === "TISN" ? <>
 									<div className="row">
-
+										<div className="col-md-12">
+											{data.buyerProposedRate}
+										</div>
 										<div className="col-md-12">
 											<InputField name="remarkText" label="Provide Remark" />
 										</div>
@@ -416,7 +420,7 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 									</div>
 									<div className="col-md-12">
 											
-										<InputNumberField name="amount" label="Seller Rate" value={data.buyerRate} />
+										<InputNumberField name="amount" label="Buyer Rate" value={data.buyerRate} />
 									</div>
 									<div className="col-md-12">
 										<InputNumberField name="itemCompletion" label="Buyer completion in days" value={data.buyerItemCompletion} />
@@ -466,11 +470,10 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 									<InputField name="remarkText" label="Provide Remark" />
 								</div>
 								<div className="col-md-12">
-									<span>{data.buyerRate} {data.currency}/{data.unit}</span>
 									<InputField name="termTitle" label="Title" value={data.termTitle} />
 								</div>
 								<div className="col-md-12">
-									<InputField name="termTxt" label="Seller completion in days" value={data.termTxt} />
+									<InputField name="termTxt" label="Remark" value={data.termTxt} />
 								</div>
 								<div className="col-md-12">
 											<FormSubmitButton name="Submit" onClick={(e) => { submitRemark(e, data.id, type) }} />

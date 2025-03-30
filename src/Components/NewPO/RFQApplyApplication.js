@@ -221,6 +221,11 @@ const RFQApplyApplication = () => {
 									<InputNumberField name="Advance" type="text" label="Advance" />
 								</div>
 							</div>
+							<div className="row">
+								<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
+									<FormSubmitButton name={agreementId > 0 ? "Edit Agreement" : "Save New Agreement"} />
+								</div>
+							</div>
 							
 							<div className="table" style={{ textAlign: "left" }}>
 								<h3>Item List</h3>
@@ -325,11 +330,7 @@ const RFQApplyApplication = () => {
 								</div>) : <>No Item Is Present.</>}
 
 							</div>
-							<div className="row">
-								<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
-									<FormSubmitButton name={agreementId > 0 ? "Edit Agreement" : "Save New Agreement"} />
-								</div>
-							</div>
+							
 						</Form>
 					</div>
 				</div>
