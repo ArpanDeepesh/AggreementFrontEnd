@@ -18,20 +18,16 @@ const ReportDisplay = ({ reportData, setReportData }) => {
         })
     }
     return (<>
-        {reportData && reportData.length > 0 ? <div className={reportData && reportData.length > 0 ? "modalOverlay" : "modalOverlay hidden"}>
+        {reportData && reportData.day && reportData.day.length > 0 ? <div className={reportData && reportData.day.length > 0 ? "modalOverlay" : "modalOverlay hidden"}>
 
             <button className="closeButton" onClick={(e) => { closeModule(e) }}>X</button>
             <div className="modalReportContent">
                 {/*<LineGraph dataArray={reportData} />*/}
                 {/*<BarGraph dataArray={tempData} />*/}
-                public string Day
-                public decimal AdvancePaid 
-                public decimal AdvanceTotalRaised 
-                public decimal CashOutFlow 
-                public decimal InvoiceRaisedTotal 
-                public decimal InvoiceCleared 
-                <PieChartAdvance initial={reportData.advanceTotalRaised} left={reportData.advancePaid} />
-                <ColumnGraphDayProgress totalValue={reportData.totalValue} invoiceRaised={reportData.invoiceRaisedTotal} invoiceCleared={reportData.invoiceCleared} cashOutflow={reportData.cashOutFlow}/>
+                <h4>{reportData.day}</h4>
+                <ColumnGraphDayProgress totalValue={reportData.totalValue} invoiceRaised={reportData.invoiceRaisedTotal} invoiceCleared={reportData.invoiceCleared} cashOutflow={reportData.cashOutFlow} />
+                <PieChartAdvance initial={reportData.advanceTotalRaised} left={reportData.advanceTotalRaised-reportData.advancePaid} />
+               
             </div>
         </div> :<></>}
         </>

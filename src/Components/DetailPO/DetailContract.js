@@ -135,10 +135,12 @@ const DetailContract = ({ setUserName, setUserType }) => {
 			if (res.status === 1) {
 				var total = 0;
 				for (var i = 0; i < itemList.length; i++) {
-					total+=itemList[i].itemQuantityDelivered * itemList[i].itemProposedRate;
-                }
+					total += itemList[i].itemQuantity * itemList[i].buyerRate;
+				}
+				console.log(total);
 				res.data["totalValue"] = total;
 				setAgReportData(res.data);
+				console.log(res.data);
 			} else {
 				console.log("Not able to generate note");
 			}

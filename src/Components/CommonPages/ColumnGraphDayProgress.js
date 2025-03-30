@@ -23,7 +23,7 @@ const ColumnGraphDayProgress = ({ totalValue, invoiceRaised, invoiceCleared ,cas
         ["Total cashoutflow", cashOutflow],
     ];
     console.log(data);
-    return (<>{totalValue > 0 && invoiceRaised >0 ? <>
+    return (<>{totalValue > 0 ? <>
         <div style={{ display: "inline-block", width: '500px', height:'500px' }} >
             <Chart
                 chartType="ColumnChart"
