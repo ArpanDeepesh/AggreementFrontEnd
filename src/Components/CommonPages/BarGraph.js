@@ -1,6 +1,6 @@
 import "./PieChart.css";
 import { Chart } from "react-google-charts";
-const LineGraph = ({ dataArray }) => {
+const BarGraph = ({ dataArray }) => {
 
     //const options = {
     //    pieHole: 0.4, pieSliceText: "none",
@@ -21,9 +21,9 @@ const LineGraph = ({ dataArray }) => {
         legend: { position: "bottom" },
     };
 
-    const data = [["Name", "Advance", "TotalWorkDue", "Total Raised", "TotalWorkDone", "Total Paid"]];
+    const data = [["Days", "Paid","Due"]];
     for (var i = 0; i < dataArray.length; i++) {
-        data.push([dataArray[i].txnNoteTitle, dataArray[i].advance, dataArray[i].totalWorkDue, dataArray[i].totalRaised, dataArray[i].totalWorkDone, dataArray[i].totalPaid]);
+        data.push([dataArray[i].day, dataArray[i].paid, dataArray[i].due]);
         
     }
 
@@ -41,7 +41,7 @@ const LineGraph = ({ dataArray }) => {
     return (<>{dataArray.length > 1 ? <>
         <div style={{ display: "inline-block", width: "700px", height:"700px" }} >
             <Chart
-                chartType="LineChart"
+                chartType="BarChart"
                 width="100%"
                 height="100%"
                 data={data}
@@ -55,4 +55,4 @@ const LineGraph = ({ dataArray }) => {
         );
 };
 
-export default LineGraph;
+export default BarGraph;

@@ -24,6 +24,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 	const [remarkType, setRemarkType] = useState();
 	const [remarkData, setRemarkData] = useState();
 	const [payListDisplay, setPayListDisplay] = useState(0);
+	const [invoiceTotal, setInvoiceTotal] = useState(0);
 	const navigate = useNavigate();
 	useEffect(() => {
 
@@ -132,6 +133,11 @@ const DetailContract = ({ setUserName, setUserType }) => {
 	const loadReportData = () => {
 		getRequest("api/business/ContractReport?agId=" + agreementObj.id, UserProfile.getToken()).then(r => r.json()).then(res => {
 			if (res.status === 1) {
+				var invVal = 0;
+				for (var i = 0; i < invoiceList.length; i++) {
+					invVal += invoiceList[i].invoiceAmount;
+				}
+				setInvoiceTotal(invVal);
 				setAgReportData(res.data);
 			} else {
 				console.log("Not able to generate note");
@@ -144,7 +150,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
 			{agreementObj && agreementObj.id > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList} />
-				<ReportDisplay reportData={agReportData} setReportData={setAgReportData} />
+				<ReportDisplay reportData={agReportData} setReportData={setAgReportData} totalInvoice={invoiceTotal }/>
 				<Payment reloadMethod={() => loadInvoiceList(agreementObj.id)} data={paymentData} setData={setPaymentData} />
 				<PaymentList setDisplayList={setPayListDisplay} displayList={payListDisplay} payLst={payList} setPayLst={setPayList} />
 				<AgreementNegotiation
