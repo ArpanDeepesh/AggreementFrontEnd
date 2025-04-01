@@ -78,3 +78,17 @@
     .tab-content.active {
         display: block;
     }
+
+.actionText:hover {
+    font-weight: 600;
+    color: #007bff;
+}
+.clickableLink {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+clickableLink:hover {
+    font-weight: 600;
+    text-decoration: none;
+}

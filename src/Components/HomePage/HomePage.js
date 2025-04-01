@@ -8,6 +8,7 @@ import { useState } from "react";
 import PurchaseOrder from "../Context/PurchaseOrder";
 import DelayMsgs from "../CommonPages/DelayMsgs";
 import OtherData from "../Context/OtherData";
+import ClientPorgress from "../CommonPages/ClientPorgress";
 
 
 const HomePage = ({ setUserName, setUserType}) => {
@@ -15,6 +16,8 @@ const HomePage = ({ setUserName, setUserType}) => {
     const [agreementList, setAgreementList] = useState();
     const [userProposalLst, setUserProposalLst] = useState();
     const [activeProposalLst, setActiveProposalLst] = useState();
+    const [clientReport, setClientReport] = useState();
+    const [attensionRequired, setAttensionRequired] = useState();
     const [delayMsg, setDelayMsg] = useState([]);
     const [inviteList, setInviteList] = useState([]);
     useEffect(() => {
@@ -25,6 +28,7 @@ const HomePage = ({ setUserName, setUserType}) => {
         setUserType(UserProfile.getUserType());
         loadInviteList();
         loadAgreementList();
+        loadClientReport();
         //getRequest("api/POManagerAuth/getClientInfo", UserProfile.getToken()).then(rr => rr.json()).then(resD => {
         //    if (resD.message && resD.message === "Unauthorized:User is invalid")
         //    {
@@ -57,11 +61,33 @@ const HomePage = ({ setUserName, setUserType}) => {
         //    }
         //}).catch(err => console.log(err));
     }, []);
-    
+    const loadClientReport = () => {
+        getRequest("api/Business/ClientReport", UserProfile.getToken()).then(x => x.json()).then(res => {
+            console.log(res);
+            setClientReport(res.data);
+        }).catch(err => console.log(err));
+    }
+    const loadAttensionRequired = (data) => {
+        getRequest("api/Business/ActiveTxnNoteAgList", UserProfile.getToken()).then(x => x.json()).then(resAt => {
+            console.log(resAt);
+            var requiredAttension = [];
+            for (var i = 0; i < resAt.data.length; i++) {
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j].id === resAt.data[i])
+                    {
+                        requiredAttension.push(data[j]);
+                        break;
+                    }
+                }
+            }
+            setAttensionRequired(requiredAttension);
+        }).catch(err => console.log(err));
+    }
     const loadAgreementList = (pid) => {
         getRequest("api/Business/GetUserAgreements", UserProfile.getToken()).then(x => x.json()).then(res => {
             console.log(res);
             setAgreementList(res.data);
+            loadAttensionRequired(res.data);
         }).catch(err => console.log(err));
     }
     const loadInviteList = (pid) => {
@@ -134,32 +160,85 @@ const HomePage = ({ setUserName, setUserType}) => {
             <div className="mt-1" >
                 <div className="row mb-1">
                     <div className="col-md-3 p-0 m-0" >
-                        <FormButton name="Generate RFQ" onClick={(e) => {
-                            PurchaseOrder.setRaisedBy("Seller");
-                            OtherData.resetData();
-                            navigate("/NewRFQ");
-                        }} myClass="routingBtn" mystyle={{width:'80%'}} />
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <FormButton name="User Terms" onClick={(e) => {
-                            PurchaseOrder.setRaisedBy("Buyer");
-                            navigate("/userTerms");
-                        }} myClass="routingBtn"/>
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <FormButton name="Catalog" onClick={(e) => {
+                        <span style={{ cursor: "pointer" }} onClick={e => {
+                            e.preventDefault();
                             PurchaseOrder.setRaisedBy("Buyer");
                             navigate("/userItems");
-                        }} myClass="routingBtn" />
+                        }}>
+                            <img src={"/comment2.png"} width={80} height={80} />
+                            <br />
+                            <span className="actionText">
+                                Catalogue
+                                <br />
+                                Manage and list your buy/sell items
+                            </span>
+                            
+                        </span>
+                        
+                        {/*<FormButton name="Generate RFQ" onClick={(e) => {*/}
+                        {/*    PurchaseOrder.setRaisedBy("Seller");*/}
+                        {/*    OtherData.resetData();*/}
+                        {/*    navigate("/NewRFQ");*/}
+                        {/*}} myClass="routingBtn" mystyle={{width:'80%'}} />*/}
 
                     </div>
                     <div className="col-md-3 p-0 m-0" >
-                        <FormButton name="Draft Agreement" onClick={(e) => {
+                        <span style={{ cursor: "pointer" }} onClick={e => {
+                            e.preventDefault();
+                            PurchaseOrder.setRaisedBy("Buyer");
+                            navigate("/userTerms");
+                        }}>
+                            <img src={"/comment2.png"} width={80} height={80} />
+                            <br />
+                            <span className="actionText">
+                                User Terms
+                                <br />
+                                Predefine terms for quick agreement generation
+                            </span>
+                            
+                        </span>
+                        {/*<FormButton name="User Terms" onClick={(e) => {*/}
+                            
+                        {/*}} myClass="routingBtn"/>*/}
+
+                    </div>
+                    <div className="col-md-3 p-0 m-0" >
+                        <span style={{ cursor: "pointer" }} onClick={e => {
+                            e.preventDefault();
+                            OtherData.resetData();
+                            navigate("/NewRFQ");
+                        }}>
+                            <img src={"/comment2.png"} width={80} height={80} />
+                            <br />
+                            <span className="actionText">
+                                Generate RFQ
+                                <br />
+                                Easily request supplier quotes
+                            </span>
+                            
+                        </span>
+                        {/*<FormButton name="Catalog" onClick={(e) => {*/}
+                            
+                        {/*}} myClass="routingBtn" />*/}
+
+                    </div>
+                    <div className="col-md-3 p-0 m-0" >
+                        <span style={{ cursor: "pointer" }} onClick={e => {
+                            e.preventDefault();
                             PurchaseOrder.setRaisedBy("Buyer");
                             navigate("/draftAgreement");
-                        }} myClass="routingBtn" />
+                        }}>
+                            <img src={"/comment2.png"} width={80} height={80} />
+                            <br />
+                            <span className="actionText">
+                                Draft Agreement
+                                <br />
+                                Create and manage agreements easily
+                            </span>
+                        </span>
+                        {/*<FormButton name="Draft Agreement" onClick={(e) => {*/}
+                            
+                        {/*}} myClass="routingBtn" />*/}
 
                     </div>
                 </div>
@@ -167,9 +246,56 @@ const HomePage = ({ setUserName, setUserType}) => {
                     <div className="col-md-12 col-xs-12">
                         <div className="tabs">
                             <div className="tab-buttons">
+                                <button className="tab-Hbutton active" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Dashboard</button>
                                 <button className="tab-Hbutton" onClick={(e) => { openTab(e, "DraftAggrements"); }}>RFQ/Invites</button>
-                                <button className="tab-Hbutton active" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Agreements</button>
                                 <button className="tab-Hbutton" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Contracts</button>
+                            </div>
+                            <div id="ActiveAggrements" className="tab-content active">
+                                <h4>Dashboard</h4>
+                                <div className="table">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <h5>Invoice Raised Vs Receivable Cleared Vs Amount Received (As Seller)</h5>
+
+                                            {clientReport ? <>
+                                                <ClientPorgress totalValue={clientReport.totalCashIn}
+                                                    invoiceRaised={clientReport.totalSellerInvoiceAmount}
+                                                    invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
+                                                    cashOutflow={clientReport.totalSellerContractAmount} />
+                                            </> : <>Loading data..</>}
+                                        </div>
+                                        <div className="col-md-6">
+                                            <h5>Invoice Received Vs Receivable Cleared  vs Amount Paid (As Buyer)</h5>
+                                            {clientReport ? <>
+                                                <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
+                                                    invoiceRaised={clientReport.totalBuyerInvoiceAmount}
+                                                    invoiceCleared={clientReport.totalBuyerInvoiceAmountCleared}
+                                                    cashOutflow={clientReport.totalCashOut}/>
+                                            </> : <>Loading data..</>}
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <h5>Transaction note in Negotiation</h5>
+                                            {attensionRequired && attensionRequired.length > 0 ? <>
+                                                <ul>
+                                                    {attensionRequired.map(x => <li>
+                                                        (Buyer){x.buyer.usrName} and (Seller) {x.seller.usrName} agreement required your attention <span className="clickableLink" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            OtherData.setData(JSON.stringify(x));
+                                                            navigate("/DetailContract")
+                                                        }}>click here to see the agreement.</span>  
+                                                    </li>)}
+                                                </ul>
+                                                
+                                            </> : <>No urgent action</>}
+                                        </div>
+                                        <div className="col-md-6">
+                                            <h5>Total Cash In Vs Cash Out</h5>
+                                            {clientReport ? <></> : <>Loading data..</>}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div id="DraftAggrements" className="tab-content">
                                 <div className="table mr-1">
@@ -347,7 +473,8 @@ const HomePage = ({ setUserName, setUserType}) => {
                                     </div>) : <div className="row"> No Items in Proposal</div>}
                                 </div>
                             </div>
-                            <div id="ActiveAggrements" className="tab-content active">
+                           
+                            <div id="CompletedAggrements" className="tab-content">
                                 <h4>Agreements</h4>
                                 <div className="table ml-1 ">
                                     <div className="d-none d-md-block align-items-center">
@@ -391,19 +518,19 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                 <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
                                                 <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
                                             </span>
-                                            
+
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center">
 
                                             <span>
-                                                    <strong className="d-inline d-md-none">Status: </strong>
-                                                    <span class="badge bg-success text-light">{tempPO.status}</span>
+                                                <strong className="d-inline d-md-none">Status: </strong>
+                                                <span class="badge bg-success text-light">{tempPO.status}</span>
                                             </span>
                                         </div>
                                         <div className="col-md-2 d-flex align-items-center">
                                             <span>
                                                 <strong className="d-block d-md-none">LD / Advance: </strong>
-                                                {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay 
+                                                {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
                                                 and advance of {tempPO.advance}%
 
                                             </span>
@@ -414,7 +541,7 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                     <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
                                                         {tempPO.status === "Draft" ?
                                                             <FormButton name="Edit" onClick={(e) => editAgreement(e, tempPO)} /> : <></>}
-                                                        
+
                                                     </div>
                                                     <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
                                                         <FormButton name="Respond" onClick={(e) => {
@@ -427,25 +554,23 @@ const HomePage = ({ setUserName, setUserType}) => {
                                             </div>
                                             <div className="d-block d-md-none">
                                                 <div className="row m-0 p-0">
-                                                        <div className="col-xs-6 m-0 p-0">
-                                                            <FormButton name="Respond" onClick={(e) => {
-                                                                e.preventDefault();
-                                                                PurchaseOrder.setPoId(tempPO.poId);
+                                                    <div className="col-xs-6 m-0 p-0">
+                                                        <FormButton name="Respond" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            PurchaseOrder.setPoId(tempPO.poId);
                                                             navigate("/DetailAgreement")
-                                                            }} />
-                                                        </div>
+                                                        }} />
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                         </div>
-                                    </div>:<></>
+                                    </div> : <></>
                                     ) : <div className="row tablebox">No Data present</div>}
 
                                 </div>
-                            </div>
-                            <div id="CompletedAggrements" className="tab-content">
-                                <h4>Completed Or Expired Contracts</h4>
+                                <h4>Contracts</h4>
                                 <div className="table ml-1 ">
                                     <div className="d-none d-md-block">
                                         <div className="row tableHeader">
