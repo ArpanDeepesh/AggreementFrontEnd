@@ -9,6 +9,7 @@ import PurchaseOrder from "../Context/PurchaseOrder";
 import DelayMsgs from "../CommonPages/DelayMsgs";
 import OtherData from "../Context/OtherData";
 import ClientPorgress from "../CommonPages/ClientPorgress";
+import CashFlowProgress from "../CommonPages/CashFlowProgress";
 
 
 const HomePage = ({ setUserName, setUserType}) => {
@@ -257,25 +258,25 @@ const HomePage = ({ setUserName, setUserType}) => {
                                 <div className="">
                                     <div id="ActiveAggrements" className="tab-content active">
                                         <div className="landingPageReport">
-                                            <h4>Dashboard</h4>
+                                            <h4 style={{ textAlign: "left" }}>Dashboard</h4>
                                             <div className="table">
                                                 <div className="row">
                                                     <div className="col-md-6 ">
                                                         <div className="landingPageReport">
-                                                            <h5>Invoice Raised Vs Receivable Cleared Vs Amount Received (As Seller)</h5>
+                                                            <h5 style={{ textAlign: "left" }}>Receivables Overview</h5>
 
                                                             {clientReport ? <>
-                                                                <ClientPorgress totalValue={clientReport.totalCashIn}
+                                                                <ClientPorgress totalValue={clientReport.totalSellerContractAmount}
                                                                     invoiceRaised={clientReport.totalSellerInvoiceAmount}
                                                                     invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
-                                                                    cashOutflow={clientReport.totalSellerContractAmount} />
+                                                                    cashOutflow={clientReport.totalCashIn} />
                                                             </> : <>Loading data..</>}
                                                         </div>
 
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="landingPageReport">
-                                                            <h5>Invoice Received Vs Receivable Cleared  vs Amount Paid (As Buyer)</h5>
+                                                            <h5 style={{ textAlign: "left" }}>Payables Overview</h5>
                                                             {clientReport ? <>
                                                                 <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
                                                                     invoiceRaised={clientReport.totalBuyerInvoiceAmount}
@@ -289,7 +290,7 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                 <div className="row m-5">
                                                     <div className="col-md-6 ">
                                                         <div className="landingPageReport">
-                                                            <h5>Transaction note in Negotiation</h5>
+                                                            <h5 style={{ textAlign: "left" }}>Agreements </h5>
                                                             {attensionRequired && attensionRequired.length > 0 ? <>
                                                                 <ul>
                                                                     {attensionRequired.map(x => <li>
@@ -307,8 +308,10 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="landingPageReport">
-                                                            <h5>Total Cash In Vs Cash Out</h5>
-                                                            {clientReport ? <></> : <>Loading data..</>}
+                                                            <h5 style={{ textAlign: "left" }}>Total Cash In Vs Cash Out</h5>
+                                                            {clientReport ? <>
+                                                                <CashFlowProgress cashIn={clientReport.totalCashIn } cashOut={clientReport.totalCashOut }/>
+                                                            </> : <>Loading data..</>}
                                                         </div>
 
                                                     </div>
@@ -320,22 +323,22 @@ const HomePage = ({ setUserName, setUserType}) => {
                                     <div id="DraftAggrements" className="tab-content">
                                         <div className="landingPageReport">
                                             <div className="table mr-1">
-                                                <h4>User Proposal</h4>
+                                                <h5 style={{ textAlign: "left" }}>User Proposal</h5>
                                                 <div className="d-none d-md-block">
                                                     <div className="row tableHeader ">
-                                                        <div className="col-md-3">
+                                                        <div className="col-md-3 tableSingelHeading">
                                                             Owner
                                                         </div>
-                                                        <div className="col-md-2">
+                                                        <div className="col-md-2 tableSingelHeading">
                                                             Duration
                                                         </div>
-                                                        <div className="col-md-4">
+                                                        <div className="col-md-4 tableSingelHeading">
                                                             LD Details
                                                         </div>
-                                                        <div className="col-md-1">
+                                                        <div className="col-md-1 tableSingelHeading">
                                                             Status
                                                         </div>
-                                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                        <div className="col-md-2 tableSingelHeading" style={{ textAlign: "center" }}>
                                                             Action
                                                         </div>
                                                     </div>
@@ -390,22 +393,22 @@ const HomePage = ({ setUserName, setUserType}) => {
                                         </div>
                                         <div className="landingPageReport">
                                             <div className="table mr-1">
-                                                <h4>Active Proposal</h4>
+                                                <h5 style={{ textAlign: "left" }}>Active Proposal</h5>
                                                 <div className="d-none d-md-block">
                                                     <div className="row tableHeader ">
-                                                        <div className="col-md-3">
+                                                        <div className="col-md-3 tableSingelHeading">
                                                             Owner
                                                         </div>
-                                                        <div className="col-md-2">
+                                                        <div className="col-md-2 tableSingelHeading">
                                                             Duration
                                                         </div>
-                                                        <div className="col-md-4">
+                                                        <div className="col-md-4 tableSingelHeading">
                                                             LD Details
                                                         </div>
-                                                        <div className="col-md-1">
+                                                        <div className="col-md-1 tableSingelHeading">
                                                             Status
                                                         </div>
-                                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                        <div className="col-md-2 tableSingelHeading" style={{ textAlign: "center" }}>
                                                             Action
                                                         </div>
                                                     </div>
@@ -457,18 +460,18 @@ const HomePage = ({ setUserName, setUserType}) => {
                                         
                                         <div className="landingPageReport">
                                             <div className="table mr-1">
-                                                <h4>User Invites</h4>
+                                                <h5 style={{ textAlign: "left" }}>User Invites</h5>
                                                 <div className="d-none d-md-block">
                                                     <div className="row tableHeader ">
-                                                        <div className="col-md-1 ">
+                                                        <div className="col-md-1 tableSingelHeading">
                                                             S. No.
                                                         </div>
-                                                        <div className="col-md-6 ">
+                                                        <div className="col-md-6 tableSingelHeading">
                                                             Raised By
                                                         </div>
 
-                                                        <div className="col-md-2 ">Status</div>
-                                                        <div className="col-md-3 ">Action</div>
+                                                        <div className="col-md-2 tableSingelHeading">Status</div>
+                                                        <div className="col-md-3 tableSingelHeading">Action</div>
                                                     </div>
                                                 </div>
 
@@ -503,23 +506,23 @@ const HomePage = ({ setUserName, setUserType}) => {
                                     </div>
                                     <div id="CompletedAggrements" className="tab-content">
                                         <div className="landingPageReport">
-                                            <h4>Agreements</h4>
+                                            <h5 style={{ textAlign: "left" }}>Agreements</h5>
                                             <div className="table ml-1 ">
                                                 <div className="d-none d-md-block align-items-center">
                                                     <div className="row tableHeader">
-                                                        <div className="col-md-3">
+                                                        <div className="col-md-3 tableSingelHeading">
                                                             Buyer
                                                         </div>
-                                                        <div className="col-md-3">
+                                                        <div className="col-md-3 tableSingelHeading">
                                                             Seller
                                                         </div>
-                                                        <div className="col-md-2">
+                                                        <div className="col-md-2 tableSingelHeading">
                                                             Status
                                                         </div>
-                                                        <div className="col-md-2">
+                                                        <div className="col-md-2 tableSingelHeading">
                                                             LD / Advance:
                                                         </div>
-                                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                        <div className="col-md-2 tableSingelHeading" style={{ textAlign: "center" }}>
                                                             Action
                                                         </div>
                                                     </div>
@@ -600,23 +603,23 @@ const HomePage = ({ setUserName, setUserType}) => {
                                             </div>
                                         </div>
                                         <div className="landingPageReport">
-                                            <h4>Contracts</h4>
+                                            <h5 style={{ textAlign: "left" }}>Contracts</h5>
                                             <div className="table ml-1 ">
                                                 <div className="d-none d-md-block">
                                                     <div className="row tableHeader">
-                                                        <div className="col-md-3">
+                                                        <div className="col-md-3 tableSingelHeading">
                                                             LD condition
                                                         </div>
-                                                        <div className="col-md-2">
+                                                        <div className="col-md-2 tableSingelHeading">
                                                             Buyer
                                                         </div>
-                                                        <div className="col-md-2">
+                                                        <div className="col-md-2 tableSingelHeading">
                                                             Seller
                                                         </div>
-                                                        <div className="col-md-1">
+                                                        <div className="col-md-1 tableSingelHeading">
                                                             Status
                                                         </div>
-                                                        <div className="col-md-4" style={{ textAlign: "center" }}>
+                                                        <div className="col-md-4 tableSingelHeading" style={{ textAlign: "center" }}>
                                                             Action
                                                         </div>
                                                     </div>
