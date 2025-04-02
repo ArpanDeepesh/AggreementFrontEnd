@@ -160,20 +160,20 @@ const HomePage = ({ setUserName, setUserType}) => {
             <div className="mt-1" >
                 <div className="row mb-1">
                     <div className="col-md-3 p-0 m-0" >
-                        <span style={{ cursor: "pointer" }} onClick={e => {
+                        <div className="landingPageAction" onClick={e => {
                             e.preventDefault();
                             PurchaseOrder.setRaisedBy("Buyer");
                             navigate("/userItems");
                         }}>
-                            <img src={"/comment2.png"} width={80} height={80} />
+                            <img src={"/Catalogue.png"} width={70} height={70} />
                             <br />
-                            <span className="actionText">
-                                Catalogue
+                            <span className="">
+                                <strong>Catalogue</strong>
                                 <br />
                                 Manage and list your buy/sell items
                             </span>
                             
-                        </span>
+                        </div>
                         
                         {/*<FormButton name="Generate RFQ" onClick={(e) => {*/}
                         {/*    PurchaseOrder.setRaisedBy("Seller");*/}
@@ -183,59 +183,62 @@ const HomePage = ({ setUserName, setUserType}) => {
 
                     </div>
                     <div className="col-md-3 p-0 m-0" >
-                        <span style={{ cursor: "pointer" }} onClick={e => {
+                        <div className="landingPageAction" onClick={e => {
                             e.preventDefault();
                             PurchaseOrder.setRaisedBy("Buyer");
                             navigate("/userTerms");
                         }}>
-                            <img src={"/comment2.png"} width={80} height={80} />
+                            <img src={"/Terms.png"} width={70} height={70} />
                             <br />
-                            <span className="actionText">
-                                User Terms
+                            <span className="">
+                                <strong>User Terms</strong>
                                 <br />
                                 Predefine terms for quick agreement generation
                             </span>
                             
-                        </span>
+                        </div>
                         {/*<FormButton name="User Terms" onClick={(e) => {*/}
                             
                         {/*}} myClass="routingBtn"/>*/}
 
                     </div>
                     <div className="col-md-3 p-0 m-0" >
-                        <span style={{ cursor: "pointer" }} onClick={e => {
+                        <div className="landingPageAction" onClick={e => {
                             e.preventDefault();
                             OtherData.resetData();
                             navigate("/NewRFQ");
                         }}>
-                            <img src={"/comment2.png"} width={80} height={80} />
+                            <img src={"/rfq.png"} width={70} height={70} />
                             <br />
-                            <span className="actionText">
-                                Generate RFQ
+                            <span className="">
+                                <strong>Generate RFQ</strong>
                                 <br />
                                 Easily request supplier quotes
                             </span>
                             
-                        </span>
+                        </div>
                         {/*<FormButton name="Catalog" onClick={(e) => {*/}
                             
                         {/*}} myClass="routingBtn" />*/}
 
                     </div>
                     <div className="col-md-3 p-0 m-0" >
-                        <span style={{ cursor: "pointer" }} onClick={e => {
-                            e.preventDefault();
-                            PurchaseOrder.setRaisedBy("Buyer");
-                            navigate("/draftAgreement");
-                        }}>
-                            <img src={"/comment2.png"} width={80} height={80} />
+                        <div className="landingPageAction"
+                            onClick={e => {
+                                e.preventDefault();
+                                PurchaseOrder.setRaisedBy("Buyer");
+                                navigate("/draftAgreement");
+                            }}
+                            style={{ cursor: "pointer" }} >
+                            <img src={"/Agreement.png"} width={70} height={70} />
                             <br />
-                            <span className="actionText">
-                                Draft Agreement
+                            <span className="">
+                                <strong>Draft Agreement</strong>
                                 <br />
                                 Create and manage agreements easily
                             </span>
-                        </span>
+                        </div>
+                        
                         {/*<FormButton name="Draft Agreement" onClick={(e) => {*/}
                             
                         {/*}} myClass="routingBtn" />*/}
@@ -254,29 +257,36 @@ const HomePage = ({ setUserName, setUserType}) => {
                                 <h4>Dashboard</h4>
                                 <div className="table">
                                     <div className="row">
-                                        <div className="col-md-6">
-                                            <h5>Invoice Raised Vs Receivable Cleared Vs Amount Received (As Seller)</h5>
+                                        <div className="col-md-6 ">
+                                            <div className="landingPageReport">
+                                                <h5>Invoice Raised Vs Receivable Cleared Vs Amount Received (As Seller)</h5>
 
-                                            {clientReport ? <>
-                                                <ClientPorgress totalValue={clientReport.totalCashIn}
-                                                    invoiceRaised={clientReport.totalSellerInvoiceAmount}
-                                                    invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
-                                                    cashOutflow={clientReport.totalSellerContractAmount} />
-                                            </> : <>Loading data..</>}
+                                                {clientReport ? <>
+                                                    <ClientPorgress totalValue={clientReport.totalCashIn}
+                                                        invoiceRaised={clientReport.totalSellerInvoiceAmount}
+                                                        invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
+                                                        cashOutflow={clientReport.totalSellerContractAmount} />
+                                                </> : <>Loading data..</>}
+                                            </div>
+                                            
                                         </div>
                                         <div className="col-md-6">
-                                            <h5>Invoice Received Vs Receivable Cleared  vs Amount Paid (As Buyer)</h5>
-                                            {clientReport ? <>
-                                                <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
-                                                    invoiceRaised={clientReport.totalBuyerInvoiceAmount}
-                                                    invoiceCleared={clientReport.totalBuyerInvoiceAmountCleared}
-                                                    cashOutflow={clientReport.totalCashOut}/>
-                                            </> : <>Loading data..</>}
+                                            <div className="landingPageReport">
+                                                <h5>Invoice Received Vs Receivable Cleared  vs Amount Paid (As Buyer)</h5>
+                                                {clientReport ? <>
+                                                    <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
+                                                        invoiceRaised={clientReport.totalBuyerInvoiceAmount}
+                                                        invoiceCleared={clientReport.totalBuyerInvoiceAmountCleared}
+                                                        cashOutflow={clientReport.totalCashOut} />
+                                                </> : <>Loading data..</>}
+                                            </div>
+                                            
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <h5>Transaction note in Negotiation</h5>
+                                    <div className="row m-5">
+                                        <div className="col-md-6 ">
+                                            <div className="landingPageReport">
+                                                <h5>Transaction note in Negotiation</h5>
                                             {attensionRequired && attensionRequired.length > 0 ? <>
                                                 <ul>
                                                     {attensionRequired.map(x => <li>
@@ -289,10 +299,15 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                 </ul>
                                                 
                                             </> : <>No urgent action</>}
+                                            </div>
+                                            
                                         </div>
                                         <div className="col-md-6">
-                                            <h5>Total Cash In Vs Cash Out</h5>
-                                            {clientReport ? <></> : <>Loading data..</>}
+                                            <div className="landingPageReport">
+                                                <h5>Total Cash In Vs Cash Out</h5>
+                                                {clientReport ? <></> : <>Loading data..</>}
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>

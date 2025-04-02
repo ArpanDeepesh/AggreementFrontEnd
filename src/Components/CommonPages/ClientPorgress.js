@@ -23,7 +23,7 @@ const ClientPorgress = ({ totalValue, invoiceRaised, invoiceCleared ,cashOutflow
     ];
     console.log(data);
     return (<>{totalValue > 0 ? <>
-        <div style={{ display: "inline-block", width: '500px', height:'500px' }} >
+        <div style={{ display: "inline-block", width: '500px', height:'300px' }} >
             <Chart
                 chartType="ColumnChart"
                 width="100%"
