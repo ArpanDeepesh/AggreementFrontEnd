@@ -47,14 +47,14 @@
     flex: 1;
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #f1f1f1;
+    background-color: white;
     border: none;
     outline: none; /* Remove the default focus outline */
     font-size: 16px;
     color: #333;
     transition: background-color 0.3s, color 0.3s;
     margin:1px;
-    font-weight:500;
+    font-weight:700;
 }
 
     .tab-Hbutton:focus {
