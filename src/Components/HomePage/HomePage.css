@@ -103,14 +103,17 @@ clickableLink:hover {
     cursor:pointer;
     padding:30px;
     height:80%;
+    background-color:white;
 }
 .landingPageAction:hover {
     box-shadow: 1px 5px 5px 5px rgba(237,237,242,1);
 }
 .landingPageReport {
-
     border-radius: 5px;
     box-shadow: 1px 1px 5px 5px rgba(237,237,242,1);
     height: 100%;
-    width:100%;
+    width: 100%;
+    background-color: white;
+    padding:5px;
+    margin:5px;
 }

@@ -247,433 +247,454 @@ const HomePage = ({ setUserName, setUserType}) => {
                 </div>
                 <div className="row">
                     <div className="col-md-12 col-xs-12">
-                        <div className="tabs">
-                            <div className="tab-buttons">
-                                <button className="tab-Hbutton active" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Dashboard</button>
-                                <button className="tab-Hbutton" onClick={(e) => { openTab(e, "DraftAggrements"); }}>RFQ/Invites</button>
-                                <button className="tab-Hbutton" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Contracts</button>
-                            </div>
-                            <div id="ActiveAggrements" className="tab-content active">
-                                <h4>Dashboard</h4>
-                                <div className="table">
-                                    <div className="row">
-                                        <div className="col-md-6 ">
-                                            <div className="landingPageReport">
-                                                <h5>Invoice Raised Vs Receivable Cleared Vs Amount Received (As Seller)</h5>
-
-                                                {clientReport ? <>
-                                                    <ClientPorgress totalValue={clientReport.totalCashIn}
-                                                        invoiceRaised={clientReport.totalSellerInvoiceAmount}
-                                                        invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
-                                                        cashOutflow={clientReport.totalSellerContractAmount} />
-                                                </> : <>Loading data..</>}
-                                            </div>
-                                            
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="landingPageReport">
-                                                <h5>Invoice Received Vs Receivable Cleared  vs Amount Paid (As Buyer)</h5>
-                                                {clientReport ? <>
-                                                    <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
-                                                        invoiceRaised={clientReport.totalBuyerInvoiceAmount}
-                                                        invoiceCleared={clientReport.totalBuyerInvoiceAmountCleared}
-                                                        cashOutflow={clientReport.totalCashOut} />
-                                                </> : <>Loading data..</>}
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div className="row m-5">
-                                        <div className="col-md-6 ">
-                                            <div className="landingPageReport">
-                                                <h5>Transaction note in Negotiation</h5>
-                                            {attensionRequired && attensionRequired.length > 0 ? <>
-                                                <ul>
-                                                    {attensionRequired.map(x => <li>
-                                                        (Buyer){x.buyer.usrName} and (Seller) {x.seller.usrName} agreement required your attention <span className="clickableLink" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            OtherData.setData(JSON.stringify(x));
-                                                            navigate("/DetailContract")
-                                                        }}>click here to see the agreement.</span>  
-                                                    </li>)}
-                                                </ul>
-                                                
-                                            </> : <>No urgent action</>}
-                                            </div>
-                                            
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="landingPageReport">
-                                                <h5>Total Cash In Vs Cash Out</h5>
-                                                {clientReport ? <></> : <>Loading data..</>}
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
+                        <div className="landingPageReport">
+                            <div className="tabs">
+                                <div className="tab-buttons">
+                                    <button className="tab-Hbutton active" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Dashboard</button>
+                                    <button className="tab-Hbutton" onClick={(e) => { openTab(e, "DraftAggrements"); }}>RFQ/Invites</button>
+                                    <button className="tab-Hbutton" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Contracts</button>
                                 </div>
-                            </div>
-                            <div id="DraftAggrements" className="tab-content">
-                                <div className="table mr-1">
-                                    <h4>User Proposal</h4>
-                                    <div className="d-none d-md-block">
-                                        <div className="row tableHeader ">
-                                            <div className="col-md-3">
-                                                Owner
-                                            </div>
-                                            <div className="col-md-2">
-                                                Duration
-                                            </div>
-                                            <div className="col-md-4">
-                                                LD Details
-                                            </div>
-                                            <div className="col-md-1">
-                                                Status
-                                            </div>
-                                            <div className="col-md-2" style={{ textAlign: "center" }}>
-                                                Action
-                                            </div>
-                                        </div>
-                                    </div> 
-                                    {userProposalLst && userProposalLst.length > 0 ? userProposalLst.map(tempPO => <div className="row tablebox">
-                                            <div className="col-md-3 col-xs-12 d-flex align-items-center">
-                                                <span>
-                                                <strong className="d-inline d-md-none">Owner: </strong>
-                                                {tempPO.owner.usrName} <br />
-                                                <span style={{ fontSize: '10px' }}>
-                                                    {tempPO.owner.email}
-                                                    {tempPO.owner.phoneNumber}
-                                                    {tempPO.owner.usrGstin}</span>
-                                                </span>
-                                                
-                                            </div>
-                                            <div className="col-md-2 col-xs-12 d-flex align-items-center">
-                                                <span>
-                                                <strong className="d-inline d-md-none">Duration: </strong>
-                                                {tempPO.proposalCompletionInDays}<br />
+                                <div className="">
+                                    <div id="ActiveAggrements" className="tab-content active">
+                                        <div className="landingPageReport">
+                                            <h4>Dashboard</h4>
+                                            <div className="table">
+                                                <div className="row">
+                                                    <div className="col-md-6 ">
+                                                        <div className="landingPageReport">
+                                                            <h5>Invoice Raised Vs Receivable Cleared Vs Amount Received (As Seller)</h5>
 
-                                                </span>
-                                               </div>
-                                            <div className="col-md-4 col-xs-12 d-flex align-items-center">
-                                                <span>
-                                                <strong className="d-inline d-md-none">LD Details </strong>
-                                                {tempPO.proposalLdPercent}% after {tempPO.proposalLdAppliedAfterDays} days delay
-
-                                                </span>
-                                           </div>
-                                            <div className="col-md-1 col-xs-12 d-flex align-items-center">
-                                                <span>
-                                                    <strong className="d-inline d-md-none">Status: </strong>
-                                                <span class="badge bg-secondary text-light">{tempPO.proposalStatus}</span>
-                                                </span>
-                                            </div>
-                                        <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
-                                            {tempPO.proposalStatus === "Active" ? <FormButton name="Detail" onClick={(e) => {
-                                                e.preventDefault();
-                                                OtherData.setData(JSON.stringify(tempPO));
-                                                navigate("/DetailProposal");
-                                            }} /> : <></>}
-                                            {tempPO.proposalStatus === "Draft" ? <FormButton name="Edit" onClick={(e) => {
-                                                editRFQ(e, tempPO);
-                                            }} /> : <></>}
-                                            
-                                            </div>
-                                        </div>
-                                        ) : <div className="row tablebox">No Data present</div>}
-
-                                </div>
-                                <div className="table mr-1">
-                                    <h4>Active Proposal</h4>
-                                    <div className="d-none d-md-block">
-                                        <div className="row tableHeader ">
-                                            <div className="col-md-3">
-                                                Owner
-                                            </div>
-                                            <div className="col-md-2">
-                                                Duration
-                                            </div>
-                                            <div className="col-md-4">
-                                                LD Details
-                                            </div>
-                                            <div className="col-md-1">
-                                                Status
-                                            </div>
-                                            <div className="col-md-2" style={{ textAlign: "center" }}>
-                                                Action
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {activeProposalLst && activeProposalLst.length > 0 ? activeProposalLst.map(tempPO => <div className="row tablebox">
-                                        <div className="col-md-3 col-xs-12 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-inline d-md-none">Owner: </strong>
-                                                {tempPO.owner.usrName} <br />
-                                                <span style={{ fontSize: '10px' }}>
-                                                    {tempPO.owner.email}
-                                                    {tempPO.owner.phoneNumber}
-                                                    {tempPO.owner.usrGstin}</span>
-                                            </span>
-
-                                        </div>
-                                        <div className="col-md-2 col-xs-12 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-inline d-md-none">Duration: </strong>
-                                                {tempPO.proposalCompletionInDays}<br />
-
-                                            </span>
-                                        </div>
-                                        <div className="col-md-4 col-xs-12 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-inline d-md-none">LD Details </strong>
-                                                {tempPO.proposalLdPercent}% after {tempPO.proposalLdAppliedAfterDays} days delay
-
-                                            </span>
-                                        </div>
-                                        <div className="col-md-1 col-xs-12 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-inline d-md-none">Status: </strong>
-                                                <span class="badge bg-secondary text-light">{tempPO.proposalStatus}</span>
-                                            </span>
-                                        </div>
-                                        <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
-                                            <FormButton name="Apply" onClick={(e) => {
-                                                e.preventDefault();
-                                                OtherData.setData(JSON.stringify(tempPO));
-                                                navigate("/ApplyRFQ");
-                                            }} />
-                                        </div>
-                                    </div>
-                                    ) : <div className="row tablebox">No Data present</div>}
-
-                                </div>
-                                <div className="table mr-1">
-                                    <h4>User Invites</h4>
-                                    <div className="d-none d-md-block">
-                                        <div className="row tableHeader ">
-                                            <div className="col-md-1 ">
-                                                S. No.
-                                            </div>
-                                            <div className="col-md-6 ">
-                                                Raised By
-                                            </div>
-
-                                            <div className="col-md-2 ">Status</div>
-                                            <div className="col-md-3 ">Action</div>
-                                        </div>
-                                    </div>
-
-                                    {inviteList && inviteList.length > 0 ? inviteList.map((x, ind) => <div className="row p-1 tablebox">
-                                        <div className="col-md-1">
-                                            <strong className="d-inline d-md-none">S.No.: </strong>
-                                            {ind + 1}
-
-                                        </div>
-                                        <div className="col-md-6">
-                                            <strong className="d-inline d-md-none">Raised For: </strong>
-                                            {x.raisedByUser.usrName}
-                                            <br />
-                                            ({x.raisedByUser.phoneNumber})
-                                            <br />
-                                            {x.raisedByUser.email}
-                                        </div>
-                                        <div className="col-md-2">
-                                            <strong className="d-inline d-md-none">Status: </strong>
-                                            {x.inviteStatusId}<br />
-                                        </div>
-                                        <div className="col-md-3 ">
-                                            <FormButton name="Apply" onClick={(e) => {
-                                                e.preventDefault();
-                                                ApplyForInvite(x.id);
-                                            }} />
-                                        </div>
-                                    </div>) : <div className="row"> No Items in Proposal</div>}
-                                </div>
-                            </div>
-                           
-                            <div id="CompletedAggrements" className="tab-content">
-                                <h4>Agreements</h4>
-                                <div className="table ml-1 ">
-                                    <div className="d-none d-md-block align-items-center">
-                                        <div className="row tableHeader">
-                                            <div className="col-md-3">
-                                                Buyer
-                                            </div>
-                                            <div className="col-md-3">
-                                                Seller
-                                            </div>
-                                            <div className="col-md-2">
-                                                Status
-                                            </div>
-                                            <div className="col-md-2">
-                                                LD / Advance:
-                                            </div>
-                                            <div className="col-md-2" style={{ textAlign: "center" }}>
-                                                Action
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {agreementList && agreementList.length > 0 ? agreementList.map(tempPO => (
-                                        tempPO.status === "Draft"
-                                        || tempPO.status === "Proposed"
-                                        || tempPO.status === "Accepted"
-                                        || tempPO.status === "Waiting for Seller"
-                                        || tempPO.status === "Waiting for Buyer"
-                                    ) ? < div className="row tablebox" >
-                                        <div className="col-md-3 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyer.usrName}<br />
-                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.phoneNumber}</span><br />
-                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.email}</span><br />
-                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.usrAddress}</span>
-                                            </span>
-                                        </div>
-                                        <div className="col-md-3 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.seller.usrName}<br />
-                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.phoneNumber}</span><br />
-                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
-                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
-                                            </span>
-
-                                        </div>
-                                        <div className="col-md-2 d-flex align-items-center">
-
-                                            <span>
-                                                <strong className="d-inline d-md-none">Status: </strong>
-                                                <span class="badge bg-success text-light">{tempPO.status}</span>
-                                            </span>
-                                        </div>
-                                        <div className="col-md-2 d-flex align-items-center">
-                                            <span>
-                                                <strong className="d-block d-md-none">LD / Advance: </strong>
-                                                {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
-                                                and advance of {tempPO.advance}%
-
-                                            </span>
-                                        </div>
-                                        <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
-                                            <div className="d-none d-md-block">
-                                                <div className="row m-0 p-0">
-                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
-                                                        {tempPO.status === "Draft" ?
-                                                            <FormButton name="Edit" onClick={(e) => editAgreement(e, tempPO)} /> : <></>}
+                                                            {clientReport ? <>
+                                                                <ClientPorgress totalValue={clientReport.totalCashIn}
+                                                                    invoiceRaised={clientReport.totalSellerInvoiceAmount}
+                                                                    invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
+                                                                    cashOutflow={clientReport.totalSellerContractAmount} />
+                                                            </> : <>Loading data..</>}
+                                                        </div>
 
                                                     </div>
-                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
-                                                        <FormButton name="Respond" onClick={(e) => {
+                                                    <div className="col-md-6">
+                                                        <div className="landingPageReport">
+                                                            <h5>Invoice Received Vs Receivable Cleared  vs Amount Paid (As Buyer)</h5>
+                                                            {clientReport ? <>
+                                                                <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
+                                                                    invoiceRaised={clientReport.totalBuyerInvoiceAmount}
+                                                                    invoiceCleared={clientReport.totalBuyerInvoiceAmountCleared}
+                                                                    cashOutflow={clientReport.totalCashOut} />
+                                                            </> : <>Loading data..</>}
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div className="row m-5">
+                                                    <div className="col-md-6 ">
+                                                        <div className="landingPageReport">
+                                                            <h5>Transaction note in Negotiation</h5>
+                                                            {attensionRequired && attensionRequired.length > 0 ? <>
+                                                                <ul>
+                                                                    {attensionRequired.map(x => <li>
+                                                                        (Buyer){x.buyer.usrName} and (Seller) {x.seller.usrName} agreement required your attention <span className="clickableLink" onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            OtherData.setData(JSON.stringify(x));
+                                                                            navigate("/DetailContract")
+                                                                        }}>click here to see the agreement.</span>
+                                                                    </li>)}
+                                                                </ul>
+
+                                                            </> : <>No urgent action</>}
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="landingPageReport">
+                                                            <h5>Total Cash In Vs Cash Out</h5>
+                                                            {clientReport ? <></> : <>Loading data..</>}
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div id="DraftAggrements" className="tab-content">
+                                        <div className="landingPageReport">
+                                            <div className="table mr-1">
+                                                <h4>User Proposal</h4>
+                                                <div className="d-none d-md-block">
+                                                    <div className="row tableHeader ">
+                                                        <div className="col-md-3">
+                                                            Owner
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            Duration
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            LD Details
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            Status
+                                                        </div>
+                                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                            Action
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {userProposalLst && userProposalLst.length > 0 ? userProposalLst.map(tempPO => <div className="row tablebox">
+                                                    <div className="col-md-3 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Owner: </strong>
+                                                            {tempPO.owner.usrName} <br />
+                                                            <span style={{ fontSize: '10px' }}>
+                                                                {tempPO.owner.email}
+                                                                {tempPO.owner.phoneNumber}
+                                                                {tempPO.owner.usrGstin}</span>
+                                                        </span>
+
+                                                    </div>
+                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Duration: </strong>
+                                                            {tempPO.proposalCompletionInDays}<br />
+
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-4 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">LD Details </strong>
+                                                            {tempPO.proposalLdPercent}% after {tempPO.proposalLdAppliedAfterDays} days delay
+
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-1 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Status: </strong>
+                                                            <span class="badge bg-secondary text-light">{tempPO.proposalStatus}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
+                                                        {tempPO.proposalStatus === "Active" ? <FormButton name="Detail" onClick={(e) => {
                                                             e.preventDefault();
                                                             OtherData.setData(JSON.stringify(tempPO));
-                                                            navigate("/DetailAgreement")
-                                                        }} />
+                                                            navigate("/DetailProposal");
+                                                        }} /> : <></>}
+                                                        {tempPO.proposalStatus === "Draft" ? <FormButton name="Edit" onClick={(e) => {
+                                                            editRFQ(e, tempPO);
+                                                        }} /> : <></>}
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="d-block d-md-none">
-                                                <div className="row m-0 p-0">
-                                                    <div className="col-xs-6 m-0 p-0">
-                                                        <FormButton name="Respond" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            PurchaseOrder.setPoId(tempPO.poId);
-                                                            navigate("/DetailAgreement")
-                                                        }} />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                ) : <div className="row tablebox">No Data present</div>}
 
-
-                                        </div>
-                                    </div> : <></>
-                                    ) : <div className="row tablebox">No Data present</div>}
-
-                                </div>
-                                <h4>Contracts</h4>
-                                <div className="table ml-1 ">
-                                    <div className="d-none d-md-block">
-                                        <div className="row tableHeader">
-                                            <div className="col-md-3">
-                                                LD condition
-                                            </div>
-                                            <div className="col-md-2">
-                                                Buyer
-                                            </div>
-                                            <div className="col-md-2">
-                                                Seller
-                                            </div>
-                                            <div className="col-md-1">
-                                                Status
-                                            </div>
-                                            <div className="col-md-4" style={{ textAlign: "center" }}>
-                                                Action
                                             </div>
                                         </div>
-                                    </div>
-                                    {agreementList && agreementList.length > 0 ? agreementList.map(tempPO => tempPO.status === "Active" || tempPO.status === "Completed" ?
-                                        <div className="row tablebox">
-                                            <div className="col-md-3 d-flex align-items-center">
-                                                <span>
-                                                    <strong className="d-block d-md-none">LD / Advance: </strong>
-                                                    {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
-                                                    and advance of {tempPO.advance}%
-
-                                                </span>
-                                                
-                                        </div>
-                                            <div className="col-md-2 d-flex align-items-center">
-                                                <span>
-                                                    <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyer.usrName}<br />
-                                                    <span style={{ fontSize: '10px' }}>{tempPO.buyer.phoneNumber}</span><br />
-                                                    <span style={{ fontSize: '10px' }}>{tempPO.buyer.email}</span><br />
-                                                    <span style={{ fontSize: '10px' }}>{tempPO.buyer.usrAddress}</span>
-                                                </span>
-                                                
-                                        </div>
-                                            <div className="col-md-2 d-flex align-items-center">
-                                                <span>
-                                                    <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.seller.usrName}<br />
-                                                    <span style={{ fontSize: '10px' }}>{tempPO.seller.phoneNumber}</span><br />
-                                                    <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
-                                                    <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
-                                                </span>
-                                                
-                                        </div>
-                                            <div className="col-md-1 d-flex align-items-center">
-                                                <span>
-                                                    <strong className="d-inline d-md-none">Status: </strong>
-                                                    <span class="badge bg-secondary text-light">{tempPO.status}</span>
-                                                </span>
-                                            </div>
-                                            <div className="col-md-4 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
+                                        <div className="landingPageReport">
+                                            <div className="table mr-1">
+                                                <h4>Active Proposal</h4>
                                                 <div className="d-none d-md-block">
-                                                    <div className="row m-0 p-0 ">
-                                                        <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
-                                                            <FormButton name="Detail" onClick={(e) => {
-                                                                e.preventDefault();
-                                                                OtherData.setData(JSON.stringify(tempPO));
-                                                                navigate("/DetailContract")
-                                                            }} />
+                                                    <div className="row tableHeader ">
+                                                        <div className="col-md-3">
+                                                            Owner
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            Duration
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            LD Details
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            Status
+                                                        </div>
+                                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                            Action
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                                <div className="d-block d-md-none">
-                                                    <div className="row m-0 p-0 ">
-                                                        <div className="col-xs-6 m-0 p-0" style={{ textAlign: "center" }}>
-                                                            <FormButton name="Detail" onClick={(e) => {
-                                                                e.preventDefault();
-                                                                OtherData.setData(JSON.stringify(tempPO));
-                                                                navigate("/DetailContract")
-                                                            }} />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {activeProposalLst && activeProposalLst.length > 0 ? activeProposalLst.map(tempPO => <div className="row tablebox">
+                                                    <div className="col-md-3 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Owner: </strong>
+                                                            {tempPO.owner.usrName} <br />
+                                                            <span style={{ fontSize: '10px' }}>
+                                                                {tempPO.owner.email}
+                                                                {tempPO.owner.phoneNumber}
+                                                                {tempPO.owner.usrGstin}</span>
+                                                        </span>
 
-                                                
+                                                    </div>
+                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Duration: </strong>
+                                                            {tempPO.proposalCompletionInDays}<br />
+
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-4 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">LD Details </strong>
+                                                            {tempPO.proposalLdPercent}% after {tempPO.proposalLdAppliedAfterDays} days delay
+
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-1 col-xs-12 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Status: </strong>
+                                                            <span class="badge bg-secondary text-light">{tempPO.proposalStatus}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
+                                                        <FormButton name="Apply" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            OtherData.setData(JSON.stringify(tempPO));
+                                                            navigate("/ApplyRFQ");
+                                                        }} />
+                                                    </div>
+                                                </div>
+                                                ) : <div className="row tablebox">No Data present</div>}
+
+                                            </div>
                                         </div>
-                                    </div>:<></>
-                                    ) : <div className="row tablebox">No Data present</div>}
+                                        
+                                        <div className="landingPageReport">
+                                            <div className="table mr-1">
+                                                <h4>User Invites</h4>
+                                                <div className="d-none d-md-block">
+                                                    <div className="row tableHeader ">
+                                                        <div className="col-md-1 ">
+                                                            S. No.
+                                                        </div>
+                                                        <div className="col-md-6 ">
+                                                            Raised By
+                                                        </div>
 
+                                                        <div className="col-md-2 ">Status</div>
+                                                        <div className="col-md-3 ">Action</div>
+                                                    </div>
+                                                </div>
+
+                                                {inviteList && inviteList.length > 0 ? inviteList.map((x, ind) => <div className="row p-1 tablebox">
+                                                    <div className="col-md-1">
+                                                        <strong className="d-inline d-md-none">S.No.: </strong>
+                                                        {ind + 1}
+
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <strong className="d-inline d-md-none">Raised For: </strong>
+                                                        {x.raisedByUser.usrName}
+                                                        <br />
+                                                        ({x.raisedByUser.phoneNumber})
+                                                        <br />
+                                                        {x.raisedByUser.email}
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <strong className="d-inline d-md-none">Status: </strong>
+                                                        {x.inviteStatusId}<br />
+                                                    </div>
+                                                    <div className="col-md-3 ">
+                                                        <FormButton name="Apply" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            ApplyForInvite(x.id);
+                                                        }} />
+                                                    </div>
+                                                </div>) : <div className="row"> No Items in Proposal</div>}
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div id="CompletedAggrements" className="tab-content">
+                                        <div className="landingPageReport">
+                                            <h4>Agreements</h4>
+                                            <div className="table ml-1 ">
+                                                <div className="d-none d-md-block align-items-center">
+                                                    <div className="row tableHeader">
+                                                        <div className="col-md-3">
+                                                            Buyer
+                                                        </div>
+                                                        <div className="col-md-3">
+                                                            Seller
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            Status
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            LD / Advance:
+                                                        </div>
+                                                        <div className="col-md-2" style={{ textAlign: "center" }}>
+                                                            Action
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {agreementList && agreementList.length > 0 ? agreementList.map(tempPO => (
+                                                    tempPO.status === "Draft"
+                                                    || tempPO.status === "Proposed"
+                                                    || tempPO.status === "Accepted"
+                                                    || tempPO.status === "Waiting for Seller"
+                                                    || tempPO.status === "Waiting for Buyer"
+                                                ) ? < div className="row tablebox" >
+                                                    <div className="col-md-3 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyer.usrName}<br />
+                                                            <span style={{ fontSize: '10px' }}>{tempPO.buyer.phoneNumber}</span><br />
+                                                            <span style={{ fontSize: '10px' }}>{tempPO.buyer.email}</span><br />
+                                                            <span style={{ fontSize: '10px' }}>{tempPO.buyer.usrAddress}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-3 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.seller.usrName}<br />
+                                                            <span style={{ fontSize: '10px' }}>{tempPO.seller.phoneNumber}</span><br />
+                                                            <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
+                                                            <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
+                                                        </span>
+
+                                                    </div>
+                                                    <div className="col-md-2 d-flex align-items-center">
+
+                                                        <span>
+                                                            <strong className="d-inline d-md-none">Status: </strong>
+                                                            <span class="badge bg-success text-light">{tempPO.status}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-2 d-flex align-items-center">
+                                                        <span>
+                                                            <strong className="d-block d-md-none">LD / Advance: </strong>
+                                                            {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
+                                                            and advance of {tempPO.advance}%
+
+                                                        </span>
+                                                    </div>
+                                                    <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
+                                                        <div className="d-none d-md-block">
+                                                            <div className="row m-0 p-0">
+                                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
+                                                                    {tempPO.status === "Draft" ?
+                                                                        <FormButton name="Edit" onClick={(e) => editAgreement(e, tempPO)} /> : <></>}
+
+                                                                </div>
+                                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
+                                                                    <FormButton name="Respond" onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        OtherData.setData(JSON.stringify(tempPO));
+                                                                        navigate("/DetailAgreement")
+                                                                    }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="d-block d-md-none">
+                                                            <div className="row m-0 p-0">
+                                                                <div className="col-xs-6 m-0 p-0">
+                                                                    <FormButton name="Respond" onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        PurchaseOrder.setPoId(tempPO.poId);
+                                                                        navigate("/DetailAgreement")
+                                                                    }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div> : <></>
+                                                ) : <div className="row tablebox">No Data present</div>}
+
+                                            </div>
+                                        </div>
+                                        <div className="landingPageReport">
+                                            <h4>Contracts</h4>
+                                            <div className="table ml-1 ">
+                                                <div className="d-none d-md-block">
+                                                    <div className="row tableHeader">
+                                                        <div className="col-md-3">
+                                                            LD condition
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            Buyer
+                                                        </div>
+                                                        <div className="col-md-2">
+                                                            Seller
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            Status
+                                                        </div>
+                                                        <div className="col-md-4" style={{ textAlign: "center" }}>
+                                                            Action
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {agreementList && agreementList.length > 0 ? agreementList.map(tempPO => tempPO.status === "Active" || tempPO.status === "Completed" ?
+                                                    <div className="row tablebox">
+                                                        <div className="col-md-3 d-flex align-items-center">
+                                                            <span>
+                                                                <strong className="d-block d-md-none">LD / Advance: </strong>
+                                                                {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
+                                                                and advance of {tempPO.advance}%
+
+                                                            </span>
+
+                                                        </div>
+                                                        <div className="col-md-2 d-flex align-items-center">
+                                                            <span>
+                                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyer.usrName}<br />
+                                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.phoneNumber}</span><br />
+                                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.email}</span><br />
+                                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.usrAddress}</span>
+                                                            </span>
+
+                                                        </div>
+                                                        <div className="col-md-2 d-flex align-items-center">
+                                                            <span>
+                                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.seller.usrName}<br />
+                                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.phoneNumber}</span><br />
+                                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
+                                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
+                                                            </span>
+
+                                                        </div>
+                                                        <div className="col-md-1 d-flex align-items-center">
+                                                            <span>
+                                                                <strong className="d-inline d-md-none">Status: </strong>
+                                                                <span class="badge bg-secondary text-light">{tempPO.status}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-md-4 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
+                                                            <div className="d-none d-md-block">
+                                                                <div className="row m-0 p-0 ">
+                                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
+                                                                        <FormButton name="Detail" onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            OtherData.setData(JSON.stringify(tempPO));
+                                                                            navigate("/DetailContract")
+                                                                        }} />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="d-block d-md-none">
+                                                                <div className="row m-0 p-0 ">
+                                                                    <div className="col-xs-6 m-0 p-0" style={{ textAlign: "center" }}>
+                                                                        <FormButton name="Detail" onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            OtherData.setData(JSON.stringify(tempPO));
+                                                                            navigate("/DetailContract")
+                                                                        }} />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div> : <></>
+                                                ) : <div className="row tablebox">No Data present</div>}
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
-                                </div>
+                                
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
