@@ -290,7 +290,7 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                 <div className="row m-5">
                                                     <div className="col-md-6 ">
                                                         <div className="landingPageReport">
-                                                            <h5 style={{ textAlign: "left" }}>Agreements </h5>
+                                                            <h5 style={{ textAlign: "left" }}>Actions required</h5>
                                                             {attensionRequired && attensionRequired.length > 0 ? <>
                                                                 <ul>
                                                                     {attensionRequired.map(x => <li>
@@ -308,7 +308,7 @@ const HomePage = ({ setUserName, setUserType}) => {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="landingPageReport">
-                                                            <h5 style={{ textAlign: "left" }}>Total Cash In Vs Cash Out</h5>
+                                                            <h5 style={{ textAlign: "left" }}>Cash flow</h5>
                                                             {clientReport ? <>
                                                                 <CashFlowProgress cashIn={clientReport.totalCashIn } cashOut={clientReport.totalCashOut }/>
                                                             </> : <>Loading data..</>}
