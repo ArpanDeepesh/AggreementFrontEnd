@@ -13,7 +13,8 @@ import MessageDisplay from "../CommonPages/MessageDisplay";
 const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
-	const [msg, setMsg] = useState("");
+	const [msg, setMsg] = useState(""); 
+	const [msgType, setMsgType] = useState("");
 	const [usrTypeOptions, setUserTypeOptions] = useState([]);
 	const [usrType, setUsrType] = useState("");
 	useEffect(() => {
@@ -28,7 +29,7 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 	}, []);
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (!validatePhoneNumber()) {
+		if (!validateForm()) {
 			return;
 		}
 		if (usrForm.current['Password'].value !== usrForm.current['ConfirmPassword'].value)
@@ -56,25 +57,84 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 				navigate("/ValidateUser");
 			} else {
 				setMsg("Not able to save data");
+				setMsgType("Error");
 			}
 
 		}).catch(err => {
 			console.log(err);
 		});
 	};
-	const validatePhoneNumber = () => {
-		var phNo = usrForm.current['PhoneNumber'].value;
-		let isnum = /^\+\d+$/.test(phNo);
-		if (!isnum) {
-			setMsg("Phone Number is not correct.");
+	const validateForm = () => {
+		var name = usrForm.current['UserName'].value;
+		var nameRegex = /^[A-Za-z\s'-]+$/;
+		if (name === "")
+		{
+			setMsg("Name is require");
+			setMsgType("Error");
+			return false;
+		} else if (nameRegex.test(name)===false)
+		{
+			setMsg("Not a valid name.")
+			setMsgType("Error");
+			return false;
 		}
-		return isnum;
+		var pan=usrForm.current['UsrPan'].value;
+		var panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+		if (pan!=="" && !panRegex.test(pan))
+		{
+			setMsg("Not a valid name.");
+			setMsgType("Error");
+			return false;
+		}
+		var gstinRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+		var UsrGstin = usrForm.current['UsrGstin'].value;
+		if (UsrGstin!=="" && !gstinRegex.test(UsrGstin)) {
+			setMsg("Not a valid GSTIN.");
+			setMsgType("Error");
+			return false;
+		}
+		var usrAddress = usrForm.current['UsrAddress'].value;
+		var addressRegex = /^[A-Za-z0-9\s,.-/#()]+$/;
+		if (usrAddress !== "" && !addressRegex.test(usrAddress)) {
+			setMsg("Not a valid address.");
+			setMsgType("Error");
+			return false;
+		}
+		if (usrType === "")
+		{
+			setMsg("Please select a user type");
+			setMsgType("Error");
+			return false;
+		}
+		var PhoneNumber = usrForm.current['PhoneNumber'].value;
+		var phoneRegex = /^\+91[6-9]\d{9}$/;
+		if (phoneRegex.test(PhoneNumber)) {
+			setMsg("Phone Number is not correct.");
+			setMsgType("Error");
+			return false;
+		}
+		var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		var Email = usrForm.current['Email'].value;
+		if (Email !== "" && !emailRegex.test(Email))
+		{
+			setMsg("Email is not correct.");
+			setMsgType("Error");
+			return false;
+		}
+		var Password = usrForm.current["Password"].value;
+		var passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+		if (!passwordRegex.test(Password)) {
+			setMsg("Please add a strong password.");
+			setMsgType("Error");
+			return false;
+		}
+		return true;
 	}
 
 	return (
 		<>
 			<div className="scrollable-section">
-			<MessageDisplay msg={msg} setMsg={setMsg} />
+				<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			<Form ref={usrForm} onSubmit={handleSubmit} >
 					<center>{displayLogin === 2 ? "Forgot Your Password?" : ""}</center>
 					<div style={{ textAlign: 'left' }}>
@@ -87,6 +147,7 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 											e.preventDefault();
 											setUsrType(e.target.value);
 										}}>
+										<option value="" >==Select==</option>
 										{usrTypeOptions && usrTypeOptions.length > 0 ?
 											usrTypeOptions.map(x => <option value={x.id} >{x.typeValue}</option>) :
 											<></>}

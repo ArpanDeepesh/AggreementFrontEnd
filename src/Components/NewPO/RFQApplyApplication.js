@@ -19,7 +19,7 @@ const RFQApplyApplication = () => {
 	const proposalForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
-	
+	const [msgType, setMsgType] = useState("");
 	const [proposalObj, setProposalObj] = useState();
 	const [propsalTermOptions, setProposalTermOptions] = useState([]);
 	const [agreementId, setAgreementId] = useState(0);
@@ -75,9 +75,29 @@ const RFQApplyApplication = () => {
 			setItemList(res.data);
 		}).catch(err => console.log(err));
 	}
+	const validateRFQApplicationForm = () => {
+		var advance = proposalForm.current['Advance'].value;
+		if (advance === "")
+		{
+			setMsg("Advance is required. It can be 0.")
+			setMsgType("Error");
+			return false;
+		}
+		if (itemList.length === 0)
+		{
+			setMsg("You need to provide rate for atleast 1 item");
+			setMsgType("Error");
+			return false;
+		}
+		return true;
 
+	}
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		if (!validateRFQApplicationForm())
+		{
+			return;
+		}
 		var postBody = {
 			ProposalId: proposalObj.id && proposalObj.id > 0 ? proposalObj.id :0,
 			Advance:Number( proposalForm.current['Advance'].value),
@@ -110,6 +130,7 @@ const RFQApplyApplication = () => {
 					}).catch(err => console.log(err));
 			} else {
 				setMsg("Not able to save data");
+				setMsgType("Error");
 			}
 
 		}).catch(err => {
@@ -117,17 +138,6 @@ const RFQApplyApplication = () => {
 		});
 		
 	};
-
-
-	const publishProposal = () => {
-		getRequest("api/Business/StartRFQ?proposalId=" + proposalObj.id , UserProfile.getToken())
-			.then(x => x.json())
-			.then(res => {
-				if (res.status === 1) {
-					navigate("/DetailProposal");
-				}
-			}).catch(err => console.log(err));
-	}
 
 	const editOrAddRate = (e, item) => {
 		e.preventDefault();
@@ -184,7 +194,7 @@ const RFQApplyApplication = () => {
 
 	return (<>
 		<div className="scrollable-section">
-			<MessageDisplay msg={msg} setMsg={setMsg} />
+			<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			
 			{proposalObj && proposalObj.id && proposalObj.id > 0 ?
 				<div>
@@ -197,14 +207,8 @@ const RFQApplyApplication = () => {
 								}} />
 							</div>
 							<div className="col-md-11" >
-								<h4 style={{ color: "#007bff", paddingTop:"5px"  }}>Apply for proposal</h4>
+								<h5 style={{ color: "#007bff", paddingTop:"5px"  }}>Apply for proposal</h5>
 							</div>
-							{/*<div className="col-md-4">*/}
-							{/*	<FormButton name="Publish" onClick={(e) => {*/}
-							{/*		e.preventDefault();*/}
-							{/*		publishProposal();*/}
-							{/*	}} />*/}
-							{/*</div>*/}
 						</div>
 						<div className="row" style={{ border: "solid 1px #007bff" }}>
 						</div>

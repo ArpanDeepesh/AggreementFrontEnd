@@ -23,7 +23,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 	}, []);
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (!validatePhoneNumber()) {
+		if (!validateForm()) {
 			return;
 		}
 
@@ -54,14 +54,28 @@ const LoginPage = ({ setDisplayLogin })=>{
 			console.log(err);
 		});
 	};
-	const validatePhoneNumber = () => {
-		var data = usrForm.current['userId'].value;
-		let isnum = /^\+91\d+$/.test(data);
-		if (!isnum) {
-			setMsg("Phone Number is not in correct format.");
-			setMsgType("Error");
+	const validateForm = () =>
+	{
+		var Contact = usrForm.current['userId'].value;
+		var Password = usrForm.current['userPass'].value;
+		var phoneRegex = /^\+91[6-9]\d{9}$/;
+		var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		if (!phoneRegex.test(Contact)) {
+			if (!emailRegex.test(Contact))
+			{
+				setMsg("Contact info is not valid. It has to be a phone number or email address.");
+				setMsgType("Error");
+				return false;
+			}
 		}
-		return isnum;
+		
+		var passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+		if (!passwordRegex.test(Password)) {
+			setMsg("Incorrect password.");
+			setMsgType("Error");
+			return false;
+		}
+		return true;
 	}
 
 	return (

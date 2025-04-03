@@ -20,6 +20,7 @@ const RFQApplication = () => {
 	const proposalForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
+	const [msgType, setMsgType] = useState("");
 	
 	const [proposalId, setProposalId] = useState();
 	const [proposalCompletion, setProposalCompletion] = useState();
@@ -36,8 +37,6 @@ const RFQApplication = () => {
 	const [itemDescription, setItemDescription] = useState();
 	const [itemQty, setItemQty] = useState();
 
-	const [termDropDownId, setTermDropDownId] = useState();
-	const [itemDropDownId, setItemDropDownId] = useState();
 
 	const [termList, setTermList] = useState([]);
 	const [termId, setTermId] = useState();
@@ -97,15 +96,44 @@ const RFQApplication = () => {
 			setTermList(res.data);
 		}).catch(err => console.log(err));
 	}
-
+	const validateSaveRFQ = () => {
+		var ProposalCompletionInDays = proposalForm.current['ProposalCompletionInDays'].value;
+		var ProposalLdPercent = proposalForm.current['ProposalLdPercent'].value;
+		var ProposalLdAppliedAfterDays = proposalForm.current['ProposalLdAppliedAfterDays'].value;
+		if (ProposalCompletionInDays==="" )
+		{
+			setMsg("Completion (in days) is a required.");
+			setMsgType("Error");
+			return false;
+		} else if (Number(ProposalCompletionInDays) > 0) {
+			setMsg("Completion (in days) has to be greater than 0.");
+			setMsgType("Error");
+			return false;
+		}
+		if (ProposalLdPercent === "") {
+			setMsg("LD percent is a required. You can set it as 0.");
+			setMsgType("Error");
+			return false;
+		}
+		if (ProposalLdAppliedAfterDays === "") {
+			setMsg("LD duration is a required. You can set it as 0.");
+			setMsgType("Error");
+			return false;
+		}
+		return true;
+	}
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		if (!validateSaveRFQ())
+		{
+			return;
+		}
 		var postBody = {
 			Id: proposalId && proposalId > 0 ? proposalId :0,
 			ProposalCompletionInDays: proposalForm.current['ProposalCompletionInDays'].value,
 			ProposalLdPercent: proposalForm.current['ProposalLdPercent'].value,
-			OwnerId: UserProfile.getUserId(),
 			ProposalLdAppliedAfterDays: proposalForm.current['ProposalLdAppliedAfterDays'].value,
+			OwnerId: UserProfile.getUserId(),
 			ProposalTypeId: propsalType
 
 		};
@@ -134,8 +162,31 @@ const RFQApplication = () => {
 		itemForm.current['ItemDescription'].value = "";
 		itemForm.current['ItemQuantity'].value = 0;
 	}
+	const itemFormValidation = () => {
+		var ItemQuantity= itemForm.current['ItemQuantity'].value;
+		var ItemTitle = itemForm.current['ItemTitle'].value;
+		if (ItemQuantity === "") {
+			setMsg("Quantity is a required.");
+			setMsgType("Error");
+			return false;
+		} else if (Number(ItemQuantity) > 0) {
+			setMsg("Quantity has to be greater than 0.");
+			setMsgType("Error");
+			return false;
+		}
+		if (ItemTitle === "") {
+			setMsg("Item title is a required.");
+			setMsgType("Error");
+			return false;
+		}
+		return true;
+	}
 const handleSubmitAddItem = (e) => {
 	e.preventDefault();
+	if (!itemFormValidation())
+	{
+		return;
+	}
 	var postBody = {
 		Id: itemId && itemId > 0 ? itemId : 0,
 		ItemHsnCsnUin: itemForm.current['ItemHsnCsnUin'].value,
@@ -167,8 +218,40 @@ const handleSubmitAddItem = (e) => {
 		termForm.current['TermTitle'].value = "";
 		termForm.current['TermTxt'].value = "";
 	}
+	const validateTermForm = () => {
+		var TermTitle = termForm.current['TermTitle'].value;
+		var TermTxt = termForm.current['TermTxt'].value;
+		if (TermTitle === "") {
+			setMsg("Term title is required.");
+
+			setMsgType("Error");
+			return false;
+		}
+		else if (TermTitle.length > 50)
+		{
+			setMsg("Term title cannot be more than 50 characters");
+			setMsgType("Error");
+			return false;
+		}
+		if (TermTxt === "") {
+			setMsg("Term title is required.");
+
+			setMsgType("Error");
+			return false;
+		}
+		else if (TermTxt.length > 500) {
+			setMsg("Term title cannot be more than 500 characters");
+			setMsgType("Error");
+			return false;
+		}
+		return true;
+	}
 	const handleSubmitAddTerm = (e) => {
 		e.preventDefault();
+		if (!validateTermForm())
+		{
+			return;
+		}
 		var postBody = {
 
 			Id:termId && termId > 0 ? termId : 0,
@@ -295,7 +378,7 @@ const handleSubmitAddItem = (e) => {
 
 	return (<>
 		<div className="scrollable-section">
-			<MessageDisplay msg={msg} setMsg={setMsg} />
+			<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			<DeleteItemConfirmation msg={deleteMsg} setMsg={setDeleteMsg} action={deleteAction} data={deleteData} />
 			<div className="table">
 				<div className="row">
@@ -319,7 +402,7 @@ const handleSubmitAddItem = (e) => {
 							<div className="form-group" style={{ textAlign: 'left' }}>
 								<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Terms</label>
 								<select name="termsDD" className="form-control"
-									value={termDropDownId} onChange={(e) => {
+									 onChange={(e) => {
 										e.preventDefault();
 										setLDData(e.target.value);
 									}}>
@@ -332,13 +415,13 @@ const handleSubmitAddItem = (e) => {
 							</div>
 						</div>
 						<div className="col-md-2">
-							<InputNumberField name="ProposalLdPercent" type="text" label="LD Percent" value={termLDPercent} />
+							<InputNumberField name="ProposalLdPercent" type="decimal" label="LD Percent" value={termLDPercent} />
 						</div>
 						<div className="col-md-2">
-							<InputNumberField name="ProposalLdAppliedAfterDays" type="text" label="LD duration (in days)" value={termLDDays} />
+							<InputNumberField name="ProposalLdAppliedAfterDays" type="number" label="LD duration (in days)" value={termLDDays} />
 						</div>
 						<div className="col-md-3">
-							<InputNumberField name="ProposalCompletionInDays" type="text" label="Completion (in days)" value={proposalCompletion} />
+							<InputNumberField name="ProposalCompletionInDays" type="number" label="Completion (in days)" value={proposalCompletion} />
 						</div>
 						<div className="col-md-3">
 						<br/>
@@ -355,7 +438,7 @@ const handleSubmitAddItem = (e) => {
 							<div className="form-group" style={{ textAlign: 'left' }}>
 								<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Items</label>
 								<select name="TypeName" className="form-control"
-										value={itemDropDownId} onChange={(e) => {
+										 onChange={(e) => {
 										e.preventDefault();
 										setItemData(e.target.value);
 									}}>
@@ -459,11 +542,7 @@ const handleSubmitAddItem = (e) => {
 									<div className="col-md-4">
 										<div className="form-group" style={{ textAlign: 'left' }}>
 											<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Items</label>
-											<select name="selectedTermId" className="form-control"
-												value={termDropDownId} onChange={(e) => {
-													e.preventDefault();
-													//setItemData(e.target.value);
-												}}>
+											<select name="selectedTermId" className="form-control">
 												<option value={0}>-Select-</option>
 												{propsalTermOptions && propsalTermOptions.length > 0 ?
 													propsalTermOptions.map(x => <option value={x.id} >{x.typeValue}
