@@ -105,7 +105,7 @@ const RFQApplication = () => {
 			setMsg("Completion (in days) is a required.");
 			setMsgType("Error");
 			return false;
-		} else if (Number(ProposalCompletionInDays) > 0) {
+		} else if (Number(ProposalCompletionInDays) === 0) {
 			setMsg("Completion (in days) has to be greater than 0.");
 			setMsgType("Error");
 			return false;
