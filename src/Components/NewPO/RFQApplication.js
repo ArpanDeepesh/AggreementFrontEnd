@@ -169,7 +169,7 @@ const RFQApplication = () => {
 			setMsg("Quantity is a required.");
 			setMsgType("Error");
 			return false;
-		} else if (Number(ItemQuantity) > 0) {
+		} else if (Number(ItemQuantity) === 0) {
 			setMsg("Quantity has to be greater than 0.");
 			setMsgType("Error");
 			return false;
