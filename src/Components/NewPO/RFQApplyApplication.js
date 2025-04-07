@@ -83,7 +83,14 @@ const RFQApplyApplication = () => {
 			setMsgType("Error");
 			return false;
 		}
-		if (itemList.length === 0)
+		var rateList = [];
+		for (var i = 0; i < itemList.length; i++) {
+			if (itemList[i].SellerRates)
+			{
+				rateList.push(itemList[i].SellerRates)
+			}
+		}
+		if (rateList.length === 0)
 		{
 			setMsg("You need to provide rate for atleast 1 item");
 			setMsgType("Error");
