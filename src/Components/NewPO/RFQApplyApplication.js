@@ -85,11 +85,12 @@ const RFQApplyApplication = () => {
 		}
 		var rateList = [];
 		for (var i = 0; i < itemList.length; i++) {
-			if (itemList[i].SellerRates)
+			if (itemList[i].sellerRate)
 			{
-				rateList.push(itemList[i].SellerRates)
+				rateList.push(itemList[i].sellerRate)
 			}
 		}
+		console.log(rateList);
 		if (rateList.length === 0)
 		{
 			setMsg("You need to provide rate for atleast 1 item");
