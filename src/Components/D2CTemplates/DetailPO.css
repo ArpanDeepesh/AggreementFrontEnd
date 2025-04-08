@@ -1,0 +1,16 @@
+.commentIcon {
+    cursor:pointer;
+}
+.selectTemplateAction {
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 5px rgba(237,237,242,1);
+    cursor: pointer;
+    padding: 30px;
+    height: 80%;
+    background-color: white;
+}
+
+    .selectTemplateAction:hover {
+        box-shadow: 1px 5px 5px 5px rgba(237,237,242,1);
+    }

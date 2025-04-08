@@ -163,7 +163,6 @@ const HomePage = ({ setUserName, setUserType}) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="landingPageAction" onClick={e => {
                             e.preventDefault();
-                            PurchaseOrder.setRaisedBy("Buyer");
                             navigate("/userItems");
                         }}>
                             <img src={"/Catalogue.png"} width={70} height={70} />
@@ -186,7 +185,6 @@ const HomePage = ({ setUserName, setUserType}) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="landingPageAction" onClick={e => {
                             e.preventDefault();
-                            PurchaseOrder.setRaisedBy("Buyer");
                             navigate("/userTerms");
                         }}>
                             <img src={"/Terms.png"} width={70} height={70} />
@@ -227,8 +225,7 @@ const HomePage = ({ setUserName, setUserType}) => {
                         <div className="landingPageAction"
                             onClick={e => {
                                 e.preventDefault();
-                                PurchaseOrder.setRaisedBy("Buyer");
-                                navigate("/draftAgreement");
+                                navigate("/SelectTemplate");
                             }}
                             style={{ cursor: "pointer" }} >
                             <img src={"/Agreement.png"} width={70} height={70} />

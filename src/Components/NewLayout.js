@@ -30,6 +30,14 @@ import DraftInvoice from "./NewPO/DraftInvoice";
 import EditInvoice from './NewPO/EditInvoice';
 import EditTxnNote from "./NewPO/EditTxnNote";
 
+import SelectContractTmplet from "./D2CTemplates/SelectContractTmplet";
+import HomeMaintenance from "./D2CTemplates/HomeMaintenance";
+import PersonalLoan from "./D2CTemplates/PersonalLoan";
+import ResidentialAgreement from "./D2CTemplates/ResidentialAgreement";
+import SublettingAgreement from "./D2CTemplates/SublettingAgreement";
+import BuySellBtw2Parties from "./D2CTemplates/BuySellBtw2Parties";
+import CustomAgreement from "./D2CTemplates/CustomAgreement";
+
 
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
@@ -172,7 +180,14 @@ const NewLayout = () => {
                         <Route path="/New" element={<NewPO setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/DetailContract" element={<DetailContract setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/CheckPODetails" element={<CheckPODetails setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
-                        
+
+                        <Route path="/SelectTemplate" element={<SelectContractTmplet setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/HomeMaintenanceT1" element={<HomeMaintenance setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/PersonalLoanT1" element={<PersonalLoan setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/ResidentialAgreementT1" element={<ResidentialAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/SublettingAgreementT1" element={<SublettingAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/BuySellT1" element={<BuySellBtw2Parties setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/CustomAgreement" element={<CustomAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path='*' element={<WrongAddress />} />
                     </Routes>
                 </BrowserRouter>
