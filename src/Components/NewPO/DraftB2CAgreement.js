@@ -10,12 +10,14 @@ import UserProfile from "../Context/UserProfile";
 import { useState } from "react";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 import InputNumberField from "../FormParts/InputNumberField";
+import InputFieldBlank from "../FormParts/InputFieldBlank";
 import AddAttachment from "../CommonPages/AddAttachment";
 import OtherData from "../Context/OtherData";
 import DeleteItemConfirmation from "../CommonPages/DeleteItemConfirmation";
 
-const DraftAgreement = () => {
+const DraftB2CAgreement = () => {
 	const termForm = useRef(null);
+	const itemForm = useRef(null);
 	const proposalForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
@@ -25,7 +27,10 @@ const DraftAgreement = () => {
 	const [agreementId, setAgreementId] = useState(0);
 	//item section setBuyerTermList
 	const [itemList, setItemList] = useState([]);
-
+	const [itemId, setItemId] = useState();
+	const [itemCurrencyOption, setItemCurrencyOption] = useState([]);
+	const [itemUnitOption, setItemUnitOption] = useState([]);
+	const [proposalType, setProposalType] = useState([]);
 
 	const [termDropDownId, setTermDropDownId] = useState();
 
@@ -59,7 +64,31 @@ const DraftAgreement = () => {
 				setProposalTermOptions(res.data);
 			}
 		}).catch(err => console.log(err));
-
+		getRequestAllowAll("api/General/TermsTypes").then(x => x.json()).then(res => {
+			if (res.status === 1) {
+				var agObj = JSON.parse(OtherData.getData());
+				for (var i = 0; i < res.data.length; i++) {
+					if (res.data[i].typeValue === "Buyer" && UserProfile.getUserId().toString() === agObj.buyerId) {
+						setProposalType(res.data[i].id);
+						break;
+					}
+					if (res.data[i].typeValue === "Seller" && UserProfile.getUserId().toString() === agObj.sellerId) {
+						setProposalType(res.data[i].id);
+						break;
+					}
+				}
+			}
+		}).catch(err => console.log(err));
+		getRequestAllowAll("api/General/UnitList").then(x => x.json()).then(res => {
+			if (res.status === 1) {
+				setItemUnitOption(res.data);
+			}
+		}).catch(err => console.log(err));
+		getRequestAllowAll("api/General/CurrencyList").then(x => x.json()).then(res => {
+			if (res.status === 1) {
+				setItemCurrencyOption(res.data);
+			}
+		}).catch(err => console.log(err));
 
 
 	}, []);
@@ -84,27 +113,15 @@ const DraftAgreement = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		var postBody = {
-			ProposalId: agreementObj.id && agreementObj.id > 0 ? agreementObj.id : 0,
-			Advance: Number(proposalForm.current['Advance'].value),
-			SellerRates: []
+		var formBody = {
+			Id: agreementObj.id,
+			LDDays: proposalForm.current['LDDays'].value,
+			LDPercent: proposalForm.current['LDPercent'].value,
+			Advance: proposalForm.current['Advance'].value,
+			AgreementDuration: proposalForm.current['NumberOfDays'].value
 		};
-		for (var i = 0; i < itemList.length; i++) {
-			if (itemList[i].sellerRate > 0) {
-				postBody.SellerRates.push({
-					Id: 0,
-					ItemId: itemList[i].id,
-					ItemTax: Number(itemList[i].sellerTax),
-					CompletionDays: Number(itemList[i].sellerDaysToComplete),
-					RateType: 2,
-					Amount: Number(itemList[i].sellerRate),
-					Currency: Number(itemList[i].sellerCurrency),
-					SellingUnit: Number(itemList[i].sellerUnit)
-				});
-			}
-		}
-		console.log(postBody);
-		sendPostRequest("api/Business/SaveAgreement", UserProfile.getToken(), postBody).then(r => r.json()).then(res => {
+		console.log(formBody);
+		sendPostRequest("api/Business/UpdateB2CContract", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res.status === 1) {
 				setAgreementId(res.id);
@@ -117,7 +134,32 @@ const DraftAgreement = () => {
 		});
 
 	};
-
+	const handleSubmitAddItem = (e) => {
+		e.preventDefault();
+		
+		var postBody = {
+			AgItemId: itemId > 0 ? itemId : 0,
+			AgId: agreementObj.id,
+			CreatorId: UserProfile.getUserId(),
+			Rate: itemForm.current["Rate"] ? itemForm.current["Rate"].value:0,
+			Tax: itemForm.current["Tax"] ? itemForm.current["Tax"].value:0,
+			ItemTitle: itemForm.current["ItemTitle"].value,
+			ItemDescription: itemForm.current["ItemDescription"].value,
+			ItemCode: itemForm.current["ItemCode"].value,
+			ItemDeliveredInDays: itemForm.current["ItemDeliveredInDays"] ? itemForm.current["ItemDeliveredInDays"].value:0,
+			Qty: itemForm.current["Qty"].value,
+			CurrencyId: itemForm.current["CurrencyId"] ? itemForm.current["CurrencyId"].value:1,
+			UnitId: itemForm.current["UnitId"] ? itemForm.current["UnitId"].value:1,
+		};
+		sendPostRequest("api/Business/AddAgreementItem", UserProfile.getToken(), postBody).then(r => r.json()).then(res => {
+			console.log(res);
+			if (res.status === 1)
+			{
+				setMsg("Item Added successfully.");
+				
+			}
+		}).catch(err => console.log(err));
+	}
 	const resetTermForm = () => {
 		setTermText("");
 		setTermTitle("")
@@ -132,7 +174,7 @@ const DraftAgreement = () => {
 			Id: termId && termId > 0 ? termId : 0,
 			TermTitle: termForm.current['TermTitle'].value,
 			TermTxt: termForm.current['TermTxt'].value,
-			TermTypeId: 1,
+			TermTypeId: proposalType,
 			TermRfpId: agreementObj.id,
 			Attachments: termAttachments
 
@@ -155,7 +197,12 @@ const DraftAgreement = () => {
 
 	const addUserTermToProposal = () => {
 		var groupId = termForm.current['selectedTermId'].value
-		getRequest("api/Business/AddUserTermToAgreement?agreementId=" + agreementObj.id + "&grpId=" + groupId + "&termType=Seller", UserProfile.getToken())
+		var termType = "Buyer";
+		if (agreementObj.buyer.usrId.toString() === UserProfile.getUserId().toString())
+		{
+			termType="Seller"
+		}
+		getRequest("api/Business/AddUserTermToAgreement?agreementId=" + agreementObj.id + "&grpId=" + groupId + "&termType=" + termType, UserProfile.getToken())
 			.then(x => x.json())
 			.then(res => {
 				if (res.status === 1) {
@@ -169,6 +216,7 @@ const DraftAgreement = () => {
 		getRequest("api/Business/StartAgreement?agreementId=" + agreementObj.id, UserProfile.getToken())
 			.then(x => x.json())
 			.then(res => {
+				console.log(res);
 				if (res.status === 1) {
 					OtherData.setData(JSON.stringify(agreementObj));
 					navigate("/DetailAgreement");
@@ -273,125 +321,188 @@ const DraftAgreement = () => {
 
 							<div className="row" style={{ padding:"5px" }}>
 
-								<div className="col-md-1">
-									<strong>LD: </strong>
-									<br />
-									{agreementObj.ldPercent} %
-
+								<div className="col-md-3">
+									<InputFieldBlank name="LDPercent" type="number" label="LD (%)" value={agreementObj.ldPercent} />
+									 %
 								</div>
-								<div className="col-md-1">
-									<strong>LD duration: </strong>
-									<br />
-									{agreementObj.ldDays} Days
+								<div className="col-md-3">
+									<InputFieldBlank name="LDDays" type="number" label="LD duration (in days)" value={agreementObj.ldDays} />
+									 Days
 								</div>
-								<div className="col-md-2">
-									<strong>Agreement duration: </strong>
-									<br />
-									{agreementObj.contractDuration} Days
+								<div className="col-md-3">
+									<InputFieldBlank name="NumberOfDays" type="number" label="Agreement duration" value={agreementObj.contractDuration} />
+									 Days
 								</div>
-								<div className="col-md-4">
-									<InputNumberField name="Advance" type="decimal" label="Advance" value={agreementObj.advance} />
+								<div className="col-md-3">
+									<InputFieldBlank name="Advance" type="number" label="Advance" value={agreementObj.advance} />
 								</div>
-								<div className="col-md-4" style={{ textAlign: "right" }}>
+								<div className="col-md-12" style={{ textAlign: "right" }}>
 								<br/>
-									<FormSubmitButton name={agreementId > 0 ? "Edit Agreement" : "Save New Agreement"} />
+									<FormSubmitButton name={"Edit Agreement"} />
 								</div>
 							</div>
-							<div className="row" style={{ border: "solid 1px #007bff" }}>
-							</div>
-							<div className="table" style={{ textAlign: "left" }}>
-								<h4 style={{ color:"#007bff" }}>Item List</h4>
-								<div className="d-none d-md-block">
-									<div className="row tableHeader">
-										<div className="col-md-1 ">
-											Code
-										</div>
-										<div className="col-md-1 ">
-											Title
-										</div>
-										<div className="col-md-3 ">
-											Description
-										</div>
-										<div className="col-md-1 ">
-											Quantity
-										</div>
-										<div className="col-md-2 ">
-											Rate
-										</div>
-										<div className="col-md-1 ">
-											Tax
-										</div>
-										<div className="col-md-1 ">
-											Completion
-										</div>
-
-										<div className="col-md-2 " style={{ textAlign: "center" }}>
-											Actions
-										</div>
-									</div>
-								</div>
-								{itemList && itemList.length > 0 ? itemList.map(x => < div className="row tablebox">
-									<div className="col-md-1 d-flex align-items-center">
-										<span>
-											<strong className="d-inline d-md-none">Code: </strong>
-											{x.itemHsnCsnUin}</span>
-									</div>
-									<div className="col-md-1 d-flex align-items-center">
-										<span>
-											<strong className="d-inline d-md-none">Title: </strong>
-											{x.itemTitle}
-										</span>
-									</div>
-									<div className="col-md-3 d-flex align-items-center">
-										<span>
-											<strong className="d-inline d-md-none">Description: </strong>
-											{x.itemDescription}</span>
-									</div>
-									<div className="col-md-1 d-flex align-items-center">
-										<span>
-											<strong className="d-inline d-md-none">Quanityt: </strong>
-											{x.itemQuantity}</span>
-									</div>
-									<div className="col-md-2 d-flex align-items-center">
-										<span id={"displayRate" + x.id}>
-											{x.sellerRate && x.sellerRate > 0 ? <span>{x.sellerRate} {x.currency}/{x.unit}</span> : <>Not present</>}
-										</span>
-										<span id={"editRate" + x.id} style={{ display: "none" }}>
-											<InputNumberField name={"sellerRate" + x.id} type="decimal" label="Proposed Rate" />
-											{x.currency}/{x.unit}
-										</span>
-									</div>
-									<div className="col-md-1 d-flex align-items-center">
-										<span id={"displayTax" + x.id}>
-											{x.itemTax} 
-										</span>
-										<span id={"editTax" + x.id} style={{ display: "none" }}>
-											<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
-										</span>
-									</div>
-									<div className="col-md-1 d-flex align-items-center">
-										<span id={"displayCompletion" + x.id}>
-											 {x.sellerItemCompletion}
-										</span>
-										<span id={"editCompletion" + x.id} style={{ display: "none" }}>
-											<InputNumberField name={"sellerDaysToComplete" + x.id} type="number" label="Days to complete" />
-										</span>
-									</div>
-									<div className="col-md-1" style={{ textAlign: "center" }}>
-										<span id={"editBtn" + x.id} style={{ display: "inline" }}>
-											<FormButton name="Edit" onClick={(e) => { editOrAddRate(e, x) }} />
-										</span>
-										<span id={"saveBtn" + x.id} style={{ display: "none" }}>
-											<FormButton name="Save" onClick={(e) => { saveItemRate(e, x) }} />
-										</span>
-									</div>
-								</div>) : <>No Item Is Present.</>}
-
-							</div>
+							
 							<div className="row">
 								
 							</div>
 						</Form>
+					</div>
+					<div className="table">
+						<div className="" style={{ border: "solid 1px #007bff", textAlign:"left" }}>
+							<Form ref={itemForm} onSubmit={handleSubmitAddItem}>
+								<div className="row">
+									<div className="col-md-3">
+										<InputFieldBlank name="ItemCode" type="text" label="Code" />
+									</div>
+									<div className="col-md-3">
+										<InputFieldBlank name="ItemTitle" type="text" label="Item Title" />
+									</div>
+									<div className="col-md-3">
+										<InputFieldBlank name="ItemDescription" type="text" label="Description" />
+									</div>
+									<div className="col-md-3">
+										<InputFieldBlank name="Qty" type="number" label="Quantity" />
+									</div>
+									
+								</div>
+								{agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ? <div className="row">
+									<div className="col-md-3">
+										<InputFieldBlank name="Tax" type="number" label="Tax" />
+									</div>
+									<div className="col-md-3">
+										<InputFieldBlank name="ItemDeliveredInDays" type="number" label="Completion (in days)" />
+									</div>
+									<div className="col-md-3">
+										<InputFieldBlank name="Rate" type="number" label="Rate" />
+
+									</div>
+									<div className="col-md-3">
+										<span className="" style={{ textAlign: 'left' }}>
+											<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Currency</label>
+											<select name="CurrencyId" className="myAginput"
+												onChange={(e) => {
+													e.preventDefault();
+													//setItemRateCurrency(e.target.value);
+												}}>
+												<option value="-99" selected >-Select-</option>
+												{itemCurrencyOption && itemCurrencyOption.length > 0 ?
+													itemCurrencyOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
+													<></>}
+											</select>
+										</span>
+										<span className="" style={{ textAlign: 'left' }}>
+											<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Unit</label>
+											<select name="UnitId" className="myAginput"
+												onChange={(e) => {
+													e.preventDefault();
+													//setItemRateCurrency(e.target.value);
+												}}>
+												<option value="-99" selected >-Select-</option>
+												{itemUnitOption && itemUnitOption.length > 0 ?
+													itemUnitOption.map(x => <option value={x.id} >{x.typeValue}</option>) :
+													<></>}
+											</select>
+										</span>
+									</div>
+								</div> :<></>}
+								
+								<div className="row">
+									<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
+										<FormSubmitButton name={itemId > 0 ? "Edit Item" : "Save New Item"} />
+									</div>
+								</div>
+							</Form>
+						</div>
+						<div className="table" style={{ textAlign: "left" }}>
+							<h4 style={{ color: "#007bff" }}>Item List</h4>
+							<div className="d-none d-md-block">
+								<div className="row tableHeader">
+									<div className="col-md-1 ">
+										Code
+									</div>
+									<div className="col-md-1 ">
+										Title
+									</div>
+									<div className="col-md-3 ">
+										Description
+									</div>
+									<div className="col-md-1 ">
+										Quantity
+									</div>
+									<div className="col-md-2 ">
+										Rate
+									</div>
+									<div className="col-md-1 ">
+										Tax
+									</div>
+									<div className="col-md-1 ">
+										Completion
+									</div>
+
+									<div className="col-md-2 " style={{ textAlign: "center" }}>
+										Actions
+									</div>
+								</div>
+							</div>
+							{itemList && itemList.length > 0 ? itemList.map(x => < div className="row tablebox">
+								<div className="col-md-1 d-flex align-items-center">
+									<span>
+										<strong className="d-inline d-md-none">Code: </strong>
+										{x.itemHsnCsnUin}</span>
+								</div>
+								<div className="col-md-1 d-flex align-items-center">
+									<span>
+										<strong className="d-inline d-md-none">Title: </strong>
+										{x.itemTitle}
+									</span>
+								</div>
+								<div className="col-md-3 d-flex align-items-center">
+									<span>
+										<strong className="d-inline d-md-none">Description: </strong>
+										{x.itemDescription}</span>
+								</div>
+								<div className="col-md-1 d-flex align-items-center">
+									<span>
+										<strong className="d-inline d-md-none">Quanityt: </strong>
+										{x.itemQuantity}</span>
+								</div>
+								<div className="col-md-2 d-flex align-items-center">
+									<span id={"displayRate" + x.id}>
+										{x.sellerRate && x.sellerRate > 0 ? <span>{x.sellerRate} {x.currency}/{x.unit}</span> : <>Not present</>}/
+										{x.buyerRate && x.buyerRate > 0 ? <span>{x.buyerRate} {x.currency}/{x.unit}</span> : <>Not present</>}
+									</span>
+									<span id={"editRate" + x.id} style={{ display: "none" }}>
+										<InputNumberField name={"sellerRate" + x.id} type="decimal" label="Proposed Rate" />
+										{x.currency}/{x.unit}
+									</span>
+								</div>
+								<div className="col-md-1 d-flex align-items-center">
+									<span id={"displayTax" + x.id}>
+										{x.itemTax}
+									</span>
+									<span id={"editTax" + x.id} style={{ display: "none" }}>
+										<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
+									</span>
+								</div>
+								<div className="col-md-1 d-flex align-items-center">
+									<span id={"displayCompletion" + x.id}>
+										{x.sellerItemCompletion}
+									</span>
+									<span id={"editCompletion" + x.id} style={{ display: "none" }}>
+										<InputNumberField name={"sellerDaysToComplete" + x.id} type="number" label="Days to complete" />
+									</span>
+								</div>
+								<div className="col-md-1" style={{ textAlign: "center" }}>
+									<span id={"editBtn" + x.id} style={{ display: "inline" }}>
+										<FormButton name="Edit" onClick={(e) => { editOrAddRate(e, x) }} />
+									</span>
+									<span id={"saveBtn" + x.id} style={{ display: "none" }}>
+										<FormButton name="Save" onClick={(e) => { saveItemRate(e, x) }} />
+									</span>
+								</div>
+							</div>) : <>No Item Is Present.</>}
+
+						</div>
 					</div>
 
 					<div className="table" style={{ display: agreementObj.id > 0 ? "block" : "none" }}>
@@ -553,4 +664,4 @@ const DraftAgreement = () => {
 		</div>
 	</>);
 };
-export default DraftAgreement;
+export default DraftB2CAgreement;

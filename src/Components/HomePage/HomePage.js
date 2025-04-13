@@ -114,30 +114,17 @@ const HomePage = ({ setUserName, setUserType}) => {
             }
         }).catch(err => console.log(err));
     }
-    const copyPurchaseOrder = (e, po) => {
-        e.preventDefault();
-        console.log(po);
-        //getRequest("api/POManagement/CopyPurchaseOrder?poId=" + po.poId, UserProfile.getToken()).then(rr => rr.text()).then(res => {
-        //    console.log(res);
-        //    if (res > 0) {
-        //        console.log(res);
-        //        PurchaseOrder.setPoId(res);
-        //        PurchaseOrder.setPurchaseOrderEditFlag(1);
-        //        if (po.sellerId.toString() === UserProfile.getUserId()) {
-        //            PurchaseOrder.setRaisedBy("Buyer");
-        //        } else {
-        //            PurchaseOrder.setRaisedBy("Seller");
-        //        }
-        //        navigate("/New");
-        //    }
-            
-        //}).catch(err => console.log(err));
-    }
     const editAgreement = (e, agrmnt) =>
     {
         e.preventDefault();
         OtherData.setData(JSON.stringify(agrmnt));
-        navigate("/draftAgreement");
+        if (agrmnt.proposalId > 0) {
+            navigate("/draftAgreement");
+        } else
+        {
+            navigate("/draftD2C");
+        }
+        
     }
     const openTab = (e, id) => {
         e.preventDefault();

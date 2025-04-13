@@ -58,8 +58,14 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 			
 			return;
 		} else if (type === "AR") {
-
-			sendPostRequest("api/Business/AcceptAgreement", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+			var formBody = {
+				Id: 0,
+				RemarkText: remarkForm.current["remarkText"].value,
+				OwnerId: Number(UserProfile.getUserId()),
+				ParentId: id,
+				Attachments: remarkAttachments
+			};
+			sendPostRequest("api/Business/RemarkAgreement", UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
 				if (res.status === 1) {
 					getRequest("api/Business/RejectAgreement?agreementId=" + data.id, UserProfile.getToken()).then(r => r.json()).then(res => {
 						if (res.status === 1) {

@@ -37,7 +37,8 @@ import ResidentialAgreement from "./D2CTemplates/ResidentialAgreement";
 import SublettingAgreement from "./D2CTemplates/SublettingAgreement";
 import BuySellBtw2Parties from "./D2CTemplates/BuySellBtw2Parties";
 import CustomAgreement from "./D2CTemplates/CustomAgreement";
-
+import ForgotPassword from "./LandingPage/ForgotPassword";
+import DraftB2CAgreement from './NewPO/DraftB2CAgreement';
 
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
@@ -165,9 +166,11 @@ const NewLayout = () => {
                         <Route path="/userTerms" element={<UserTerms setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/TermConditions" element={<UserTermConditions setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/draftAgreement" element={<DraftAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        <Route path="/draftD2C" element={<DraftB2CAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                        
                         <Route path="/DetailAgreement" element={<DetailAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         
-                        <Route path="/forgotPassword" element={<UnderMaintenance />} />
+                        <Route path="/forgotPassword" element={<ForgotPassword />} />
                         
                         <Route path="/UpdateUser" element={<UpdateUser setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/LogOut" element={<LogOut setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />

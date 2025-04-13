@@ -109,6 +109,7 @@ export const deleteRequest = (url, token) => {
     });
 }
 export const sendPostRequest = (url, token, postbody) => {
+    console.log(postbody);
     if (postbody) {
         return fetch(baseAddress + url, {
             method: "POST",

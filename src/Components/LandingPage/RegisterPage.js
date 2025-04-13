@@ -165,8 +165,8 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 							</div>
 						</div>
 						<div className="row" style={{ textAlign: "center" }}>
-							<div className="col-md-6"><FormSubmitButton name="Send OTP" /></div>
-							<div className="col-md-6"><FormButton name="Login" onClick={(e) => {
+							<div className="col-md-6"><FormSubmitButton name="Register" /></div>
+							<div className="col-md-6"><FormButton name="Back to Login" onClick={(e) => {
 								e.preventDefault();
 								setDisplayLogin(1);
 							}} myClass="landingPageBtn" /></div>
