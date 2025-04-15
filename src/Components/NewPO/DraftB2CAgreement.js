@@ -30,7 +30,7 @@ const DraftB2CAgreement = () => {
 	const [itemId, setItemId] = useState();
 	const [itemCurrencyOption, setItemCurrencyOption] = useState([]);
 	const [itemUnitOption, setItemUnitOption] = useState([]);
-	const [proposalType, setProposalType] = useState([]);
+	const [proposalType, setProposalType] = useState();
 
 	const [termDropDownId, setTermDropDownId] = useState();
 
@@ -68,11 +68,11 @@ const DraftB2CAgreement = () => {
 			if (res.status === 1) {
 				var agObj = JSON.parse(OtherData.getData());
 				for (var i = 0; i < res.data.length; i++) {
-					if (res.data[i].typeValue === "Buyer" && UserProfile.getUserId().toString() === agObj.buyerId) {
+					if (res.data[i].typeValue === "Buyer" && UserProfile.getUserId().toString() === agObj.buyer.usrId.toString()) {
 						setProposalType(res.data[i].id);
 						break;
 					}
-					if (res.data[i].typeValue === "Seller" && UserProfile.getUserId().toString() === agObj.sellerId) {
+					if (res.data[i].typeValue === "Seller" && UserProfile.getUserId().toString() === agObj.seller.usrId.toString()) {
 						setProposalType(res.data[i].id);
 						break;
 					}
@@ -179,11 +179,13 @@ const DraftB2CAgreement = () => {
 			Attachments: termAttachments
 
 		};
+		console.log(postBody);
 		sendPostRequest("api/Business/AddAgreementTerm", UserProfile.getToken(), postBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res.status === 1) {
 				resetTermForm();
 				loadSellerTermList(agreementObj.id);
+				loadBuyerTermList(agreementObj.id);
 				setMsg("Term added.");
 			} else {
 				setMsg("Not able to save data");
@@ -242,39 +244,16 @@ const DraftB2CAgreement = () => {
 	}
 	const editOrAddRate = (e, item) => {
 		e.preventDefault();
-		if (item.sellerRate && item.sellerRate > 0) {
-			proposalForm.current["sellerRate" + item.id].value = item.sellerRate;
-			proposalForm.current["sellerTax" + item.id].value = item.itemTax;
-			proposalForm.current["sellerDaysToComplete" + item.id].value = item.sellerItemCompletion;
-		}
-		document.getElementById("editRate" + item.id).style.display = "inline";
-		document.getElementById("displayRate" + item.id).style.display = "none";
-		document.getElementById("editTax" + item.id).style.display = "inline";
-		document.getElementById("displayTax" + item.id).style.display = "none";
-		document.getElementById("editCompletion" + item.id).style.display = "inline";
-		document.getElementById("displayCompletion" + item.id).style.display = "none";
-		document.getElementById("editBtn" + item.id).style.display = "none";
-		document.getElementById("saveBtn" + item.id).style.display = "inline";
-	}
-	const saveItemRate = (e, item) => {
-		e.preventDefault();
-		document.getElementById("editRate" + item.id).style.display = "none";
-		document.getElementById("displayRate" + item.id).style.display = "inline";
-		document.getElementById("editTax" + item.id).style.display = "none";
-		document.getElementById("displayTax" + item.id).style.display = "inline";
-		document.getElementById("editCompletion" + item.id).style.display = "none";
-		document.getElementById("displayCompletion" + item.id).style.display = "inline";
-		document.getElementById("editBtn" + item.id).style.display = "inline";
-		document.getElementById("saveBtn" + item.id).style.display = "none";
-		var oldItemList = [...itemList];
-		for (var i = 0; i < oldItemList.length; i++) {
-			if (oldItemList[i].id === item.id) {
-				oldItemList[i].sellerRate = proposalForm.current["sellerRate" + item.id].value;
-				oldItemList[i].sellerTax = proposalForm.current["sellerTax" + item.id].value;
-				oldItemList[i].sellerDaysToComplete = proposalForm.current["sellerDaysToComplete" + item.id].value;
-			}
-		}
-		setItemList(oldItemList)
+		setItemId(item.id);
+		itemForm.current["Rate"].value = UserProfile.getUserId() === agreementObj.seller.usrId.toString() ? item.sellerRate : item.buyerRate;
+		itemForm.current["Tax"].value = item.itemTax;
+		itemForm.current["Qty"].value = item.itemQuantity;
+		itemForm.current["ItemTitle"].value = item.itemTitle;
+		itemForm.current["ItemDescription"].value = item.itemDescription;
+		itemForm.current["ItemCode"].value = item.itemHsnCsnUin;
+		itemForm.current["ItemDeliveredInDays"].value = UserProfile.getUserId() === agreementObj.seller.usrId.toString() ? item.sellerItemCompletion : item.buyerItemCompletion;
+		itemForm.current["CurrencyId"].value = item.currency;
+		itemForm.current["UnitId"].value = item.unit;
 
 	}
 	const openTab = (e, id) => {
@@ -365,7 +344,7 @@ const DraftB2CAgreement = () => {
 									</div>
 									
 								</div>
-								{agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ? <div className="row">
+								<div className="row">
 									<div className="col-md-3">
 										<InputFieldBlank name="Tax" type="number" label="Tax" />
 									</div>
@@ -404,7 +383,7 @@ const DraftB2CAgreement = () => {
 											</select>
 										</span>
 									</div>
-								</div> :<></>}
+								</div>
 								
 								<div className="row">
 									<div className="offset-md-8 col-md-4" style={{ textAlign: "right" }}>
@@ -436,7 +415,7 @@ const DraftB2CAgreement = () => {
 										Tax
 									</div>
 									<div className="col-md-1 ">
-										Completion
+										Completion B/S
 									</div>
 
 									<div className="col-md-2 " style={{ textAlign: "center" }}>
@@ -471,33 +450,20 @@ const DraftB2CAgreement = () => {
 										{x.sellerRate && x.sellerRate > 0 ? <span>{x.sellerRate} {x.currency}/{x.unit}</span> : <>Not present</>}/
 										{x.buyerRate && x.buyerRate > 0 ? <span>{x.buyerRate} {x.currency}/{x.unit}</span> : <>Not present</>}
 									</span>
-									<span id={"editRate" + x.id} style={{ display: "none" }}>
-										<InputNumberField name={"sellerRate" + x.id} type="decimal" label="Proposed Rate" />
-										{x.currency}/{x.unit}
-									</span>
 								</div>
 								<div className="col-md-1 d-flex align-items-center">
 									<span id={"displayTax" + x.id}>
 										{x.itemTax}
 									</span>
-									<span id={"editTax" + x.id} style={{ display: "none" }}>
-										<InputNumberField name={"sellerTax" + x.id} type="decimal" label="Tax (%)" />
-									</span>
 								</div>
 								<div className="col-md-1 d-flex align-items-center">
 									<span id={"displayCompletion" + x.id}>
-										{x.sellerItemCompletion}
-									</span>
-									<span id={"editCompletion" + x.id} style={{ display: "none" }}>
-										<InputNumberField name={"sellerDaysToComplete" + x.id} type="number" label="Days to complete" />
+										{x.buyerItemCompletion}/{x.sellerItemCompletion}
 									</span>
 								</div>
 								<div className="col-md-1" style={{ textAlign: "center" }}>
 									<span id={"editBtn" + x.id} style={{ display: "inline" }}>
 										<FormButton name="Edit" onClick={(e) => { editOrAddRate(e, x) }} />
-									</span>
-									<span id={"saveBtn" + x.id} style={{ display: "none" }}>
-										<FormButton name="Save" onClick={(e) => { saveItemRate(e, x) }} />
 									</span>
 								</div>
 							</div>) : <>No Item Is Present.</>}
@@ -614,6 +580,18 @@ const DraftB2CAgreement = () => {
 									</span>
 								</div>
 								<div className="col-md-2" style={{ textAlign: "center" }}>
+									<span style={{ display: UserProfile.getUserId() === agreementObj.buyer.usrId.toString()?"inline":"none" }}>
+										<FormButton name="Edit" onClick={(e) => { editTerms(e, x); }} />
+										<span className="removeLink" onClick={(e) => {
+											e.preventDefault();
+											setDeleteMsg("Are you sure you want to delete the term ?");
+											setDeleteData("api/Business/DeleteAgreementTerm?termId=" + x.id);
+										}}> Remove </span>
+									</span>
+									<span style={{ display: UserProfile.getUserId() === agreementObj.seller.usrId.toString() ? "inline" : "none" }}>
+										<FormButton name="Add Remark" onClick={(e) => { editTerms(e, x); }} />
+									</span>
+									{/*<FormButton name="Remove"  />*/}
 								</div>
 							</div>) : <>No Item Is Present.</>}
 							<h4 style={{ color: "#007bff" }}>Seller Term List</h4>
@@ -644,7 +622,7 @@ const DraftB2CAgreement = () => {
 									</span>
 								</div>
 								<div className="col-md-2" style={{ textAlign: "center" }}>
-									<span>
+									<span style={{ display: UserProfile.getUserId() === agreementObj.seller.usrId.toString() ? "inline" : "none" }}>
 										<FormButton name="Edit" onClick={(e) => { editTerms(e, x); }} />
 										<span className="removeLink" onClick={(e) => {
 											e.preventDefault();
@@ -652,7 +630,9 @@ const DraftB2CAgreement = () => {
 											setDeleteData("api/Business/DeleteAgreementTerm?termId=" + x.id);
 										}}> Remove </span>
 									</span>
-
+									<span style={{ display: UserProfile.getUserId() === agreementObj.buyer.usrId.toString() ? "inline" : "none" }}>
+										<FormButton name="Add Remark" onClick={(e) => { editTerms(e, x); }} />
+									</span>
 									{/*<FormButton name="Remove"  />*/}
 								</div>
 							</div>) : <>No Item Is Present.</>}
