@@ -25,7 +25,7 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 	const [msg, setMsg] = useState("");
 	const [msgDis, setMsgDis] = useState("");
 	const [msgType, setMsgType] = useState("");
-	
+	const [heading, setHeading] = useState("");
 	const navigate = useNavigate();
 
 
@@ -42,6 +42,10 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 		}
 		setUserName(UserProfile.getName());
 		setUserType(UserProfile.getUserType());
+		var templateName = OtherData.getData();
+		setHeading(templateName);
+		//OtherData.resetData();
+
 	}, []);
 
 	const validatePurchaseOrder = () => {
@@ -189,9 +193,21 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 			<div className="row" style={{ paddingTop: "25px" }}>
 				<DisappearingMessage msg={msgDis} setMsg={setMsgDis }  />
 				<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-                <div className="col-md-8 scrollable-section">
+                <div className="col-md-12 scrollable-section">
                     <div className="">
-
+						<div className="row">
+							<div className="col-md-1">
+								<FormButton name="< Back" onClick={(e) => {
+									e.preventDefault();
+									navigate("/SelectTemplate");
+								}} />
+							</div>
+							<div className="col-md-10">
+								<h4 style={{ margin: 0, marginTop:"8px" }}>
+									{heading}
+								</h4>
+							</div>
+						</div>
 						<Form ref={poForm} onSubmit={handleSubmit}>
                             <div className="row">
 								<div className="col-md-3">
@@ -207,21 +223,21 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 									</div>
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="OtherPartyContactInfo" type="text" label="Phone Number of other party" />
+									<InputField name="OtherPartyContactInfo" type="text" label="Phone Number of other party" />
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="LDDays" type="number" label="LD Days" />
+									<InputField name="LDDays" type="number" label="LD Days" />
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="LDPercent" type="number" label="LD Percent" />
+									<InputField name="LDPercent" type="number" label="LD Percent" />
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-3">
-									<InputFieldBlank name="Advance" type="number" label="Advance" />
+									<InputField name="Advance" type="number" label="Advance" />
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="NumberOfDays" type="number" label="Contract completion (in day)" />
+									<InputField name="NumberOfDays" type="number" label="Contract completion (in day)" />
 								</div>
 							</div>
 							<div className="row" style={{ paddingBottom: '20px', paddingTop:'20px' }}>

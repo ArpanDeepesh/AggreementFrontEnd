@@ -8,7 +8,8 @@ import FormButton from "../FormParts/FormButton";
 //import { loginRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
-import { loginRequest } from "../Services/ContrectBackendAPI";
+import { loginRequest, getInfoFromGoogle } from "../Services/ContrectBackendAPI";
+import { useGoogleLogin } from '@react-oauth/google';
 
 
 const LoginPage = ({ setDisplayLogin })=>{
@@ -77,6 +78,41 @@ const LoginPage = ({ setDisplayLogin })=>{
 		}
 		return true;
 	}
+	const loginClick = useGoogleLogin({
+		onSuccess: (codeResponse) => {
+			console.log("codeResponse" + JSON.stringify(codeResponse));
+			getInfoFromGoogle(codeResponse.access_token).then(r => r.json()).then((res) => {
+				console.log(res);
+				//setProfile(res.data);
+				//testConnection();
+				console.log("Resdata-" + JSON.stringify(res.data.email));
+				console.log("email-" + res.data.email);
+				//checkEmail(res.data.email).then((checkRes) => {
+				//	console.log(checkRes.data);
+				//	if (checkRes.data.status == 2) {
+				//		//user is not registered.
+				//		console.log("User not registered");
+				//		setPageData(checkRes.data);
+				//		navigate("/Register");
+
+				//	} else {
+				//		login(res.data.email, checkRes.data.tokenKey)
+				//			.then(ress => {
+				//				console.log(ress.data);
+				//				setUser(ress.data);
+				//				navigate("/MyContent");
+				//			})
+				//			.catch(ressErr => console.log(ressErr));
+				//	}
+
+
+				//}).catch((checkErr) => {
+				//	console.log(checkErr)
+				//});
+			}).catch(err => console.log(err));
+		},
+		onError: (error) => console.log(error)
+	});
 
 	return (
 		<>
@@ -106,6 +142,9 @@ const LoginPage = ({ setDisplayLogin })=>{
 									}} myClass="landingPageBtn" myStyle={{ margin: '5px', width: '100%' }} />
 								</div>
 							</div>
+						</div>
+						<div className="col-md-12">
+							<FormButton name="Sign in With google" onClick={() => loginClick()} />
 						</div>
 						
 						

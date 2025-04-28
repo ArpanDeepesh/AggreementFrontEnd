@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import FormButton from "../FormParts/FormButton";
 import UserProfile from "../Context/UserProfile";
 import "./DetailPO.css";
+import OtherData from "../Context/OtherData";
 
 const SelectContractTmplet = ({ setUserName, setUserType }) => {
 	const navigate = useNavigate();
@@ -28,22 +29,23 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
         <><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
             <div className="table">
                 <div className="row">
-                    <div className="col-md-12">
-                        <h4 style={{ textAlign: "left", color: '#007bff' }}>Agreement Templates</h4>
-                        <div className="col-md-1">
-                            <FormButton name="< Back" onClick={(e) => {
-                                e.preventDefault();
-                                navigate("/Home");
-                            }} />
-                        </div>
-
+                    <div className="col-md-1">
+                        <FormButton name="< Back" onClick={(e) => {
+                            e.preventDefault();
+                            navigate("/Home");
+                        }} />
+                    </div>
+                    <div className="col-md-10">
+                        <h4 style={{ textAlign: "center", color: '#007bff', margin: "0", marginBottom:"8px" }}>Agreement Templates</h4>
                     </div>
                 </div>
                 <div className="row" style={{ textAlign: "left", paddingBottom: '10px' }}>
                     <div className="col-md-3 p-0 m-0" >
                         <div className="selectTemplateAction" onClick={e => {
                             e.preventDefault();
-                            navigate("/HomeMaintenanceT1");
+                            //navigate("/HomeMaintenanceT1");
+                            OtherData.setData("Home Maintenance");
+                            navigate("/CustomAgreement");
                         }}>
                             <img src={"/Catalogue.png"} width={70} height={70} />
                             <br />
@@ -59,7 +61,9 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="selectTemplateAction" onClick={e => {
                             e.preventDefault();
-                            navigate("/PersonalLoanT1");
+                            //navigate("/PersonalLoanT1");
+                            OtherData.setData("Personal Loan");
+                            navigate("/CustomAgreement");
                         }}>
                             <img src={"/Terms.png"} width={70} height={70} />
                             <br />
@@ -75,7 +79,9 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="selectTemplateAction" onClick={e => {
                             e.preventDefault();
-                            navigate("/SublettingAgreementT1");
+                            //navigate("/SublettingAgreementT1");
+                            OtherData.setData("Subletting");
+                            navigate("/CustomAgreement");
                         }}>
                             <img src={"/Terms.png"} width={70} height={70} />
                             <br />
@@ -91,7 +97,9 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="selectTemplateAction" onClick={e => {
                             e.preventDefault();
-                            navigate("/ResidentialAgreementT1");
+                            /*navigate("/ResidentialAgreementT1");*/
+                            OtherData.setData("Residential Agreement");
+                            navigate("/CustomAgreement");
                         }}>
                             <img src={"/rfq.png"} width={70} height={70} />
                             <br />
@@ -109,7 +117,9 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="selectTemplateAction" onClick={e => {
                             e.preventDefault();
-                            navigate("/BuySellT1");
+                            //navigate("/BuySellT1");
+                            OtherData.setData("Buy Sell");
+                            navigate("/CustomAgreement");
                         }}>
                             <img src={"/Catalogue.png"} width={70} height={70} />
                             <br />
@@ -125,6 +135,7 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
                     <div className="col-md-3 p-0 m-0" >
                         <div className="selectTemplateAction" onClick={e => {
                             e.preventDefault();
+                            OtherData.setData("Blank Agreement");
                             navigate("/CustomAgreement");
                         }}>
                             <img src={"/Catalogue.png"} width={70} height={70} />

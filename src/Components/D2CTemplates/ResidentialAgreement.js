@@ -7,6 +7,7 @@ import UserProfile from "../Context/UserProfile";
 import "./DetailPO.css";
 import AddAttachment from "../CommonPages/AddAttachment";
 import InputFieldBlank from "../FormParts/InputFieldBlank";
+import InputField from "../FormParts/InputField";
 import { sendPostRequest, getRequestAllowAll } from "../Services/ContrectBackendAPI";
 import OtherData from "../Context/OtherData";
 
@@ -72,7 +73,7 @@ const ResidentialAgreement = ({ setUserName, setUserType }) => {
 
 								<div className="col-md-3">
 									<div className="form-group" style={{ padding: '5px', textAlign: "left" }}>
-										<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Select what you are?</label>
+										<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >Select who you are?</label>
 										<select name="CreatorType" className="form-control" onChange={(e) => {
 											e.preventDefault();
 										}} >
@@ -84,14 +85,14 @@ const ResidentialAgreement = ({ setUserName, setUserType }) => {
 									</div>
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="OtherPartyContactInfo" type="text" label="Contact info of other party"/>
+									<InputField name="OtherPartyContactInfo" type="text" label="Contact info of other party" />
 
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="StartDate" type="date" label="Rent start date" />
+									<InputField name="StartDate" type="date" label="Rent start date" />
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="EndDate" type="date" label="Rent end date" />
+									<InputField name="EndDate" type="date" label="Rent end date" />
 
 								</div>
 								
@@ -99,10 +100,10 @@ const ResidentialAgreement = ({ setUserName, setUserType }) => {
 							<div className="row">
 
 								<div className="col-md-3">
-									<InputFieldBlank name="Rent" type="number" label="Per month rent" />
+									<InputField name="Rent" type="number" label="Per month rent" />
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="Maintainance" type="number" label="Per month maintenance" />
+									<InputField name="Maintainance" type="number" label="Per month maintenance" />
 								</div>
 								<div className="col-md-3">
 									<div className="form-group" style={{ textAlign: 'left' }}>
@@ -121,7 +122,7 @@ const ResidentialAgreement = ({ setUserName, setUserType }) => {
 									
 								</div>
 								<div className="col-md-3">
-									<InputFieldBlank name="MonthCountRentAdvance" type="number" label="No of month rent as advance" />
+									<InputField name="MonthCountRentAdvance" type="number" label="No of month rent as advance" />
 								</div>
 							</div>
 

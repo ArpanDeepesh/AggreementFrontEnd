@@ -8,7 +8,7 @@ import FormButton from "../FormParts/FormButton";
 //import { loginRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
-import { loginRequest } from "../Services/ContrectBackendAPI";
+import { validateContactInfoRequest } from "../Services/ContrectBackendAPI";
 
 
 const ForgotPassword = ({ setDisplayLogin })=>{
@@ -30,34 +30,21 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 		var postBody = {
 			Contact:usrForm.current['userId'].value
 		};
-		navigate("/ValidateUser");
-		//loginRequest(postBody).then(r => r.json()).then(res => {
-		//	console.log(res);
-		//	if (res.status !== 1)
-		//	{
-		//		setMsg("Invalid Credentials.");
-		//		setMsgType("Error");
-		//		return;
-		//	}
-		//	if (res.usrId===0 && res.token === null && res.message === 'Error') {
-		//		setMsg("Invalid Credentials.");
-		//		setMsgType("Error");
-		//		return;
-		//	}
-		//	UserProfile.setLoginStatus("1");
-		//	UserProfile.setToken(res.token);
-		//	UserProfile.setName(res.name);
-		//	UserProfile.setUserType(res.userType);
-		//	UserProfile.setUserId(res.userId);
-		//	navigate("/Home");
-		//}).catch(err => {
-		//	console.log(err);
-		//});
+		
+		validateContactInfoRequest(postBody).then(r => r.json()).then(res => {
+			if (res.status === 1 && res.contactId>0) {
+				UserProfile.setUserId(res.contactId);
+				navigate("/ValidateUser");
+			} else
+			{
+				setMsg("User doesnt exist");
+				setMsgType("Error");
+			}
+		}).catch(err => console.log(err));
 	};
 	const validateForm = () =>
 	{
 		var Contact = usrForm.current['userId'].value;
-		var Password = usrForm.current['userPass'].value;
 		var phoneRegex = /^\+91[6-9]\d{9}$/;
 		var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		if (!phoneRegex.test(Contact)) {

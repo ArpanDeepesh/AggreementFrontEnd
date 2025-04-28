@@ -28,8 +28,13 @@ const ValidateOTP = () => {
 			ContactId: UserProfile.getUserId(),
 			OTP: usrForm.current['OTPValidationValue'].value,
 		};
-		validateOTPRequest(formBody).then(r => r.json()).then(res => {
-			if (res.token===null && res.status !== 1)
+		validateOTPRequest(formBody).then(r => r.json()).then(res => { 
+			if (res.token === null) {
+				setMsg("Invalid OTP.");
+				setMsgType("Error");
+				return;
+			}
+			if (res.status !== 1)
 			{
 				setMsg("Invalid OTP.");
 				setMsgType("Error");

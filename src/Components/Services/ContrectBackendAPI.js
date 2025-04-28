@@ -75,6 +75,32 @@ export const registerRequest = (postbody) => {
     return;
 
 }
+export const getInfoFromGoogle = (access_token) =>
+{
+    return fetch("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + access_token, {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Origin': 'https://www.contrect.com',
+            'Authorization': "Bearer " + access_token
+        }
+    });
+}
+export const validateContactInfoRequest = (postbody) => {
+    if (postbody) {
+        return fetch(baseAddress + "api/Auth/SendOtp", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'ClientKey': 'ContrectManagerFrontEnd',
+            },
+            body: JSON.stringify(postbody),
+            //referrerPolicy: "unsafe-url" 
+        });
+    }
+    return;
+
+}
 export const getRequestAllowAll = (url) => {
     return fetch(baseAddress + url, {
         method: "GET",

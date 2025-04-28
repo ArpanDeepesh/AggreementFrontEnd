@@ -148,11 +148,34 @@ const HomePage = ({ setUserName, setUserType}) => {
             <div className="mt-1" >
                 <div className="row mb-1">
                     <div className="col-md-3 p-0 m-0" >
+                        <div className="landingPageAction"
+                            onClick={e => {
+                                e.preventDefault();
+                                navigate("/SelectTemplate");
+                            }}
+                            style={{ cursor: "pointer", backgroundColor:"#007bff", color:"white" }} >
+                            {/*<img src={"/DraftAgreement.png"} width={40} height={40} />*/}
+                            &#128221;
+                            <br />
+                            <span className="">
+                                <strong>Draft Agreement</strong>
+                                <br />
+                                Create and manage agreements easily
+                            </span>
+                        </div>
+
+                        {/*<FormButton name="Draft Agreement" onClick={(e) => {*/}
+
+                        {/*}} myClass="routingBtn" />*/}
+
+                    </div>
+                    <div className="col-md-3 p-0 m-0" >
                         <div className="landingPageAction" onClick={e => {
                             e.preventDefault();
                             navigate("/userItems");
                         }}>
-                            <img src={"/Catalogue.png"} width={70} height={70} />
+                            {/*<img src={"/Catalogue.png"} width={40} height={40} />*/}
+                            &#128717;&#65039;
                             <br />
                             <span className="">
                                 <strong>Catalogue</strong>
@@ -174,7 +197,8 @@ const HomePage = ({ setUserName, setUserType}) => {
                             e.preventDefault();
                             navigate("/userTerms");
                         }}>
-                            <img src={"/Terms.png"} width={70} height={70} />
+                            {/*<img src={"/Terms.png"} width={40} height={40} />*/}
+                            &#128220;
                             <br />
                             <span className="">
                                 <strong>User Terms</strong>
@@ -194,10 +218,11 @@ const HomePage = ({ setUserName, setUserType}) => {
                             OtherData.resetData();
                             navigate("/NewRFQ");
                         }}>
-                            <img src={"/rfq.png"} width={70} height={70} />
+                            {/*<img src={"/rfq.png"} width={40} height={40} />*/}
+                            &#128232;
                             <br />
                             <span className="">
-                                <strong>Generate RFQ</strong>
+                                <strong>Generate Request Quote</strong>
                                 <br />
                                 Easily request supplier quotes
                             </span>
@@ -208,27 +233,7 @@ const HomePage = ({ setUserName, setUserType}) => {
                         {/*}} myClass="routingBtn" />*/}
 
                     </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="landingPageAction"
-                            onClick={e => {
-                                e.preventDefault();
-                                navigate("/SelectTemplate");
-                            }}
-                            style={{ cursor: "pointer" }} >
-                            <img src={"/Agreement.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>Draft Agreement</strong>
-                                <br />
-                                Create and manage agreements easily
-                            </span>
-                        </div>
-                        
-                        {/*<FormButton name="Draft Agreement" onClick={(e) => {*/}
-                            
-                        {/*}} myClass="routingBtn" />*/}
 
-                    </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12 col-xs-12">
