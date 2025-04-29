@@ -89,6 +89,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 					Name: res.name
 				};
 				gloginRequest(postBody).then(r => r.json()).then(loginRes => {
+					console.log(loginRes);
 					if (loginRes.status !== 1) {
 						setMsg("Invalid Credentials.");
 						setMsgType("Error");
