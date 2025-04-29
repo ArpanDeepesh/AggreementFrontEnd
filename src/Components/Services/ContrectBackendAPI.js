@@ -60,6 +60,21 @@ export const loginRequest = (postbody) => {
     return;
 
 }
+export const gloginRequest = (postbody) => {
+    if (postbody) {
+        return fetch(baseAddress + "api/Auth/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'ClientKey': 'ContrectManagerFrontEnd',
+            },
+            body: JSON.stringify(postbody),
+            //referrerPolicy: "unsafe-url" 
+        });
+    }
+    return;
+
+}
 export const registerRequest = (postbody) => {
     if (postbody) {
         return fetch(baseAddress + "api/Auth/Register", {

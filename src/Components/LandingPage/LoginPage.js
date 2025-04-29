@@ -8,7 +8,7 @@ import FormButton from "../FormParts/FormButton";
 //import { loginRequest } from "../Services/POContractBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
-import { loginRequest, getInfoFromGoogle } from "../Services/ContrectBackendAPI";
+import { loginRequest, getInfoFromGoogle, gloginRequest } from "../Services/ContrectBackendAPI";
 import { useGoogleLogin } from '@react-oauth/google';
 
 
@@ -87,28 +87,29 @@ const LoginPage = ({ setDisplayLogin })=>{
 				//testConnection();
 				console.log("Resdata-" + JSON.stringify(res.data.email));
 				console.log("email-" + res.data.email);
-				//checkEmail(res.data.email).then((checkRes) => {
-				//	console.log(checkRes.data);
-				//	if (checkRes.data.status == 2) {
-				//		//user is not registered.
-				//		console.log("User not registered");
-				//		setPageData(checkRes.data);
-				//		navigate("/Register");
-
-				//	} else {
-				//		login(res.data.email, checkRes.data.tokenKey)
-				//			.then(ress => {
-				//				console.log(ress.data);
-				//				setUser(ress.data);
-				//				navigate("/MyContent");
-				//			})
-				//			.catch(ressErr => console.log(ressErr));
+				//var postBody = {
+				//	GoogleId: res.,
+				//	Email: res.,
+				//	Name: res.
+				//};
+				//gloginRequest(postBody).then(r => r.json()).then(loginRes => {
+				//	if (loginRes.status !== 1) {
+				//		setMsg("Invalid Credentials.");
+				//		setMsgType("Error");
+				//		return;
 				//	}
-
-
-				//}).catch((checkErr) => {
-				//	console.log(checkErr)
-				//});
+				//	if (loginRes.usrId === 0 && loginRes.token === null && loginRes.message === 'Error') {
+				//		setMsg("Invalid Credentials.");
+				//		setMsgType("Error");
+				//		return;
+				//	}
+				//	UserProfile.setLoginStatus("1");
+				//	UserProfile.setToken(loginRes.token);
+				//	UserProfile.setName(loginRes.name);
+				//	UserProfile.setUserType(loginRes.userType);
+				//	UserProfile.setUserId(loginRes.userId);
+				//}).catch(err => console.log(err));
+				
 			}).catch(err => console.log(err));
 		},
 		onError: (error) => console.log(error)

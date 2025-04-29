@@ -12,15 +12,12 @@ import { getRequestAllowAll } from "../Services/ContrectBackendAPI";
 import FormButton from "../FormParts/FormButton";
 import OtherData from "../Context/OtherData";
 
-const LandingPage= ()=>{
-	const usrForm = useRef(null);
+const SubscriptionPage = ()=>{
 	const navigate = useNavigate();
-	const [msg, setMsg] = useState("");
-	const [displayLogin, setDisplayLogin] = useState(1);
 	const [subcriptionList, setSubcriptionList] = useState();
 	useEffect(() => {
-		if (UserProfile.getLoginStatus() === "1") {
-			navigate("/Home");
+		if (UserProfile.getLoginStatus() !== "1") {
+			navigate("/");
 		}
 		getRequestAllowAll("api/General/SubscriptionList").then(r => r.json()).then(res => {
 			setSubcriptionList(res.data);
@@ -33,11 +30,6 @@ const LandingPage= ()=>{
 
 				<div className="">
 					<div className="row overflow-auto">
-						<div className="col-md-5 LandingPageMain col-sm-12">
-							<div className="">
-							{displayLogin === 1 ? <LoginPage setDisplayLogin={setDisplayLogin} /> : <RegisterPage displayLogin={displayLogin} setDisplayLogin={setDisplayLogin} />}
-							</div>
-					</div>
 					<div className="col-md-6 col-sm-12" >
 						<div className="row">
 							{subcriptionList && subcriptionList.length > 0 ? subcriptionList.map(x => <div className="col-md-3">
@@ -137,4 +129,4 @@ const LandingPage= ()=>{
 		</>
 	);
 };
-export default LandingPage;
+export default SubscriptionPage;

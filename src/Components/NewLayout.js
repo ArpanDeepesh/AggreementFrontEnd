@@ -39,6 +39,9 @@ import BuySellBtw2Parties from "./D2CTemplates/BuySellBtw2Parties";
 import CustomAgreement from "./D2CTemplates/CustomAgreement";
 import ForgotPassword from "./LandingPage/ForgotPassword";
 import DraftB2CAgreement from './NewPO/DraftB2CAgreement';
+import PaymentComponent from './SubscriptionsAndPayments/PaymentComponent';
+
+import SubscriptionPage from './LandingPage/SubscriptionPage';
 
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
@@ -95,6 +98,9 @@ const NewLayout = () => {
                                 </li>
                                 <li>
                                     <a href="/Terms">Terms and condition</a>
+                                </li>
+                                <li>
+                                    <a href="/subscriptionList">Subscription list</a>
                                 </li>
                                 <li>
                                     <span className="d-inline d-md-none">
@@ -183,7 +189,8 @@ const NewLayout = () => {
                         <Route path="/New" element={<NewPO setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/DetailContract" element={<DetailContract setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/CheckPODetails" element={<CheckPODetails setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
-
+                        <Route path="/pay" element={<PaymentComponent />} />
+                        <Route path="/subscriptionList" element={<SubscriptionPage/>}/>
                         <Route path="/SelectTemplate" element={<SelectContractTmplet setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/HomeMaintenanceT1" element={<HomeMaintenance setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                         <Route path="/PersonalLoanT1" element={<PersonalLoan setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />

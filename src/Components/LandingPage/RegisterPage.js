@@ -66,7 +66,8 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 	};
 	const validateForm = () => {
 		var name = usrForm.current['UserName'].value;
-		var nameRegex = /^[A-Za-z\s'-]+$/;
+		
+		var nameRegex = /^[A-Za-z\s]+$/;
 		if (name === "")
 		{
 			setMsg("Name is require");
@@ -82,7 +83,7 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 		var panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
 		if (pan!=="" && !panRegex.test(pan))
 		{
-			setMsg("Not a valid name.");
+			setMsg("Not a valid pan.");
 			setMsgType("Error");
 			return false;
 		}
@@ -108,7 +109,7 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 		}
 		var PhoneNumber = usrForm.current['PhoneNumber'].value;
 		var phoneRegex = /^\+91[6-9]\d{9}$/;
-		if (phoneRegex.test(PhoneNumber)) {
+		if (phoneRegex.test(PhoneNumber)===false) {
 			setMsg("Phone Number is not correct.");
 			setMsgType("Error");
 			return false;
