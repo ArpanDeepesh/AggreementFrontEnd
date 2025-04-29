@@ -108,6 +108,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 					UserProfile.setName(loginRes.name);
 					UserProfile.setUserType(loginRes.userType);
 					UserProfile.setUserId(loginRes.userId);
+					navigate("/Home");
 				}).catch(err => console.log(err));
 				
 			}).catch(err => console.log(err));
