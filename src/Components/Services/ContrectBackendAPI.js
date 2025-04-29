@@ -62,7 +62,7 @@ export const loginRequest = (postbody) => {
 }
 export const gloginRequest = (postbody) => {
     if (postbody) {
-        return fetch(baseAddress + "api/Auth/login", {
+        return fetch(baseAddress + "api/Auth/Googlelogin", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
