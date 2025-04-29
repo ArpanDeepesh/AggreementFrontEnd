@@ -36,7 +36,7 @@ const PaymentComponent = () => {
                     handler: (response) => {
                         console.log(response);
                         getRequest("api/payment/Recharge?subTypeId=" + subscriptionObj.id + "&note=" +
-                            response.razorpay_payment_id + "&reciptId" + response.razorpay_order_id, UserProfile.getToken())
+                            response.razorpay_payment_id + "&reciptId=" + response.razorpay_order_id, UserProfile.getToken())
                             .then(r => r.json())
                             .then(res => {
                                 console.log(res);

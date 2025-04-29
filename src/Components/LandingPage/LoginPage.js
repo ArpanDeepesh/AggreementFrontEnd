@@ -83,10 +83,6 @@ const LoginPage = ({ setDisplayLogin })=>{
 			console.log("codeResponse" + JSON.stringify(codeResponse));
 			getInfoFromGoogle(codeResponse.access_token).then(r => r.json()).then((res) => {
 				console.log(res);
-				//setProfile(res.data);
-				//testConnection();
-				console.log("Resdata-" + JSON.stringify(res.data.email));
-				console.log("email-" + res.data.email);
 				var postBody = {
 					GoogleId: res.id,
 					Email: res.email,
