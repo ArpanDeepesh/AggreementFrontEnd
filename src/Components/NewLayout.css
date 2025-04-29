@@ -183,6 +183,10 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+.logoA a{
+    color: white;
+    text-decoration: none;
+}
 
 .logo {
     font-size: 1.8rem;

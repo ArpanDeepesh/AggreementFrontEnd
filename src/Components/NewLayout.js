@@ -66,7 +66,12 @@ const NewLayout = () => {
             <header>
                 <div className="header-container">
                     <div className="logo">
-                        <span>Contr<span style={{ color:"#ff8400" }}>e</span>ct</span>
+                        <a style={{ textDecoration:"none" }} href="/">
+                            <span style={{ color: 'white' }}>Contr
+                                <span style={{ color: "#ff8400" }}>e</span>
+                                ct</span>
+                        </a>
+                        
                     </div>
                     <nav>
                         <a href="/Signup" className="btn btn-primary">Sign In</a>
