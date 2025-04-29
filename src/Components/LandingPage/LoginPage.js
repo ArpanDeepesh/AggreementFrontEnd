@@ -87,28 +87,28 @@ const LoginPage = ({ setDisplayLogin })=>{
 				//testConnection();
 				console.log("Resdata-" + JSON.stringify(res.data.email));
 				console.log("email-" + res.data.email);
-				//var postBody = {
-				//	GoogleId: res.,
-				//	Email: res.,
-				//	Name: res.
-				//};
-				//gloginRequest(postBody).then(r => r.json()).then(loginRes => {
-				//	if (loginRes.status !== 1) {
-				//		setMsg("Invalid Credentials.");
-				//		setMsgType("Error");
-				//		return;
-				//	}
-				//	if (loginRes.usrId === 0 && loginRes.token === null && loginRes.message === 'Error') {
-				//		setMsg("Invalid Credentials.");
-				//		setMsgType("Error");
-				//		return;
-				//	}
-				//	UserProfile.setLoginStatus("1");
-				//	UserProfile.setToken(loginRes.token);
-				//	UserProfile.setName(loginRes.name);
-				//	UserProfile.setUserType(loginRes.userType);
-				//	UserProfile.setUserId(loginRes.userId);
-				//}).catch(err => console.log(err));
+				var postBody = {
+					GoogleId: res.id,
+					Email: res.email,
+					Name: res.name
+				};
+				gloginRequest(postBody).then(r => r.json()).then(loginRes => {
+					if (loginRes.status !== 1) {
+						setMsg("Invalid Credentials.");
+						setMsgType("Error");
+						return;
+					}
+					if (loginRes.usrId === 0 && loginRes.token === null && loginRes.message === 'Error') {
+						setMsg("Invalid Credentials.");
+						setMsgType("Error");
+						return;
+					}
+					UserProfile.setLoginStatus("1");
+					UserProfile.setToken(loginRes.token);
+					UserProfile.setName(loginRes.name);
+					UserProfile.setUserType(loginRes.userType);
+					UserProfile.setUserId(loginRes.userId);
+				}).catch(err => console.log(err));
 				
 			}).catch(err => console.log(err));
 		},
