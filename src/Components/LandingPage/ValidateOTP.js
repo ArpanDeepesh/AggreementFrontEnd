@@ -77,16 +77,12 @@ const ValidateOTP = ({ setDisplayLogin }) => {
 								ct</span>
 						</a>
 					</div>
-					<h1>Welcome back</h1>
-					<p>Sign in to access your contracts and agreements</p>
+					<h1>Please provide OTP</h1>
+					<p>You have recieved OTP on your contact number.</p>
 				</div>
 
 
 				<div class="login-form">
-					<div class="tab-container">
-						<div class="tab active" data-tab="email">Email</div>
-						<div class="tab" data-tab="phone">Phone</div>
-					</div>
 
 					<Form ref={usrForm} onSubmit={handleSubmit} >
 
