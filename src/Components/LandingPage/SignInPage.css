@@ -245,9 +245,6 @@
         }
 
 /* OTP Section */
-.otp-section {
-    display: none;
-}
 
 .otp-inputs {
     display: flex;
