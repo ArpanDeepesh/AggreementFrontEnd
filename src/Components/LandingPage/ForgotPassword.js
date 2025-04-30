@@ -29,7 +29,7 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 		}
 
 		var postBody = {
-			Contact: usrForm.current['phonePrefix'].value + usrForm.current['userPhone'].value
+			ContactInfo: usrForm.current['phonePrefix'].value + usrForm.current['userPhone'].value
 		};
 		
 		validateContactInfoRequest(postBody).then(r => r.json()).then(res => {
