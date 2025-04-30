@@ -24,6 +24,20 @@ const LandingPage= ()=>{
 
 	return (
         <>
+            <header>
+                <div className="header-container">
+                    <div className="logo">
+                        <a style={{ textDecoration: "none" }} href="/">
+                            <span style={{ color: 'white' }}>Contr
+                                <span style={{ color: "#ff8400" }}>e</span>
+                                ct</span>
+                        </a>
+
+                    </div>
+                    <nav><a href="/Signup" className="btn btn-success">Sign In</a>
+                    </nav>
+                </div>
+            </header>
             <section className="hero">
                 <div className="hero-content">
 					<h1>End-to-End Contract Management Platform</h1>

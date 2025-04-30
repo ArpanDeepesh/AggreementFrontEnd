@@ -10,7 +10,7 @@ import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 
 
-const ResetPassword = ({ displayLogin, setDisplayLogin}) => {
+const ResetPassword = () => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState(""); 
@@ -73,7 +73,7 @@ const ResetPassword = ({ displayLogin, setDisplayLogin}) => {
 			<div className="scrollable-section">
 				<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			<Form ref={usrForm} onSubmit={handleSubmit} >
-					<center>{displayLogin === 2 ? "Forgot Your Password?" : ""}</center>
+					{/*<center>{displayLogin === 2 ? "Forgot Your Password?" : ""}</center>*/}
 					<div style={{ textAlign: 'left' }}>
 						<div className="row">
 							<div className="col-md-12">

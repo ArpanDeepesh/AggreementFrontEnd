@@ -9,6 +9,7 @@ import FormButton from "../FormParts/FormButton";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
 import { validateContactInfoRequest } from "../Services/ContrectBackendAPI";
+import OtherData from "../Context/OtherData";
 
 
 const ForgotPassword = ({ setDisplayLogin })=>{
@@ -28,13 +29,15 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 		}
 
 		var postBody = {
-			Contact:usrForm.current['userId'].value
+			Contact: usrForm.current['phonePrefix'].value + usrForm.current['userPhone'].value
 		};
 		
 		validateContactInfoRequest(postBody).then(r => r.json()).then(res => {
 			if (res.status === 1 && res.contactId>0) {
 				UserProfile.setUserId(res.contactId);
-				navigate("/ValidateUser");
+				OtherData.setData("/ResetPassword");
+				setDisplayLogin(4);
+				//navigate("/ValidateUser");
 			} else
 			{
 				setMsg("User doesnt exist");
@@ -44,7 +47,7 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 	};
 	const validateForm = () =>
 	{
-		var Contact = usrForm.current['userId'].value;
+		var Contact = usrForm.current['phonePrefix'].value + usrForm.current['userPhone'].value;
 		var phoneRegex = /^\+91[6-9]\d{9}$/;
 		var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		if (!phoneRegex.test(Contact)) {
@@ -61,34 +64,49 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<div style={{ padding: "100px", marginLeft: "400px", marginRight:"400px" }}>
-				<Form ref={usrForm} onSubmit={handleSubmit} >
-					<div style={{ textAlign: 'left', padding: '5px' }}>
-						<div className="row">
-							<div className="col-md-12" style={{ marginBottom: "10px" }}>
-								<h2>Forgot Password</h2>
-							</div>
-							<div className="col-md-12" style={{ marginBottom: "10px" }}>
+			<div class="login-container">
 
-								<InputField name="userId" type="text" label="Phone number / Email" />
-							</div>
-							<div className='col-md-12'>
-								<div className="row">
-									<div className="col-md-6" >
-										<FormSubmitButton name="Send Request" myStyle={{ margin: '5px', width: '100%' }} />
-									</div>
-									<div className="col-md-6" >
-										<FormButton name="Back to login" myStyle={{ margin: '5px', width: '100%' }} onClick={e => {
-											e.preventDefault();
-											navigate("/")
-										}} />
-									</div>
+				<div class="login-header">
+					<div class="logo">
+						<a style={{ textDecoration: "none" }} href="/">
+							<span style={{ color: 'white' }}>Contr
+								<span style={{ color: "#ff8400" }}>e</span>
+								ct</span>
+						</a>
+					</div>
+					<h1>Forgot your password?</h1>
+					<p>Please share your contact number.</p>
+				</div>
+
+				<div class="login-form">
+
+					<Form ref={usrForm} onSubmit={handleSubmit} >
+						<div class="form-content" id="phone-form" >
+							<div class="form-group">
+								<label for="phone">Phone number</label>
+								<div class="phone-input">
+									<select class="phone-prefix form-control" name="phonePrefix" style={{ width: "20%" }}>
+										<option value="+1">+1</option>
+										<option value="+44">+44</option>
+										<option value="+91">+91</option>
+										<option value="+61">+61</option>
+									</select>
+									<input type="tel" id="phone" name="userPhone" class="form-control phone-number" placeholder="123-456-7890" />
 								</div>
 							</div>
+							<div class="form-options">
+								<a href="/" class="forgot-password" onClick={(e) => {
+									e.preventDefault();
+									setDisplayLogin(1);
+								}}>Already have account?</a>
+							</div>
+							<button type="submit" class="btn btn-primary">Send OTP</button>
+							
 						</div>
-					</div>
-				</Form>
+					</Form>
+				</div>
 			</div>
+
 			
 		</>
 	);

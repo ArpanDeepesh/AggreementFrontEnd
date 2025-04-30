@@ -7,9 +7,10 @@ import FormSubmitButton from "../FormParts/FormSubmitButton";
 import { validateOTPRequest } from "../Services/ContrectBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
+import OtherData from "../Context/OtherData";
 
 
-const ValidateOTP = () => {
+const ValidateOTP = ({ setDisplayLogin }) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
@@ -26,7 +27,8 @@ const ValidateOTP = () => {
 		}
 		var formBody = {
 			ContactId: UserProfile.getUserId(),
-			OTP: usrForm.current['OTPValidationValue'].value,
+			OTP: usrForm.current['OTPValidationValue1'].value + usrForm.current['OTPValidationValue2'].value + usrForm.current['OTPValidationValue3'].value
+				+ usrForm.current['OTPValidationValue4'].value + usrForm.current['OTPValidationValue5'].value + usrForm.current['OTPValidationValue6'].value,
 		};
 		validateOTPRequest(formBody).then(r => r.json()).then(res => { 
 			if (res.token === null) {
@@ -45,14 +47,15 @@ const ValidateOTP = () => {
 			UserProfile.setName(res.name);
 			UserProfile.setUserType(res.userType);
 			UserProfile.setUserId(res.userId);
-			navigate("/Home");
+			navigate(OtherData.getData());
 		}).catch(err => {
 			console.log(err);
 		});
 
 	};
 	const validateOTP = () => {
-		var otp = usrForm.current['OTPValidationValue'].value;
+		var otp = usrForm.current['OTPValidationValue1'].value + usrForm.current['OTPValidationValue2'].value + usrForm.current['OTPValidationValue3'].value
+			+ usrForm.current['OTPValidationValue4'].value + usrForm.current['OTPValidationValue5'].value + usrForm.current['OTPValidationValue6'].value;
 		let isnum = /\d{6}/.test(otp);
 		if (!isnum) {
 			setMsg("Invalid otp structure.");
@@ -64,42 +67,61 @@ const ValidateOTP = () => {
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<Form ref={usrForm} onSubmit={handleSubmit} className="">
-				<div className="row flex-grow-1">
-					<div className="col-md-5 LandingPageMain">
-						<div className="d-flex h-100 justify-content-center align-items-center">
-							<div style={{ textAlign: 'left', width: "100%" }}>
-								<InputField name="OTPValidationValue" type="text" label="OTP send on mobile or Email" />
-								<FormSubmitButton name="Validate OTP" />
-							</div>
-						</div>
-					</div>
-					<div className="col-md-6">
-						<div className="h-100 justify-content-center align-items-center">
-							<div className="row">
-								<div className="col-md-12 col-sm-12">
-									<img src={"./ValidateOTPPic.png"} alt="Validate OTP Contract Pic" width={"40%"} height={"auto"} />
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-12 col-sm-12">
-									<center className="validateOTPMessage">
-										Vendors claim task completions, and buyers<br/> confirm payments in real-time
-										<br />
-										<br />
-										Automatically match the value of work done with<br /> payments made for full transparency
-										<br />
-										<br />
-										Updates sent via email and WhatsApp, with clear<br /> records for seamless contract management
-									</center>
-								</div>
-							</div>
-						</div>
+			<div class="login-container">
 
+				<div class="login-header">
+					<div class="logo">
+						<a style={{ textDecoration: "none" }} href="/">
+							<span style={{ color: 'white' }}>Contr
+								<span style={{ color: "#ff8400" }}>e</span>
+								ct</span>
+						</a>
 					</div>
-
+					<h1>Welcome back</h1>
+					<p>Sign in to access your contracts and agreements</p>
 				</div>
-			</Form>
+
+
+				<div class="login-form">
+					<div class="tab-container">
+						<div class="tab active" data-tab="email">Email</div>
+						<div class="tab" data-tab="phone">Phone</div>
+					</div>
+
+					<Form ref={usrForm} onSubmit={handleSubmit} >
+
+						<div class="form-content" id="phone-form" >
+							<div class="otp-section">
+								<div class="form-group">
+									<label>Enter 6-digit OTP</label>
+									<div class="otp-inputs">
+										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue1" pattern="\d" inputmode="numeric" />
+										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue2" pattern="\d" inputmode="numeric" />
+										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue3" pattern="\d" inputmode="numeric" />
+										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue4" pattern="\d" inputmode="numeric" />
+										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue5" pattern="\d" inputmode="numeric" />
+										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue6" pattern="\d" inputmode="numeric" />
+									</div>
+								</div>
+
+								<div class="resend-otp">
+									<a href="/" id="resend-otp" onClick={(e) => {
+										e.preventDefault();
+									}}>Resend OTP</a>
+								</div>
+								<div class="form-options">
+									<a href="/" class="forgot-password" onClick={(e) => {
+										e.preventDefault();
+										setDisplayLogin(3);
+									}}>Back to provide phone number.</a>
+								</div>
+								<button type="submit" class="btn btn-primary">Verify & Sign in</button>
+							</div>
+						</div>
+					</Form>
+				</div>
+			</div>
+			
 		</>
 	);
 };

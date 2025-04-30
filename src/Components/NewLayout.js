@@ -42,12 +42,15 @@ import DraftB2CAgreement from './NewPO/DraftB2CAgreement';
 import PaymentComponent from './SubscriptionsAndPayments/PaymentComponent';
 import SubscriptionPage from './LandingPage/SubscriptionPage';
 import SignInPage from './LandingPage/SignInPage';
+import FormButton from './FormParts/FormButton';
+import ResetPassword from './LandingPage/ResetPassword';
 
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
     const [loggedInUserType, setLoggedInUserType] = useState();
     useEffect(() => {
         checkConnection().then(rr => rr.text()).then(res => console.log(res)).catch(err => console.log(err));
+        //setHideSignUp(0);
     }, []);
     //const unlockPurchaseOrder = () => {
     //    if (PurchaseOrder.getPoId() > 0) {
@@ -63,120 +66,26 @@ const NewLayout = () => {
     //};
     return (
         <div >
-            <header>
+            {loggedInUserName && loggedInUserName.length>0 ? <header>
                 <div className="header-container">
                     <div className="logo">
-                        <a style={{ textDecoration:"none" }} href="/">
+                        <a style={{ textDecoration: "none" }} href="/">
                             <span style={{ color: 'white' }}>Contr
                                 <span style={{ color: "#ff8400" }}>e</span>
                                 ct</span>
                         </a>
-                        
+
                     </div>
                     <nav>
-                        <a href="/Signup" className="btn btn-primary">Sign In</a>
+                        <span>{loggedInUserName} </span>
+                        <a href="/LogOut" style={{ color: "white" }}>Logout</a>
                     </nav>
                 </div>
-            </header>
-
-            {/*<header className="bg-primary text-white py-2 pl-4 pr-4 pt-2 pb-2">*/}
-            {/*    */}{/*<a href="\LogOut" className="text-white text-decoration-none"> Logout</a>*/}
-            {/*    {UserProfile.getLoginStatus() === "1" ? <div className="d-flex justify-content-between align-items-center">*/}
-            {/*        <div className="hamburger" id="hamburger" onClick={e => {*/}
-            {/*            e.preventDefault();*/}
-            {/*            document.getElementById("menu").classList.toggle('active');*/}
-            {/*        }}>*/}
-            {/*            <div className="bar"></div>*/}
-            {/*            <div className="bar"></div>*/}
-            {/*            <div className="bar"></div>*/}
-            {/*        </div>*/}
-            {/*        <div className="logo">*/}
-            {/*            <a href="\" className="text-white text-decoration-none" onClick={(e) => {*/}
-            {/*                //unlockPurchaseOrder();*/}
-            {/*                PurchaseOrder.resetData();*/}
-            {/*            }}>*/}
-            {/*                <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span>*/}
-            {/*            </a>*/}
-            {/*        </div>*/}
-            {/*        <div style={{ width:"100%" }}>*/}
-                    
-            {/*        <nav>*/}
-                        
-            {/*                <ul className="menu" id="menu" style={{ marginBottom: "0" }}>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/">Home</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/AboutUs">About us</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/Policy">Privacy policy</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/Terms">Terms and condition</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/subscriptionList">Subscription list</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <span className="d-inline d-md-none">*/}
-            {/*                            <a href="\LogOut" className="text-white text-decoration-none" onClick={(e) => {*/}
-            {/*                                //unlockPurchaseOrder();*/}
-            {/*                                PurchaseOrder.resetData();*/}
-            {/*                            }}> Logout</a></span>*/}
-            {/*                    </li>*/}
-            {/*            </ul>*/}
-                        
-            {/*        </nav>*/}
-            {/*        </div>*/}
-            {/*        {loggedInUserName !== "" ? <div className="user-info">*/}
-            {/*            <span className="me-4"><strong>{loggedInUserName} {loggedInUserType}</strong></span>*/}
-            {/*            <span className="d-none d-md-block">*/}
-            {/*            <a href="\LogOut" className="text-white text-decoration-none" onClick={(e) => {*/}
-            {/*                //unlockPurchaseOrder();*/}
-            {/*                PurchaseOrder.resetData();*/}
-            {/*            }}> Logout</a></span>*/}
-            {/*        </div>:<></>}*/}
-                    
-            {/*    </div> :*/}
-            {/*        <div className="d-flex justify-content-between align-items-center">*/}
-            {/*            <div className="hamburger" id="hamburger" onClick={e => {*/}
-            {/*                e.preventDefault();*/}
-            {/*                document.getElementById("menu").classList.toggle('active');*/}
-            {/*            }}>*/}
-            {/*                <div className="bar"></div>*/}
-            {/*                <div className="bar"></div>*/}
-            {/*                <div className="bar"></div>*/}
-            {/*            </div>*/}
-            {/*            <div className="logo">*/}
-            {/*                <a href="\" className="text-white text-decoration-none">*/}
-            {/*                    <span className="logoText" >Contr<span className="logoSubPart">e</span>ct</span></a>*/}
-            {/*            </div>*/}
-            {/*            <div style={{ width: "100%" }}>*/}
-            {/*            <nav>*/}
-
-            {/*                    <ul className="menu" id="menu" style={{ marginBottom: "0" }}>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/">Home</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/AboutUs">About us</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/Policy">Privacy policy</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="/Terms">Terms and condition</a>*/}
-            {/*                    </li>*/}
-            {/*                </ul>*/}
-            {/*            </nav></div>*/}
-                        
-            {/*        </div>*/}
-            {/*    }*/}
-            {/*</header>*/}
-            {/*<main className="appMainBody scrollable-mobile">*/}
+            </header>:<></>}
+            <h2>
                 
-            {/*</main>*/}
+            </h2>
+            
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
@@ -196,6 +105,7 @@ const NewLayout = () => {
                     <Route path="/DetailAgreement" element={<DetailAgreement setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
 
                     <Route path="/forgotPassword" element={<ForgotPassword />} />
+                    <Route path="/ResetPassword" element={<ResetPassword/> }/>
 
                     <Route path="/UpdateUser" element={<UpdateUser setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/LogOut" element={<LogOut setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />

@@ -27,11 +27,20 @@ const LoginPage = ({ setDisplayLogin })=>{
 		if (!validateForm()) {
 			return;
 		}
-
 		var postBody = {
-			Contact:usrForm.current['userId'].value,
-			Password:usrForm.current['userPass'].value
+			Contact: "",
+			Password: ""
 		};
+
+		if (document.getElementById("email-form").style.display === "none") {
+			postBody.Contact = usrForm.current['phonePrefix'].value +usrForm.current['userPhone'].value;
+			postBody.Password = usrForm.current['userPhonePass'].value;
+		} else
+		{
+			postBody.Contact = usrForm.current['userEmail'].value;
+			postBody.Password = usrForm.current['userEmailPass'].value;
+		}
+		console.log(postBody);
 		loginRequest(postBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res.status !== 1)
@@ -57,8 +66,15 @@ const LoginPage = ({ setDisplayLogin })=>{
 	};
 	const validateForm = () =>
 	{
-		var Contact = usrForm.current['userId'].value;
-		var Password = usrForm.current['userPass'].value;
+		var Contact = "";
+		var Password = "";
+		if (document.getElementById("email-form").style.display === "none") {
+			Contact = usrForm.current['phonePrefix'].value + usrForm.current['userPhone'].value;
+			Password = usrForm.current['userPhonePass'].value;
+		} else {
+			Contact = usrForm.current['userEmail'].value;
+			Password = usrForm.current['userEmailPass'].value;
+		}
 		var phoneRegex = /^\+91[6-9]\d{9}$/;
 		var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		if (!phoneRegex.test(Contact)) {
@@ -112,57 +128,126 @@ const LoginPage = ({ setDisplayLogin })=>{
 		},
 		onError: (error) => console.log(error)
 	});
-
+	const openTab = (e, id) => {
+		e.preventDefault();
+		var tabContent = document.getElementsByClassName("login-tab-content");
+		for (var i = 0; i < tabContent.length; i++) {
+			tabContent[i].style.display = "none";
+			//tabContent[i].classList.remove("active");
+		}
+		var tabButtons = document.getElementsByClassName("login-tab-button");
+		for (var i = 0; i < tabButtons.length; i++) {
+			tabButtons[i].classList.remove("active");
+		}
+		document.getElementById(id).style.display = "block";
+		//document.getElementById(id).classList.add("active");
+		e.currentTarget.classList.add("active");
+	}
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<Form ref={usrForm} onSubmit={handleSubmit} >
-				<div style={{ textAlign: 'left', padding: '5px' }}>
-					<div className="row">
-						<div className="col-md-12" style={{ marginBottom:"10px" }}>
-							<h2>Login to Your Account</h2>
-						</div>
-						<div className="col-md-12" style={{ marginBottom: "10px" }}>
+			<div class="login-container">
 
-							<InputField name="userId" type="text" label="Phone Number" value="+91" />
+				<div class="login-header">
+					<div class="logo">
+						<a style={{ textDecoration: "none" }} href="/">
+							<span style={{ color: 'white' }}>Contr
+								<span style={{ color: "#ff8400" }}>e</span>
+								ct</span>
+						</a>
+					</div>
+					<h1>Welcome back</h1>
+					<p>Sign in to access your contracts and agreements</p>
+				</div>
+
+
+				<div class="login-form">
+					<div class="tab-container">
+						<div class="tab login-tab-button active " onClick={(e) => {
+							e.preventDefault();
+							openTab(e, "email-form");
+						}}>Email</div>
+						<div class="tab login-tab-button" onClick={(e) => {
+							e.preventDefault();
+							openTab(e, "phone-form");
+						}}>Phone</div>
+					</div>
+
+					<Form ref={usrForm} onSubmit={handleSubmit} >
+
+						<div class="form-content login-tab-content" id="email-form">
+							<div class="form-group">
+								<label for="userEmail">Email address</label>
+								<input type="email" name="userEmail" id="userEmail" class="form-control" placeholder="you@example.com" />
+							</div>
+
+							<div class="form-group">
+								<label for="emailPass">Password</label>
+								<input type="password" name="userEmailPass" id="emailPass" class="form-control" placeholder="••••••••" />
+							</div>
+
+							<div class="form-options">
+								{/*<div class="remember-me">*/}
+								{/*	<input type="checkbox" id="remember" />*/}
+								{/*	<label for="remember">Remember me</label>*/}
+								{/*</div>*/}
+								<a href="/" class="forgot-password" onClick={(e) => {
+									e.preventDefault();
+									setDisplayLogin(3);
+								}}>Forgot password?</a>
+							</div>
+
+							<button type="submit" class="btn btn-primary">Login</button>
 						</div>
-						<div className="col-md-12" style={{ marginBottom: "10px" }}>
-							<InputField name="userPass" type="password" label="Password" />
-						</div>
-						<div className='col-md-12'>
-							<div className="row">
-								<div className="col-md-6" >
-									<FormSubmitButton name="Login" myStyle={{ margin: '5px', width: '100%' }} />
-								</div>
-								<div className="col-md-6">
-									<FormButton name="Register" onClick={(e) => {
-										e.preventDefault();
-										setDisplayLogin(0);
-									}} myClass="landingPageBtn" myStyle={{ margin: '5px', width: '100%' }} />
+
+
+						<div class="form-content login-tab-content" id="phone-form" style={{ display: "none" }} >
+							<div class="form-group">
+								<label for="phone">Phone number</label>
+								<div class="phone-input">
+									<select class="phone-prefix form-control" style={{ width:"20%" }} name="phonePrefix">
+										<option value="+1" >+1</option>
+										<option value="+44">+44</option>
+										<option value="+91">+91</option>
+										<option value="+61">+61</option>
+									</select>
+									<input type="tel" name="userPhone" class="form-control phone-number" placeholder="123-456-7890" />
 								</div>
 							</div>
-						</div>
-						<div className="col-md-12">
-							<FormButton name="Sign in With google" onClick={() => loginClick()} />
-						</div>
-						
-						
-					</div>
-					<div className="row" style={{ textAlign: "center" }}>
-						<div className="col-md-12">
-							<span className="landingPageLink"
-								onClick={(e) => {
+							<div class="form-group">
+								<label for="phonePass">Password</label>
+								<input type="password" id="phonePass" name="userPhonePass" class="form-control" placeholder="••••••••" />
+							</div>
+							<div class="form-options">
+								{/*<div class="remember-me">*/}
+								{/*	<input type="checkbox" id="remember" />*/}
+								{/*	<label for="remember">Remember me</label>*/}
+								{/*</div>*/}
+								<a href="/" class="forgot-password" onClick={(e) => {
 									e.preventDefault();
-									navigate("/forgotPassword")
-							}} >
-							Forgot your password?
-						</span>
+									setDisplayLogin(3);
+								}}>Forgot password?</a>
+							</div>
+							<button type="submit" class="btn btn-primary">Login</button>
 						</div>
-					</div>
-					
 
+						<div class="divider">or</div>
+
+						<button type="button" class="btn btn-google" onClick={() => loginClick()} >
+							<i class="fab fa-google"></i>
+							<span>Continue with Google</span>
+						</button>
+
+						<div class="login-footer">
+							Don't have an account? <a href="/" id="register-btn" onClick={(e) => {
+								e.preventDefault();
+								setDisplayLogin(2);
+							}}>Register now</a>
+						</div>
+					</Form>
 				</div>
-			</Form>
+			</div>
+			
 		</>
 	);
 };

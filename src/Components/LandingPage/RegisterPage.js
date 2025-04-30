@@ -8,9 +8,10 @@ import FormButton from "../FormParts/FormButton";
 import { getRequestAllowAll, registerRequest } from "../Services/ContrectBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import MessageDisplay from "../CommonPages/MessageDisplay";
+import OtherData from "../Context/OtherData";
 
 
-const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
+const RegisterPage = ({ setDisplayLogin}) => {
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState(""); 
@@ -54,7 +55,9 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 			console.log(res);
 			if (res.status === 1) {
 				UserProfile.setUserId(res.contactId);
-				navigate("/ValidateUser");
+				OtherData.setData("/ResetPassword");
+				setDisplayLogin(4);
+				//navigate("/ValidateUser");
 			} else {
 				setMsg("Not able to save data");
 				setMsgType("Error");
@@ -134,46 +137,71 @@ const RegisterPage = ({ displayLogin, setDisplayLogin}) => {
 
 	return (
 		<>
-			<div className="scrollable-section">
-				<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
-			<Form ref={usrForm} onSubmit={handleSubmit} >
-					<center>{displayLogin === 2 ? "Forgot Your Password?" : ""}</center>
-					<div style={{ textAlign: 'left' }}>
-						<div className="row">
-							<div className="col-md-12">
-								<div className="form-group" style={{ textAlign: 'left' }}>
-									<label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }} >User Type</label>
-									<select name="PoCurrency" className="form-control"
-										value={usrType} onChange={(e) => {
-											e.preventDefault();
-											setUsrType(e.target.value);
-										}}>
-										<option value="" >==Select==</option>
-										{usrTypeOptions && usrTypeOptions.length > 0 ?
-											usrTypeOptions.map(x => <option value={x.id} >{x.typeValue}</option>) :
-											<></>}
-									</select>
-								</div>
-								<InputField name="UserName" type="text" label="Name" value="" />
-								<InputField name="PhoneNumber" type="tel" label="Phone Number" value="" />
-								<InputField name="UsrPan" type="text" label="PAN" value="" />
-								<InputField name="UsrGstin" type="text" label="GSTIN" value="" />
-								<InputField name="UsrAddress" type="text" label="Address" value="" />
-								<InputField name="UsrIsMSME" type="checkbox" label="Is MSME?" />
-								<InputField name="Email" type="text" label="Email" value="" />
-								<InputField name="Password" type="password" label="Password" value="" />
-								<InputField name="ConfirmPassword" type="password" label="Confirm Password" value="" />
-							</div>
-						</div>
-						<div className="row" style={{ textAlign: "center" }}>
-							<div className="col-md-6"><FormSubmitButton name="Register" /></div>
-							<div className="col-md-6"><FormButton name="Back to Login" onClick={(e) => {
-								e.preventDefault();
-								setDisplayLogin(1);
-							}} myClass="landingPageBtn" /></div>
-						</div>
+			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
+			<div class="login-container">
+				<div class="login-header">
+					<div class="logo">
+						<a style={{ textDecoration: "none" }} href="/">
+							<span style={{ color: 'white' }}>Contr
+								<span style={{ color: "#ff8400" }}>e</span>
+								ct</span>
+						</a>
 					</div>
-				</Form>
+					<h1>Welcome to contrect</h1>
+					<p>Register to start making your own contract</p>
+				</div>
+				<div class="login-form">
+					<Form ref={usrForm} onSubmit={handleSubmit} >
+						<div class="form-content" id="email-form">
+							<div class="form-group">
+								<label for="UserName">Name</label>
+								<input type="text" id="UserName" name="UserName" class="form-control" placeholder="John Doe" />
+							</div>
+							<div class="form-group">
+								<label for="PhoneNumber">Phone Number</label>
+								<input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" placeholder="+91 XXXXX-XXXXX" />
+							</div>
+							<div class="form-group">
+								<label for="Email">Email</label>
+								<input type="text" id="Email" name="Email" class="form-control" placeholder="John@example.com" />
+							</div>
+							<div class="form-group">
+								<label for="UsrPan">Pan</label>
+								<input type="text" id="UsrPan" name="UsrPan" class="form-control" placeholder="XXXXX XXXXA" />
+							</div>
+							<div class="form-group">
+								<label for="UsrGstin">GSTIN</label>
+								<input type="text" id="UsrGstin" name="UsrGstin" class="form-control" placeholder="MPXX-XXXX-XXXX-XXXX-XX5" />
+							</div>
+							<div class="form-group">
+								<label for="UsrAddress">Address</label>
+								<input type="text" id="UsrAddress" name="UsrAddress" class="form-control" placeholder="" />
+							</div>
+							
+							<div class="form-group">
+								<label for="Password">Password</label>
+								<input type="password" id="Password" name="Password" class="form-control" placeholder="••••••••" />
+							</div>
+
+							<div class="form-group">
+								<label for="ConfirmPassword">Confirm password</label>
+								<input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="••••••••" />
+							</div>
+							<div class="form-options">
+								<div class="remember-me">
+									<input type="checkbox" id="UsrIsMSME" name="UsrIsMSME" />
+									<label for="UsrIsMSME">Is MSME?</label>
+								</div>
+								<a href="/" class="forgot-password" onClick={(e) => {
+									e.preventDefault();
+									setDisplayLogin(1);
+								}}>Already have account?</a>
+							</div>
+
+							<button type="submit" class="btn btn-primary">Register</button>
+						</div>
+					</Form>
+				</div>
 			</div>
 		</>
 	);
