@@ -44,7 +44,7 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 		setUserType(UserProfile.getUserType());
 		var templateName = OtherData.getData();
 		setHeading(templateName);
-		//OtherData.resetData();
+		OtherData.resetData();
 
 	}, []);
 

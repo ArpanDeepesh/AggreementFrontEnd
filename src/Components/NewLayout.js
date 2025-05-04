@@ -96,7 +96,8 @@ const NewLayout = () => {
                     <Route path="/Policy" element={<PrivacyPolicy setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/AboutUs" element={<AboutUs setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/test" element={<Test />} />
-                    <Route path="/ContactUs" element={<ContactUs/>}/>
+                    <Route path="/ContactUs" element={<ContactUs />} />
+
                     <Route path="/userItems" element={<UserItems setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/userTerms" element={<UserTerms setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/TermConditions" element={<UserTermConditions setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />

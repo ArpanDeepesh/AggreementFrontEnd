@@ -26,7 +26,7 @@ const HomePage = ({ setUserName, setUserType}) => {
             navigate("/");
         }
         var d = OtherData.getData();
-        if (d.length > 0)
+        if (d.length > 0 && d.startsWith("{"))
         {
             var dObj = JSON.parse(d);
             if (dObj.typeValue && dObj.typeValue.length > 0) {
