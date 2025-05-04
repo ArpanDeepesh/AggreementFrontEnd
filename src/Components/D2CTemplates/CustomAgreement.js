@@ -37,14 +37,15 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 	
 
 	useEffect(() => {
-		if (UserProfile.getLoginStatus() !== "1") {
-			navigate("/");
-		}
+		//if (UserProfile.getLoginStatus() !== "1") {
+		//	navigate("/");
+		//}
+		var templateName = OtherData.getTemplateName();
+		setHeading(templateName);
 		setUserName(UserProfile.getName());
 		setUserType(UserProfile.getUserType());
-		var templateName = OtherData.getData();
-		setHeading(templateName);
-		OtherData.resetData();
+		
+		//OtherData.resetData();
 
 	}, []);
 
@@ -189,7 +190,21 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 	};
 
 	return (
-        <>
+		<>
+			{UserProfile.getUserId() > 0 ? <></> : <header>
+				<div className="header-container">
+					<div className="logo">
+						<a style={{ textDecoration: "none" }} href="/">
+							<span style={{ color: 'white' }}>Contr
+								<span style={{ color: "#ff8400" }}>e</span>
+								ct</span>
+						</a>
+
+					</div>
+					<nav><a href="/Signup" className="btn btn-success">Sign In</a>
+					</nav>
+				</div>
+			</header>}
 			<div className="row" style={{ paddingTop: "25px" }}>
 				<DisappearingMessage msg={msgDis} setMsg={setMsgDis }  />
 				<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
@@ -199,12 +214,18 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 							<div className="col-md-1">
 								<FormButton name="< Back" onClick={(e) => {
 									e.preventDefault();
-									navigate("/SelectTemplate");
+									if (UserProfile.getUserId() > 0) {
+										navigate("/SelectTemplate");
+									} else
+									{
+										navigate("/");
+									}
+									
 								}} />
 							</div>
 							<div className="col-md-10">
-								<h4 style={{ margin: 0, marginTop:"8px" }}>
-									{heading}
+								<h4 style={{ margin: 0, marginTop: "8px" }}>
+									{heading && heading.length > 0 ? heading:"Loading Heading..."}
 								</h4>
 							</div>
 						</div>

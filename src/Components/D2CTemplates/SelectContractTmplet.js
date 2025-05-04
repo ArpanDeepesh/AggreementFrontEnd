@@ -26,134 +26,128 @@ const SelectContractTmplet = ({ setUserName, setUserType }) => {
 
 
 	return (
-        <><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
-            <div className="table">
-                <div className="row">
-                    <div className="col-md-1">
-                        <FormButton name="< Back" onClick={(e) => {
-                            e.preventDefault();
-                            navigate("/Home");
-                        }} />
-                    </div>
-                    <div className="col-md-10">
-                        <h4 style={{ textAlign: "center", color: '#007bff', margin: "0", marginBottom:"8px" }}>Agreement Templates</h4>
-                    </div>
-                </div>
-                <div className="row" style={{ textAlign: "left", paddingBottom: '10px' }}>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="selectTemplateAction" onClick={e => {
-                            e.preventDefault();
-                            //navigate("/HomeMaintenanceT1");
-                            OtherData.setData("Home Maintenance");
-                            navigate("/CustomAgreement");
-                        }}>
-                            <img src={"/Catalogue.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>Home Maintenance</strong>
-                                <br />
-                                Manage and list your buy/sell items
-                            </span>
+        <>
 
-                        </div>
+            <section id="templates" className="section-title">
+                <h2>Professional Contract Templates</h2>
+                <p>Choose from our extensive library of legally enforceable templates tailored for various industries</p>
+                <FormButton name="< Back" onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/Home");
+                }} />
+            </section>
 
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="selectTemplateAction" onClick={e => {
-                            e.preventDefault();
-                            //navigate("/PersonalLoanT1");
-                            OtherData.setData("Personal Loan");
-                            navigate("/CustomAgreement");
-                        }}>
-                            <img src={"/Terms.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>personal Loan</strong>
-                                <br />
-                                Predefine terms for quick agreement generation
-                            </span>
-
-                        </div>
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="selectTemplateAction" onClick={e => {
-                            e.preventDefault();
-                            //navigate("/SublettingAgreementT1");
-                            OtherData.setData("Subletting");
-                            navigate("/CustomAgreement");
-                        }}>
-                            <img src={"/Terms.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>Subletting</strong>
-                                <br />
-                                Predefine terms for quick agreement generation
-                            </span>
-
-                        </div>
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="selectTemplateAction" onClick={e => {
-                            e.preventDefault();
-                            /*navigate("/ResidentialAgreementT1");*/
-                            OtherData.setData("Residential Agreement");
-                            navigate("/CustomAgreement");
-                        }}>
-                            <img src={"/rfq.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>Residential Agreement</strong>
-                                <br />
-                                Easily request supplier quotes
-                            </span>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div className="row" style={{ textAlign: "left", paddingBottom: '10px' }}>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="selectTemplateAction" onClick={e => {
-                            e.preventDefault();
-                            //navigate("/BuySellT1");
-                            OtherData.setData("Buy Sell");
-                            navigate("/CustomAgreement");
-                        }}>
-                            <img src={"/Catalogue.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>Buy Sell</strong>
-                                <br />
-                                Manage and list your buy/sell items
-                            </span>
-
-                        </div>
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="selectTemplateAction" onClick={e => {
-                            e.preventDefault();
-                            OtherData.setData("Blank Agreement");
-                            navigate("/CustomAgreement");
-                        }}>
-                            <img src={"/Catalogue.png"} width={70} height={70} />
-                            <br />
-                            <span className="">
-                                <strong>Custom Agreement</strong>
-                                <br />
-                                Manage and list your buy/sell items
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
+            <div className="contract-grid">
+                <a href="\" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Rental Agreement");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-home"></i>
+                    <h3>Rental Agreement</h3>
+                    <p>Property leases and rentals</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Subletting");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-building"></i>
+                    <h3>Subletting</h3>
+                    <p>Sublease agreements</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Interior Design");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-paint-roller"></i>
+                    <h3>Interior Design</h3>
+                    <p>Design service contracts</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Maintenance");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-tools"></i>
+                    <h3>Maintenance</h3>
+                    <p>Service and maintenance agreements</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Home Renovation");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-hammer"></i>
+                    <h3>Home Renovation</h3>
+                    <p>Construction and renovation contracts</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Consulting");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-handshake"></i>
+                    <h3>Consulting</h3>
+                    <p>Professional consulting agreements</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("NDA");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-file-signature"></i>
+                    <h3>NDA</h3>
+                    <p>Non-disclosure agreements</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Consent Agreement");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-heart"></i>
+                    <h3>Consent Agreement</h3>
+                    <p>Personal relationship contracts</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Loan Agreement");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-money-bill-wave"></i>
+                    <h3>Loan Agreement</h3>
+                    <p>Personal and business loans</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Freelance");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-laptop-code"></i>
+                    <h3>Freelance</h3>
+                    <p>Independent contractor agreements</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Sales");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-box-open"></i>
+                    <h3>Sales</h3>
+                    <p>Goods and services sales</p>
+                </a>
+                <a href="/" className="contract-card" onClick={(e) => {
+                    e.preventDefault();
+                    OtherData.setTemplateName("Custom");
+                    navigate("/CustomAgreement");
+                }}>
+                    <i className="fas fa-plus-circle"></i>
+                    <h3>Custom</h3>
+                    <p>Build your own contract</p>
+                </a>
             </div>
-			
-		</div>
+
 			
 			
 		</>
