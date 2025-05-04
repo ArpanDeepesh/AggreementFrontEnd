@@ -6,15 +6,18 @@ import UserProfile from "../Context/UserProfile";
 import FormButton from "../FormParts/FormButton";
 import OtherData from "../Context/OtherData";
 
-const PaymentComponent = () => {
+const PaymentComponent = ({ setUserName, setUserType }) => {
     const [subscriptionObj, setSubscriptionObj] = useState();
     const proposalForm = useRef(null);
     useEffect(() => {
+        setUserName(UserProfile.getName());
+        setUserType(UserProfile.getUserType());
         var subData = OtherData.getData();
         if (subData !== "" && subData.length > 0) {
             var obj = JSON.parse(OtherData.getData());
             console.log(obj);
             setSubscriptionObj(obj);
+            OtherData.resetData();
         }
     }, []);
     const { error, isLoading, Razorpay } = useRazorpay();

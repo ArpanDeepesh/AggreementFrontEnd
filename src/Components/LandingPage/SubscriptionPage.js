@@ -12,13 +12,15 @@ import { getRequestAllowAll } from "../Services/ContrectBackendAPI";
 import FormButton from "../FormParts/FormButton";
 import OtherData from "../Context/OtherData";
 
-const SubscriptionPage = ()=>{
+const SubscriptionPage = ({ setUserName, setUserType })=>{
 	const navigate = useNavigate();
 	const [subcriptionList, setSubcriptionList] = useState();
-	useEffect(() => {
-		if (UserProfile.getLoginStatus() !== "1") {
-			navigate("/");
-		}
+    useEffect(() => {
+        setUserName(UserProfile.getName());
+        setUserType(UserProfile.getUserType());
+		//if (UserProfile.getLoginStatus() !== "1") {
+		//	navigate("/");
+		//}
 		getRequestAllowAll("api/General/SubscriptionList").then(r => r.json()).then(res => {
 			setSubcriptionList(res.data);
 
@@ -26,106 +28,96 @@ const SubscriptionPage = ()=>{
 	}, []);
 
 	return (
-		<>
+        <>
+            {UserProfile.getUserId() > 0 ?<></>: <header>
+                <div className="header-container">
+                    <div className="logo">
+                        <a style={{ textDecoration: "none" }} href="/">
+                            <span style={{ color: 'white' }}>Contr
+                                <span style={{ color: "#ff8400" }}>e</span>
+                                ct</span>
+                        </a>
 
-				<div className="">
-					<div className="row overflow-auto">
-					<div className="col-md-6 col-sm-12" >
-						<div className="row">
-							{subcriptionList && subcriptionList.length > 0 ? subcriptionList.map(x => <div className="col-md-3">
-								{JSON.stringify(x)}
-								<FormButton name="Select" onClick={(e) => {
-									OtherData.setData(JSON.stringify(x));
-									navigate("/pay");
-								}} />
-							</div>) : <>loading subscription list</>}
-						</div>
-						<div>
-							<div className="d-sm-none d-md-block" >
-								<div className="row m-4">
-									<div className="col-md-12 col-sm-12">
-										<img src={"./ParagraphText.png"} alt="Landing Page Image showing business" width={"72%"} />
-									</div>
-								</div>
-								<div className="row m-4">
-									<div className="col-md-12">
-										<center style={{ fontSize: "30px" }}>
-											Streamlined tracking and reconciliation for your purchase agreements (POs and PIs)
-										</center>
-									</div>
-								</div>
-								<div className="row m-5">
-									<div className="col-md-4">
-										<div className="col-md-12">
-											<img src={"./TrackManageProgress1.png"} alt="Landing Page Image showing business" width={"50%"} height={"auto"} />
-										</div>
-										<div className="col-md-12 landingMsgSubTitle">
-											Track & manage progress
-										</div>
-									</div>
-									<div className="col-md-4">
-										<div className="col-md-12">
-											<img src={"./TrackManageProgress2.png"} alt="Landing Page Image showing business" width={"50%"} height={"auto"} />
-										</div>
-										<div className="col-md-12 landingMsgSubTitle">
-											Reconcile work & payments
-										</div>
-									</div>
-									<div className="col-md-4">
-										<div className="col-md-12">
-											<img src={"./TrackManageProgress3.png"} alt="Landing Page Image showing business" width={"50%"} height={"auto"} />
-										</div>
-										<div className="col-md-12 landingMsgSubTitle">
-											Easy communication & audit
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="d-md-none d-sm-block" style={{ overflowY: "scroll", height: "70%" }}>
-								<div className="row m-4">
-									<div className="col-md-12 col-sm-12">
-										<img src={"./ParagraphText.png"} alt="Landing Page Image showing business" width={"80%"} />
-									</div>
-								</div>
-								<div className="row m-4">
-									<div className="col-md-12">
-										<center style={{ fontSize: "30px" }}>
-											Streamlined tracking and reconciliation for your purchase agreements
-										</center>
-									</div>
-								</div>
-								<div className="row m-5">
-									<div className="col-md-4">
-										<div className="col-md-12">
-											<img src={"./TrackManageProgress1.png"} alt="Landing Page Image showing business" width={"50%"} height={"auto"} />
-										</div>
-										<div className="col-md-12 landingMsgSubTitle">
-											Track & manage progress
-										</div>
-									</div>
-									<div className="col-md-4">
-										<div className="col-md-12">
-											<img src={"./TrackManageProgress2.png"} alt="Landing Page Image showing business" width={"50%"} height={"auto"} />
-										</div>
-										<div className="col-md-12 landingMsgSubTitle">
-											Reconcile work & payments
-										</div>
-									</div>
-									<div className="col-md-4">
-										<div className="col-md-12">
-											<img src={"./TrackManageProgress3.png"} alt="Landing Page Image showing business" width={"50%"} height={"auto"} />
-										</div>
-										<div className="col-md-12 landingMsgSubTitle">
-											Easy communication & audit
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-							
-						</div>
-					</div>
-				</div>
+                    </div>
+                    <nav><a href="/Signup" className="btn btn-success">Sign In</a>
+                    </nav>
+                </div>
+            </header>}
+            <section className="section-title">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Choose the plan that fits your business needs</p>
+            </section>
+            <section className="pricing-section">
+                <div className="container">
+                    <div className="pricing-grid">
+                        {subcriptionList && subcriptionList.length > 0 ? subcriptionList.map(x => <div className={x.id === 2 ? "pricing-card popular" : "pricing-card"}>
+                            {x.id === 2 ? <div className="popular-badge">Most Popular</div> : <></>}
+                            <div className="pricing-header">
+                                <h3>{x.typeValue}</h3>
+                                <div className="price">&#x20b9;{x.rate}<span>{x.id !== 4 ? "/month" : "/contract"} </span></div>
+                                <p>{x.id !== 1 ? "5 free +" + x.numberOfContracts + " contracts" : "5 free contracts"}</p>
+                            </div>
+                            <ul className="pricing-features">
+                                <li><i className="fas fa-check"></i> {x.numberOfAttachments} attachments per contract (1MB max)</li>
+                                <li><i className="fas fa-check"></i> 1 signing SMS included</li>
+                                <li><i className="fas fa-check"></i> &#x20b9;2/SMS for extras</li>
+                                <li><i className="fas fa-check"></i> {x.contractDurationLimit * 12 / 356}mo storage + 3mo archive</li>
+                                <li><i className="fas fa-check"></i> {x.genPdfCount} free audit report</li>
+                            </ul>{x.id !== 4 && x.id!==1 ? <a href="\" className={x.id === 2 ? "btn btn-success" : "btn btn-outline-primary"} onClick={(e) => {
+                                e.preventDefault();
+                                if (x.id !== 1) {
+                                    OtherData.setData(JSON.stringify(x));
+                                }
+                                if (UserProfile.getUserId() > 0) {
+                                    navigate("/pay");
+                                } else
+                                {
+                                    navigate("/Signup");
+                                }
+                                
+                            }}>Start</a> : <></>}
+
+                        </div>) : <div className="pricing-card">
+                            <div className="pricing-header">
+                                <h3>Free Tier</h3>
+                                <div className="price">&#x20b9;0<span>/month</span></div>
+                                <p>5 free contracts</p>
+                            </div>
+                            <ul className="pricing-features">
+                                <li><i className="fas fa-check"></i> 2 attachments per contract (1MB max)</li>
+                                <li><i className="fas fa-check"></i> 1 signing SMS included</li>
+                                <li><i className="fas fa-check"></i> &#x20b9;2/SMS for extras</li>
+                                <li><i className="fas fa-check"></i> 12mo storage + 3mo archive</li>
+                                <li><i className="fas fa-check"></i> 1 free audit report</li>
+                            </ul>
+                            <a href="\" className="btn btn-outline-primary" onClick={(e) => {
+                                    e.preventDefault();
+                                    
+                                navigate("/Signup");
+                            }}>Get Started</a>
+                        </div>}
+
+                        <div className="pricing-card">
+                            <div className="pricing-header">
+                                <h3>Customize subscription</h3>
+                                <div className="price">NA<span>/contract</span></div>
+                                <p>Number of contract can be customised</p>
+                            </div>
+                            <ul className="pricing-features">
+                                <li><i className="fas fa-check"></i>All access based on the discussion</li>
+                            </ul>
+                            <a href="\" className="btn btn-outline-primary" onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/ContactUs");
+                            }}>Contact us</a>
+                        </div>
+                    </div>
+
+                    <div className="pricing-footer">
+                        <p>All plans include: AI contract drafting, real-time tracking, and basic support.</p>
+                    </div>
+                </div>
+            </section>
 		</>
 	);
 };

@@ -44,7 +44,7 @@ import SubscriptionPage from './LandingPage/SubscriptionPage';
 import SignInPage from './LandingPage/SignInPage';
 import FormButton from './FormParts/FormButton';
 import ResetPassword from './LandingPage/ResetPassword';
-
+import ContactUs from './LandingPage/ContactUs';
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
     const [loggedInUserType, setLoggedInUserType] = useState();
@@ -96,6 +96,7 @@ const NewLayout = () => {
                     <Route path="/Policy" element={<PrivacyPolicy setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/AboutUs" element={<AboutUs setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/test" element={<Test />} />
+                    <Route path="/ContactUs" element={<ContactUs/>}/>
                     <Route path="/userItems" element={<UserItems setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/userTerms" element={<UserTerms setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/TermConditions" element={<UserTermConditions setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
@@ -118,8 +119,8 @@ const NewLayout = () => {
                     <Route path="/New" element={<NewPO setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/DetailContract" element={<DetailContract setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/CheckPODetails" element={<CheckPODetails setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
-                    <Route path="/pay" element={<PaymentComponent />} />
-                    <Route path="/subscriptionList" element={<SubscriptionPage />} />
+                    <Route path="/pay" element={<PaymentComponent setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                    <Route path="/subscriptionList" element={<SubscriptionPage setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/SelectTemplate" element={<SelectContractTmplet setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/HomeMaintenanceT1" element={<HomeMaintenance setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/PersonalLoanT1" element={<PersonalLoan setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
@@ -144,37 +145,38 @@ const NewLayout = () => {
                             </div>
                         </div>
                         <div className="footerColumn">
-                            <h3>Products</h3>
-                            <ul>
-                                <li><a href="/">Contract Templates</a></li>
-                                <li><a href="/">E-Signature</a></li>
-                                <li><a href="/">Document Management</a></li>
-                                <li><a href="/">API Integration</a></li>
-                            </ul>
-                        </div>
-                        <div className="footerColumn">
                             <h3>Resources</h3>
                             <ul>
                                 <li>
                                     <a href="/">Help Center</a>
                                 </li>
                                 <li><a href="/">Blog</a></li>
-                                <li><a href="/">Webinars</a></li>
+                                <li><a href="/subscriptionList">Subscription List</a></li>
                                 <li><a href="/">Legal Guides</a></li>
                             </ul>
                         </div>
                         <div className="footerColumn">
                             <h3>Company</h3>
                             <ul>
-                                <li><a href="/">About Us</a></li>
+                                <li><a href="/AboutUs">About Us</a></li>
                                 <li><a href="/">Careers</a></li>
-                                <li><a href="/">Contact</a></li>
+                                <li><a href="/ContactUs">Contact</a></li>
                                 <li><a href="/">Press</a></li>
+                            </ul>
+                            
+                        </div>
+                        <div className="footerColumn">
+                            <h3>Legal</h3>
+                            <ul>
+                                <li><a href="/Policy">Privacy Policy</a></li>
+                                <li><a href="/Terms">Terms of Service</a></li>
+                                <li><a href="/">Cookie Policy</a></li>
+                                <li><a href="/">GDPR Compliance</a></li>
                             </ul>
                         </div>
                     </div>
                     <div className="copyright">
-                        <p>&copy; 2025 Contrect Technologies. All rights reserved.29 April 2025 9:51 PM  | <a href="/">Privacy Policy</a> | <a href="/">Terms of Service</a></p>
+                        <p>&copy; 2025 Musedaq Fintech Private Limited. All rights reserved. 4 May 2025 11:21 PM</p>
                     </div>
                 </div>
             </footer>

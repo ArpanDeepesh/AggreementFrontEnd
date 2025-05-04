@@ -12,14 +12,18 @@ import { getRequestAllowAll } from "../Services/ContrectBackendAPI";
 import FormButton from "../FormParts/FormButton";
 import OtherData from "../Context/OtherData";
 
-const LandingPage= ()=>{
+const LandingPage = () => {
+    const [subscriptionList, setSubscriptionList] = useState();
 	const usrForm = useRef(null);
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (UserProfile.getLoginStatus() === "1") {
 			navigate("/Home");
-		}
-
+        }
+        getRequestAllowAll("api/General/SubscriptionList").then(r => r.json()).then(res => {
+            console.log(res);
+            setSubscriptionList(res.data);
+        }).catch(err => console.log(err));
 	}, []);
 
 	return (
@@ -51,7 +55,10 @@ const LandingPage= ()=>{
                 </section>
 
                 <div className="contract-grid">
-                    <a href="#" className="contract-card">
+                    <a href="\" className="contract-card" onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/")
+                    }}>
                         <i className="fas fa-home"></i>
                         <h3>Rental Agreement</h3>
                         <p>Property leases and rentals</p>
@@ -175,76 +182,64 @@ const LandingPage= ()=>{
                 <section className="pricing-section">
                     <div className="container">
                         <div className="pricing-grid">
-                            
-                            <div className="pricing-card">
+                            {subscriptionList && subscriptionList.length > 0 ? subscriptionList.map(x => <div className={x.id === 2 ? "pricing-card popular" :"pricing-card"}>
+                                {x.id === 2 ? <div className="popular-badge">Most Popular</div> : <></>}
+                                <div className="pricing-header">
+                                    <h3>{x.typeValue}</h3>
+                                    <div className="price">&#x20b9;{x.rate}<span>{x.id!==4?"/month":"/contract"} </span></div>
+                                    <p>{x.id !== 1 ? "5 free +" + x.numberOfContracts +" contracts" :"5 free contracts"}</p>
+                                </div>
+                                <ul className="pricing-features">
+                                    <li><i className="fas fa-check"></i> {x.numberOfAttachments} attachments per contract (1MB max)</li>
+                                    <li><i className="fas fa-check"></i> 1 signing SMS included</li>
+                                    <li><i className="fas fa-check"></i> &#x20b9;2/SMS for extras</li>
+                                    <li><i className="fas fa-check"></i> {x.contractDurationLimit*12/356}mo storage + 3mo archive</li>
+                                    <li><i className="fas fa-check"></i> {x.genPdfCount} free audit report</li>
+                                </ul>{x.id !== 4 ? <a href="\" className={x.id === 2 ? "btn btn-success" : "btn btn-outline-primary"} onClick={(e) => {
+                                    e.preventDefault();
+                                    if (x.id !== 1) {
+                                        OtherData.setData(JSON.stringify(x));
+                                    }
+                                    navigate("/Signup");
+                                }}>Start</a>:<></>}
+                                
+                            </div>) : <div className="pricing-card">
                                 <div className="pricing-header">
                                     <h3>Free Tier</h3>
-                                    <div className="price">¥0<span>/month</span></div>
-                                    <p>5 contracts/month included</p>
+                                        <div className="price">&#x20b9;0<span>/month</span></div>
+                                        <p>5 free contracts</p>
                                 </div>
                                 <ul className="pricing-features">
                                     <li><i className="fas fa-check"></i> 2 attachments per contract (1MB max)</li>
                                     <li><i className="fas fa-check"></i> 1 signing SMS included</li>
-                                    <li><i className="fas fa-check"></i> ¥2/SMS for extras</li>
+                                        <li><i className="fas fa-check"></i> &#x20b9;2/SMS for extras</li>
                                     <li><i className="fas fa-check"></i> 12mo storage + 3mo archive</li>
                                     <li><i className="fas fa-check"></i> 1 free audit report</li>
-                                </ul>
-                                <a href="#" className="btn btn-primary">Get Started</a>
-                            </div>
-                            <div className="pricing-card">
-                                <div className="pricing-header">
-                                    <h3>Pay-Per-Contract</h3>
-                                    <div className="price">¥99<span>/contract</span></div>
-                                    <p>Beyond 5 free contracts</p>
-                                </div>
-                                <ul className="pricing-features">
-                                    <li><i className="fas fa-check"></i> Same as Free Tier attachments</li>
-                                    <li><i className="fas fa-check"></i> 1 signing SMS included</li>
-                                    <li><i className="fas fa-check"></i> ¥2/SMS for extras</li>
-                                    <li><i className="fas fa-check"></i> 12mo storage + 3mo archive</li>
-                                    <li><i className="fas fa-check"></i> Subscription-based reports</li>
-                                </ul>
-                                <a href="#" className="btn btn-outline">Pay As You Go</a>
-                            </div>
-
-                            <div className="pricing-card popular">
-                                <div className="popular-badge">Most Popular</div>
-                                <div className="pricing-header">
-                                    <h3>Starter</h3>
-                                    <div className="price">¥499<span>/month</span></div>
-                                    <p>5 free + 10 contracts</p>
-                                </div>
-                                <ul className="pricing-features">
-                                    <li><i className="fas fa-check"></i> 5 attachments per contract (5MB max)</li>
-                                    <li><i className="fas fa-check"></i> 5 alert SMS included</li>
-                                    <li><i className="fas fa-check"></i> ¥1/SMS for extras</li>
-                                    <li><i className="fas fa-check"></i> 18mo storage + 6mo archive</li>
-                                    <li><i className="fas fa-check"></i> 5 free audit reports</li>
-                                </ul>
-                                <a href="#" className="btn btn-primary">Start Free Trial</a>
-                            </div>
-
+                                    </ul>
+                                    <a href="\" className="btn btn-outline-primary" onClick={(e) => {
+                                        e.preventDefault();
+                                        navigate("/Signup");
+                                    }}>Get Started</a>
+                            </div>}
                             
                             <div className="pricing-card">
                                 <div className="pricing-header">
-                                    <h3>Business</h3>
-                                    <div className="price">¥1,499<span>/month</span></div>
-                                    <p>5 free + 50 contracts</p>
+                                    <h3>Customize subscription</h3>
+                                    <div className="price">NA<span>/contract</span></div>
+                                    <p>Number of contract can be customised</p>
                                 </div>
                                 <ul className="pricing-features">
-                                    <li><i className="fas fa-check"></i> 10 attachments per contract (5MB max)</li>
-                                    <li><i className="fas fa-check"></i> 10 priority SMS included</li>
-                                    <li><i className="fas fa-check"></i> ¥0.50/SMS for extras</li>
-                                    <li><i className="fas fa-check"></i> 24mo storage + 12mo archive</li>
-                                    <li><i className="fas fa-check"></i> 10 free audit reports</li>
+                                    <li><i className="fas fa-check"></i>All access based on the discussion</li>
                                 </ul>
-                                <a href="#" className="btn btn-outline">Contact Sales</a>
+                                <a href="\" className="btn btn-outline-primary" onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate("/ContactUs");
+                                }}>Contact us</a>
                             </div>
                         </div>
 
                         <div className="pricing-footer">
                             <p>All plans include: AI contract drafting, real-time tracking, and basic support.</p>
-                            <a href="#">Compare all features →</a>
                         </div>
                     </div>
                 </section>
