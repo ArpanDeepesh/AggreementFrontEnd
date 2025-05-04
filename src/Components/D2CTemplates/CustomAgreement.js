@@ -340,7 +340,7 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 							<i class="fas fa-plus-circle"></i> Add Line Item
 						</button>
 
-						<div class="form-row" style="margin-top: 1.5rem;">
+						<div class="form-row" style={{ marginTop: "1.5rem;" }} >
 							<div class="form-col">
 								<label for="payment-terms">Payment Terms</label>
 								<textarea id="payment-terms">Payment shall be made within 15 days of invoice. Late payments will attract interest at 1.5% per month.</textarea>
@@ -376,7 +376,7 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 								<div class="form-col">
 									<input type="text" id="new-term" placeholder="Enter a new term"/>
 								</div>
-								<div class="form-col" style="flex: 0 0 auto;">
+								<div class="form-col" style={{ flex: "0 0 auto;" }} >
 									<button type="button" class="btn btn-outline" id="add-term">
 										<i class="fas fa-plus"></i> Add Term
 									</button>
