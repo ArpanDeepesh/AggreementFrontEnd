@@ -53,7 +53,7 @@ const LandingPage = () => {
                     <h2>Professional Contract Templates</h2>
                     <p>Choose from our extensive library of legally enforceable templates tailored for various industries</p>
                 </section>
-
+                
                 <div className="contract-grid">
                     <a href="\" className="contract-card" onClick={(e) => {
                         e.preventDefault();
