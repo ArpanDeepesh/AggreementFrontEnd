@@ -5,6 +5,8 @@ const FinancialTerms = ({ agreementAdvance,
     onAdvanceChange,
     onDepositeChange,
     agreementCurrency,
+    currencyOptions,
+    unitOptions,
     onCurrencyChange,
     lineItems,
     onItemChange,
@@ -72,10 +74,8 @@ const FinancialTerms = ({ agreementAdvance,
                         onChange={(e) => onCurrencyChange(e.target.value)}
                         className="item-currency"
                     >
-                        <option value="2">INR</option>
-                        <option value="1">USD</option>
-                        <option value="3">AUD</option>
-                        <option value="4">YEN</option>
+                        {currencyOptions && currencyOptions.length > 0 ? currencyOptions.map(x => <option value={x.id} selected={agreementCurrency===x.id}>{x.typeValue}</option>) :<></>}
+
                     </select>
                 </div>
             </div>
@@ -87,6 +87,7 @@ const FinancialTerms = ({ agreementAdvance,
                         <th>HSN/SAC</th>
                         <th>Qty</th>
                         <th>Rate</th>
+                        <th>Unit</th>
                         <th>Tax %</th>
                         <th>Amount</th>
                         <th></th>
@@ -135,7 +136,16 @@ const FinancialTerms = ({ agreementAdvance,
                                     className="item-rate"
                                 />
                             </td>
-                            
+                            <td>
+                                <select
+                                    value={item.unit}
+                                    onChange={(e) => onItemChange(item.id,'unit',e.target.value)}
+                                    className="item-currency"
+                                >
+                                    {unitOptions && unitOptions.length > 0 ? unitOptions.map(x => <option value={x.id} selected={item.unit === x.id}>{x.typeValue}</option>) : <></>}
+
+                                </select>
+                            </td>
                             <td>
                                 <input
                                     type="number"

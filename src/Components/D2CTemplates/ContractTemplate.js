@@ -1,4 +1,5 @@
-﻿// ContractTemplate.jsx
+﻿/* eslint-disable no-loop-func */
+// ContractTemplate.jsx
 import React, { useState, useEffect } from 'react';
 import UserRoleSection from './UserRoleSection';
 import AgreementDetails from './AgreementDetails';
@@ -12,11 +13,63 @@ import UserProfile from '../Context/UserProfile';
 import OtherData from '../Context/OtherData';
 import { useNavigate } from "react-router-dom";
 
-const ContractTemplate = ({ title }) => {
+const ContractTemplate = ({ oldFormData, title }) => {
     const navigate = useNavigate();
-
+    const [itemUnitOptions, setItemUnitOptions] = useState([]);
+    const [itemCurrencyOptions, setItemCurrencyOptions] = useState([]);
     useEffect(() => {
         setRolesForTitles(title);
+        if (oldFormData && oldFormData.counterpartyDetails && oldFormData.counterpartyDetails.length > 0) {
+            console.log(999);
+            setFormData(oldFormData);
+        } else
+        {
+            getRequestAllowAll("api/general/TemplateTerms?agTempType=" + title).then(r => r.json()).then(res => {
+                console.log(res);
+                if (res.data && res.data.length > 0) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (res.data[i].isPaymentTerm === false) {
+                            addCustomTerm(res.data[i].id, res.data[i].termDescription, res.data[i].termName);
+                        } else {
+                            addPaymentTerm(res.data[i].id, res.data[i].termDescription, res.data[i].termName);
+                        }
+
+                    }
+                }
+            }).catch(err => console.log(err));
+            getRequestAllowAll("api/general/TemplateItem?agTempType=" + title).then(r => r.json()).then(res => {
+                console.log(res);
+                if (res.data && res.data.length > 0) {
+                    var customItem = [];
+                    for (var i = 0; i < res.data.length; i++) {
+                        customItem.push({
+                            id: i + 1,
+                            title: res.data[i].itemTitle,
+                            description: res.data[i].itemDescription,
+                            hsnSac: res.data[i].itemHsnCsnUin,
+                            quantity: res.data[i].itemQuantity,
+                            rate: res.data[i].rate,
+                            timeToComplete: res.data[i].itemCompletion,
+                            currency: res.data[i].currency,
+                            tax: res.data[i].itemTax,
+                            unit: res.data[i].unit,
+                            amount: 0
+                        });
+                    }
+                    handleInputChange("lineItems", customItem);
+                }
+            }).catch(err => console.log(err));
+        }
+        getRequestAllowAll("api/General/UnitList").then(x => x.json()).then(res => {
+            if (res.status === 1) {
+                setItemUnitOptions(res.data);
+            }
+        }).catch(err => console.log(err));
+        getRequestAllowAll("api/General/CurrencyList").then(x => x.json()).then(res => {
+            if (res.status === 1) {
+                setItemCurrencyOptions(res.data);
+            }
+        }).catch(err => console.log(err));
         if (UserProfile.getToken().length > 0)
         {
             console.log("1");
@@ -30,43 +83,7 @@ const ContractTemplate = ({ title }) => {
             }
                 
         }
-        getRequestAllowAll("api/general/TemplateTerms?agTempType=" + title).then(r => r.json()).then(res => {
-            console.log(res);
-            if (res.data && res.data.length > 0)
-            {
-                for (var i = 0; i < res.data.length; i++) {
-                    if (res.data[i].isPaymentTerm === false) {
-                        addCustomTerm(res.data[i].id,res.data[i].termDescription, res.data[i].termName);
-                    } else
-                    {
-                        addPaymentTerm(res.data[i].id,res.data[i].termDescription, res.data[i].termName);
-                    }
-                    
-				}
-            }
-        }).catch(err => console.log(err));
-        getRequestAllowAll("api/general/TemplateItem?agTempType=" + title).then(r => r.json()).then(res => {
-            console.log(res);
-            if (res.data && res.data.length > 0) {
-                var customItem = [];
-                for (var i = 0; i < res.data.length; i++) {
-                    customItem.push({
-                        id: i+1,
-                        title: res.data[i].itemTitle,
-                        description: res.data[i].itemDescription,
-                        hsnSac: res.data[i].itemHsnCsnUin,
-                        quantity: res.data[i].itemQuantity,
-                        rate: res.data[i].rate,
-                        timeToComplete: res.data[i].itemCompletion,
-                        currency: res.data[i].currency,
-                        tax: res.data[i].itemTax,
-                        unit:res.data[i].unit,
-                        amount: 0
-                    });
-                }
-                handleInputChange("lineItems", customItem);
-            }
-        }).catch(err => console.log(err));
+        
     }, [title]);
 
     const [userRoleLst, setUserRoleLst] = useState();
@@ -195,9 +212,9 @@ const ContractTemplate = ({ title }) => {
             quantity: 0,
             rate: '',
             timeToComplete: 0,
-            currency: 'INR',
+            currency: 2,
             tax: 18,
-            unit: 'CNT',
+            unit: 1,
             amount: 0
         }
       ]
@@ -260,7 +277,7 @@ const ContractTemplate = ({ title }) => {
     };
 
   // Send contract
-  const sendContract = () => {
+    const sendContract = () => {
     if (!formData.counterpartyContact.trim()) {
       alert('Please enter counterparty email or phone number');
       return;
@@ -294,8 +311,10 @@ const ContractTemplate = ({ title }) => {
               StartDate: formData.startDate,
               Deposit: formData.deposite
           };
-          sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-              alert(JSON.stringify(res));
+          
+          sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(async res => {
+              OtherData.setData(JSON.stringify(res.data));
+              var promises = [];
               if (res.status === 1) {
                   for (var i = 0; i < formData.lineItems.length; i++) {
 
@@ -314,12 +333,15 @@ const ContractTemplate = ({ title }) => {
                           UnitId: 1
                       };
                       // eslint-disable-next-line no-loop-func
-                      sendPostRequest('api/Business/AddAgreementItem', UserProfile.getToken(), itemForm).then(r => r.json()).then(resI => {
-                          alert(JSON.stringify(resI));
+                      var p1 = sendPostRequest('api/Business/AddAgreementItem', UserProfile.getToken(), itemForm).then(r => {
+                          if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                          return r.json();
+                      }).then(resI => {
                           if (resI.status !== 1) {
                               alert("Some error while adding item " + formData.lineItems[i].title);
                           }
                       }).catch(err => console.log(err));
+                      promises.push(p1);
                   }
                   for (var j = 0; j < formData.customTerms.length; j++) {
  
@@ -332,12 +354,14 @@ const ContractTemplate = ({ title }) => {
                           Attachments:[]
                       };
                       // eslint-disable-next-line no-loop-func
-                      sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termForm).then(r => r.json()).then(rest => {
-                          alert(JSON.stringify(rest));
+                      var p2 =sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termForm).then(r => {
+                          if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                          return r.json(); }).then(rest => {
                           if (rest.status !== 1) {
                               alert("Some error while adding item " + formData.customTerms[j].title);
-                          }
-                      }).catch(err => console.log(err));
+                          } 
+                          }).catch(err => console.log(err));
+                      promises.push(p2);
                   }
                   for (var k = 0; k < formData.paymentTerms.length; k++) {
 
@@ -350,14 +374,22 @@ const ContractTemplate = ({ title }) => {
                           Attachments: []
                       };
                       // eslint-disable-next-line no-loop-func
-                      sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termPForm).then(r => r.json()).then(respt => {
-                          alert(JSON.stringify(respt));
+                      var p3=sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termPForm).then(r => {
+                          if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                          return r.json(); }).then(respt => {
                           if (respt.status !== 1) {
-                              alert("Some error while adding item " + formData.lineItems[k].title);
+                              alert("Some error while adding item " + formData.paymentTerms[k].title);
                           }
-                      }).catch(err => console.log(err));
+                          
+                          }).catch(err => console.log(err));
+                      promises.push(p3);
                   }
-
+                  var results = await Promise.all(promises);
+                  console.log(results);
+                  if (results.length === formData.lineItems.length + formData.customTerms.length + formData.paymentTerms.length)
+                  {
+                      navigate("/draftD2c");
+                  }
               }
 
 
@@ -476,14 +508,6 @@ const ContractTemplate = ({ title }) => {
           onContactChange={(value) => handleInputChange('counterpartyContact', value)}
                   onVerifyContact={() => VerifyUser(formData.counterpartyContact, "counterpartyDetails")}
               />
-        {/*<AgreementDetails */}
-        {/*  agreementTitle={formData.agreementTitle}*/}
-        {/*  agreementDate={formData.agreementDate}*/}
-        {/*  propertyDescription={formData.propertyDescription}*/}
-        {/*  onTitleChange={(value) => handleInputChange('agreementTitle', value)}*/}
-        {/*  onDateChange={(value) => handleInputChange('agreementDate', value)}*/}
-        {/*  onDescriptionChange={(value) => handleInputChange('propertyDescription', value)}*/}
-              {/*/>*/}
               <div className="form-section" >
                   <h2>Agreement Details</h2>
                   <p>This Agreement({title || 'AGREEMENT'}) is made between:</p>
@@ -511,6 +535,8 @@ const ContractTemplate = ({ title }) => {
                   onAdvanceChange={(value) => handleInputChange('advance', value)}
                   onDepositeChange={(value) => handleInputChange('deposite', value)}
                   agreementCurrency={formData.currency}
+                  unitOptions={itemUnitOptions}
+                  currencyOptions={itemCurrencyOptions}
                   onCurrencyChange={(value) => handleInputChange('currency', value)}
                   lineItems={formData.lineItems}
                   onItemChange={updateLineItem}
