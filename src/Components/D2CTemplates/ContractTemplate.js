@@ -17,6 +17,19 @@ const ContractTemplate = ({ title }) => {
 
     useEffect(() => {
         setRolesForTitles(title);
+        if (UserProfile.getToken().length > 0)
+        {
+            console.log("1");
+            if (UserProfile.getPhoneNumber().length > 0) {
+                console.log("2");
+                VerifyUser(UserProfile.getPhoneNumber(), "firstpartyDetails");
+            } else if (UserProfile.getEmail().length > 0)
+            {
+                console.log("3");
+                VerifyUser(UserProfile.getEmail(), "firstpartyDetails");
+            }
+                
+        }
         getRequestAllowAll("api/general/TemplateTerms?agTempType=" + title).then(r => r.json()).then(res => {
             console.log(res);
             if (res.data && res.data.length > 0)
@@ -368,26 +381,36 @@ const ContractTemplate = ({ title }) => {
     console.log('Contract data:', formData);
     setContractSent(true);
   };
-    //{
-    //    UserProfile.getUserId() > 0 ? <></> : <header>
-    //        <div className="header-container">
-                
-    //            <nav><a href="/Signup" className="btn btn-success">Sign In</a>
-    //            </nav>
-    //        </div>
-    //    </header>
-    //}  
-    const VerifyUser = (contactDetail) => {
+
+    const VerifyUser = (contactDetail,inputProperty) => {
         findUserRequest({ ContactInfo: contactDetail }).then(r => r.json()).then(res => {
             console.log(res);
-            var detail = "Name:" + res.data['usrName'];
-            detail += "\nEmail:" + res.data['email'];
-            handleInputChange("counterpartyDetails", detail);
+            var detail = "Name: " + res.data['usrName'];
+            detail += "\nEmail: " + res.data['email'];
+            detail += "\nPhone Number: " + res.data['phoneNumber'];
+            detail += "\nGSTIN: " + res.data['usrGstin'];
+            detail += "\nAddress: " + res.data['usrAddress'];
+            handleInputChange(inputProperty, detail);
         }).catch(err => console.log(err));
     }
     const getUserDetailToDisplay = (d) => {
         var arr = d.split("\n");
-        return (<>{arr[0]}<br />{arr[1]}</>);
+        return (<>{arr[0]}<br />{arr[1]}<br />{arr[2]}<br />{arr[3]}<br />{arr[4]}</>);
+    }
+    const editCustomTerm = (id,termtitle,termText) =>
+    {
+
+        setFormData(prevData => ({
+            ...prevData,
+            customTerms: prevData.customTerms.map(t => t.id === id ? { ...t, title: termtitle, text: termText } :t)
+        }));
+    }
+    const editPaymentTerm = (id, termtitle, termText) => {
+
+        setFormData(prevData => ({
+            ...prevData,
+            paymentTerms: prevData.paymentTerms.map(t => t.id === id ? { ...t, title: termtitle, text: termText } : t)
+        }));
     }
 
     const getPartyTitle = (isFirstParty) => {
@@ -446,11 +469,12 @@ const ContractTemplate = ({ title }) => {
       <div className="template-body">
               <UserRoleSection 
                   displayList={userRoleLst}
-          userRole={formData.userRole}
+                  userRole={formData.userRole}
+                  counterPartyDetail={formData.counterpartyDetails}
           counterpartyContact={formData.counterpartyContact}
           onRoleChange={(value) => handleInputChange('userRole', value)}
           onContactChange={(value) => handleInputChange('counterpartyContact', value)}
-                  onVerifyContact={() => VerifyUser(formData.counterpartyContact)}
+                  onVerifyContact={() => VerifyUser(formData.counterpartyContact, "counterpartyDetails")}
               />
         {/*<AgreementDetails */}
         {/*  agreementTitle={formData.agreementTitle}*/}
@@ -463,9 +487,9 @@ const ContractTemplate = ({ title }) => {
               <div className="form-section" >
                   <h2>Agreement Details</h2>
                   <p>This Agreement({title || 'AGREEMENT'}) is made between:</p>
-                  <h3>FIRST PARTY ({getPartyTitle(true)})</h3>
-                  <p>[Your details will appear here]</p>
-                  <h3>SECOND PARTY ({getPartyTitle(false)})</h3>
+                  <h2>FIRST PARTY ({getPartyTitle(true)})</h2>
+                  <p>{formData.firstpartyDetails && formData.firstpartyDetails !== "" ? getUserDetailToDisplay(formData.firstpartyDetails) : "[Your details will appear here]"}</p>
+                  <h2>SECOND PARTY ({getPartyTitle(false)})</h2>
                   <p>{formData.counterpartyDetails && formData.counterpartyDetails !== "" ? getUserDetailToDisplay(formData.counterpartyDetails) : "[Counterparty details will be filled after sending]"}</p>
 
               </div>
@@ -488,19 +512,21 @@ const ContractTemplate = ({ title }) => {
                   onDepositeChange={(value) => handleInputChange('deposite', value)}
                   agreementCurrency={formData.currency}
                   onCurrencyChange={(value) => handleInputChange('currency', value)}
-          lineItems={formData.lineItems}
-          onItemChange={updateLineItem}
-          onAddItem={addLineItem}
-          onRemoveItem={removeLineItem}
+                  lineItems={formData.lineItems}
+                  onItemChange={updateLineItem}
+                  onAddItem={addLineItem}
+                  onRemoveItem={removeLineItem}
                   paymentTerms={formData.paymentTerms}
                   onRemovePaymentTerm={removePaymentTerm}
-                  onPaymentTermsChange={addPaymentTerm}    
+                  onPaymentTermsChange={addPaymentTerm}
+                  handleEditTerm={editPaymentTerm}
         />
         
         <TermsConditions 
-          customTerms={formData.customTerms}
+                  customTerms={formData.customTerms}
                   onAddTerm={addCustomTerm}
                   onRemoveTerm={removeCustomTerm}
+                  handleEditTerm={editCustomTerm}
         />
         
         <ContractPreview formData={formData} />

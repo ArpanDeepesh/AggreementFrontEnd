@@ -58,6 +58,8 @@ const LoginPage = ({ setDisplayLogin })=>{
 			UserProfile.setToken(res.token);
 			UserProfile.setName(res.name);
 			UserProfile.setUserType(res.userType);
+			UserProfile.setEmail(res.email);
+			UserProfile.setPhoneNumber(res.phoneNumber);
 			UserProfile.setUserId(res.userId);
 			navigate("/Home");
 		}).catch(err => {
@@ -119,6 +121,8 @@ const LoginPage = ({ setDisplayLogin })=>{
 					UserProfile.setLoginStatus("1");
 					UserProfile.setToken(loginRes.token);
 					UserProfile.setName(loginRes.name);
+					UserProfile.setEmail(res.email);
+					UserProfile.setPhoneNumber(res.phoneNumber);
 					UserProfile.setUserType(loginRes.userType);
 					UserProfile.setUserId(loginRes.userId);
 					navigate("/Home");

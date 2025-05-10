@@ -6,9 +6,17 @@ const FinancialTerms = ({ agreementAdvance,
     onDepositeChange,
     agreementCurrency,
     onCurrencyChange,
-    lineItems, onItemChange, onAddItem, onRemoveItem, paymentTerms, onRemovePaymentTerm, onAddPaymentTerm }) => {
+    lineItems,
+    onItemChange,
+    onAddItem,
+    onRemoveItem,
+    paymentTerms,
+    onRemovePaymentTerm,
+    onAddPaymentTerm,
+    handleEditTerm}) => {
     const [newTermTitle, setNewTermTitle] = useState([]);
     const [newTermDesc, setNewTermDesc] = useState([]);
+    const [newTermId, setNewTermId] = useState();
     const handleAddTerm = () => {
         if (newTermTitle.trim() && newTermDesc.trim()) {
             onAddPaymentTerm(0,newTermDesc, newTermTitle);
@@ -48,7 +56,7 @@ const FinancialTerms = ({ agreementAdvance,
                     />
                 </div>
                 <div className="form-col">
-                    <label htmlFor="agreement-deposite">Deposite</label>
+                    <label htmlFor="agreement-deposite">Deposit</label>
                     <input
                         type="number"
                         id="agreement-deposite"
@@ -172,13 +180,24 @@ const FinancialTerms = ({ agreementAdvance,
                         />
                     </div>
                     <div className="form-col" style={{ flex: '0 0 auto' }}>
-                        <button
+                        {newTermId && newTermId.toString().length > 0 ? <button
+                            type="button"
+                            className="btn btn-outline"
+                            onClick={() => {
+                                handleEditTerm(newTermId, newTermTitle, newTermDesc);
+                                setNewTermId();
+                                setNewTermTitle('');
+                                setNewTermDesc('');
+                            }}
+                        >
+                            <i className="fas fa-edit"></i> Edit Payment Term
+                        </button> : <button
                             type="button"
                             className="btn btn-outline"
                             onClick={handleAddTerm}
                         >
-                            <i className="fas fa-plus"></i> Add Payment Term
-                        </button>
+                                <i className="fas fa-plus"></i> Add Payment Term
+                        </button>}
                     </div>
                 </div>
             </div>
@@ -202,6 +221,13 @@ const FinancialTerms = ({ agreementAdvance,
                             </span>
                             <span className="remove-item" onClick={() => onRemovePaymentTerm(term.id)}>
                                 <i className="fas fa-times"></i>
+                            </span>
+                            <span className="remove-item" onClick={() => {
+                                setNewTermId(term.id);
+                                setNewTermTitle(term.title);
+                                setNewTermDesc(term.text);
+                            }}>
+                                <i className="fas fa-edit"></i>
                             </span>
                         </li>
                     ))}

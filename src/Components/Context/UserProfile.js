@@ -40,7 +40,20 @@ var UserProfile = (function () {
     var setName = function (name) {
         localStorage.setItem("display_name", name);
     };
+    var getEmail = function () {
+        return localStorage.getItem("user_email");
+    };
 
+    var setEmail = function (name) {
+        localStorage.setItem("user_email", name);
+    };
+    var getPhoneNumber = function () {
+        return localStorage.getItem("user_phone");
+    };
+
+    var setPhoneNumber = function (name) {
+        localStorage.setItem("user_phone", name);
+    };
     //var getContactNumber = function () {
     //    return localStorage.getItem("contact_number");
     //};
@@ -61,7 +74,8 @@ var UserProfile = (function () {
         setUserId("");
         setLoginStatus("0");
         setUserType("");
-
+        setPhoneNumber("");
+        setEmail("");
     };
     return {
         getName: getName,
@@ -74,7 +88,11 @@ var UserProfile = (function () {
         getUserType: getUserType,
         setUserType: setUserType,
         getLoginStatus: getLoginStatus,
-        setLoginStatus: setLoginStatus
+        setLoginStatus: setLoginStatus,
+        getEmail: getEmail,
+        setEmail: setEmail,
+        getPhoneNumber: getPhoneNumber,
+        setPhoneNumber: setPhoneNumber
     }
 
 })();

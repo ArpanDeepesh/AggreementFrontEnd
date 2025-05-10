@@ -45,6 +45,8 @@ const ValidateOTP = ({ setDisplayLogin }) => {
 			UserProfile.setLoginStatus("1");
 			UserProfile.setToken(res.token);
 			UserProfile.setName(res.name);
+			UserProfile.setEmail(res.email);
+			UserProfile.setPhoneNumber(res.phoneNumber);
 			UserProfile.setUserType(res.userType);
 			UserProfile.setUserId(res.userId);
 			navigate(OtherData.getData());

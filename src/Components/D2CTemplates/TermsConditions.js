@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm }) => {
+const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm, handleEditTerm }) => {
+    const [newTermId, setNewTermId] = useState('');
     const [newTermTitle, setNewTermTitle] = useState([]);
     const [newTermDesc, setNewTermDesc] = useState([]);
     const handleAddTerm = () => {
@@ -55,13 +56,25 @@ const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm }) => {
                         />
                     </div>
                     <div className="form-col" style={{ flex: '0 0 auto' }}>
-                        <button
+                        {newTermId && newTermId.toString().length > 0 ? <button
+                            type="button"
+                            className="btn btn-outline"
+                            onClick={() => {
+                                handleEditTerm(newTermId, newTermTitle, newTermDesc);
+                                setNewTermId();
+                                setNewTermTitle('');
+                                setNewTermDesc('');
+                            }}
+                        >
+                            <i className="fas fa-edit"></i> edit Term
+                        </button> : <button
                             type="button"
                             className="btn btn-outline"
                             onClick={handleAddTerm}
                         >
                             <i className="fas fa-plus"></i> Add Term
-                        </button>
+                        </button>}
+                        
                     </div>
                 </div>
             </div>
@@ -85,6 +98,13 @@ const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm }) => {
                             </span>
                             <span className="remove-item" onClick={() => onRemoveTerm(term.id)}>
                                 <i className="fas fa-times"></i>
+                            </span>
+                            <span className="remove-item" onClick={() => {
+                                setNewTermId(term.id);
+                                setNewTermTitle(term.title);
+                                setNewTermDesc(term.text);
+                            }}>
+                                <i className="fas fa-edit"></i>
                             </span>
                         </li>
                     ))}
