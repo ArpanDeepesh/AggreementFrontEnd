@@ -45,6 +45,21 @@ export const validateOTPRequest = (postbody) => {
     return;
 
 }
+export const findUserRequest = (postbody) => {
+    if (postbody) {
+        return fetch(baseAddress + "api/Auth/CheckUser", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'ClientKey': 'ContrectManagerFrontEnd',
+            },
+            body: JSON.stringify(postbody),
+            //referrerPolicy: "unsafe-url" 
+        });
+    }
+    return;
+
+}
 export const loginRequest = (postbody) => {
     if (postbody) {
         return fetch(baseAddress + "api/Auth/login", {

@@ -151,6 +151,7 @@ const DraftB2CAgreement = () => {
 			CurrencyId: itemForm.current["CurrencyId"] ? itemForm.current["CurrencyId"].value:1,
 			UnitId: itemForm.current["UnitId"] ? itemForm.current["UnitId"].value:1,
 		};
+		console.log(postBody);
 		sendPostRequest("api/Business/AddAgreementItem", UserProfile.getToken(), postBody).then(r => r.json()).then(res => {
 			console.log(res);
 			if (res.status === 1)
@@ -244,6 +245,7 @@ const DraftB2CAgreement = () => {
 	}
 	const editOrAddRate = (e, item) => {
 		e.preventDefault();
+		console.log(item);
 		setItemId(item.id);
 		itemForm.current["Rate"].value = UserProfile.getUserId() === agreementObj.seller.usrId.toString() ? item.sellerRate : item.buyerRate;
 		itemForm.current["Tax"].value = item.itemTax;

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
-const TermsConditions = ({ standardTerms, customTerms, onAddTerm }) => {
-    const [newTerm, setNewTerm] = useState('');
-
+const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm }) => {
+    const [newTermTitle, setNewTermTitle] = useState([]);
+    const [newTermDesc, setNewTermDesc] = useState([]);
     const handleAddTerm = () => {
-        if (newTerm.trim()) {
-            onAddTerm(newTerm);
-            setNewTerm('');
+        if (newTermTitle.trim() && newTermDesc.trim()) {
+            onAddTerm(0,newTermDesc,newTermTitle);
+            setNewTermTitle('');
+            setNewTermDesc('');
         }
     };
 
@@ -39,9 +40,17 @@ const TermsConditions = ({ standardTerms, customTerms, onAddTerm }) => {
                         <input
                             type="text"
                             id="new-term"
-                            placeholder="Enter a new term"
-                            value={newTerm}
-                            onChange={(e) => setNewTerm(e.target.value)}
+                            placeholder="Enter a new term title"
+                            value={newTermTitle}
+                            onChange={(e) => setNewTermTitle(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAddTerm()}
+                        />
+                        <input
+                            type="text"
+                            id="new-term"
+                            placeholder="Enter a new term description"
+                            value={newTermDesc}
+                            onChange={(e) => setNewTermDesc(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && handleAddTerm()}
                         />
                     </div>
@@ -73,6 +82,9 @@ const TermsConditions = ({ standardTerms, customTerms, onAddTerm }) => {
                             <label >{term.text}</label>
                             <span className={`term-status ${getStatusClass(term.status)}`}>
                                 {getStatusText(term.status)}
+                            </span>
+                            <span className="remove-item" onClick={() => onRemoveTerm(term.id)}>
+                                <i className="fas fa-times"></i>
                             </span>
                         </li>
                     ))}

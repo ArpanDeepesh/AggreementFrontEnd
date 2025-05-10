@@ -17,22 +17,43 @@ const ContractPreview = ({ formData }) => {
     // Get party title based on role
     const getPartyTitle = (isFirstParty) => {
         if (!formData.userRole) return 'Party';
-
         const partyTitles = {
-            landlord: ['Landlord', 'Tenant'],
             tenant: ['Tenant', 'Landlord'],
+            landlord: ['Landlord', 'Tenant'],
+            sublessee: ['Sublessee', 'Sublesser'],
+            sublesser: ['Sublesser', 'Sublessee'],
+            design_client: ['Client', 'Designer'],
+            designer: ['Designer', 'Client'],
+            building_owner: ['Building owner', 'Contractor'],
+            maintenance_contractor: ['Contractor', 'Building owner'],
+            home_owner: ['Home owner', 'Contractor'],
+            renovation_contractor: ['Contractor', 'Home owner'],
+            consulting_client: ['Client', 'Consultant'],
+            consultant: ['Consultant', 'Client'],
+            receiving_party: ['Receiving party', 'Disclosing party'],
+            disclosing_party: ['Disclosing party', 'Receiving party'],
+            acceptor: ['Acceptor', 'Creator'],
+            creator: ['Creator', 'Acceptor'],
+            borrower: ['Borrower', 'Lender'],
+            lender: ['Lender', 'Borrower'],
+            service_receiver: ['Service receiver', 'Service provider'],
+            service_provider: ['Service provider', 'Service receiver'],
             buyer: ['Buyer', 'Seller'],
             seller: ['Seller', 'Buyer'],
-            licensor: ['Licensor', 'Licensee'],
-            licensee: ['Licensee', 'Licensor'],
-            service_provider: ['Service Provider', 'Client'],
-            client: ['Client', 'Service Provider']
+            spending_party: ['Spending party', 'Receiving party'],
+            receiving_party: ['Receiving party', 'Spending party']
         };
+
 
         return partyTitles[formData.userRole]
             ? (isFirstParty ? partyTitles[formData.userRole][0] : partyTitles[formData.userRole][1])
             : 'Party';
     };
+    const getUserDetailToDisplay = (d) =>
+    {
+        var arr = d.split("\n");
+        return (<>{arr[0]}<br />{arr[1]}</>);
+    }
 
     return (
         <div className="contract-preview">
@@ -45,7 +66,7 @@ const ContractPreview = ({ formData }) => {
                 <p>[Your details will appear here]</p>
 
                 <h3>SECOND PARTY ({getPartyTitle(false)})</h3>
-                <p>[Counterparty details will be filled after sending]</p>
+                <p>{formData.counterpartyDetails && formData.counterpartyDetails !== "" ? getUserDetailToDisplay(formData.counterpartyDetails):"[Counterparty details will be filled after sending]"}</p>
 
                 <h3>1. AGREEMENT DETAILS</h3>
                 <p>This agreement concerns: {formData.propertyDescription || '[Description]'}</p>
@@ -74,12 +95,11 @@ const ContractPreview = ({ formData }) => {
                 </table>
 
                 <h3>4. PAYMENT TERMS</h3>
-                <p>{formData.paymentTerms.split('\n').map((line, i) => (
-                    <React.Fragment key={i}>
-                        {line}
-                        <br />
-                    </React.Fragment>
-                ))}</p>
+                <ul style={{ marginLeft: '1.5rem' }}>
+                    {formData.paymentTerms.map(term => (
+                        <li key={term.id}><strong>{term.title}:</strong> {term.text}</li>
+                    ))}
+                </ul>
 
                 <h3>5. TERMS & CONDITIONS</h3>
                 <ul style={{ marginLeft: '1.5rem' }}>

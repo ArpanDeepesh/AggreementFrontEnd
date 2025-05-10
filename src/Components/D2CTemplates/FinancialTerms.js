@@ -1,14 +1,84 @@
-﻿ const FinancialTerms = ({ lineItems, onItemChange, onAddItem, onRemoveItem, paymentTerms, onPaymentTermsChange }) => (
+﻿import { useState } from "react";
+
+const FinancialTerms = ({ agreementAdvance,
+    agreementDeposite,
+    onAdvanceChange,
+    onDepositeChange,
+    agreementCurrency,
+    onCurrencyChange,
+    lineItems, onItemChange, onAddItem, onRemoveItem, paymentTerms, onRemovePaymentTerm, onAddPaymentTerm }) => {
+    const [newTermTitle, setNewTermTitle] = useState([]);
+    const [newTermDesc, setNewTermDesc] = useState([]);
+    const handleAddTerm = () => {
+        if (newTermTitle.trim() && newTermDesc.trim()) {
+            onAddPaymentTerm(0,newTermDesc, newTermTitle);
+            setNewTermTitle('');
+            setNewTermDesc('');
+        }
+    };
+
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'accepted': return 'status-accepted';
+            case 'rejected': return 'status-rejected';
+            case 'pending': return 'status-pending';
+            default: return '';
+        }
+    };
+
+    const getStatusText = (status) => {
+        switch (status) {
+            case 'accepted': return 'Auto-accepted';
+            case 'rejected': return 'Rejected';
+            case 'pending': return 'Pending';
+            default: return '';
+        }
+    };
+    return (
         <div className="form-section">
             <h2>Financial Terms & Line Items</h2>
+            <div className="form-row">
+                <div className="form-col">
+                    <label htmlFor="agreement-advance">Agreement advance</label>
+                    <input
+                        type="number"
+                        id="agreement-advance"
+                        value={agreementAdvance}
+                        onChange={(e) => onAdvanceChange(e.target.value)}
+                    />
+                </div>
+                <div className="form-col">
+                    <label htmlFor="agreement-deposite">Deposite</label>
+                    <input
+                        type="number"
+                        id="agreement-deposite"
+                        value={agreementDeposite}
+                        onChange={(e) => onDepositeChange(e.target.value)}
+                    />
+                </div>
+                <div className="form-col">
+                    <label htmlFor="agreement-currency">Currency</label>
+                    <select
+                        id="agreement-currency"
+                        value={agreementCurrency}
+                        onChange={(e) => onCurrencyChange(e.target.value)}
+                        className="item-currency"
+                    >
+                        <option value="2">INR</option>
+                        <option value="1">USD</option>
+                        <option value="3">AUD</option>
+                        <option value="4">YEN</option>
+                    </select>
+                </div>
+            </div>
             <table className="line-items-table">
                 <thead>
                     <tr>
+                        <th>Title</th>
                         <th>Description</th>
                         <th>HSN/SAC</th>
                         <th>Qty</th>
                         <th>Rate</th>
-                        <th>Currency</th>
                         <th>Tax %</th>
                         <th>Amount</th>
                         <th></th>
@@ -17,6 +87,14 @@
                 <tbody>
                     {lineItems.map(item => (
                         <tr key={item.id}>
+                            <td>
+                                <input
+                                    type="text"
+                                    value={item.title}
+                                    onChange={(e) => onItemChange(item.id, 'title', e.target.value)}
+                                    className="item-title"
+                                />
+                            </td>
                             <td>
                                 <input
                                     type="text"
@@ -49,18 +127,7 @@
                                     className="item-rate"
                                 />
                             </td>
-                            <td>
-                                <select
-                                    value={item.currency}
-                                    onChange={(e) => onItemChange(item.id, 'currency', e.target.value)}
-                                    className="item-currency"
-                                >
-                                    <option value="INR">INR</option>
-                                    <option value="USD">USD</option>
-                                    <option value="EUR">EUR</option>
-                                    <option value="GBP">GBP</option>
-                                </select>
-                            </td>
+                            
                             <td>
                                 <input
                                     type="number"
@@ -83,17 +150,77 @@
                 <i className="fas fa-plus-circle"></i> Add Line Item
             </button>
 
-            <div className="form-row" style={{ marginTop: '1.5rem' }}>
-                <div className="form-col">
-                    <label htmlFor="payment-terms">Payment Terms</label>
-                    <textarea
-                        id="payment-terms"
-                        value={paymentTerms}
-                        onChange={(e) => onPaymentTermsChange(e.target.value)}
-                    />
+            <div className="form-group">
+                <label htmlFor="new-term">Add Payment Term</label>
+                <div className="form-row">
+                    <div className="form-col">
+                        <input
+                            type="text"
+                            id="new-term-title"
+                            placeholder="Enter new payment term title"
+                            value={newTermTitle}
+                            onChange={(e) => setNewTermTitle(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAddTerm()}
+                        />
+                        <input
+                            type="text"
+                            id="new-term"
+                            placeholder="Enter new payment term description"
+                            value={newTermDesc}
+                            onChange={(e) => setNewTermDesc(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAddTerm()}
+                        />
+                    </div>
+                    <div className="form-col" style={{ flex: '0 0 auto' }}>
+                        <button
+                            type="button"
+                            className="btn btn-outline"
+                            onClick={handleAddTerm}
+                        >
+                            <i className="fas fa-plus"></i> Add Payment Term
+                        </button>
+                    </div>
                 </div>
             </div>
+            <div className="form-group">
+                <label>Payment Terms</label>
+                <ul className="terms-list">
+                    {paymentTerms.map(term => (
+                        <li className="term-item" key={term.id}>
+                            {/*<input*/}
+                            {/*    type="checkbox"*/}
+                            {/*    id={`custom-term-${term.id}`}*/}
+                            {/*    checked={term.status === 'accepted'}*/}
+                            {/*    disabled={term.status !== 'pending'}*/}
+                            {/*    onChange={() => { }}*/}
+                            {/*/>*/}
+
+                            <label htmlFor={`custom-term-${term.id}`}>{term.title}</label>
+                            <label >{term.text}</label>
+                            <span className={`term-status ${getStatusClass(term.status)}`}>
+                                {getStatusText(term.status)}
+                            </span>
+                            <span className="remove-item" onClick={() => onRemovePaymentTerm(term.id)}>
+                                <i className="fas fa-times"></i>
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/*<div className="form-row" style={{ marginTop: '1.5rem' }}>*/}
+            {/*    <div className="form-col">*/}
+
+            {/*        <label htmlFor="payment-terms">Payment Terms</label>*/}
+            {/*        <textarea*/}
+            {/*            id="payment-terms"*/}
+            {/*            value={paymentTerms}*/}
+            {/*            onChange={(e) => onPaymentTermsChange(e.target.value)}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
+}
 
 export default FinancialTerms;

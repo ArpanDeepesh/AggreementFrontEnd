@@ -7,9 +7,14 @@ import FinancialTerms from './FinancialTerms';
 import TermsConditions from './TermsConditions';
 import ContractPreview from './ContractPreview';
 import FormActions from './FormActions';
-import { getRequestAllowAll } from '../Services/ContrectBackendAPI';
+import { findUserRequest, getRequestAllowAll, sendPostRequest } from '../Services/ContrectBackendAPI';
+import UserProfile from '../Context/UserProfile';
+import OtherData from '../Context/OtherData';
+import { useNavigate } from "react-router-dom";
 
 const ContractTemplate = ({ title }) => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         setRolesForTitles(title);
         getRequestAllowAll("api/general/TemplateTerms?agTempType=" + title).then(r => r.json()).then(res => {
@@ -17,85 +22,98 @@ const ContractTemplate = ({ title }) => {
             if (res.data && res.data.length > 0)
             {
                 for (var i = 0; i < res.data.length; i++) {
-                    addCustomTerm(res.data[i].termDescription, res.data[i].termName);
+                    if (res.data[i].isPaymentTerm === false) {
+                        addCustomTerm(res.data[i].id,res.data[i].termDescription, res.data[i].termName);
+                    } else
+                    {
+                        addPaymentTerm(res.data[i].id,res.data[i].termDescription, res.data[i].termName);
+                    }
+                    
 				}
             }
         }).catch(err => console.log(err));
+        getRequestAllowAll("api/general/TemplateItem?agTempType=" + title).then(r => r.json()).then(res => {
+            console.log(res);
+            if (res.data && res.data.length > 0) {
+                var customItem = [];
+                for (var i = 0; i < res.data.length; i++) {
+                    customItem.push({
+                        id: i+1,
+                        title: res.data[i].itemTitle,
+                        description: res.data[i].itemDescription,
+                        hsnSac: res.data[i].itemHsnCsnUin,
+                        quantity: res.data[i].itemQuantity,
+                        rate: res.data[i].rate,
+                        timeToComplete: res.data[i].itemCompletion,
+                        currency: res.data[i].currency,
+                        tax: res.data[i].itemTax,
+                        unit:res.data[i].unit,
+                        amount: 0
+                    });
+                }
+                handleInputChange("lineItems", customItem);
+            }
+        }).catch(err => console.log(err));
     }, [title]);
-    
+
     const [userRoleLst, setUserRoleLst] = useState();
-  const [formData, setFormData] = useState({
-    userRole: '',
-    counterpartyContact: '',
-    agreementTitle: '',
-    agreementDate: new Date().toISOString().split('T')[0],
-    propertyDescription: '',
-    startDate: '',
-    endDate: '',
-    noticePeriod: '30',
-    paymentTerms: 'Payment shall be made within 15 days of invoice. Late payments will attract interest at 1.5% per month.',
-    lineItems: [
-      {
-        id: 1,
-        description: 'Security Deposit',
-        hsnSac: '997211',
-        quantity: 1,
-        rate: '',
-        currency: 'INR',
-        tax: 18,
-        amount: 0
-      },
-      {
-        id: 2,
-        description: 'Service Fee',
-        hsnSac: '9985',
-        quantity: 1,
-        rate: '',
-        currency: 'INR',
-        tax: 18,
-        amount: 0
-      }
-    ],
-    customTerms: []
-  });
+    const [formData, setFormData] = useState(
+        {
+            userRole: '',
+            firstpartyDetails: '',
+            counterpartyDetails: '',
+            counterpartyContact: '',
+            startDate: '',
+            contractDuration: '30',
+            penalityDays: 0,
+            penalityPercent:0,
+            advance: 0,
+            deposite: 0,
+            currency:'INR',
+            paymentTerms: [],
+            lineItems: [],
+            customTerms: []
+        }
+    );
+
     const setRolesForTitles = (inputTitle) => {
                                  
         if (inputTitle === "Rental Agreement")
         {
-            setUserRoleLst([{ valueData: "buyer", displayData: "Renter" }, { valueData: "seller", displayData: "Landlord" }]);
+            setUserRoleLst([{ valueData: "tenant", displayData: "Tenant" }, { valueData: "landlord", displayData: "Landlord" }]);
         } else if (inputTitle === "Subletting") {
-            setUserRoleLst([{ valueData: "buyer", displayData: "Sublessee" }, { valueData: "seller", displayData: "Sublesser" }]);
+            setUserRoleLst([{ valueData: "sublessee", displayData: "Sublessee" }, { valueData: "sublesser", displayData: "Sublesser" }]);
         }
         else if (inputTitle === "Interior Design") {
-            setUserRoleLst([{ valueData: "buyer", displayData: "Client" }, { valueData: "seller", displayData: "Designer" }]);
+            setUserRoleLst([{ valueData: "design_client", displayData: "Client" }, { valueData: "designer", displayData: "Designer" }]);
         }
         else if (inputTitle === "Maintenance") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Building owner" }, { valueData: "seller", displayData: "Contractor" }]);
+            setUserRoleLst([{ valueData: "building_owner", displayData: "Building owner" }, { valueData: "maintenance_contractor", displayData: "Contractor" }]);
         }
         else if (inputTitle === "Home Renovation") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Home owner" }, { valueData: "seller", displayData: "Contractor" }]);
+            setUserRoleLst([{ valueData: "home_owner", displayData: "Home owner" }, { valueData: "renovation_contractor", displayData: "Contractor" }]);
         }
         else if (inputTitle === "Consulting") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Client" }, { valueData: "seller", displayData: "Consultant" }]);
+            setUserRoleLst([{ valueData: "consulting_client", displayData: "Client" }, { valueData: "consultant", displayData: "Consultant" }]);
         }
         else if (inputTitle === "NDA") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Receiving party" }, { valueData: "seller", displayData: "Disclosing party" }]);
+            setUserRoleLst([{ valueData: "receiving_party", displayData: "Receiving party" }, { valueData: "disclosing_party", displayData: "Disclosing party" }]);
         }
         else if (inputTitle === "Consent Agreement") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Acceptor" }, { valueData: "seller", displayData: "Creator" }]);
+            setUserRoleLst([{ valueData: "acceptor", displayData: "Acceptor" }, { valueData: "creator", displayData: "Creator" }]);
         }
         else if (inputTitle === "Loan Agreement") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Borrower" }, { valueData: "seller", displayData: "Lender" }]);
+            setUserRoleLst([{ valueData: "borrower", displayData: "Borrower" }, { valueData: "lender", displayData: "Lender" }]);
         }
         else if (inputTitle === "Freelance") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Service receiver" }, { valueData: "seller", displayData: "Service provider" }]);
+            setUserRoleLst([{ valueData: "service_receiver", displayData: "Service receiver" }, { valueData: "service_provider", displayData: "Service provider" }]);
         }
         else if (inputTitle === "Sales") {
 
@@ -103,7 +121,7 @@ const ContractTemplate = ({ title }) => {
         }
         else if (inputTitle === "Custom") {
 
-            setUserRoleLst([{ valueData: "buyer", displayData: "Spending party" }, { valueData: "seller", displayData: "Receiving party" }]);
+            setUserRoleLst([{ valueData: "spending_party", displayData: "Spending party" }, { valueData: "receiving_party", displayData: "Receiving party" }]);
         }
         else {
 
@@ -156,14 +174,18 @@ const ContractTemplate = ({ title }) => {
       lineItems: [
         ...prev.lineItems,
         {
-          id: Date.now(),
-          description: '',
-          hsnSac: '',
-          quantity: 1,
-          rate: '',
-          currency: 'INR',
-          tax: 18,
-          amount: 0
+
+            id: Date.now(),
+            title: "",
+            description: "",
+            hsnSac: "",
+            quantity: 0,
+            rate: '',
+            timeToComplete: 0,
+            currency: 'INR',
+            tax: 18,
+            unit: 'CNT',
+            amount: 0
         }
       ]
     }));
@@ -175,44 +197,245 @@ const ContractTemplate = ({ title }) => {
       ...prev,
       lineItems: prev.lineItems.filter(item => item.id !== id)
     }));
-  };
+    };
+    const removePaymentTerm = (id) => {
+        setFormData(prev => ({
+            ...prev,
+            paymentTerms: prev.paymentTerms.filter(t => t.id !== id)
+        }));
+    };
+    const removeCustomTerm = (id) => {
+        setFormData(prev => ({
+            ...prev,
+            customTerms: prev.customTerms.filter(t => t.id !== id)
+        }));
+    };
 
   // Add custom term
-  const addCustomTerm = (termText,termTitle) => {
-    if (!termText.trim()) return;
-    
+  const addCustomTerm = (termId,termText,termTitle) => {
+      if (!termText.trim()) return;
+      removeCustomTerm(termId);
     setFormData(prev => ({
       ...prev,
       customTerms: [
         ...prev.customTerms,
-        {
-            id: Date.now(),
+          {
+              id: termId === 0 ? Date.now() : termId,
             title: termTitle,
             text: termText,
             status: 'pending'
         }
       ]
     }));
-  };
+    };
+    // Add payment term
+    const addPaymentTerm = (termId, termText, termTitle) => {
+        if (!termText.trim()) return;
+        removePaymentTerm(termId);
+        setFormData(prev => ({
+            ...prev,
+            paymentTerms: [
+                ...prev.paymentTerms,
+                {
+                    id: termId === 0 ? Date.now() : termId,
+                    title: termTitle,
+                    text: termText,
+                    status: 'pending'
+                }
+            ]
+        }));
+    };
 
   // Send contract
   const sendContract = () => {
     if (!formData.counterpartyContact.trim()) {
       alert('Please enter counterparty email or phone number');
       return;
-    }
+      }
+      var termType = 1;//seller
+      if (formData.userRole === "tenant"
+          || formData.userRole === "sublessee"
+          || formData.userRole === "design_client"
+          || formData.userRole === "building_owner"
+          || formData.userRole === "home_owner"
+          || formData.userRole === "consulting_client"
+          || formData.userRole === "receiving_party"
+          || formData.userRole === "acceptor"
+          || formData.userRole === "borrower"
+          || formData.userRole === "service_receiver"
+          || formData.userRole === "buyer"
+          || formData.userRole === "spending_party") {
+          termType = 2;
+      }
+      if (UserProfile.getToken().length > 0) {
+          var formBody = {
+              Id: 0,
+              CreatorId: UserProfile.getUserId(),
+              CreatorType: termType===1?"seller":"buyer",
+              OtherPartyContactInfo: formData.counterpartyContact,
+              LDDays: formData.penalityDays,
+              LDPercent: formData.penalityPercent,
+              Advance: formData.advance,
+              NumberOfDays: formData.contractDuration,
+              ContractType: title,
+              StartDate: formData.startDate,
+              Deposit: formData.deposite
+          };
+          sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+              alert(JSON.stringify(res));
+              if (res.status === 1) {
+                  for (var i = 0; i < formData.lineItems.length; i++) {
+
+                      var itemForm = {
+                          AgItemId:0,
+                          AgId: res.data.id,
+                          CreatorId: UserProfile.getUserId(),
+                          Rate: formData.lineItems[i].rate,
+                          Tax: formData.lineItems[i].tax,
+                          ItemTitle: formData.lineItems[i].title,
+                          ItemDescription: formData.lineItems[i].description,
+                          ItemCode: formData.lineItems[i].hsnSac,
+                          ItemDeliveredInDays: formData.lineItems[i].timeToComplete,
+                          Qty: formData.lineItems[i].quantity,
+                          CurrencyId: 2,
+                          UnitId: 1
+                      };
+                      // eslint-disable-next-line no-loop-func
+                      sendPostRequest('api/Business/AddAgreementItem', UserProfile.getToken(), itemForm).then(r => r.json()).then(resI => {
+                          alert(JSON.stringify(resI));
+                          if (resI.status !== 1) {
+                              alert("Some error while adding item " + formData.lineItems[i].title);
+                          }
+                      }).catch(err => console.log(err));
+                  }
+                  for (var j = 0; j < formData.customTerms.length; j++) {
+ 
+                      var termForm = {
+                          Id: 0,
+                          TermTitle: formData.customTerms[j].title,
+                          TermTxt: formData.customTerms[j].text,
+                          TermTypeId: termType,
+                          TermRfpId: res.data.id,
+                          Attachments:[]
+                      };
+                      // eslint-disable-next-line no-loop-func
+                      sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termForm).then(r => r.json()).then(rest => {
+                          alert(JSON.stringify(rest));
+                          if (rest.status !== 1) {
+                              alert("Some error while adding item " + formData.customTerms[j].title);
+                          }
+                      }).catch(err => console.log(err));
+                  }
+                  for (var k = 0; k < formData.paymentTerms.length; k++) {
+
+                      var termPForm = {
+                          Id: 0,
+                          TermTitle: formData.customTerms[k].title,
+                          TermTxt: formData.customTerms[k].text,
+                          TermTypeId: termType,
+                          TermRfpId: res.data.id,
+                          Attachments: []
+                      };
+                      // eslint-disable-next-line no-loop-func
+                      sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termPForm).then(r => r.json()).then(respt => {
+                          alert(JSON.stringify(respt));
+                          if (respt.status !== 1) {
+                              alert("Some error while adding item " + formData.lineItems[k].title);
+                          }
+                      }).catch(err => console.log(err));
+                  }
+
+              }
+
+
+              //OtherData.setData(JSON.stringify(res.data));
+              //navigate("/draftD2C");
+
+          }).catch(err => {
+              console.log(err);
+          });
+      } else
+      {
+          var tempData = formData;
+          tempData.userRole = termType === 1 ? "seller" : "buyer";
+          tempData['contractType'] = title;
+          OtherData.setData(JSON.stringify(tempData));
+          navigate("/signup");
+      }
+      
     
     // In a real app, you would send this to your API
     console.log('Contract data:', formData);
     setContractSent(true);
   };
-    
-   
+    //{
+    //    UserProfile.getUserId() > 0 ? <></> : <header>
+    //        <div className="header-container">
+                
+    //            <nav><a href="/Signup" className="btn btn-success">Sign In</a>
+    //            </nav>
+    //        </div>
+    //    </header>
+    //}  
+    const VerifyUser = (contactDetail) => {
+        findUserRequest({ ContactInfo: contactDetail }).then(r => r.json()).then(res => {
+            console.log(res);
+            var detail = "Name:" + res.data['usrName'];
+            detail += "\nEmail:" + res.data['email'];
+            handleInputChange("counterpartyDetails", detail);
+        }).catch(err => console.log(err));
+    }
+    const getUserDetailToDisplay = (d) => {
+        var arr = d.split("\n");
+        return (<>{arr[0]}<br />{arr[1]}</>);
+    }
 
+    const getPartyTitle = (isFirstParty) => {
+        if (!formData.userRole) return 'Party';
+        const partyTitles = {
+            tenant: ['Tenant', 'Landlord'],
+            landlord: ['Landlord', 'Tenant'],
+            sublessee: ['Sublessee', 'Sublesser'],
+            sublesser: ['Sublesser', 'Sublessee'],
+            design_client: ['Client', 'Designer'],
+            designer: ['Designer', 'Client'],
+            building_owner: ['Building owner', 'Contractor'],
+            maintenance_contractor: ['Contractor', 'Building owner'],
+            home_owner: ['Home owner', 'Contractor'],
+            renovation_contractor: ['Contractor', 'Home owner'],
+            consulting_client: ['Client', 'Consultant'],
+            consultant: ['Consultant', 'Client'],
+            receiving_party: ['Receiving party', 'Disclosing party'],
+            disclosing_party: ['Disclosing party', 'Receiving party'],
+            acceptor: ['Acceptor', 'Creator'],
+            creator: ['Creator', 'Acceptor'],
+            borrower: ['Borrower', 'Lender'],
+            lender: ['Lender', 'Borrower'],
+            service_receiver: ['Service receiver', 'Service provider'],
+            service_provider: ['Service provider', 'Service receiver'],
+            buyer: ['Buyer', 'Seller'],
+            seller: ['Seller', 'Buyer'],
+            spending_party: ['Spending party', 'Receiving party'],
+            receiving_party: ['Receiving party', 'Spending party']
+        };
+
+
+        return partyTitles[formData.userRole]
+            ? (isFirstParty ? partyTitles[formData.userRole][0] : partyTitles[formData.userRole][1])
+            : 'Party';
+    };
 
   return (
     <div className="template-container">
-      <div className="template-header">
+          <div className="template-header">
+              <div className="logo">
+                  <a style={{ textDecoration: "none" }} href="/">
+                      <span style={{ color: 'white' }}>Contr
+                          <span style={{ color: "#ff8400" }}>e</span>
+                          ct</span>
+                  </a>
+
+              </div>
         <h1 id="template-title">
                   {/*{formData.userRole ? getContractTitle(formData.userRole) : 'CONTRACT AGREEMENT'}*/}
                   {title}
@@ -227,39 +450,57 @@ const ContractTemplate = ({ title }) => {
           counterpartyContact={formData.counterpartyContact}
           onRoleChange={(value) => handleInputChange('userRole', value)}
           onContactChange={(value) => handleInputChange('counterpartyContact', value)}
-          onVerifyContact={() => alert("Verification request sent to"+ formData.counterpartyContact)}
-        />
+                  onVerifyContact={() => VerifyUser(formData.counterpartyContact)}
+              />
+        {/*<AgreementDetails */}
+        {/*  agreementTitle={formData.agreementTitle}*/}
+        {/*  agreementDate={formData.agreementDate}*/}
+        {/*  propertyDescription={formData.propertyDescription}*/}
+        {/*  onTitleChange={(value) => handleInputChange('agreementTitle', value)}*/}
+        {/*  onDateChange={(value) => handleInputChange('agreementDate', value)}*/}
+        {/*  onDescriptionChange={(value) => handleInputChange('propertyDescription', value)}*/}
+              {/*/>*/}
+              <div className="form-section" >
+                  <h2>Agreement Details</h2>
+                  <p>This Agreement({title || 'AGREEMENT'}) is made between:</p>
+                  <h3>FIRST PARTY ({getPartyTitle(true)})</h3>
+                  <p>[Your details will appear here]</p>
+                  <h3>SECOND PARTY ({getPartyTitle(false)})</h3>
+                  <p>{formData.counterpartyDetails && formData.counterpartyDetails !== "" ? getUserDetailToDisplay(formData.counterpartyDetails) : "[Counterparty details will be filled after sending]"}</p>
+
+              </div>
         
-        <AgreementDetails 
-          agreementTitle={formData.agreementTitle}
-          agreementDate={formData.agreementDate}
-          propertyDescription={formData.propertyDescription}
-          onTitleChange={(value) => handleInputChange('agreementTitle', value)}
-          onDateChange={(value) => handleInputChange('agreementDate', value)}
-          onDescriptionChange={(value) => handleInputChange('propertyDescription', value)}
-        />
-        
-        <TermDuration 
+              <TermDuration 
+                  agreementPenalityPercent={formData.penalityPercent}
+                  agreementPenalityDays={formData.penalityDays}
+                  onPenalityPercentChange={(value) => handleInputChange('penalityPercent', value)}
+                  onPenalityDaysChange={(value) => handleInputChange('penalityDays', value)}
           startDate={formData.startDate}
-          endDate={formData.endDate}
-          noticePeriod={formData.noticePeriod}
+          contractDuration={formData.contractDuration}
           onStartDateChange={(value) => handleInputChange('startDate', value)}
-          onEndDateChange={(value) => handleInputChange('endDate', value)}
-          onNoticePeriodChange={(value) => handleInputChange('noticePeriod', value)}
+          onDurationChange={(value) => handleInputChange('contractDuration', value)}
         />
         
-        <FinancialTerms 
+              <FinancialTerms 
+                  agreementAdvance={formData.advance}
+                  agreementDeposite={formData.deposite}
+                  onAdvanceChange={(value) => handleInputChange('advance', value)}
+                  onDepositeChange={(value) => handleInputChange('deposite', value)}
+                  agreementCurrency={formData.currency}
+                  onCurrencyChange={(value) => handleInputChange('currency', value)}
           lineItems={formData.lineItems}
           onItemChange={updateLineItem}
           onAddItem={addLineItem}
           onRemoveItem={removeLineItem}
-          paymentTerms={formData.paymentTerms}
-          onPaymentTermsChange={(value) => handleInputChange('paymentTerms', value)}
+                  paymentTerms={formData.paymentTerms}
+                  onRemovePaymentTerm={removePaymentTerm}
+                  onPaymentTermsChange={addPaymentTerm}    
         />
         
         <TermsConditions 
           customTerms={formData.customTerms}
-          onAddTerm={addCustomTerm}
+                  onAddTerm={addCustomTerm}
+                  onRemoveTerm={removeCustomTerm}
         />
         
         <ContractPreview formData={formData} />

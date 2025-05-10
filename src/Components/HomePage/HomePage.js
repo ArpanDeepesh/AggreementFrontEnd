@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserProfile from "../Context/UserProfile";
 import FormButton from "../FormParts/FormButton";
-import { getRequest } from "../Services/ContrectBackendAPI";
+import { getRequest, sendPostRequest } from "../Services/ContrectBackendAPI";
 import { useState } from "react";
 import PurchaseOrder from "../Context/PurchaseOrder";
 import DelayMsgs from "../CommonPages/DelayMsgs";
@@ -31,6 +31,95 @@ const HomePage = ({ setUserName, setUserType}) => {
             var dObj = JSON.parse(d);
             if (dObj.typeValue && dObj.typeValue.length > 0) {
                 navigate("/Pay");
+            }
+            if (dObj.counterpartyDetails && dObj.counterpartyDetails.length>0)
+            {
+                var formData = dObj;
+                var formBody = {
+                    Id: 0,
+                    CreatorId: UserProfile.getUserId(),
+                    CreatorType: formData.userRole,
+                    OtherPartyContactInfo: formData.counterpartyContact,
+                    LDDays: formData.penalityDays,
+                    LDPercent: formData.penalityPercent,
+                    Advance: formData.advance,
+                    NumberOfDays: formData.contractDuration,
+                    ContractType: formData.contractType,
+                    StartDate: formData.startDate,
+                    Deposit: formData.deposite
+                };
+                sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
+
+                    if (res.status === 1) {
+                        for (var i = 0; i < formData.lineItems.length; i++) {
+
+                            var itemForm = {
+                                AgItemId: 0,
+                                AgId: res.data.id,
+                                CreatorId: UserProfile.getUserId(),
+                                Rate: formData.lineItems[i].rate,
+                                Tax: formData.lineItems[i].tax,
+                                ItemTitle: formData.lineItems[i].title,
+                                ItemDescription: formData.lineItems[i].description,
+                                ItemCode: formData.lineItems[i].hsnSac,
+                                ItemDeliveredInDays: formData.lineItems[i].timeToComplete,
+                                Qty: formData.lineItems[i].quantity,
+                                CurrencyId: formData.currency,
+                                UnitId: 1
+                            };
+                            // eslint-disable-next-line no-loop-func
+                            sendPostRequest('api/Business/AddAgreementItem', UserProfile.getToken(), itemForm).then(r => r.json()).then(resI => {
+                                if (resI.status !== 1) {
+                                    alert("Some error while adding item " + formData.lineItems[i].title);
+                                }
+                            }).catch(err => console.log(err));
+                        }
+                        for (var j = 0; j < formData.customTerms.length; j++) {
+
+                            var termForm = {
+                                Id: 0,
+                                TermTitle: formData.customTerms[j].title,
+                                TermTxt: formData.customTerms[j].text,
+                                TermTypeId: formData.userRole==='seller'?1:2,
+                                TermRfpId: res.data.id,
+                                Attachments: []
+                            };
+                            // eslint-disable-next-line no-loop-func
+                            sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termForm).then(r => r.json()).then(rest => {
+                                alert(JSON.stringify(rest));
+                                if (rest.status !== 1) {
+                                    alert("Some error while adding item " + formData.customTerms[j].title);
+                                }
+                            }).catch(err => console.log(err));
+                        }
+                        for (var k = 0; k < formData.paymentTerms.length; k++) {
+
+                            var termPForm = {
+                                Id: 0,
+                                TermTitle: formData.customTerms[k].title,
+                                TermTxt: formData.customTerms[k].text,
+                                TermTypeId: formData.userRole === 'seller' ? 1 : 2,
+                                TermRfpId: res.data.id,
+                                Attachments: []
+                            };
+                            // eslint-disable-next-line no-loop-func
+                            sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termPForm).then(r => r.json()).then(respt => {
+                                alert(JSON.stringify(respt));
+                                if (respt.status !== 1) {
+                                    alert("Some error while adding item " + formData.lineItems[k].title);
+                                }
+                            }).catch(err => console.log(err));
+                        }
+
+                    }
+
+
+                    //OtherData.setData(JSON.stringify(res.data));
+                    //navigate("/draftD2C");
+
+                }).catch(err => {
+                    console.log(err);
+                });
             }
         }
         

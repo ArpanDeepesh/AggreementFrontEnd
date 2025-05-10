@@ -165,47 +165,15 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 		return message === "";
 	}
 
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		var formBody = {
-			CreatorId: UserProfile.getUserId(),
-			CreatorType: poForm.current['CreatorType'].value,
-			OtherPartyContactInfo: poForm.current['OtherPartyContactInfo'].value,
-			LDDays: poForm.current['LDDays'].value,
-			LDPercent: poForm.current['LDPercent'].value,
-			Advance: poForm.current['Advance'].value,
-			NumberOfDays: poForm.current['NumberOfDays'].value
-		};
-		sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(res => {
-			if (res.status === 1) {
-				
-				OtherData.setData(JSON.stringify(res.data));
-				navigate("/draftD2C");
-			}
-
-		}).catch(err => {
-			console.log(err);
-		});
+		
 
 	};
 
 	return (
 		<>
-			{UserProfile.getUserId() > 0 ? <></> : <header>
-				<div className="header-container">
-					<div className="logo">
-						<a style={{ textDecoration: "none" }} href="/">
-							<span style={{ color: 'white' }}>Contr
-								<span style={{ color: "#ff8400" }}>e</span>
-								ct</span>
-						</a>
-
-					</div>
-					<nav><a href="/Signup" className="btn btn-success">Sign In</a>
-					</nav>
-				</div>
-			</header>}
+			
 			<ContractTemplate title={heading} />
 
 
