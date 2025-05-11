@@ -5,10 +5,10 @@ import { useState } from "react";
 
 
 const RFQList = () => {
-    const [userDraftProposalLst, setDraftProposalLst] = useState();
-    const [userActiveProposalLst, setActiveProposalLst] = useState();
-    const [userClosedProposalLst, setClosedProposalLst] = useState();
-    const [inviteList, setInviteList] = useState();
+    const [userDraftProposalLst, setDraftProposalLst] = useState([]);
+    const [userActiveProposalLst, setActiveProposalLst] = useState([]);
+    const [userClosedProposalLst, setClosedProposalLst] = useState([]);
+    const [inviteList, setInviteList] = useState([]);
     useEffect(() => {
         getRequest("api/Business/GetUserRFQList", UserProfile.getToken()).then(rr => rr.json()).then(res => {
             console.log(res);
@@ -66,16 +66,6 @@ const RFQList = () => {
                 <div class="status-tab" onClick={(e) => { openTab(e, "proposalInvites") }}>Invites ({inviteList.length})</div>
                 <div class="status-tab" onClick={(e) => { openTab(e, "completedProposals") }}>Completed ({userClosedProposalLst.length})</div>
             </div>
-            public UserInfoToDisplay Owner {get; set; }
-
-            public int ProposalCompletionInDays {get; set; }
-
-            public decimal ProposalLdPercent {get; set; }
-
-            public int ProposalLdAppliedAfterDays {get; set; }
-
-            public string ProposalStatus {get; set; }
-            public string  {get; set; }
             <div class="status-content active" id="draftProposals">
                 <ul class="contract-list">
                     {userDraftProposalLst && userDraftProposalLst.length > 0 ? userDraftProposalLst.map(x => {
