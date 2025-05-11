@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useRef} from 'react';
 
 const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm, handleEditTerm }) => {
+    const termsInputRef = useRef(null);
     const [newTermId, setNewTermId] = useState('');
     const [newTermTitle, setNewTermTitle] = useState([]);
     const [newTermDesc, setNewTermDesc] = useState([]);
@@ -34,9 +35,9 @@ const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm, handleEditTerm 
         <div className="form-section">
             <h2>Terms & Conditions</h2>
             
-            <div className="form-group">
+            <div className="form-group" ref={termsInputRef}>
                 <label htmlFor="new-term">Add Custom Term</label>
-                <div className="form-row">
+                <div className="form-row" >
                     <div className="form-col">
                         <input
                             type="text"
@@ -66,7 +67,7 @@ const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm, handleEditTerm 
                                 setNewTermDesc('');
                             }}
                         >
-                            <i className="fas fa-edit"></i> edit Term
+                            <i className="fas fa-edit"></i> Save Term
                         </button> : <button
                             type="button"
                             className="btn btn-outline"
@@ -103,6 +104,7 @@ const TermsConditions = ({ customTerms, onAddTerm, onRemoveTerm, handleEditTerm 
                                 setNewTermId(term.id);
                                 setNewTermTitle(term.title);
                                 setNewTermDesc(term.text);
+                                termsInputRef.current?.scrollIntoView({ behavior: 'smooth' });
                             }}>
                                 <i className="fas fa-edit"></i>
                             </span>

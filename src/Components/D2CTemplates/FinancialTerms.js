@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState, useRef } from "react";
 
 const FinancialTerms = ({ agreementAdvance,
     agreementDeposite,
@@ -15,7 +15,8 @@ const FinancialTerms = ({ agreementAdvance,
     paymentTerms,
     onRemovePaymentTerm,
     onAddPaymentTerm,
-    handleEditTerm}) => {
+    handleEditTerm }) => {
+    const paymentInputRef = useRef(null);
     const [newTermTitle, setNewTermTitle] = useState([]);
     const [newTermDesc, setNewTermDesc] = useState([]);
     const [newTermId, setNewTermId] = useState();
@@ -177,7 +178,7 @@ const FinancialTerms = ({ agreementAdvance,
                 <i className="fas fa-plus-circle"></i> Add Line Item
             </button>
 
-            <div className="form-group">
+            <div className="form-group" ref={paymentInputRef}>
                 <label htmlFor="new-term">Add Payment Term</label>
                 <div className="form-row">
                     <div className="form-col">
@@ -209,7 +210,7 @@ const FinancialTerms = ({ agreementAdvance,
                                 setNewTermDesc('');
                             }}
                         >
-                            <i className="fas fa-edit"></i> Edit Payment Term
+                            <i className="fas fa-edit"></i> Save Payment Term
                         </button> : <button
                             type="button"
                             className="btn btn-outline"
@@ -245,6 +246,7 @@ const FinancialTerms = ({ agreementAdvance,
                                 setNewTermId(term.id);
                                 setNewTermTitle(term.title);
                                 setNewTermDesc(term.text);
+                                paymentInputRef.current?.scrollIntoView({ behavior: 'smooth' });
                             }}>
                                 <i className="fas fa-edit"></i>
                             </span>
