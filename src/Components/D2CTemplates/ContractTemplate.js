@@ -8,7 +8,7 @@ import FinancialTerms from './FinancialTerms';
 import TermsConditions from './TermsConditions';
 import ContractPreview from './ContractPreview';
 import FormActions from './FormActions';
-import { findUserRequest, getRequestAllowAll, sendPostRequest } from '../Services/ContrectBackendAPI';
+import { findUserRequest, getRequestAllowAll, sendPostRequest, getRequest } from '../Services/ContrectBackendAPI';
 import UserProfile from '../Context/UserProfile';
 import OtherData from '../Context/OtherData';
 import { useNavigate } from "react-router-dom";
@@ -388,7 +388,14 @@ const ContractTemplate = ({ oldFormData, title }) => {
                   console.log(results);
                   if (results.length === formData.lineItems.length + formData.customTerms.length + formData.paymentTerms.length)
                   {
-                      navigate("/draftD2c");
+                      getRequest("api/Business/StartAgreement?agreementId=" + res.data.id, UserProfile.getToken())
+                          .then(x => x.json())
+                          .then(resp => {
+                              console.log(resp);
+                              if (resp.status === 1) {
+                                  navigate("/DetailAgreement");
+                              }
+                          }).catch(err => console.log(err));
                   }
               }
 

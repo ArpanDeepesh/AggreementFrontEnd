@@ -86,6 +86,7 @@ const FinancialTerms = ({ agreementAdvance,
                         <th>Description</th>
                         <th>HSN/SAC</th>
                         <th>Qty</th>
+                        <th>Completion (in days)</th>
                         <th>Rate</th>
                         <th>Unit</th>
                         <th>Tax %</th>
@@ -126,6 +127,14 @@ const FinancialTerms = ({ agreementAdvance,
                                     value={item.quantity}
                                     onChange={(e) => onItemChange(item.id, 'quantity', e.target.value)}
                                     className="item-qty"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="number"
+                                    value={item.timeToComplete}
+                                    onChange={(e) => onItemChange(item.id, 'timeToComplete', e.target.value)}
+                                    className="item-rate"
                                 />
                             </td>
                             <td>
