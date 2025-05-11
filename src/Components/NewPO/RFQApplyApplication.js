@@ -201,7 +201,7 @@ const RFQApplyApplication = () => {
 	}
 
 	return (<>
-		<div className="scrollable-section">
+		<div className="main-content">
 			<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			
 			{proposalObj && proposalObj.id && proposalObj.id > 0 ?

@@ -130,7 +130,7 @@ const UserTerms = () => {
 	}
 
 	return (<>
-		<div className="scrollable-section">
+		<div className="main-content">
 			<MessageDisplay msg={msg} setMsg={setMsg} />
 			<DeleteItemConfirmation msg={deleteMsg} setMsg={setDeleteMsg} action={deleteAction} data={deleteData} />
 			<div className="table">

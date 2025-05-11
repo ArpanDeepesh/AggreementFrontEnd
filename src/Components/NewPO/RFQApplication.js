@@ -377,7 +377,7 @@ const handleSubmitAddItem = (e) => {
 	}
 
 	return (<>
-		<div className="scrollable-section">
+		<div className="main-content">
 			<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			<DeleteItemConfirmation msg={deleteMsg} setMsg={setDeleteMsg} action={deleteAction} data={deleteData} />
 			<div className="table">

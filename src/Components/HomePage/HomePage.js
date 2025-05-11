@@ -10,11 +10,14 @@ import DelayMsgs from "../CommonPages/DelayMsgs";
 import OtherData from "../Context/OtherData";
 import ClientPorgress from "../CommonPages/ClientPorgress";
 import CashFlowProgress from "../CommonPages/CashFlowProgress";
+import ContractList from "./ContractList";
+import RFQList from "./RFQList";
 
 
 const HomePage = ({ setUserName, setUserType}) => {
     const navigate = useNavigate();
     const [agreementList, setAgreementList] = useState();
+    const [displayName, setDisplayName] = useState();
     const [userProposalLst, setUserProposalLst] = useState();
     const [activeProposalLst, setActiveProposalLst] = useState();
     const [clientReport, setClientReport] = useState();
@@ -125,6 +128,7 @@ const HomePage = ({ setUserName, setUserType}) => {
         }
         
         setUserName(UserProfile.getName());
+        setDisplayName(UserProfile.getName());
         setUserType(UserProfile.getUserType());
         loadInviteList();
         loadAgreementList();
@@ -242,554 +246,252 @@ const HomePage = ({ setUserName, setUserType}) => {
     }
 
     return (
-        <div className="h-100" style={{ overflowY: "scroll" }}>
-            <DelayMsgs msgList={delayMsg} setMsgList={setDelayMsg} />
-            <div className="mt-1" >
-                <div className="row mb-1">
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="landingPageAction"
-                            onClick={e => {
-                                e.preventDefault();
-                                navigate("/SelectTemplate");
-                            }}
-                            style={{ cursor: "pointer", backgroundColor:"#007bff", color:"white" }} >
-                            {/*<img src={"/DraftAgreement.png"} width={40} height={40} />*/}
-                            &#128221;
-                            <br />
-                            <span className="">
-                                <strong>Draft Agreement</strong>
-                                <br />
-                                Create and manage agreements easily
-                            </span>
-                        </div>
-
-                        {/*<FormButton name="Draft Agreement" onClick={(e) => {*/}
-
-                        {/*}} myClass="routingBtn" />*/}
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="landingPageAction" onClick={e => {
-                            e.preventDefault();
-                            navigate("/userItems");
-                        }}>
-                            {/*<img src={"/Catalogue.png"} width={40} height={40} />*/}
-                            &#128717;&#65039;
-                            <br />
-                            <span className="">
-                                <strong>Catalogue</strong>
-                                <br />
-                                Manage and list your buy/sell items
-                            </span>
-                            
-                        </div>
-                        
-                        {/*<FormButton name="Generate RFQ" onClick={(e) => {*/}
-                        {/*    PurchaseOrder.setRaisedBy("Seller");*/}
-                        {/*    OtherData.resetData();*/}
-                        {/*    navigate("/NewRFQ");*/}
-                        {/*}} myClass="routingBtn" mystyle={{width:'80%'}} />*/}
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="landingPageAction" onClick={e => {
-                            e.preventDefault();
-                            navigate("/userTerms");
-                        }}>
-                            {/*<img src={"/Terms.png"} width={40} height={40} />*/}
-                            &#128220;
-                            <br />
-                            <span className="">
-                                <strong>User Terms</strong>
-                                <br />
-                                Predefine terms for quick agreement generation
-                            </span>
-                            
-                        </div>
-                        {/*<FormButton name="User Terms" onClick={(e) => {*/}
-                            
-                        {/*}} myClass="routingBtn"/>*/}
-
-                    </div>
-                    <div className="col-md-3 p-0 m-0" >
-                        <div className="landingPageAction" onClick={e => {
-                            e.preventDefault();
-                            OtherData.resetData();
-                            navigate("/NewRFQ");
-                        }}>
-                            {/*<img src={"/rfq.png"} width={40} height={40} />*/}
-                            &#128232;
-                            <br />
-                            <span className="">
-                                <strong>Generate Request Quote</strong>
-                                <br />
-                                Easily request supplier quotes
-                            </span>
-                            
-                        </div>
-                        {/*<FormButton name="Catalog" onClick={(e) => {*/}
-                            
-                        {/*}} myClass="routingBtn" />*/}
-
-                    </div>
-
+        <div className="main-content" >
+            <div class="headerHome">
+                <div class="page-title">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, here's what's happening with your contracts today</p>
                 </div>
-                <div className="row">
-                    <div className="col-md-12 col-xs-12">
-                        <div className="landingPageReport">
-                            <div className="tabs">
-                                <div className="tab-buttons">
-                                    <button className="tab-Hbutton active" onClick={(e) => { openTab(e, "ActiveAggrements"); }}>Dashboard</button>
-                                    <button className="tab-Hbutton" onClick={(e) => { openTab(e, "DraftAggrements"); }}>RFQ/Invites</button>
-                                    <button className="tab-Hbutton" onClick={(e) => { openTab(e, "CompletedAggrements"); }}>Contracts</button>
-                                </div>
-                                <div className="">
-                                    <div id="ActiveAggrements" className="tab-content active">
-                                        <div className="landingPageReport">
-                                            <h4 style={{ textAlign: "left" }}>Dashboard</h4>
-                                            <div className="table">
-                                                <div className="row">
-                                                    <div className="col-md-6 ">
-                                                        <div className="landingPageReport">
-                                                            <h5 style={{ textAlign: "left" }}>Receivables Overview</h5>
-
-                                                            {clientReport ? <>
-                                                                <ClientPorgress totalValue={clientReport.totalSellerContractAmount}
-                                                                    invoiceRaised={clientReport.totalSellerInvoiceAmount}
-                                                                    invoiceCleared={clientReport.totalSellerInvoiceAmountCleared}
-                                                                    cashOutflow={clientReport.totalCashIn} />
-                                                            </> : <>Loading data..</>}
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="landingPageReport">
-                                                            <h5 style={{ textAlign: "left" }}>Payables Overview</h5>
-                                                            {clientReport ? <>
-                                                                <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
-                                                                    invoiceRaised={clientReport.totalBuyerInvoiceAmount}
-                                                                    invoiceCleared={clientReport.totalBuyerInvoiceAmountCleared}
-                                                                    cashOutflow={clientReport.totalCashOut} />
-                                                            </> : <>Loading data..</>}
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div className="row m-5">
-                                                    <div className="col-md-6 ">
-                                                        <div className="landingPageReport">
-                                                            <h5 style={{ textAlign: "left" }}>Actions required</h5>
-                                                            {attensionRequired && attensionRequired.length > 0 ? <>
-                                                                <ul>
-                                                                    {attensionRequired.map(x => <li>
-                                                                        (Buyer){x.buyer.usrName} and (Seller) {x.seller.usrName} agreement required your attention <span className="clickableLink" onClick={(e) => {
-                                                                            e.preventDefault();
-                                                                            OtherData.setData(JSON.stringify(x));
-                                                                            navigate("/DetailContract")
-                                                                        }}>click here to see the agreement.</span>
-                                                                    </li>)}
-                                                                </ul>
-
-                                                            </> : <>No urgent action</>}
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="landingPageReport">
-                                                            <h5 style={{ textAlign: "left" }}>Cash flow</h5>
-                                                            {clientReport ? <>
-                                                                <CashFlowProgress cashIn={clientReport.totalCashIn } cashOut={clientReport.totalCashOut }/>
-                                                            </> : <>Loading data..</>}
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    <div id="DraftAggrements" className="tab-content">
-                                        <div className="landingPageReport">
-                                            <div className="table mr-1">
-                                                <h5 style={{ textAlign: "left" }}>User Proposal</h5>
-                                                <div className="d-none d-md-block">
-                                                    <div className="row tableHeader ">
-                                                        <div className="col-md-3 tableSingelHeading">
-                                                            Owner
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading">
-                                                            Duration
-                                                        </div>
-                                                        <div className="col-md-4 tableSingelHeading">
-                                                            LD Details
-                                                        </div>
-                                                        <div className="col-md-1 tableSingelHeading">
-                                                            Status
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading" style={{ textAlign: "center" }}>
-                                                            Action
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {userProposalLst && userProposalLst.length > 0 ? userProposalLst.map(tempPO => <div className="row tablebox">
-                                                    <div className="col-md-3 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Owner: </strong>
-                                                            {tempPO.owner.usrName} <br />
-                                                            <span style={{ fontSize: '10px' }}>
-                                                                {tempPO.owner.email}
-                                                                {tempPO.owner.phoneNumber}
-                                                                {tempPO.owner.usrGstin}</span>
-                                                        </span>
-
-                                                    </div>
-                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Duration: </strong>
-                                                            {tempPO.proposalCompletionInDays}<br />
-
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-4 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">LD Details </strong>
-                                                            {tempPO.proposalLdPercent}% after {tempPO.proposalLdAppliedAfterDays} days delay
-
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-1 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Status: </strong>
-                                                            <span class="badge bg-secondary text-light">{tempPO.proposalStatus}</span>
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
-                                                        {tempPO.proposalStatus === "Active" ? <FormButton name="Detail" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            OtherData.setData(JSON.stringify(tempPO));
-                                                            navigate("/DetailProposal");
-                                                        }} /> : <></>}
-                                                        {tempPO.proposalStatus === "Draft" ? <FormButton name="Edit" onClick={(e) => {
-                                                            editRFQ(e, tempPO);
-                                                        }} /> : <></>}
-
-                                                    </div>
-                                                </div>
-                                                ) : <div className="row tablebox">No Data present</div>}
-
-                                            </div>
-                                        </div>
-                                        <div className="landingPageReport">
-                                            <div className="table mr-1">
-                                                <h5 style={{ textAlign: "left" }}>Active Proposal</h5>
-                                                <div className="d-none d-md-block">
-                                                    <div className="row tableHeader ">
-                                                        <div className="col-md-3 tableSingelHeading">
-                                                            Owner
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading">
-                                                            Duration
-                                                        </div>
-                                                        <div className="col-md-4 tableSingelHeading">
-                                                            LD Details
-                                                        </div>
-                                                        <div className="col-md-1 tableSingelHeading">
-                                                            Status
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading" style={{ textAlign: "center" }}>
-                                                            Action
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {activeProposalLst && activeProposalLst.length > 0 ? activeProposalLst.map(tempPO => <div className="row tablebox">
-                                                    <div className="col-md-3 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Owner: </strong>
-                                                            {tempPO.owner.usrName} <br />
-                                                            <span style={{ fontSize: '10px' }}>
-                                                                {tempPO.owner.email}
-                                                                {tempPO.owner.phoneNumber}
-                                                                {tempPO.owner.usrGstin}</span>
-                                                        </span>
-
-                                                    </div>
-                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Duration: </strong>
-                                                            {tempPO.proposalCompletionInDays}<br />
-
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-4 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">LD Details </strong>
-                                                            {tempPO.proposalLdPercent}% after {tempPO.proposalLdAppliedAfterDays} days delay
-
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-1 col-xs-12 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Status: </strong>
-                                                            <span class="badge bg-secondary text-light">{tempPO.proposalStatus}</span>
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-2 col-xs-12 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }} >
-                                                        <FormButton name="Apply" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            OtherData.setData(JSON.stringify(tempPO));
-                                                            navigate("/ApplyRFQ");
-                                                        }} />
-                                                    </div>
-                                                </div>
-                                                ) : <div className="row tablebox">No Data present</div>}
-
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="landingPageReport">
-                                            <div className="table mr-1">
-                                                <h5 style={{ textAlign: "left" }}>User Invites</h5>
-                                                <div className="d-none d-md-block">
-                                                    <div className="row tableHeader ">
-                                                        <div className="col-md-1 tableSingelHeading">
-                                                            S. No.
-                                                        </div>
-                                                        <div className="col-md-6 tableSingelHeading">
-                                                            Raised By
-                                                        </div>
-
-                                                        <div className="col-md-2 tableSingelHeading">Status</div>
-                                                        <div className="col-md-3 tableSingelHeading">Action</div>
-                                                    </div>
-                                                </div>
-
-                                                {inviteList && inviteList.length > 0 ? inviteList.map((x, ind) => <div className="row p-1 tablebox">
-                                                    <div className="col-md-1">
-                                                        <strong className="d-inline d-md-none">S.No.: </strong>
-                                                        {ind + 1}
-
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <strong className="d-inline d-md-none">Raised For: </strong>
-                                                        {x.raisedByUser.usrName}
-                                                        <br />
-                                                        ({x.raisedByUser.phoneNumber})
-                                                        <br />
-                                                        {x.raisedByUser.email}
-                                                    </div>
-                                                    <div className="col-md-2">
-                                                        <strong className="d-inline d-md-none">Status: </strong>
-                                                        {x.inviteStatusId}<br />
-                                                    </div>
-                                                    <div className="col-md-3 ">
-                                                        <FormButton name="Apply" onClick={(e) => {
-                                                            e.preventDefault();
-                                                            ApplyForInvite(x.id);
-                                                        }} />
-                                                    </div>
-                                                </div>) : <div className="row"> No Items in Proposal</div>}
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    <div id="CompletedAggrements" className="tab-content">
-                                        <div className="landingPageReport">
-                                            <h5 style={{ textAlign: "left" }}>Agreements</h5>
-                                            <div className="table ml-1 ">
-                                                <div className="d-none d-md-block align-items-center">
-                                                    <div className="row tableHeader">
-                                                        <div className="col-md-3 tableSingelHeading">
-                                                            Buyer
-                                                        </div>
-                                                        <div className="col-md-3 tableSingelHeading">
-                                                            Seller
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading">
-                                                            Status
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading">
-                                                            LD / Advance:
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading" style={{ textAlign: "center" }}>
-                                                            Action
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {agreementList && agreementList.length > 0 ? agreementList.map(tempPO => (
-                                                    tempPO.status === "Draft"
-                                                    || tempPO.status === "Proposed"
-                                                    || tempPO.status === "Accepted"
-                                                    || tempPO.status === "Waiting for Seller"
-                                                    || tempPO.status === "Waiting for Buyer"
-                                                ) ? < div className="row tablebox" >
-                                                    <div className="col-md-3 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyer.usrName}<br />
-                                                            <span style={{ fontSize: '10px' }}>{tempPO.buyer.phoneNumber}</span><br />
-                                                            <span style={{ fontSize: '10px' }}>{tempPO.buyer.email}</span><br />
-                                                            <span style={{ fontSize: '10px' }}>{tempPO.buyer.usrAddress}</span>
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-3 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.seller.usrName}<br />
-                                                            <span style={{ fontSize: '10px' }}>{tempPO.seller.phoneNumber}</span><br />
-                                                            <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
-                                                            <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
-                                                        </span>
-
-                                                    </div>
-                                                    <div className="col-md-2 d-flex align-items-center">
-
-                                                        <span>
-                                                            <strong className="d-inline d-md-none">Status: </strong>
-                                                            <span class="badge bg-success text-light">{tempPO.status}</span>
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-2 d-flex align-items-center">
-                                                        <span>
-                                                            <strong className="d-block d-md-none">LD / Advance: </strong>
-                                                            {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
-                                                            and advance of {tempPO.advance}%
-
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-md-2 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
-                                                        <div className="d-none d-md-block">
-                                                            <div className="row m-0 p-0">
-                                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "right" }}>
-                                                                    {tempPO.status === "Draft" ?
-                                                                        <FormButton name="Edit" onClick={(e) => editAgreement(e, tempPO)} /> : <></>}
-
-                                                                </div>
-                                                                <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
-                                                                    <FormButton name="Respond" onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        OtherData.setData(JSON.stringify(tempPO));
-                                                                        navigate("/DetailAgreement")
-                                                                    }} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="d-block d-md-none">
-                                                            <div className="row m-0 p-0">
-                                                                <div className="col-xs-6 m-0 p-0">
-                                                                    <FormButton name="Respond" onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        PurchaseOrder.setPoId(tempPO.poId);
-                                                                        navigate("/DetailAgreement")
-                                                                    }} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div> : <></>
-                                                ) : <div className="row tablebox">No Data present</div>}
-
-                                            </div>
-                                        </div>
-                                        <div className="landingPageReport">
-                                            <h5 style={{ textAlign: "left" }}>Contracts</h5>
-                                            <div className="table ml-1 ">
-                                                <div className="d-none d-md-block">
-                                                    <div className="row tableHeader">
-                                                        <div className="col-md-3 tableSingelHeading">
-                                                            LD condition
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading">
-                                                            Buyer
-                                                        </div>
-                                                        <div className="col-md-2 tableSingelHeading">
-                                                            Seller
-                                                        </div>
-                                                        <div className="col-md-1 tableSingelHeading">
-                                                            Status
-                                                        </div>
-                                                        <div className="col-md-4 tableSingelHeading" style={{ textAlign: "center" }}>
-                                                            Action
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {agreementList && agreementList.length > 0 ? agreementList.map(tempPO => tempPO.status === "Active" || tempPO.status === "Completed" ?
-                                                    <div className="row tablebox">
-                                                        <div className="col-md-3 d-flex align-items-center">
-                                                            <span>
-                                                                <strong className="d-block d-md-none">LD / Advance: </strong>
-                                                                {tempPO.ldPercent}% will be deduced after {tempPO.ldDays} days delay
-                                                                and advance of {tempPO.advance}%
-
-                                                            </span>
-
-                                                        </div>
-                                                        <div className="col-md-2 d-flex align-items-center">
-                                                            <span>
-                                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.buyer.usrName}<br />
-                                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.phoneNumber}</span><br />
-                                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.email}</span><br />
-                                                                <span style={{ fontSize: '10px' }}>{tempPO.buyer.usrAddress}</span>
-                                                            </span>
-
-                                                        </div>
-                                                        <div className="col-md-2 d-flex align-items-center">
-                                                            <span>
-                                                                <strong className="d-inline d-md-none">Buyer: </strong>{tempPO.seller.usrName}<br />
-                                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.phoneNumber}</span><br />
-                                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.email}</span><br />
-                                                                <span style={{ fontSize: '10px' }}>{tempPO.seller.usrAddress}</span>
-                                                            </span>
-
-                                                        </div>
-                                                        <div className="col-md-1 d-flex align-items-center">
-                                                            <span>
-                                                                <strong className="d-inline d-md-none">Status: </strong>
-                                                                <span class="badge bg-secondary text-light">{tempPO.status}</span>
-                                                            </span>
-                                                        </div>
-                                                        <div className="col-md-4 d-flex align-items-center justify-content-center" style={{ textAlign: "center" }}>
-                                                            <div className="d-none d-md-block">
-                                                                <div className="row m-0 p-0 ">
-                                                                    <div className="col-md-6 m-0 p-0" style={{ textAlign: "left" }}>
-                                                                        <FormButton name="Detail" onClick={(e) => {
-                                                                            e.preventDefault();
-                                                                            OtherData.setData(JSON.stringify(tempPO));
-                                                                            navigate("/DetailContract")
-                                                                        }} />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="d-block d-md-none">
-                                                                <div className="row m-0 p-0 ">
-                                                                    <div className="col-xs-6 m-0 p-0" style={{ textAlign: "center" }}>
-                                                                        <FormButton name="Detail" onClick={(e) => {
-                                                                            e.preventDefault();
-                                                                            OtherData.setData(JSON.stringify(tempPO));
-                                                                            navigate("/DetailContract")
-                                                                        }} />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                        </div>
-                                                    </div> : <></>
-                                                ) : <div className="row tablebox">No Data present</div>}
-
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        
+                <div class="user-profile">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" />
+                    <div class="user-info">
+                        <h4>{displayName}</h4>
+                        <p>Premium Plan</p>
+                        <a href="/LogOut" style={{ color: "#007bff" }}>Logout</a>
                     </div>
                 </div>
             </div>
-		</div>
+            <DelayMsgs msgList={delayMsg} setMsgList={setDelayMsg} />
+            <div class="quick-actions">
+                <div class="action-card" onClick={e => {
+                    e.preventDefault();
+                    navigate("/SelectTemplate");
+                }}>
+                    <i class="fas fa-file-contract"></i>
+                    <h3>Create Contract</h3>
+                    <p>Start a new contract from template</p>
+                </div>
+                <div class="action-card" onClick={e => {
+                    e.preventDefault();
+                    OtherData.resetData();
+                    navigate("/NewRFQ");
+                }}>
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>Generate RFQ</h3>
+                    <p>Request for quotations</p>
+                </div>
+                <div class="action-card" onClick={e => {
+                    e.preventDefault();
+                    navigate("/userTerms");
+                }} >
+                    <i class="fas fa-file-alt"></i>
+                    <h3>User Terms</h3>
+                    <p>Create default terms</p>
+                </div>
+                <div class="action-card"  onClick={e => {
+                    e.preventDefault();
+                    navigate("/userItems");
+                }}>
+                    <i class="fas fa-boxes"></i>
+                    <h3>Create Catalogue</h3>
+                    <p>Build product/service catalog</p>
+                </div>
+            </div>
+
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Active Contracts</div>
+                            <div class="stat-value">24</div>
+                        </div>
+                        <div class="stat-change up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-chart">
+                        <div class="chart-placeholder">Chart: Active Contracts</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Pending Signatures</div>
+                            <div class="stat-value">8</div>
+                        </div>
+                        <div class="stat-change down">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-chart">
+                        <div class="chart-placeholder">Chart: Pending Signatures</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Upcoming Renewals</div>
+                            <div class="stat-value">5</div>
+                        </div>
+                        <div class="stat-change up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-chart">
+                        <div class="chart-placeholder">Chart: Upcoming Renewals</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Contract Value</div>
+                            <div class="stat-value">¥1.2M</div>
+                        </div>
+                        <div class="stat-change up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>18%</span>
+                        </div>
+                    </div>
+                    <div class="stat-chart">
+                        <div class="chart-placeholder">Chart: Contract Value</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="financial-overview">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="section-title">Contract Value Trend</h3>
+                        <div class="chart-actions">
+                            <button class="chart-btn active">Monthly</button>
+                            <button class="chart-btn">Quarterly</button>
+                            <button class="chart-btn">Yearly</button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">Contract Value Trend Chart</div>
+                </div>
+                <div class="top-contracts">
+                    <div class="chart-header">
+                        <h3 class="section-title">Top Contracts</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="contract-rank">
+                        <div class="rank-number top">1</div>
+                        <div class="rank-details">
+                            <div class="rank-title">Office Lease Agreement</div>
+                            <div class="rank-value">¥320,000</div>
+                        </div>
+                    </div>
+                    <div class="contract-rank">
+                        <div class="rank-number top">2</div>
+                        <div class="rank-details">
+                            <div class="rank-title">IT Services Contract</div>
+                            <div class="rank-value">¥280,000</div>
+                        </div>
+                    </div>
+                    <div class="contract-rank">
+                        <div class="rank-number top">3</div>
+                        <div class="rank-details">
+                            <div class="rank-title">Marketing Agency</div>
+                            <div class="rank-value">¥195,000</div>
+                        </div>
+                    </div>
+                    <div class="contract-rank">
+                        <div class="rank-number">4</div>
+                        <div class="rank-details">
+                            <div class="rank-title">Consulting Services</div>
+                            <div class="rank-value">¥150,000</div>
+                        </div>
+                    </div>
+                    <div class="contract-rank">
+                        <div class="rank-number">5</div>
+                        <div class="rank-details">
+                            <div class="rank-title">Equipment Rental</div>
+                            <div class="rank-value">¥85,000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <RFQList/>
+
+            <ContractList/>
+            
+
+
+            <div class="status-overview">
+                <div class="section-header">
+                    <h3 class="section-title">RFQ Status</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+
+                <div class="status-tabs">
+                    <div class="status-tab active" data-tab="rfq-draft">Draft (2)</div>
+                    <div class="status-tab" data-tab="rfq-active">Active (4)</div>
+                    <div class="status-tab" data-tab="rfq-invites">Invites (12)</div>
+                    <div class="status-tab" data-tab="rfq-completed">Completed (5)</div>
+                </div>
+
+                <div class="status-content active" id="rfq-draft">
+                    <ul class="contract-list">
+                        <li class="contract-item">
+                            <div class="contract-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="contract-details">
+                                <div class="contract-title">Office Furniture RFQ</div>
+                                <div class="contract-meta">
+                                    <span><i class="fas fa-user"></i> John Smith</span>
+                                    <span><i class="fas fa-calendar"></i> Created: 1 day ago</span>
+                                </div>
+                            </div>
+                            <div class="contract-actions">
+                                <button class="contract-btn" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="contract-btn" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </li>
+                        <li class="contract-item">
+                            <div class="contract-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="contract-details">
+                                <div class="contract-title">IT Equipment RFQ</div>
+                                <div class="contract-meta">
+                                    <span><i class="fas fa-user"></i> Michael Chen</span>
+                                    <span><i class="fas fa-calendar"></i> Created: 3 days ago</span>
+                                </div>
+                            </div>
+                            <div class="contract-actions">
+                                <button class="contract-btn" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="contract-btn" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="status-content" id="rfq-active">
+                </div>
+
+                <div class="status-content" id="rfq-invites">
+                </div>
+
+                <div class="status-content" id="rfq-completed">
+                </div>
+            </div>
+
+        </div>
 	);
 };
 

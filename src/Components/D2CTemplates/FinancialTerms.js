@@ -167,8 +167,11 @@ const FinancialTerms = ({ agreementAdvance,
                             <td className="item-amount">
                                 ₹{(item.amount || 0).toFixed(2)}
                             </td>
-                            <td className="remove-item" onClick={() => onRemoveItem(item.id)}>
-                                <i className="fas fa-times"></i>
+                            <td className="remove-item" >
+                                <span onClick={() => onRemoveItem(item.id)}>
+                                    <i className="fas fa-times"></i>
+                                </span>
+                                
                             </td>
                         </tr>
                     ))}
