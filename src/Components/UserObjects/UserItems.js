@@ -11,7 +11,7 @@ import InputNumberField from "../FormParts/InputNumberField";
 import AddAttachment from "../CommonPages/AddAttachment";
 import DeleteItemConfirmation from "../CommonPages/DeleteItemConfirmation";
 
-const UserItems = ({ displayLogin, setDisplayLogin }) => {
+const UserItems = ({ setUserName, setUserType }) => {
 	const itemForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
@@ -38,7 +38,8 @@ const UserItems = ({ displayLogin, setDisplayLogin }) => {
 			navigate("/Home");
 		}
 		resetItemForm();
-
+		setUserName(UserProfile.getName());
+		setUserType(UserProfile.getUserType());
 		getRequestAllowAll("api/General/TermsTypes").then(x => x.json()).then(res => {
 			if (res.status === 1)
 			{

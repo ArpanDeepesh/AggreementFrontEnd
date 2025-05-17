@@ -43,6 +43,9 @@ import PaymentComponent from './SubscriptionsAndPayments/PaymentComponent';
 import SubscriptionPage from './LandingPage/SubscriptionPage';
 import SignInPage from './LandingPage/SignInPage';
 import FormButton from './FormParts/FormButton';
+import ContractListPage from "./HomePage/ContractListPage";
+import RFQListPage from "./HomePage/RFQListPage";
+import AnalyticsPage from "./HomePage/AnalyticsPage";
 import ResetPassword from './LandingPage/ResetPassword';
 import ContactUs from './LandingPage/ContactUs';
 const NewLayout = () => {
@@ -85,17 +88,17 @@ const NewLayout = () => {
                             <i class="fas fa-home"></i>
                             <span>Overview</span>
                         </a>
-                        <a href="/" class="nav-item">
+                        <a href="/AnalyticsPage" class="nav-item">
                             <i class="fas fa-chart-line"></i>
                             <span>Analytics</span>
                         </a>
 
                         <div class="nav-title">Contracts</div>
-                        <a href="/" class="nav-item">
+                        <a href="/AllContracts" class="nav-item">
                             <i class="fas fa-file-signature"></i>
                             <span>All Contracts</span>
                         </a>
-                        <a href="/" class="nav-item">
+                        <a href="/SelectTemplate" class="nav-item">
                             <i class="fas fa-plus-circle"></i>
                             <span>Create New</span>
                         </a>
@@ -109,15 +112,15 @@ const NewLayout = () => {
                         </a>
 
                         <div class="nav-title">RFQs</div>
-                        <a href="#" class="nav-item">
+                        <a href="/AllRFQ" class="nav-item">
                             <i class="fas fa-clipboard-list"></i>
                             <span>All RFQs</span>
                         </a>
-                        <a href="#" class="nav-item">
+                        <a href="/NewRFQ" class="nav-item">
                             <i class="fas fa-plus-circle"></i>
                             <span>Create RFQ</span>
                         </a>
-                        <a href="#" class="nav-item">
+                        <a href="/AllRFQ" class="nav-item">
                             <i class="fas fa-bullhorn"></i>
                             <span>Invitations</span>
                         </a>
@@ -131,11 +134,11 @@ const NewLayout = () => {
                             <i class="fas fa-users"></i>
                             <span>Team Members</span>
                         </a>
-                        <a href="#" class="nav-item">
+                        <a href="/userTerms" class="nav-item">
                             <i class="fas fa-file-alt"></i>
                             <span>User Terms</span>
                         </a>
-                        <a href="#" class="nav-item">
+                        <a href="/userItems" class="nav-item">
                             <i class="fas fa-boxes"></i>
                             <span>Catalogues</span>
                         </a>
@@ -165,9 +168,12 @@ const NewLayout = () => {
                     <Route path="/forgotPassword" element={<ForgotPassword />} />
                     <Route path="/ResetPassword" element={<ResetPassword/> }/>
 
+                    <Route path="/AllContracts" element={<ContractListPage setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                    <Route path="/AnalyticsPage" element={<AnalyticsPage setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} /> }/>
+                    <Route path="/AllRFQ" element={<RFQListPage setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />}/>
                     <Route path="/UpdateUser" element={<UpdateUser setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/LogOut" element={<LogOut setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
-                    <Route path="/NewRFQ" element={<RFQApplication />} />
+                    <Route path="/NewRFQ" element={<RFQApplication setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/ApplyRFQ" element={<RFQApplyApplication />} />
                     <Route path="/DraftInvoice" element={<DraftInvoice />} />
                     <Route path="/EditInvoice" element={<EditInvoice />} />

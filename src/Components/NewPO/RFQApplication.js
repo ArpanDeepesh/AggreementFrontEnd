@@ -14,7 +14,7 @@ import AddAttachment from "../CommonPages/AddAttachment";
 import OtherData from "../Context/OtherData";
 import DeleteItemConfirmation from "../CommonPages/DeleteItemConfirmation";
 
-const RFQApplication = () => {
+const RFQApplication = ({setUserName ,setUserType }) => {
 	const itemForm = useRef(null);
 	const termForm = useRef(null);
 	const proposalForm = useRef(null);
@@ -51,6 +51,8 @@ const RFQApplication = () => {
 		if (UserProfile.getLoginStatus() === 1) {
 			navigate("/Home");
 		}
+		setUserName(UserProfile.getName());
+		setUserType(UserProfile.getUserType());
 		getRequestAllowAll("api/General/TermsTypes").then(x => x.json()).then(res => {
 			if (res.status === 1) {
 				for (var i = 0; i < res.data.length; i++) {

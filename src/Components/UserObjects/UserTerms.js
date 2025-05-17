@@ -11,7 +11,7 @@ import InputNumberField from "../FormParts/InputNumberField";
 import OtherData from "../Context/OtherData";
 import DeleteItemConfirmation from "../CommonPages/DeleteItemConfirmation";
 
-const UserTerms = () => {
+const UserTerms = ({ setUserName, setUserType }) => {
 	const termForm = useRef(null);
 	const navigate = useNavigate();
 	const [msg, setMsg] = useState("");
@@ -32,6 +32,8 @@ const UserTerms = () => {
 			navigate("/Home");
 		}
 		resetForm();
+		setUserName(UserProfile.getName());
+		setUserType(UserProfile.getUserType());
 		getRequestAllowAll("api/General/TermsTypes").then(x => x.json()).then(res => {
 			if (res.status === 1) {
 				setTermTypeOptions(res.data);

@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import UserProfile from "../Context/UserProfile";
 import { getRequest } from "../Services/ContrectBackendAPI";
 import { useState } from "react";
+import OtherData from "../Context/OtherData";
+import { useNavigate } from "react-router-dom";
 
 
 const ContractList = () => {
@@ -9,6 +11,7 @@ const ContractList = () => {
     const [userActiveContractLst, setActiveContractLst] = useState([]);
     const [userProposedContractLst, setProposedContractLst] = useState([]);
     const [userClosedContractLst, setClosedContractLst] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
         getRequest("api/Business/GetUserAgreements", UserProfile.getToken()).then(rr => rr.json()).then(res => {
             console.log(res);
@@ -36,6 +39,17 @@ const ContractList = () => {
             }
         }).catch(err => console.log(err));
     }, []);
+    
+    const editAgreement = (e, agrmnt) => {
+        e.preventDefault();
+        OtherData.setData(JSON.stringify(agrmnt));
+        if (agrmnt.proposalId > 0) {
+            navigate("/draftAgreement");
+        } else {
+            navigate("/draftD2C");
+        }
+
+    }
     const openTab = (e, id) => {
         e.preventDefault();
         var tabContent = document.getElementsByClassName("status-content");
@@ -55,7 +69,7 @@ const ContractList = () => {
         <div class="status-overview">
             <div class="section-header">
                 <h3 class="section-title">Contract Status</h3>
-                <a href="#" class="view-all">View All</a>
+                {/*<a href="#" class="view-all">View All</a>*/}
             </div>
 
             <div class="status-tabs">
@@ -80,10 +94,10 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Edit">
+                                <button class="contract-btn" title="Edit" onClick={(e) => { editAgreement(e, x); }}>
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete">
+                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -108,10 +122,10 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                <button class="contract-btn" title="Edit" onClick={(e) => { editAgreement(e, x); }}>
+                                    <i class="fas fa-info-circle"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete">
+                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -136,10 +150,10 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                <button class="contract-btn" title="Edit" onClick={(e) => { editAgreement(e, x); }}>
+                                    <i class="fas fa-info-circle"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete">
+                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -164,10 +178,10 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                <button class="contract-btn" title="Detail View" onClick={(e) => { editAgreement(e, x); }}>
+                                    <i class="fas fa-info-circle"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete">
+                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
