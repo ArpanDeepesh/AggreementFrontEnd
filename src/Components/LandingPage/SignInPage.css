@@ -185,8 +185,8 @@
 
 .btn-google {
     background: white;
-    color: #DB4437;
-    border: 1px solid var(--light-gray);
+    color: #DB4437 !important;
+    border: 1px solid #D3D3D3 !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -194,7 +194,7 @@
 }
 
     .btn-google:hover {
-        border-color: #DB4437;
+        border-color: #DB4437 !important;
     }
 
     .btn-google i {

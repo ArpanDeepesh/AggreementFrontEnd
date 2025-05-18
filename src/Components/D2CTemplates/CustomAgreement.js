@@ -23,6 +23,7 @@ import ContractTemplate from "./ContractTemplate";
 const CustomAgreement = ({ setUserName, setUserType }) => {
 	const [heading, setHeading] = useState("");
 	const [frmData, setFrmData] = useState();
+	const [displayName, setDisplayName] = useState();
 	useEffect(() => {
 		//if (UserProfile.getLoginStatus() !== "1") {
 		//	navigate("/");
@@ -31,6 +32,7 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 		setHeading(templateName);
 		setUserName(UserProfile.getName());
 		setUserType(UserProfile.getUserType());
+		setDisplayName(UserProfile.getName());
 		var data = OtherData.getData();
 		console.log(data);
 		if (data.startsWith('{'))
@@ -49,7 +51,10 @@ const CustomAgreement = ({ setUserName, setUserType }) => {
 
 	return (
 		<>
-			<ContractTemplate oldFormData={frmData}  title={heading} />
+			<div className={displayName && displayName.length > 0 ? "main-content" : ""}>
+				<ContractTemplate oldFormData={frmData} title={heading} />
+			</div>
+			
         </>
 	);
 };

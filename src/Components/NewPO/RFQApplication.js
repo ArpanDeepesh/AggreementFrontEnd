@@ -13,6 +13,7 @@ import InputNumberField from "../FormParts/InputNumberField";
 import AddAttachment from "../CommonPages/AddAttachment";
 import OtherData from "../Context/OtherData";
 import DeleteItemConfirmation from "../CommonPages/DeleteItemConfirmation";
+import RFQTemplate from "./RFQTemplate";
 
 const RFQApplication = ({setUserName ,setUserType }) => {
 	const itemForm = useRef(null);
@@ -382,6 +383,7 @@ const handleSubmitAddItem = (e) => {
 		<div className="main-content">
 			<MessageDisplay msg={msg} setMsg={setMsg} msgType={msgType} />
 			<DeleteItemConfirmation msg={deleteMsg} setMsg={setDeleteMsg} action={deleteAction} data={deleteData} />
+			<RFQTemplate  title={"No Need of Title"} />
 			<div className="table">
 				<div className="row">
 					<div className="col-md-1" style={{ textAlign: "left" }}>

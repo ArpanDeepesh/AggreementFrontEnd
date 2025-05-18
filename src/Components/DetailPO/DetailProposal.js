@@ -106,7 +106,7 @@ const DetailProposal = ({ setUserName, setUserType }) => {
 	}
 
 	return (
-		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
+		<><div className="main-content" >
 			<DisappearingMessage msg={msgDis} setMsg={setMsgDis} />
 			{rfq && rfq.id > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<div className="row">
