@@ -1,13 +1,7 @@
 ﻿import { useState, useRef } from "react";
 
-const RFQFinancialTerms = ({ agreementAdvance,
-    agreementDeposite,
-    onAdvanceChange,
-    onDepositeChange,
-    agreementCurrency,
-    currencyOptions,
+const RFQFinancialTerms = ({ 
     unitOptions,
-    onCurrencyChange,
     lineItems,
     onItemChange,
     onAddItem,
@@ -48,38 +42,6 @@ const RFQFinancialTerms = ({ agreementAdvance,
     return (
         <div className="form-section">
             <h2>Financial Terms & Line Items</h2>
-            <div className="form-row">
-                <div className="form-col">
-                    <label htmlFor="agreement-advance">Agreement advance</label>
-                    <input
-                        type="number"
-                        id="agreement-advance"
-                        value={agreementAdvance}
-                        onChange={(e) => onAdvanceChange(e.target.value)}
-                    />
-                </div>
-                <div className="form-col">
-                    <label htmlFor="agreement-deposite">Deposit</label>
-                    <input
-                        type="number"
-                        id="agreement-deposite"
-                        value={agreementDeposite}
-                        onChange={(e) => onDepositeChange(e.target.value)}
-                    />
-                </div>
-                <div className="form-col">
-                    <label htmlFor="agreement-currency">Currency</label>
-                    <select
-                        id="agreement-currency"
-                        value={agreementCurrency}
-                        onChange={(e) => onCurrencyChange(e.target.value)}
-                        className="item-currency"
-                    >
-                        {currencyOptions && currencyOptions.length > 0 ? currencyOptions.map(x => <option value={x.id} selected={agreementCurrency===x.id}>{x.typeValue}</option>) :<></>}
-
-                    </select>
-                </div>
-            </div>
             <table className="line-items-table">
                 <thead>
                     <tr>
@@ -88,10 +50,7 @@ const RFQFinancialTerms = ({ agreementAdvance,
                         <th>HSN/SAC</th>
                         <th>Qty</th>
                         <th>Completion (in days)</th>
-                        <th>Rate</th>
                         <th>Unit</th>
-                        <th>Tax %</th>
-                        <th>Amount</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -138,14 +97,7 @@ const RFQFinancialTerms = ({ agreementAdvance,
                                     className="item-rate"
                                 />
                             </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    value={item.rate}
-                                    onChange={(e) => onItemChange(item.id, 'rate', e.target.value)}
-                                    className="item-rate"
-                                />
-                            </td>
+                            
                             <td>
                                 <select
                                     value={item.unit}
@@ -155,17 +107,6 @@ const RFQFinancialTerms = ({ agreementAdvance,
                                     {unitOptions && unitOptions.length > 0 ? unitOptions.map(x => <option value={x.id} selected={item.unit === x.id}>{x.typeValue}</option>) : <></>}
 
                                 </select>
-                            </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    value={item.tax}
-                                    onChange={(e) => onItemChange(item.id, 'tax', e.target.value)}
-                                    className="item-tax"
-                                />
-                            </td>
-                            <td className="item-amount">
-                                ₹{(item.amount || 0).toFixed(2)}
                             </td>
                             <td className="remove-item" >
                                 <span onClick={() => onRemoveItem(item.id)}>

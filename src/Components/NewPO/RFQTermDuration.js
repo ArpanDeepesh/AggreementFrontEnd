@@ -5,10 +5,10 @@ const RFQTermDuration = ({
     agreementPenalityDays,
     onPenalityPercentChange,
     onPenalityDaysChange,
-    startDate,
     contractDuration,
-    onStartDateChange,
     onDurationChange,
+    inviteOnly,
+    onInviteOnlyChange
 }) => {
     return (
         <div className="form-section">
@@ -32,17 +32,6 @@ const RFQTermDuration = ({
                         onChange={(e) => onPenalityDaysChange(e.target.value)}
                     />
                 </div>
-            </div>
-            <div className="form-row">
-                <div className="form-col">
-                    <label htmlFor="start-date">Start Date</label>
-                    <input
-                        type="date"
-                        id="start-date"
-                        value={startDate}
-                        onChange={(e) => onStartDateChange(e.target.value)}
-                    />
-                </div>
                 <div className="form-col">
                     <label htmlFor="duration">Duration(in days)</label>
                     <input
@@ -52,7 +41,17 @@ const RFQTermDuration = ({
                         onChange={(e) => onDurationChange(e.target.value)}
                     />
                 </div>
+                <div className="form-col">
+                    <label htmlFor="duration">Is invite only request?</label>
+                    <input
+                        type="checkbox"
+                        id="inviteOnly"
+                        checked={inviteOnly}
+                        onChange={(e) => onInviteOnlyChange(e.target.checked)}
+                    />
+                </div>
             </div>
+
         </div>
     );
 };

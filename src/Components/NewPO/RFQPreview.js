@@ -113,12 +113,7 @@ const RFQPreview = ({ formData }) => {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
                     <div style={{ width: '45%', borderTop: '1px solid #000', paddingTop: '0.5rem' }}>
-                        <p><strong>{getPartyTitle(true)}</strong></p>
-                        <p>Signature: _________</p>
-                        <p>Date: _________</p>
-                    </div>
-                    <div style={{ width: '45%', borderTop: '1px solid #000', paddingTop: '0.5rem' }}>
-                        <p><strong>{getPartyTitle(false)}</strong></p>
+                        <p><strong>Requesting Party</strong></p>
                         <p>Signature: _________</p>
                         <p>Date: _________</p>
                     </div>

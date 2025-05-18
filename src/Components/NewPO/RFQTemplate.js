@@ -11,24 +11,18 @@ import UserProfile from '../Context/UserProfile';
 import OtherData from '../Context/OtherData';
 import { useNavigate } from "react-router-dom";
 
-const RFQTemplate = ({ oldFormData, title }) => {
+const RFQTemplate = ({ oldFormData, rfqId }) => {
     const navigate = useNavigate();
     const [itemUnitOptions, setItemUnitOptions] = useState([]);
-    const [itemCurrencyOptions, setItemCurrencyOptions] = useState([]);
-    const [userRoleLst, setUserRoleLst] = useState();
+    const [contractSent, setContractSent] = useState(false);
+    const [proposalId, setProposalId] = useState();
     const [formData, setFormData] = useState(
         {
-            userRole: '',
             firstpartyDetails: '',
-            counterpartyDetails: '',
-            counterpartyContact: '',
-            startDate: '',
             contractDuration: '30',
             penalityDays: 0,
             penalityPercent: 0,
-            advance: 0,
-            deposite: 0,
-            currency: 'INR',
+            inviteOnly: true,
             paymentTerms: [],
             lineItems: [],
             customTerms: []
@@ -37,12 +31,12 @@ const RFQTemplate = ({ oldFormData, title }) => {
 
 
     useEffect(() => {
-        setRolesForTitles(title);
+        setProposalId(rfqId);
         if (oldFormData && oldFormData.counterpartyDetails && oldFormData.counterpartyDetails.length > 0) {
             console.log(999);
             setFormData(oldFormData);
         } else {
-            getRequestAllowAll("api/general/TemplateTerms?agTempType=" + title).then(r => r.json()).then(res => {
+            getRequestAllowAll("api/general/TemplateTerms?agTempType=Sales").then(r => r.json()).then(res => {
                 console.log(res);
                 if (res.data && res.data.length > 0) {
                     for (var i = 0; i < res.data.length; i++) {
@@ -55,7 +49,7 @@ const RFQTemplate = ({ oldFormData, title }) => {
                     }
                 }
             }).catch(err => console.log(err));
-            getRequestAllowAll("api/general/TemplateItem?agTempType=" + title).then(r => r.json()).then(res => {
+            getRequestAllowAll("api/general/TemplateItem?agTempType=Sales" ).then(r => r.json()).then(res => {
                 console.log(res);
                 if (res.data && res.data.length > 0) {
                     var customItem = [];
@@ -83,11 +77,6 @@ const RFQTemplate = ({ oldFormData, title }) => {
                 setItemUnitOptions(res.data);
             }
         }).catch(err => console.log(err));
-        getRequestAllowAll("api/General/CurrencyList").then(x => x.json()).then(res => {
-            if (res.status === 1) {
-                setItemCurrencyOptions(res.data);
-            }
-        }).catch(err => console.log(err));
         if (UserProfile.getToken().length > 0) {
             console.log("1");
             if (UserProfile.getPhoneNumber().length > 0) {
@@ -100,62 +89,9 @@ const RFQTemplate = ({ oldFormData, title }) => {
 
         }
 
-    }, [title]);
+    }, []);
 
     
-
-    const setRolesForTitles = (inputTitle) => {
-
-        if (inputTitle === "Rental Agreement") {
-            setUserRoleLst([{ valueData: "tenant", displayData: "Tenant" }, { valueData: "landlord", displayData: "Landlord" }]);
-        } else if (inputTitle === "Subletting") {
-            setUserRoleLst([{ valueData: "sublessee", displayData: "Sublessee" }, { valueData: "sublesser", displayData: "Sublesser" }]);
-        }
-        else if (inputTitle === "Interior Design") {
-            setUserRoleLst([{ valueData: "design_client", displayData: "Client" }, { valueData: "designer", displayData: "Designer" }]);
-        }
-        else if (inputTitle === "Maintenance") {
-
-            setUserRoleLst([{ valueData: "building_owner", displayData: "Building owner" }, { valueData: "maintenance_contractor", displayData: "Contractor" }]);
-        }
-        else if (inputTitle === "Home Renovation") {
-
-            setUserRoleLst([{ valueData: "home_owner", displayData: "Home owner" }, { valueData: "renovation_contractor", displayData: "Contractor" }]);
-        }
-        else if (inputTitle === "Consulting") {
-
-            setUserRoleLst([{ valueData: "consulting_client", displayData: "Client" }, { valueData: "consultant", displayData: "Consultant" }]);
-        }
-        else if (inputTitle === "NDA") {
-
-            setUserRoleLst([{ valueData: "receiving_party", displayData: "Receiving party" }, { valueData: "disclosing_party", displayData: "Disclosing party" }]);
-        }
-        else if (inputTitle === "Consent Agreement") {
-
-            setUserRoleLst([{ valueData: "acceptor", displayData: "Acceptor" }, { valueData: "creator", displayData: "Creator" }]);
-        }
-        else if (inputTitle === "Loan Agreement") {
-
-            setUserRoleLst([{ valueData: "borrower", displayData: "Borrower" }, { valueData: "lender", displayData: "Lender" }]);
-        }
-        else if (inputTitle === "Freelance") {
-
-            setUserRoleLst([{ valueData: "service_receiver", displayData: "Service receiver" }, { valueData: "service_provider", displayData: "Service provider" }]);
-        }
-        else if (inputTitle === "Sales") {
-
-            setUserRoleLst([{ valueData: "buyer", displayData: "Buyer" }, { valueData: "seller", displayData: "Seller" }]);
-        }
-        else if (inputTitle === "Custom") {
-
-            setUserRoleLst([{ valueData: "spending_party", displayData: "Spending party" }, { valueData: "receiving_party", displayData: "Receiving party" }]);
-        }
-        else {
-
-            setUserRoleLst([{ valueData: "buyer", displayData: "Buyer" }, { valueData: "seller", displayData: "Seller" }]);
-        }
-    };
-    const [contractSent, setContractSent] = useState(false);
 
     // Update form data
     const handleInputChange = (field, value) => {
@@ -207,12 +143,8 @@ const RFQTemplate = ({ oldFormData, title }) => {
                     description: "",
                     hsnSac: "",
                     quantity: 0,
-                    rate: '',
                     timeToComplete: 0,
-                    currency: 2,
-                    tax: 18,
-                    unit: 1,
-                    amount: 0
+                    unit: 1
                 }
             ]
         }));
@@ -275,62 +207,32 @@ const RFQTemplate = ({ oldFormData, title }) => {
 
     // Send contract
     const sendContract = () => {
-        if (!formData.counterpartyContact.trim()) {
-            alert('Please enter counterparty email or phone number');
-            return;
-        }
-        var termType = 1;//seller
-        if (formData.userRole === "tenant"
-            || formData.userRole === "sublessee"
-            || formData.userRole === "design_client"
-            || formData.userRole === "building_owner"
-            || formData.userRole === "home_owner"
-            || formData.userRole === "consulting_client"
-            || formData.userRole === "receiving_party"
-            || formData.userRole === "acceptor"
-            || formData.userRole === "borrower"
-            || formData.userRole === "service_receiver"
-            || formData.userRole === "buyer"
-            || formData.userRole === "spending_party") {
-            termType = 2;
-        }
         if (UserProfile.getToken().length > 0) {
             var formBody = {
-                Id: 0,
-                CreatorId: UserProfile.getUserId(),
-                CreatorType: termType === 1 ? "seller" : "buyer",
-                OtherPartyContactInfo: formData.counterpartyContact,
-                LDDays: formData.penalityDays,
-                LDPercent: formData.penalityPercent,
-                Advance: formData.advance,
-                NumberOfDays: formData.contractDuration,
-                ContractType: title,
-                StartDate: formData.startDate,
-                Deposit: formData.deposite
+                Id: proposalId && proposalId > 0 ? proposalId : 0,
+                ProposalCompletionInDays: formData.contractDuration,
+                ProposalLdPercent: formData.penalityPercent,
+                ProposalLdAppliedAfterDays: formData.penalityDays,
+                OwnerId: UserProfile.getUserId(),
+                InviteOnly: formData.inviteOnly
             };
-
-            sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(async res => {
-                OtherData.setData(JSON.stringify(res.data));
+            console.log(formBody);
+            sendPostRequest('api/Business/SaveRFQ', UserProfile.getToken(),formBody).then(r => r.json()).then(async res => {
+                //OtherData.setData(JSON.stringify(res.data)); 
                 var promises = [];
                 if (res.status === 1) {
                     for (var i = 0; i < formData.lineItems.length; i++) {
-
                         var itemForm = {
-                            AgItemId: 0,
-                            AgId: res.data.id,
-                            CreatorId: UserProfile.getUserId(),
-                            Rate: formData.lineItems[i].rate,
-                            Tax: formData.lineItems[i].tax,
+                            Id: 0,
+                            ItemRfpId: res.id,
                             ItemTitle: formData.lineItems[i].title,
                             ItemDescription: formData.lineItems[i].description,
-                            ItemCode: formData.lineItems[i].hsnSac,
-                            ItemDeliveredInDays: formData.lineItems[i].timeToComplete,
-                            Qty: formData.lineItems[i].quantity,
-                            CurrencyId: 2,
-                            UnitId: 1
+                            ItemHsnCsnUin: formData.lineItems[i].hsnSac,
+                            ItemQuantity: formData.lineItems[i].quantity,
+                            Unit: formData.lineItems[i].unit
                         };
                         // eslint-disable-next-line no-loop-func
-                        var p1 = sendPostRequest('api/Business/AddAgreementItem', UserProfile.getToken(), itemForm).then(r => {
+                        var p1 = sendPostRequest('api/Business/AddRFQItem', UserProfile.getToken(), itemForm).then(r => {
                             if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
                             return r.json();
                         }).then(resI => {
@@ -341,17 +243,16 @@ const RFQTemplate = ({ oldFormData, title }) => {
                         promises.push(p1);
                     }
                     for (var j = 0; j < formData.customTerms.length; j++) {
-
                         var termForm = {
                             Id: 0,
                             TermTitle: formData.customTerms[j].title,
                             TermTxt: formData.customTerms[j].text,
-                            TermTypeId: termType,
-                            TermRfpId: res.data.id,
+                            TermRfpId: res.id,
+                            IsPaymentTerm:false,
                             Attachments: []
                         };
                         // eslint-disable-next-line no-loop-func
-                        var p2 = sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termForm).then(r => {
+                        var p2 = sendPostRequest('api/Business/AddRFQTerm', UserProfile.getToken(), termForm).then(r => {
                             if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
                             return r.json();
                         }).then(rest => {
@@ -365,14 +266,14 @@ const RFQTemplate = ({ oldFormData, title }) => {
 
                         var termPForm = {
                             Id: 0,
-                            TermTitle: formData.customTerms[k].title,
-                            TermTxt: formData.customTerms[k].text,
-                            TermTypeId: termType,
-                            TermRfpId: res.data.id,
+                            TermTitle: formData.paymentTerms[k].title,
+                            TermTxt: formData.paymentTerms[k].text,
+                            IsPaymentTerm: true,
+                            TermRfpId: res.id,
                             Attachments: []
                         };
                         // eslint-disable-next-line no-loop-func
-                        var p3 = sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termPForm).then(r => {
+                        var p3 = sendPostRequest('api/Business/AddRFQTerm', UserProfile.getToken(), termPForm).then(r => {
                             if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
                             return r.json();
                         }).then(respt => {
@@ -386,12 +287,12 @@ const RFQTemplate = ({ oldFormData, title }) => {
                     var results = await Promise.all(promises);
                     console.log(results);
                     if (results.length === formData.lineItems.length + formData.customTerms.length + formData.paymentTerms.length) {
-                        getRequest("api/Business/StartAgreement?agreementId=" + res.data.id, UserProfile.getToken())
+                        getRequest("api/Business/StartRFQ?proposalId=" + res.id, UserProfile.getToken())
                             .then(x => x.json())
                             .then(resp => {
                                 console.log(resp);
                                 if (resp.status === 1) {
-                                    navigate("/DetailAgreement");
+                                    navigate("/Home");
                                 }
                             }).catch(err => console.log(err));
                     }
@@ -405,10 +306,7 @@ const RFQTemplate = ({ oldFormData, title }) => {
                 console.log(err);
             });
         } else {
-            var tempData = formData;
-            tempData.userRole = termType === 1 ? "seller" : "buyer";
-            tempData['contractType'] = title;
-            OtherData.setData(JSON.stringify(tempData));
+            OtherData.setData(JSON.stringify(formData));
             navigate("/signup");
         }
 
@@ -448,41 +346,6 @@ const RFQTemplate = ({ oldFormData, title }) => {
         }));
     }
 
-    const getPartyTitle = (isFirstParty) => {
-        if (!formData.userRole) return 'Party';
-        const partyTitles = {
-            tenant: ['Tenant', 'Landlord'],
-            landlord: ['Landlord', 'Tenant'],
-            sublessee: ['Sublessee', 'Sublesser'],
-            sublesser: ['Sublesser', 'Sublessee'],
-            design_client: ['Client', 'Designer'],
-            designer: ['Designer', 'Client'],
-            building_owner: ['Building owner', 'Contractor'],
-            maintenance_contractor: ['Contractor', 'Building owner'],
-            home_owner: ['Home owner', 'Contractor'],
-            renovation_contractor: ['Contractor', 'Home owner'],
-            consulting_client: ['Client', 'Consultant'],
-            consultant: ['Consultant', 'Client'],
-            receiving_party: ['Receiving party', 'Disclosing party'],
-            disclosing_party: ['Disclosing party', 'Receiving party'],
-            acceptor: ['Acceptor', 'Creator'],
-            creator: ['Creator', 'Acceptor'],
-            borrower: ['Borrower', 'Lender'],
-            lender: ['Lender', 'Borrower'],
-            service_receiver: ['Service receiver', 'Service provider'],
-            service_provider: ['Service provider', 'Service receiver'],
-            buyer: ['Buyer', 'Seller'],
-            seller: ['Seller', 'Buyer'],
-            spending_party: ['Spending party', 'Receiving party'],
-            receiving_party: ['Receiving party', 'Spending party']
-        };
-
-
-        return partyTitles[formData.userRole]
-            ? (isFirstParty ? partyTitles[formData.userRole][0] : partyTitles[formData.userRole][1])
-            : 'Party';
-    };
-
     return (
         <div className="template-container">
             <div className="template-header">
@@ -494,17 +357,13 @@ const RFQTemplate = ({ oldFormData, title }) => {
                     </a>
 
                 </div>
-                <h1 id="template-title">
-                    {/*{formData.userRole ? getContractTitle(formData.userRole) : 'CONTRACT AGREEMENT'}*/}
-                    {title}
-                </h1>
                 <p>Fill in the details below to create your contract</p>
             </div>
 
             <div className="template-body">
                 <div className="form-section" >
                     <h2>Proposal (RFQ) Details</h2>
-                    <p>This Proposal({title || 'AGREEMENT'}) is made by:</p>
+                    <p>This Proposal(RFQ) is made by:</p>
                     <h2>REQUESTING PARTY</h2>
                     <p>{formData.firstpartyDetails && formData.firstpartyDetails !== "" ? getUserDetailToDisplay(formData.firstpartyDetails) : "[Your details will appear here]"}</p>
                 </div>
@@ -514,21 +373,14 @@ const RFQTemplate = ({ oldFormData, title }) => {
                     agreementPenalityDays={formData.penalityDays}
                     onPenalityPercentChange={(value) => handleInputChange('penalityPercent', value)}
                     onPenalityDaysChange={(value) => handleInputChange('penalityDays', value)}
-                    startDate={formData.startDate}
                     contractDuration={formData.contractDuration}
-                    onStartDateChange={(value) => handleInputChange('startDate', value)}
                     onDurationChange={(value) => handleInputChange('contractDuration', value)}
+                    inviteOnly={formData.inviteOnly}
+                    onInviteOnlyChange={(value) => handleInputChange('inviteOnly', value)}
                 />
 
                 <RFQFinancialTerms
-                    agreementAdvance={formData.advance}
-                    agreementDeposite={formData.deposite}
-                    onAdvanceChange={(value) => handleInputChange('advance', value)}
-                    onDepositeChange={(value) => handleInputChange('deposite', value)}
-                    agreementCurrency={formData.currency}
                     unitOptions={itemUnitOptions}
-                    currencyOptions={itemCurrencyOptions}
-                    onCurrencyChange={(value) => handleInputChange('currency', value)}
                     lineItems={formData.lineItems}
                     onItemChange={updateLineItem}
                     onAddItem={addLineItem}
@@ -558,19 +410,5 @@ const RFQTemplate = ({ oldFormData, title }) => {
     );
 };
 
-// Helper function to get contract title based on role
-function getContractTitle(role) {
-    const titles = {
-        landlord: "RESIDENTIAL LEASE AGREEMENT",
-        tenant: "RESIDENTIAL LEASE AGREEMENT",
-        buyer: "SALE AGREEMENT",
-        seller: "SALE AGREEMENT",
-        licensor: "LICENSE AGREEMENT",
-        licensee: "LICENSE AGREEMENT",
-        service_provider: "SERVICE AGREEMENT",
-        client: "SERVICE AGREEMENT"
-    };
-    return titles[role] || "CONTRACT AGREEMENT";
-}
 
 export default RFQTemplate;
