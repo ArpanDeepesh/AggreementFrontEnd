@@ -164,7 +164,11 @@ const LoginPage = ({ setDisplayLogin })=>{
 					<p>Sign in to access your contracts and agreements</p>
 				</div>
 
-
+				<button type="button" class="btn btn-google" onClick={() => loginClick()} >
+					<i class="fab fa-google"></i>
+					<span>Continue with Google</span>
+				</button>
+				<div class="divider">or</div>
 				<div class="login-form">
 					<div class="tab-container">
 						<div class="tab login-tab-button active " onClick={(e) => {
@@ -178,7 +182,9 @@ const LoginPage = ({ setDisplayLogin })=>{
 					</div>
 
 					<Form ref={usrForm} onSubmit={handleSubmit} >
+						
 
+						
 						<div class="form-content login-tab-content" id="email-form">
 							<div class="form-group">
 								<label for="userEmail">Email address</label>
@@ -235,12 +241,7 @@ const LoginPage = ({ setDisplayLogin })=>{
 							<button type="submit" class="btn btn-primary">Login</button>
 						</div>
 
-						<div class="divider">or</div>
-
-						<button type="button" class="btn btn-google" onClick={() => loginClick()} >
-							<i class="fab fa-google"></i>
-							<span>Continue with Google</span>
-						</button>
+						
 
 						<div class="login-footer">
 							Don't have an account? <a href="/" id="register-btn" onClick={(e) => {

@@ -69,7 +69,7 @@ const PaymentComponent = ({ setUserName, setUserType }) => {
     };
 
     return (
-        <div>
+        <div className="main-content">
             {subscriptionObj && subscriptionObj.id && subscriptionObj.id > 0 ? <div>
                 <h1>Payment Page</h1>
                 {isLoading && <p>Loading Razorpay...</p>}

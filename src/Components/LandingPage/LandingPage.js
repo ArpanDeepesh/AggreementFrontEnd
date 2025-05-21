@@ -169,13 +169,13 @@ const LandingPage = () => {
                     <div className="action-buttons">
                         <a href="/" className="btn btn-custom" onClick={(e) => {
                             e.preventDefault();
-                            OtherData.setTemplateName("Home Maintenance");
+                            OtherData.setTemplateName("Custom");
                             navigate("/CustomAgreement");
                         }}>Build Custom Contract</a>
                         <a href="/" className="btn btn-rfq" onClick={(e) => {
                             e.preventDefault();
-                            OtherData.setTemplateName("Home Maintenance");
-                            navigate("/CustomAgreement");
+                            OtherData.resetData();
+                            navigate("/NewRFQ");
                         }}>Request for Quotation</a>
                     </div>
                 </div>

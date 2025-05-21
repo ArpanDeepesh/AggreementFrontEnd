@@ -315,7 +315,108 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
         console.log('Contract data:', formData);
         setContractSent(true);
     };
+    const saveContract = () => {
+        if (UserProfile.getToken().length > 0) {
+            var formBody = {
+                Id: proposalId && proposalId > 0 ? proposalId : 0,
+                ProposalCompletionInDays: formData.contractDuration,
+                ProposalLdPercent: formData.penalityPercent,
+                ProposalLdAppliedAfterDays: formData.penalityDays,
+                OwnerId: UserProfile.getUserId(),
+                InviteOnly: formData.inviteOnly
+            };
+            console.log(formBody);
+            sendPostRequest('api/Business/SaveRFQ', UserProfile.getToken(), formBody).then(r => r.json()).then(async res => {
+                //OtherData.setData(JSON.stringify(res.data)); 
+                var promises = [];
+                if (res.status === 1) {
+                    for (var i = 0; i < formData.lineItems.length; i++) {
+                        var itemForm = {
+                            Id: 0,
+                            ItemRfpId: res.id,
+                            ItemTitle: formData.lineItems[i].title,
+                            ItemDescription: formData.lineItems[i].description,
+                            ItemHsnCsnUin: formData.lineItems[i].hsnSac,
+                            ItemQuantity: formData.lineItems[i].quantity,
+                            Unit: formData.lineItems[i].unit
+                        };
+                        // eslint-disable-next-line no-loop-func
+                        var p1 = sendPostRequest('api/Business/AddRFQItem', UserProfile.getToken(), itemForm).then(r => {
+                            if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                            return r.json();
+                        }).then(resI => {
+                            if (resI.status !== 1) {
+                                alert("Some error while adding item " + formData.lineItems[i].title);
+                            }
+                        }).catch(err => console.log(err));
+                        promises.push(p1);
+                    }
+                    for (var j = 0; j < formData.customTerms.length; j++) {
+                        var termForm = {
+                            Id: 0,
+                            TermTitle: formData.customTerms[j].title,
+                            TermTxt: formData.customTerms[j].text,
+                            TermRfpId: res.id,
+                            IsPaymentTerm: false,
+                            Attachments: []
+                        };
+                        // eslint-disable-next-line no-loop-func
+                        var p2 = sendPostRequest('api/Business/AddRFQTerm', UserProfile.getToken(), termForm).then(r => {
+                            if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                            return r.json();
+                        }).then(rest => {
+                            if (rest.status !== 1) {
+                                alert("Some error while adding item " + formData.customTerms[j].title);
+                            }
+                        }).catch(err => console.log(err));
+                        promises.push(p2);
+                    }
+                    for (var k = 0; k < formData.paymentTerms.length; k++) {
 
+                        var termPForm = {
+                            Id: 0,
+                            TermTitle: formData.paymentTerms[k].title,
+                            TermTxt: formData.paymentTerms[k].text,
+                            IsPaymentTerm: true,
+                            TermRfpId: res.id,
+                            Attachments: []
+                        };
+                        // eslint-disable-next-line no-loop-func
+                        var p3 = sendPostRequest('api/Business/AddRFQTerm', UserProfile.getToken(), termPForm).then(r => {
+                            if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                            return r.json();
+                        }).then(respt => {
+                            if (respt.status !== 1) {
+                                alert("Some error while adding item " + formData.paymentTerms[k].title);
+                            }
+
+                        }).catch(err => console.log(err));
+                        promises.push(p3);
+                    }
+                    var results = await Promise.all(promises);
+                    console.log(results);
+                    if (results.length === formData.lineItems.length + formData.customTerms.length + formData.paymentTerms.length) {
+                        navigate("/Home");
+                    }
+                }
+
+
+                //OtherData.setData(JSON.stringify(res.data));
+                //navigate("/draftD2C");
+
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            OtherData.setData(JSON.stringify(formData));
+            navigate("/signup");
+        }
+
+
+        // In a real app, you would send this to your API
+        console.log('Contract data:', formData);
+        setContractSent(true);
+    };
     const VerifyUser = (contactDetail, inputProperty) => {
         findUserRequest({ ContactInfo: contactDetail }).then(r => r.json()).then(res => {
             console.log(res);
@@ -403,6 +504,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                 <RFQFormActions
                     onSendContract={sendContract}
                     disabled={contractSent}
+                    onSaveContract={saveContract }
                     sent={contractSent}
                 />
             </div>

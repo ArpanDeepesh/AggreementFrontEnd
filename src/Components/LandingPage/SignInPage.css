@@ -62,6 +62,7 @@
 /* Form */
 .login-form {
     padding: 2.5rem;
+    padding-top:0;
 }
 
 .tab-container {
@@ -190,7 +191,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 1rem;
+    margin: 0;
+    margin-top:1rem;
+    padding:5px;
 }
 
     .btn-google:hover {
@@ -206,7 +209,7 @@
 .divider {
     display: flex;
     align-items: center;
-    margin: 1.5rem 0;
+    margin: 0;
     color: var(--gray);
     font-size: 0.9rem;
 }

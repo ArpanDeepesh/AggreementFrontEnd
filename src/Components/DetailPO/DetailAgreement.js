@@ -121,7 +121,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 	}
 
 	return (
-		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
+		<><div className="main-content" style={{ overflowY: 'scroll' }}>
 			{agreementObj && agreementObj.id > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<AgreementNegotiation
 					reloadAction={reloadMethod}

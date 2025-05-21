@@ -48,6 +48,7 @@ import RFQListPage from "./HomePage/RFQListPage";
 import AnalyticsPage from "./HomePage/AnalyticsPage";
 import ResetPassword from './LandingPage/ResetPassword';
 import ContactUs from './LandingPage/ContactUs';
+import CookiePolicy from "./LandingPage/CookiePolicy";
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
     const [loggedInUserType, setLoggedInUserType] = useState();
@@ -126,11 +127,11 @@ const NewLayout = () => {
                         </a>
 
                         <div class="nav-title">Settings</div>
-                        <a href="#" class="nav-item">
+                        <a href="/" class="nav-item">
                             <i class="fas fa-cog"></i>
                             <span>Account Settings</span>
                         </a>
-                        <a href="#" class="nav-item">
+                        <a href="/" class="nav-item">
                             <i class="fas fa-users"></i>
                             <span>Team Members</span>
                         </a>
@@ -154,6 +155,7 @@ const NewLayout = () => {
                     <Route path="/Terms" element={<TermsAndCondtitions setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/Policy" element={<PrivacyPolicy setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/AboutUs" element={<AboutUs setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
+                    <Route path="/CookiePolicy" element={<CookiePolicy setUserName={setLoggedInUsername} setUserType={setLoggedInUserType} />} />
                     <Route path="/test" element={<Test />} />
                     <Route path="/ContactUs" element={<ContactUs />} />
 
@@ -233,7 +235,7 @@ const NewLayout = () => {
                             <ul>
                                 <li><a href="/Policy">Privacy Policy</a></li>
                                 <li><a href="/Terms">Terms of Service</a></li>
-                                <li><a href="/">Cookie Policy</a></li>
+                                <li><a href="/CookiePolicy">Cookie Policy</a></li>
                                 <li><a href="/">GDPR Compliance</a></li>
                             </ul>
                         </div>

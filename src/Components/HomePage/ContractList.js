@@ -50,6 +50,16 @@ const ContractList = () => {
         }
 
     }
+    const deleteAgreement = (e, agrmnt) =>
+    {
+        alert("Not able to delete right now. try again after some time");
+    }
+    const detailAgreement = (e, agrmnt) =>
+    {
+        e.preventDefault();
+        OtherData.setData(JSON.stringify(agrmnt));
+        navigate("/DetailAgreement");
+    }
     const openTab = (e, id) => {
         e.preventDefault();
         var tabContent = document.getElementsByClassName("status-content");
@@ -97,7 +107,7 @@ const ContractList = () => {
                                 <button class="contract-btn" title="Edit" onClick={(e) => { editAgreement(e, x); }}>
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
+                                <button class="contract-btn" title="Delete" onClick={(e) => { deleteAgreement(e, x); }}>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -122,11 +132,8 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Edit" onClick={(e) => { editAgreement(e, x); }}>
+                                <button class="contract-btn" title="Edit" onClick={(e) => { detailAgreement(e, x); }}>
                                     <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
-                                    <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </li>) : <></>
@@ -150,11 +157,8 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Edit" onClick={(e) => { editAgreement(e, x); }}>
+                                <button class="contract-btn" title="Details" onClick={(e) => { detailAgreement(e, x); }}>
                                     <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
-                                    <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </li>) : <></>
@@ -178,10 +182,10 @@ const ContractList = () => {
                                 </div>
                             </div>
                             <div class="contract-actions">
-                                <button class="contract-btn" title="Detail View" onClick={(e) => { editAgreement(e, x); }}>
+                                <button class="contract-btn" title="Detail View" onClick={(e) => { detailAgreement(e, x); }}>
                                     <i class="fas fa-info-circle"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete" onClick={(e) => { editAgreement(e, x); }}>
+                                <button class="contract-btn" title="Delete" onClick={(e) => { deleteAgreement(e, x); }}>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>

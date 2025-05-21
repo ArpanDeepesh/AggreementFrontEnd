@@ -420,7 +420,142 @@ const ContractTemplate = ({ oldFormData, title }) => {
     console.log('Contract data:', formData);
     setContractSent(true);
   };
+    const saveContract = () => {
+        if (!formData.counterpartyContact.trim()) {
+            alert('Please enter counterparty email or phone number');
+            return;
+        }
+        var termType = 1;//seller
+        if (formData.userRole === "tenant"
+            || formData.userRole === "sublessee"
+            || formData.userRole === "design_client"
+            || formData.userRole === "building_owner"
+            || formData.userRole === "home_owner"
+            || formData.userRole === "consulting_client"
+            || formData.userRole === "receiving_party"
+            || formData.userRole === "acceptor"
+            || formData.userRole === "borrower"
+            || formData.userRole === "service_receiver"
+            || formData.userRole === "buyer"
+            || formData.userRole === "spending_party") {
+            termType = 2;
+        }
+        if (UserProfile.getToken().length > 0) {
+            var formBody = {
+                Id: 0,
+                CreatorId: UserProfile.getUserId(),
+                CreatorType: termType === 1 ? "seller" : "buyer",
+                OtherPartyContactInfo: formData.counterpartyContact,
+                LDDays: formData.penalityDays,
+                LDPercent: formData.penalityPercent,
+                Advance: formData.advance,
+                NumberOfDays: formData.contractDuration,
+                ContractType: title,
+                StartDate: formData.startDate,
+                Deposit: formData.deposite
+            };
 
+            sendPostRequest('api/Business/CustomContract', UserProfile.getToken(), formBody).then(r => r.json()).then(async res => {
+                OtherData.setData(JSON.stringify(res.data));
+                var promises = [];
+                if (res.status === 1) {
+                    for (var i = 0; i < formData.lineItems.length; i++) {
+
+                        var itemForm = {
+                            AgItemId: 0,
+                            AgId: res.data.id,
+                            CreatorId: UserProfile.getUserId(),
+                            Rate: formData.lineItems[i].rate,
+                            Tax: formData.lineItems[i].tax,
+                            ItemTitle: formData.lineItems[i].title,
+                            ItemDescription: formData.lineItems[i].description,
+                            ItemCode: formData.lineItems[i].hsnSac,
+                            ItemDeliveredInDays: formData.lineItems[i].timeToComplete,
+                            Qty: formData.lineItems[i].quantity,
+                            CurrencyId: 2,
+                            UnitId: 1
+                        };
+                        // eslint-disable-next-line no-loop-func
+                        var p1 = sendPostRequest('api/Business/AddAgreementItem', UserProfile.getToken(), itemForm).then(r => {
+                            if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                            return r.json();
+                        }).then(resI => {
+                            if (resI.status !== 1) {
+                                alert("Some error while adding item " + formData.lineItems[i].title);
+                            }
+                        }).catch(err => console.log(err));
+                        promises.push(p1);
+                    }
+                    for (var j = 0; j < formData.customTerms.length; j++) {
+
+                        var termForm = {
+                            Id: 0,
+                            TermTitle: formData.customTerms[j].title,
+                            TermTxt: formData.customTerms[j].text,
+                            TermTypeId: termType,
+                            TermRfpId: res.data.id,
+                            Attachments: []
+                        };
+                        // eslint-disable-next-line no-loop-func
+                        var p2 = sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termForm).then(r => {
+                            if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                            return r.json();
+                        }).then(rest => {
+                            if (rest.status !== 1) {
+                                alert("Some error while adding item " + formData.customTerms[j].title);
+                            }
+                        }).catch(err => console.log(err));
+                        promises.push(p2);
+                    }
+                    for (var k = 0; k < formData.paymentTerms.length; k++) {
+
+                        var termPForm = {
+                            Id: 0,
+                            TermTitle: formData.customTerms[k].title,
+                            TermTxt: formData.customTerms[k].text,
+                            TermTypeId: termType,
+                            TermRfpId: res.data.id,
+                            Attachments: []
+                        };
+                        // eslint-disable-next-line no-loop-func
+                        var p3 = sendPostRequest('api/Business/AddAgreementTerm', UserProfile.getToken(), termPForm).then(r => {
+                            if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
+                            return r.json();
+                        }).then(respt => {
+                            if (respt.status !== 1) {
+                                alert("Some error while adding item " + formData.paymentTerms[k].title);
+                            }
+
+                        }).catch(err => console.log(err));
+                        promises.push(p3);
+                    }
+                    var results = await Promise.all(promises);
+                    console.log(results);
+                    if (results.length === formData.lineItems.length + formData.customTerms.length + formData.paymentTerms.length) {
+                        navigate("/Home");
+                    }
+                }
+
+
+                //OtherData.setData(JSON.stringify(res.data));
+                //navigate("/draftD2C");
+
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            var tempData = formData;
+            tempData.userRole = termType === 1 ? "seller" : "buyer";
+            tempData['contractType'] = title;
+            OtherData.setData(JSON.stringify(tempData));
+            navigate("/signup");
+        }
+
+
+        // In a real app, you would send this to your API
+        console.log('Contract data:', formData);
+        setContractSent(true);
+    };
     const VerifyUser = (contactDetail,inputProperty) => {
         findUserRequest({ ContactInfo: contactDetail }).then(r => r.json()).then(res => {
             console.log(res);
@@ -506,10 +641,10 @@ const ContractTemplate = ({ oldFormData, title }) => {
       </div>
       
       <div className="template-body">
-              <UserRoleSection 
-                  displayList={userRoleLst}
-                  userRole={formData.userRole}
-                  counterPartyDetail={formData.counterpartyDetails}
+            <UserRoleSection 
+                displayList={userRoleLst}
+                userRole={formData.userRole}
+                counterPartyDetail={formData.counterpartyDetails}
           counterpartyContact={formData.counterpartyContact}
           onRoleChange={(value) => handleInputChange('userRole', value)}
           onContactChange={(value) => handleInputChange('counterpartyContact', value)}
@@ -530,11 +665,11 @@ const ContractTemplate = ({ oldFormData, title }) => {
                   agreementPenalityDays={formData.penalityDays}
                   onPenalityPercentChange={(value) => handleInputChange('penalityPercent', value)}
                   onPenalityDaysChange={(value) => handleInputChange('penalityDays', value)}
-          startDate={formData.startDate}
-          contractDuration={formData.contractDuration}
-          onStartDateChange={(value) => handleInputChange('startDate', value)}
-          onDurationChange={(value) => handleInputChange('contractDuration', value)}
-        />
+                  startDate={formData.startDate}
+                  contractDuration={formData.contractDuration}
+                  onStartDateChange={(value) => handleInputChange('startDate', value)}
+                  onDurationChange={(value) => handleInputChange('contractDuration', value)}
+                />
         
               <FinancialTerms 
                   agreementAdvance={formData.advance}
@@ -556,10 +691,10 @@ const ContractTemplate = ({ oldFormData, title }) => {
         />
         
         <TermsConditions 
-                  customTerms={formData.customTerms}
-                  onAddTerm={addCustomTerm}
-                  onRemoveTerm={removeCustomTerm}
-                  handleEditTerm={editCustomTerm}
+            customTerms={formData.customTerms}
+            onAddTerm={addCustomTerm}
+            onRemoveTerm={removeCustomTerm}
+            handleEditTerm={editCustomTerm}
         />
         
         <ContractPreview formData={formData} />
@@ -567,7 +702,8 @@ const ContractTemplate = ({ oldFormData, title }) => {
         <FormActions 
           onSendContract={sendContract}
           disabled={contractSent}
-          sent={contractSent}
+                  sent={contractSent}
+                  onSaveContract={saveContract}
         />
       </div>
     </div>
