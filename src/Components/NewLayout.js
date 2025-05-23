@@ -71,10 +71,10 @@ const NewLayout = () => {
     return (
         <div >
             {loggedInUserName && loggedInUserName.length > 0 ? <>
-                <aside class="sidebar">
-                    <div class="sidebar-header">
-                        <div class="logo">
-                            <i class="fas fa-file-contract" style={{ color: '#007bff' }}></i>
+                <aside className="sidebar">
+                    <div className="sidebar-header">
+                        <div className="logo">
+                            <i className="fas fa-file-contract" style={{ color: '#007bff' }}></i>
                             <a style={{ textDecoration: "none" }} href="/">
                                 <span style={{ color: '#007bff' }}>Contr
                                     <span style={{ color: "#ff8400" }}>e</span>
@@ -83,64 +83,64 @@ const NewLayout = () => {
                         </div>
                     </div>
 
-                    <nav class="nav-menu scrollable-section">
-                        <div class="nav-title">Dashboard</div>
-                        <a href="/home" class="nav-item active">
-                            <i class="fas fa-home"></i>
+                    <nav className="nav-menu scrollable-section">
+                        <div className="nav-title">Dashboard</div>
+                        <a href="/home" className="nav-item active">
+                            <i className="fas fa-home"></i>
                             <span>Overview</span>
                         </a>
-                        <a href="/AnalyticsPage" class="nav-item">
-                            <i class="fas fa-chart-line"></i>
+                        <a href="/AnalyticsPage" className="nav-item">
+                            <i className="fas fa-chart-line"></i>
                             <span>Analytics</span>
                         </a>
 
-                        <div class="nav-title">Contracts</div>
-                        <a href="/AllContracts" class="nav-item">
-                            <i class="fas fa-file-signature"></i>
+                        <div className="nav-title">Contracts</div>
+                        <a href="/AllContracts" className="nav-item">
+                            <i className="fas fa-file-signature"></i>
                             <span>All Contracts</span>
                         </a>
-                        <a href="/SelectTemplate" class="nav-item">
-                            <i class="fas fa-plus-circle"></i>
+                        <a href="/SelectTemplate" className="nav-item">
+                            <i className="fas fa-plus-circle"></i>
                             <span>Create New</span>
                         </a>
-                        <a href="/SelectTemplate" class="nav-item">
-                            <i class="fas fa-tasks"></i>
+                        <a href="/SelectTemplate" className="nav-item">
+                            <i className="fas fa-tasks"></i>
                             <span>Templates</span>
                         </a>
-                        <a href="#" class="nav-item">
-                            <i class="fas fa-archive"></i>
+                        <a href="#" className="nav-item">
+                            <i className="fas fa-archive"></i>
                             <span>Archive</span>
                         </a>
 
-                        <div class="nav-title">RFQs</div>
-                        <a href="/AllRFQ" class="nav-item">
-                            <i class="fas fa-clipboard-list"></i>
+                        <div className="nav-title">RFQs</div>
+                        <a href="/AllRFQ" className="nav-item">
+                            <i className="fas fa-clipboard-list"></i>
                             <span>All RFQs</span>
                         </a>
-                        <a href="/NewRFQ" class="nav-item">
-                            <i class="fas fa-plus-circle"></i>
+                        <a href="/NewRFQ" className="nav-item">
+                            <i className="fas fa-plus-circle"></i>
                             <span>Create RFQ</span>
                         </a>
-                        <a href="/AllRFQ" class="nav-item">
-                            <i class="fas fa-bullhorn"></i>
+                        <a href="/AllRFQ" className="nav-item">
+                            <i className="fas fa-bullhorn"></i>
                             <span>Invitations</span>
                         </a>
 
-                        <div class="nav-title">Settings</div>
-                        <a href="/" class="nav-item">
-                            <i class="fas fa-cog"></i>
+                        <div className="nav-title">Settings</div>
+                        <a href="/" className="nav-item">
+                            <i className="fas fa-cog"></i>
                             <span>Account Settings</span>
                         </a>
-                        <a href="/" class="nav-item">
-                            <i class="fas fa-users"></i>
+                        <a href="/" className="nav-item">
+                            <i className="fas fa-users"></i>
                             <span>Team Members</span>
                         </a>
-                        <a href="/userTerms" class="nav-item">
-                            <i class="fas fa-file-alt"></i>
+                        <a href="/userTerms" className="nav-item">
+                            <i className="fas fa-file-alt"></i>
                             <span>User Terms</span>
                         </a>
-                        <a href="/userItems" class="nav-item">
-                            <i class="fas fa-boxes"></i>
+                        <a href="/userItems" className="nav-item">
+                            <i className="fas fa-boxes"></i>
                             <span>Catalogues</span>
                         </a>
                     </nav>

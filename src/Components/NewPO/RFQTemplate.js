@@ -64,7 +64,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             timeToComplete: res.data[i].itemCompletion,
                             currency: res.data[i].currency,
                             tax: res.data[i].itemTax,
-                            unit: res.data[i].unit,
+                            unit: 1,
                             amount: 0
                         });
                     }
@@ -204,7 +204,6 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
             ]
         }));
     };
-
     // Send contract
     const sendContract = () => {
         if (UserProfile.getToken().length > 0) {
@@ -231,6 +230,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             ItemQuantity: formData.lineItems[i].quantity,
                             Unit: formData.lineItems[i].unit
                         };
+                        console.log(itemForm);
                         // eslint-disable-next-line no-loop-func
                         var p1 = sendPostRequest('api/Business/AddRFQItem', UserProfile.getToken(), itemForm).then(r => {
                             if (!r.ok) throw new Error(`Fetch failed: AddAgreementItem`);
@@ -239,6 +239,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             if (resI.status !== 1) {
                                 alert("Some error while adding item " + formData.lineItems[i].title);
                             }
+                            return resI;
                         }).catch(err => console.log(err));
                         promises.push(p1);
                     }
@@ -259,6 +260,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             if (rest.status !== 1) {
                                 alert("Some error while adding item " + formData.customTerms[j].title);
                             }
+                            return rest;
                         }).catch(err => console.log(err));
                         promises.push(p2);
                     }
@@ -280,7 +282,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             if (respt.status !== 1) {
                                 alert("Some error while adding item " + formData.paymentTerms[k].title);
                             }
-
+                            return respt;
                         }).catch(err => console.log(err));
                         promises.push(p3);
                     }
@@ -348,6 +350,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             if (resI.status !== 1) {
                                 alert("Some error while adding item " + formData.lineItems[i].title);
                             }
+                            return resI;
                         }).catch(err => console.log(err));
                         promises.push(p1);
                     }
@@ -368,6 +371,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             if (rest.status !== 1) {
                                 alert("Some error while adding item " + formData.customTerms[j].title);
                             }
+                            return rest;
                         }).catch(err => console.log(err));
                         promises.push(p2);
                     }
@@ -389,7 +393,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             if (respt.status !== 1) {
                                 alert("Some error while adding item " + formData.paymentTerms[k].title);
                             }
-
+                            return respt;
                         }).catch(err => console.log(err));
                         promises.push(p3);
                     }

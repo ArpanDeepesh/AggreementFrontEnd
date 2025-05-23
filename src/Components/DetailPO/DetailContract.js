@@ -149,7 +149,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 	}
 
 	return (
-		<><div className="d-flex h-100" style={{ overflowY: 'scroll' }}>
+		<><div className="main-content" >
 			{agreementObj && agreementObj.id > 0 ? <div className="table" style={{ textAlign: "left" }}>
 				<RemarkListDisplay remarkLst={remarkList} setRemarkLst={setRemarkList} />
 				<ReportDisplay reportData={agReportData} setReportData={setAgReportData}/>
@@ -699,7 +699,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 													}}
 												/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
 											<br />
-											<span class="badge bg-success text-light">{x.itemStatus}</span>
+											<span className="badge bg-success text-light">{x.itemStatus}</span>
 										</span>
 									</div>
 									<div className="col-md-1 d-flex align-items-center">
@@ -752,7 +752,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 												}}
 											/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
 										<br />
-										<span class="badge bg-success text-light">{x.termStatus}</span>
+										<span className="badge bg-success text-light">{x.termStatus}</span>
 									</div>
 									<div className="col-md-3">
 										<span>
@@ -800,7 +800,7 @@ const DetailContract = ({ setUserName, setUserType }) => {
 												}}
 											/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
 										<br />
-										<span class="badge bg-success text-light">{x.termStatus}</span>
+										<span className="badge bg-success text-light">{x.termStatus}</span>
 									</div>
 									<div className="col-md-3">
 										<span>

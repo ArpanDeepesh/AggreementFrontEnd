@@ -64,7 +64,7 @@ const PaymentList = ({ displayList, setDisplayList, payLst, setPayLst }) => {
 										}}
 									/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
 								<br />
-								<span class="badge bg-success text-light">{x.itemStatus}</span>
+								<span className="badge bg-success text-light">{x.itemStatus}</span>
 							</span>
 						</div>
 						<div className="col-md-2">

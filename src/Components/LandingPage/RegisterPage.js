@@ -138,9 +138,9 @@ const RegisterPage = ({ setDisplayLogin}) => {
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<div class="login-container">
-				<div class="login-header">
-					<div class="logo">
+			<div className="login-container">
+				<div className="login-header">
+					<div className="logo">
 						<a style={{ textDecoration: "none" }} href="/">
 							<span style={{ color: 'white' }}>Contr
 								<span style={{ color: "#ff8400" }}>e</span>
@@ -150,55 +150,55 @@ const RegisterPage = ({ setDisplayLogin}) => {
 					<h1>Welcome to contrect</h1>
 					<p>Register to start making your own contract</p>
 				</div>
-				<div class="login-form">
+				<div className="login-form">
 					<Form ref={usrForm} onSubmit={handleSubmit} >
-						<div class="form-content" id="email-form">
-							<div class="form-group">
+						<div className="form-content" id="email-form">
+							<div className="form-group">
 								<label for="UserName">Name</label>
-								<input type="text" id="UserName" name="UserName" class="form-control" placeholder="John Doe" />
+								<input type="text" id="UserName" name="UserName" className="form-control" placeholder="John Doe" />
 							</div>
-							<div class="form-group">
+							<div className="form-group">
 								<label for="PhoneNumber">Phone Number</label>
-								<input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" placeholder="+91 XXXXX-XXXXX" />
+								<input type="text" id="PhoneNumber" name="PhoneNumber" className="form-control" placeholder="+91 XXXXX-XXXXX" />
 							</div>
-							<div class="form-group">
+							<div className="form-group">
 								<label for="Email">Email</label>
-								<input type="text" id="Email" name="Email" class="form-control" placeholder="John@example.com" />
+								<input type="text" id="Email" name="Email" className="form-control" placeholder="John@example.com" />
 							</div>
-							<div class="form-group">
+							<div className="form-group">
 								<label for="UsrPan">Pan</label>
-								<input type="text" id="UsrPan" name="UsrPan" class="form-control" placeholder="XXXXX XXXXA" />
+								<input type="text" id="UsrPan" name="UsrPan" className="form-control" placeholder="XXXXX XXXXA" />
 							</div>
-							<div class="form-group">
+							<div className="form-group">
 								<label for="UsrGstin">GSTIN</label>
-								<input type="text" id="UsrGstin" name="UsrGstin" class="form-control" placeholder="MPXX-XXXX-XXXX-XXXX-XX5" />
+								<input type="text" id="UsrGstin" name="UsrGstin" className="form-control" placeholder="MPXX-XXXX-XXXX-XXXX-XX5" />
 							</div>
-							<div class="form-group">
+							<div className="form-group">
 								<label for="UsrAddress">Address</label>
-								<input type="text" id="UsrAddress" name="UsrAddress" class="form-control" placeholder="" />
+								<input type="text" id="UsrAddress" name="UsrAddress" className="form-control" placeholder="" />
 							</div>
 							
-							<div class="form-group">
+							<div className="form-group">
 								<label for="Password">Password</label>
-								<input type="password" id="Password" name="Password" class="form-control" placeholder="••••••••" />
+								<input type="password" id="Password" name="Password" className="form-control" placeholder="••••••••" />
 							</div>
 
-							<div class="form-group">
+							<div className="form-group">
 								<label for="ConfirmPassword">Confirm password</label>
-								<input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="••••••••" />
+								<input type="password" id="ConfirmPassword" name="ConfirmPassword" className="form-control" placeholder="••••••••" />
 							</div>
-							<div class="form-options">
-								<div class="remember-me">
+							<div className="form-options">
+								<div className="remember-me">
 									<input type="checkbox" id="UsrIsMSME" name="UsrIsMSME" />
 									<label for="UsrIsMSME">Is MSME?</label>
 								</div>
-								<a href="/" class="forgot-password" onClick={(e) => {
+								<a href="/" className="forgot-password" onClick={(e) => {
 									e.preventDefault();
 									setDisplayLogin(1);
 								}}>Already have account?</a>
 							</div>
 
-							<button type="submit" class="btn btn-primary">Register</button>
+							<button type="submit" className="btn btn-primary">Register</button>
 						</div>
 					</Form>
 				</div>

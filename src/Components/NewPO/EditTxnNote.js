@@ -116,7 +116,7 @@ const EditTxnNote = () => {
 
 
 	return (<>
-		<div className="scrollable-section">
+		<div className="main-content">
 			<DisappearingMessage msg={msgDis} setMsg={setMsgDis} />
 			<MessageDisplay msg={msg} setMsg={setMsg} />
 			{txnNoteObj && txnNoteObj.id && txnNoteObj.id > 0 ?

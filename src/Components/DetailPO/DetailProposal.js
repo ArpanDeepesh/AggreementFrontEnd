@@ -308,7 +308,7 @@ const DetailProposal = ({ setUserName, setUserType }) => {
 							<div className="col-md-1 d-flex align-items-center">
 
 								<span>
-									<strong className="d-inline d-md-none">Status: </strong> <span class="badge bg-success text-light">{x.status}</span>
+									<strong className="d-inline d-md-none">Status: </strong> <span className="badge bg-success text-light">{x.status}</span>
 								</span>
 							</div>
 							<div className="col-md-3 d-flex align-items-center">

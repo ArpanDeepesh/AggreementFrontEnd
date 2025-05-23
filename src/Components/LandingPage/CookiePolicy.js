@@ -13,14 +13,14 @@ const CookiePolicy = ({ setUserName, setUserType }) =>
         <>
             <div className={displayName && displayName.length>0?"main-content":""}>
                 {displayName && displayName.length > 0 ? <>
-                    <div class="headerHome">
-                        <div class="page-title">
+                    <div className="headerHome">
+                        <div className="page-title">
                             <h1>Cookie Policy</h1>
                             <span className="effective-date">Last Updated: December 3, 2024</span>
                         </div>
-                        <div class="user-profile">
+                        <div className="user-profile">
                             <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" />
-                            <div class="user-info">
+                            <div className="user-info">
                                 <h4>{displayName}</h4>
                                 <p>Premium Plan</p>
                                 <a href="/LogOut" style={{ color: "#007bff" }}>Logout</a>

@@ -150,10 +150,10 @@ const LoginPage = ({ setDisplayLogin })=>{
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<div class="login-container">
+			<div className="login-container">
 
-				<div class="login-header">
-					<div class="logo">
+				<div className="login-header">
+					<div className="logo">
 						<a style={{ textDecoration: "none" }} href="/">
 							<span style={{ color: 'white' }}>Contr
 								<span style={{ color: "#ff8400" }}>e</span>
@@ -164,18 +164,18 @@ const LoginPage = ({ setDisplayLogin })=>{
 					<p>Sign in to access your contracts and agreements</p>
 				</div>
 
-				<button type="button" class="btn btn-google" onClick={() => loginClick()} >
-					<i class="fab fa-google"></i>
+				<button type="button" className="btn btn-google" onClick={() => loginClick()} >
+					<i className="fab fa-google"></i>
 					<span>Continue with Google</span>
 				</button>
-				<div class="divider">or</div>
-				<div class="login-form">
-					<div class="tab-container">
-						<div class="tab login-tab-button active " onClick={(e) => {
+				<div className="divider">or</div>
+				<div className="login-form">
+					<div className="tab-container">
+						<div className="tab login-tab-button active " onClick={(e) => {
 							e.preventDefault();
 							openTab(e, "email-form");
 						}}>Email</div>
-						<div class="tab login-tab-button" onClick={(e) => {
+						<div className="tab login-tab-button" onClick={(e) => {
 							e.preventDefault();
 							openTab(e, "phone-form");
 						}}>Phone</div>
@@ -185,65 +185,65 @@ const LoginPage = ({ setDisplayLogin })=>{
 						
 
 						
-						<div class="form-content login-tab-content" id="email-form">
-							<div class="form-group">
+						<div className="form-content login-tab-content" id="email-form">
+							<div className="form-group">
 								<label for="userEmail">Email address</label>
-								<input type="email" name="userEmail" id="userEmail" class="form-control" placeholder="you@example.com" />
+								<input type="email" name="userEmail" id="userEmail" className="form-control" placeholder="you@example.com" />
 							</div>
 
-							<div class="form-group">
+							<div className="form-group">
 								<label for="emailPass">Password</label>
-								<input type="password" name="userEmailPass" id="emailPass" class="form-control" placeholder="••••••••" />
+								<input type="password" name="userEmailPass" id="emailPass" className="form-control" placeholder="••••••••" />
 							</div>
 
-							<div class="form-options">
-								{/*<div class="remember-me">*/}
+							<div className="form-options">
+								{/*<div className="remember-me">*/}
 								{/*	<input type="checkbox" id="remember" />*/}
 								{/*	<label for="remember">Remember me</label>*/}
 								{/*</div>*/}
-								<a href="/" class="forgot-password" onClick={(e) => {
+								<a href="/" className="forgot-password" onClick={(e) => {
 									e.preventDefault();
 									setDisplayLogin(3);
 								}}>Forgot password?</a>
 							</div>
 
-							<button type="submit" class="btn btn-primary">Login</button>
+							<button type="submit" className="btn btn-primary">Login</button>
 						</div>
 
 
-						<div class="form-content login-tab-content" id="phone-form" style={{ display: "none" }} >
-							<div class="form-group">
+						<div className="form-content login-tab-content" id="phone-form" style={{ display: "none" }} >
+							<div className="form-group">
 								<label for="phone">Phone number</label>
-								<div class="phone-input">
-									<select class="phone-prefix form-control" style={{ width:"20%" }} name="phonePrefix">
+								<div className="phone-input">
+									<select className="phone-prefix form-control" style={{ width:"20%" }} name="phonePrefix">
 										<option value="+1" >+1</option>
 										<option value="+44">+44</option>
 										<option value="+91">+91</option>
 										<option value="+61">+61</option>
 									</select>
-									<input type="tel" name="userPhone" class="form-control phone-number" placeholder="123-456-7890" />
+									<input type="tel" name="userPhone" className="form-control phone-number" placeholder="123-456-7890" />
 								</div>
 							</div>
-							<div class="form-group">
+							<div className="form-group">
 								<label for="phonePass">Password</label>
-								<input type="password" id="phonePass" name="userPhonePass" class="form-control" placeholder="••••••••" />
+								<input type="password" id="phonePass" name="userPhonePass" className="form-control" placeholder="••••••••" />
 							</div>
-							<div class="form-options">
-								{/*<div class="remember-me">*/}
+							<div className="form-options">
+								{/*<div className="remember-me">*/}
 								{/*	<input type="checkbox" id="remember" />*/}
 								{/*	<label for="remember">Remember me</label>*/}
 								{/*</div>*/}
-								<a href="/" class="forgot-password" onClick={(e) => {
+								<a href="/" className="forgot-password" onClick={(e) => {
 									e.preventDefault();
 									setDisplayLogin(3);
 								}}>Forgot password?</a>
 							</div>
-							<button type="submit" class="btn btn-primary">Login</button>
+							<button type="submit" className="btn btn-primary">Login</button>
 						</div>
 
 						
 
-						<div class="login-footer">
+						<div className="login-footer">
 							Don't have an account? <a href="/" id="register-btn" onClick={(e) => {
 								e.preventDefault();
 								setDisplayLogin(2);

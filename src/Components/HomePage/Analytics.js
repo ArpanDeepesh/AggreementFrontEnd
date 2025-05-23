@@ -46,20 +46,20 @@ const Analytics = () => {
     }
     return (<>
 
-        <div class="dashboard-stats">
-            <div class="stat-card">
-                <div class="stat-header">
+        <div className="dashboard-stats">
+            <div className="stat-card">
+                <div className="stat-header">
                     <div>
-                        <div class="stat-title">Active Contracts</div>
-                        <div class="stat-value">24</div>
+                        <div className="stat-title">Active Contracts</div>
+                        <div className="stat-value">24</div>
                     </div>
-                    <div class="stat-change up">
-                        <i class="fas fa-arrow-up"></i>
+                    <div className="stat-change up">
+                        <i className="fas fa-arrow-up"></i>
                         <span>12%</span>
                     </div>
                 </div>
-                <div class="stat-chart">
-                    <div class="chart-placeholder">
+                <div className="stat-chart">
+                    <div className="chart-placeholder">
                         {clientReport ? <>
                             <ClientPorgress totalValue={clientReport.totalSellerContractAmount}
                                 invoiceRaised={clientReport.totalSellerInvoiceAmount}
@@ -69,19 +69,19 @@ const Analytics = () => {
                     </div>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-header">
+            <div className="stat-card">
+                <div className="stat-header">
                     <div>
-                        <div class="stat-title">Pending Signatures</div>
-                        <div class="stat-value">8</div>
+                        <div className="stat-title">Pending Signatures</div>
+                        <div className="stat-value">8</div>
                     </div>
-                    <div class="stat-change down">
-                        <i class="fas fa-arrow-down"></i>
+                    <div className="stat-change down">
+                        <i className="fas fa-arrow-down"></i>
                         <span>5%</span>
                     </div>
                 </div>
-                <div class="stat-chart">
-                    <div class="chart-placeholder">
+                <div className="stat-chart">
+                    <div className="chart-placeholder">
                         {clientReport ? <>
                             <ClientPorgress totalValue={clientReport.totalBuyerContractAmount}
                                 invoiceRaised={clientReport.totalBuyerInvoiceAmount}
@@ -91,38 +91,38 @@ const Analytics = () => {
                     </div>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-header">
+            <div className="stat-card">
+                <div className="stat-header">
                     <div>
-                        <div class="stat-title">Upcoming Renewals</div>
-                        <div class="stat-value">5</div>
+                        <div className="stat-title">Upcoming Renewals</div>
+                        <div className="stat-value">5</div>
                     </div>
-                    <div class="stat-change up">
-                        <i class="fas fa-arrow-up"></i>
+                    <div className="stat-change up">
+                        <i className="fas fa-arrow-up"></i>
                         <span>3%</span>
                     </div>
                 </div>
-                <div class="stat-chart">
-                    <div class="chart-placeholder">
+                <div className="stat-chart">
+                    <div className="chart-placeholder">
                         {clientReport ? <>
                             <CashFlowProgress cashIn={clientReport.totalCashIn} cashOut={clientReport.totalCashOut} />
                         </> : <>Loading data..</>}
                     </div>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-header">
+            <div className="stat-card">
+                <div className="stat-header">
                     <div>
-                        <div class="stat-title">Contract Value</div>
-                        <div class="stat-value">¥1.2M</div>
+                        <div className="stat-title">Contract Value</div>
+                        <div className="stat-value">¥1.2M</div>
                     </div>
-                    <div class="stat-change up">
-                        <i class="fas fa-arrow-up"></i>
+                    <div className="stat-change up">
+                        <i className="fas fa-arrow-up"></i>
                         <span>18%</span>
                     </div>
                 </div>
-                <div class="stat-chart">
-                    <div class="chart-placeholder">{attensionRequired && attensionRequired.length > 0 ? <>
+                <div className="stat-chart">
+                    <div className="chart-placeholder">{attensionRequired && attensionRequired.length > 0 ? <>
                         <ul>
                             {attensionRequired.map(x => <li>
                                 (Buyer){x.buyer.usrName} and (Seller) {x.seller.usrName} agreement required your attention <span className="clickableLink" onClick={(e) => {
@@ -139,56 +139,56 @@ const Analytics = () => {
         </div>
 
 
-        <div class="financial-overview">
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="section-title">Contract Value Trend</h3>
-                    <div class="chart-actions">
-                        <button class="chart-btn active">Monthly</button>
-                        <button class="chart-btn">Quarterly</button>
-                        <button class="chart-btn">Yearly</button>
+        <div className="financial-overview">
+            <div className="chart-container">
+                <div className="chart-header">
+                    <h3 className="section-title">Contract Value Trend</h3>
+                    <div className="chart-actions">
+                        <button className="chart-btn active">Monthly</button>
+                        <button className="chart-btn">Quarterly</button>
+                        <button className="chart-btn">Yearly</button>
                     </div>
                 </div>
-                <div class="chart-placeholder">Contract Value Trend Chart</div>
+                <div className="chart-placeholder">Contract Value Trend Chart</div>
             </div>
-            <div class="top-contracts">
-                <div class="chart-header">
-                    <h3 class="section-title">Top Contracts</h3>
-                   {/* <a href="/" class="view-all">View All</a>*/}
+            <div className="top-contracts">
+                <div className="chart-header">
+                    <h3 className="section-title">Top Contracts</h3>
+                   {/* <a href="/" className="view-all">View All</a>*/}
                 </div>
-                <div class="contract-rank">
-                    <div class="rank-number top">1</div>
-                    <div class="rank-details">
-                        <div class="rank-title">Office Lease Agreement</div>
-                        <div class="rank-value">¥320,000</div>
+                <div className="contract-rank">
+                    <div className="rank-number top">1</div>
+                    <div className="rank-details">
+                        <div className="rank-title">Office Lease Agreement</div>
+                        <div className="rank-value">¥320,000</div>
                     </div>
                 </div>
-                <div class="contract-rank">
-                    <div class="rank-number top">2</div>
-                    <div class="rank-details">
-                        <div class="rank-title">IT Services Contract</div>
-                        <div class="rank-value">¥280,000</div>
+                <div className="contract-rank">
+                    <div className="rank-number top">2</div>
+                    <div className="rank-details">
+                        <div className="rank-title">IT Services Contract</div>
+                        <div className="rank-value">¥280,000</div>
                     </div>
                 </div>
-                <div class="contract-rank">
-                    <div class="rank-number top">3</div>
-                    <div class="rank-details">
-                        <div class="rank-title">Marketing Agency</div>
-                        <div class="rank-value">¥195,000</div>
+                <div className="contract-rank">
+                    <div className="rank-number top">3</div>
+                    <div className="rank-details">
+                        <div className="rank-title">Marketing Agency</div>
+                        <div className="rank-value">¥195,000</div>
                     </div>
                 </div>
-                <div class="contract-rank">
-                    <div class="rank-number">4</div>
-                    <div class="rank-details">
-                        <div class="rank-title">Consulting Services</div>
-                        <div class="rank-value">¥150,000</div>
+                <div className="contract-rank">
+                    <div className="rank-number">4</div>
+                    <div className="rank-details">
+                        <div className="rank-title">Consulting Services</div>
+                        <div className="rank-value">¥150,000</div>
                     </div>
                 </div>
-                <div class="contract-rank">
-                    <div class="rank-number">5</div>
-                    <div class="rank-details">
-                        <div class="rank-title">Equipment Rental</div>
-                        <div class="rank-value">¥85,000</div>
+                <div className="contract-rank">
+                    <div className="rank-number">5</div>
+                    <div className="rank-details">
+                        <div className="rank-title">Equipment Rental</div>
+                        <div className="rank-value">¥85,000</div>
                     </div>
                 </div>
             </div>

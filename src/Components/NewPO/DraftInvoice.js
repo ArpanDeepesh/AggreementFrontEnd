@@ -135,7 +135,7 @@ const DraftInvoice = () => {
 
 
 	return (<>
-		<div className="scrollable-section">
+		<div className="main-content">
 			<MessageDisplay msg={msg} setMsg={setMsg} />
 
 			{agreementObj && agreementObj.id && agreementObj.id > 0 ?

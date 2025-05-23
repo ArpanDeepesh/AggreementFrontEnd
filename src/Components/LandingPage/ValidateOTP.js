@@ -69,10 +69,10 @@ const ValidateOTP = ({ setDisplayLogin }) => {
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<div class="login-container">
+			<div className="login-container">
 
-				<div class="login-header">
-					<div class="logo">
+				<div className="login-header">
+					<div className="logo">
 						<a style={{ textDecoration: "none" }} href="/">
 							<span style={{ color: 'white' }}>Contr
 								<span style={{ color: "#ff8400" }}>e</span>
@@ -84,36 +84,36 @@ const ValidateOTP = ({ setDisplayLogin }) => {
 				</div>
 
 
-				<div class="login-form">
+				<div className="login-form">
 
 					<Form ref={usrForm} onSubmit={handleSubmit} >
 
-						<div class="form-content" id="phone-form" >
-							<div class="otp-section">
-								<div class="form-group">
+						<div className="form-content" id="phone-form" >
+							<div className="otp-section">
+								<div className="form-group">
 									<label>Enter 6-digit OTP</label>
-									<div class="otp-inputs">
-										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue1" pattern="\d" inputmode="numeric" />
-										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue2" pattern="\d" inputmode="numeric" />
-										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue3" pattern="\d" inputmode="numeric" />
-										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue4" pattern="\d" inputmode="numeric" />
-										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue5" pattern="\d" inputmode="numeric" />
-										<input type="text" class="otp-input" maxlength="1" name="OTPValidationValue6" pattern="\d" inputmode="numeric" />
+									<div className="otp-inputs">
+										<input type="text" className="otp-input" maxlength="1" name="OTPValidationValue1" pattern="\d" inputmode="numeric" />
+										<input type="text" className="otp-input" maxlength="1" name="OTPValidationValue2" pattern="\d" inputmode="numeric" />
+										<input type="text" className="otp-input" maxlength="1" name="OTPValidationValue3" pattern="\d" inputmode="numeric" />
+										<input type="text" className="otp-input" maxlength="1" name="OTPValidationValue4" pattern="\d" inputmode="numeric" />
+										<input type="text" className="otp-input" maxlength="1" name="OTPValidationValue5" pattern="\d" inputmode="numeric" />
+										<input type="text" className="otp-input" maxlength="1" name="OTPValidationValue6" pattern="\d" inputmode="numeric" />
 									</div>
 								</div>
 
-								<div class="resend-otp">
+								<div className="resend-otp">
 									<a href="/" id="resend-otp" onClick={(e) => {
 										e.preventDefault();
 									}}>Resend OTP</a>
 								</div>
-								<div class="form-options">
-									<a href="/" class="forgot-password" onClick={(e) => {
+								<div className="form-options">
+									<a href="/" className="forgot-password" onClick={(e) => {
 										e.preventDefault();
 										setDisplayLogin(3);
 									}}>Back to provide phone number.</a>
 								</div>
-								<button type="submit" class="btn btn-primary">Verify & Sign in</button>
+								<button type="submit" className="btn btn-primary">Verify & Sign in</button>
 							</div>
 						</div>
 					</Form>

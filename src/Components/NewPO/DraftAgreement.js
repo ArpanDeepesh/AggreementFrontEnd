@@ -30,7 +30,6 @@ const DraftAgreement = () => {
 	const [termDropDownId, setTermDropDownId] = useState();
 
 	const [buyerTermList, setBuyerTermList] = useState([]);
-	const [sellerTermList, setSellerTermList] = useState([]);
 
 	const [termId, setTermId] = useState();
 	const [termTitle, setTermTitle] = useState();
@@ -51,7 +50,6 @@ const DraftAgreement = () => {
 			setAgreementObj(obj);
 			loadItemList(obj.id);
 			loadBuyerTermList(obj.id);
-			loadSellerTermList(obj.id);
 		}
 
 		getRequest("api/General/UserTermDropDown?typeName=Seller", UserProfile.getToken()).then(x => x.json()).then(res => {
@@ -70,15 +68,9 @@ const DraftAgreement = () => {
 		}).catch(err => console.log(err));
 	}
 	const loadBuyerTermList = (pid) => {
-		getRequest("api/Business/AgreementTermList?agreementId=" + pid + "&termType=Buyer", UserProfile.getToken()).then(x => x.json()).then(res => {
+		getRequest("api/Business/AgreementTermList?agreementId=" + pid, UserProfile.getToken()).then(x => x.json()).then(res => {
 			console.log(res);
 			setBuyerTermList(res.data);
-		}).catch(err => console.log(err));
-	}
-	const loadSellerTermList = (pid) => {
-		getRequest("api/Business/AgreementTermList?agreementId=" + pid + "&termType=Seller", UserProfile.getToken()).then(x => x.json()).then(res => {
-			console.log(res);
-			setSellerTermList(res.data);
 		}).catch(err => console.log(err));
 	}
 
@@ -141,7 +133,7 @@ const DraftAgreement = () => {
 			console.log(res);
 			if (res.status === 1) {
 				resetTermForm();
-				loadSellerTermList(agreementObj.id);
+				loadBuyerTermList(agreementObj.id);
 				setMsg("Term added.");
 			} else {
 				setMsg("Not able to save data");
@@ -161,7 +153,7 @@ const DraftAgreement = () => {
 				if (res.status === 1) {
 					setMsg("Data added successfully");
 					resetTermForm();
-					loadSellerTermList(agreementObj.id);
+					loadBuyerTermList(agreementObj.id);
 				}
 			}).catch(err => console.log(err));
 	}
@@ -189,7 +181,7 @@ const DraftAgreement = () => {
 		deleteRequest(url, UserProfile.getToken()).then(x => x.json()).then(res => {
 			setMsg("Deleted successfully");
 			loadItemList(agreementObj.id);
-			loadSellerTermList(agreementObj.id);
+			loadBuyerTermList(agreementObj.id);
 		}).catch(err => console.log(err));
 	}
 	const editOrAddRate = (e, item) => {
@@ -479,7 +471,7 @@ const DraftAgreement = () => {
 									</div>
 								</div>
 							</div>
-							<h4 style={{ color: "#007bff" }}>Buyers Term List</h4>
+							<h4 style={{ color: "#007bff" }}>Term List</h4>
 							{buyerTermList && buyerTermList.length > 0 ? buyerTermList.map(x => < div className="row tablebox">
 								<div className="col-md-2 d-flex align-items-center">
 									<span>
@@ -503,46 +495,6 @@ const DraftAgreement = () => {
 									</span>
 								</div>
 								<div className="col-md-2" style={{ textAlign: "center" }}>
-								</div>
-							</div>) : <>No Item Is Present.</>}
-							<h4 style={{ color: "#007bff" }}>Seller Term List</h4>
-							{sellerTermList && sellerTermList.length > 0 ? sellerTermList.map(x => < div className="row tablebox">
-								<div className="col-md-2 d-flex align-items-center">
-									<span>
-										<strong className="d-inline d-md-none">Title: </strong>
-										{x.termTitle}
-									</span>
-								</div>
-								<div className="col-md-6 d-flex align-items-center">
-									<span>
-										<strong className="d-inline d-md-none">Description: </strong>
-										{x.termTxt}</span>
-								</div>
-								<div className="col-md-2 d-flex align-items-center">
-									<span>
-										<strong className="d-inline d-md-none">Attachments: </strong>
-										{x.attachments ? x.attachments.map((i) => < div className="col-md-12" style={{ marginBottom: "2px" }}>
-											<a href={i.link} target={"new"}>
-												<img src={i.link} width={50} height={50} />
-											</a><span className="removeLink" onClick={(e) => {
-												e.preventDefault();
-												setDeleteMsg("Are you sure you want to delete the attachment ?");
-												setDeleteData("api/Business/DeleteAgreementTermAttachment?attachId=" + i.id);
-											}}> Remove </span>
-										</div>) : <span style={{ fontsize: "70%" }}>No Attachments</span>}
-									</span>
-								</div>
-								<div className="col-md-2" style={{ textAlign: "center" }}>
-									<span>
-										<FormButton name="Edit" onClick={(e) => { editTerms(e, x); }} />
-										<span className="removeLink" onClick={(e) => {
-											e.preventDefault();
-											setDeleteMsg("Are you sure you want to delete the term ?");
-											setDeleteData("api/Business/DeleteAgreementTerm?termId=" + x.id);
-										}}> Remove </span>
-									</span>
-
-									{/*<FormButton name="Remove"  />*/}
 								</div>
 							</div>) : <>No Item Is Present.</>}
 						</div>

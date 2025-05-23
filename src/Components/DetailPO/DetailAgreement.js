@@ -16,7 +16,6 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 	const [agreementObj, setAgreementObj] = useState();
 	const [itemList, setItemList] = useState();
 	const [buyerTermList, setBuyerTermList] = useState();
-	const [sellerTermList, setSellerTermList] = useState();
 	const [remarkType, setRemarkType] = useState();
 	const [remarkData, setRemarkData] = useState();
 	const [treeDisplay, setTreeDisplay] = useState();
@@ -40,7 +39,6 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 			checkAgreementAccepted(obj);
 			loadItemList(obj.id);
 			loadBuyerTermList(obj.id);
-			loadSellerTermList(obj.id);
 		}
 
 	}, []);
@@ -50,32 +48,21 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 			setItemList(res.data);
 			checkItemsAccepted(res.data);
 			checkTermAccepted(buyerTermList);
-			checkTermAccepted(sellerTermList);
 		}).catch(err => console.log(err));
 	}
 	const loadBuyerTermList = (pid) => {
-		getRequest("api/Business/AgreementTermList?agreementId=" + pid + "&termType=Buyer", UserProfile.getToken()).then(x => x.json()).then(res => {
+		getRequest("api/Business/AgreementTermList?agreementId=" + pid , UserProfile.getToken()).then(x => x.json()).then(res => {
 			console.log(res);
 			setBuyerTermList(res.data);
 			checkTermAccepted(res.data);
-			checkTermAccepted(sellerTermList);
 			checkItemsAccepted(itemList);
 		}).catch(err => console.log(err));
 	}
-	const loadSellerTermList = (pid) => {
-		getRequest("api/Business/AgreementTermList?agreementId=" + pid + "&termType=Seller", UserProfile.getToken()).then(x => x.json()).then(res => {
-			console.log(res);
-			setSellerTermList(res.data);
-			checkTermAccepted(res.data);
-			checkTermAccepted(buyerTermList);
-			checkItemsAccepted(itemList);
-		}).catch(err => console.log(err));
-	}
+
 	const reloadMethod = () => {
 		if (remarkType !== "AA" && remarkType !== "RA") {
 			loadItemList(agreementObj.id);
 			loadBuyerTermList(agreementObj.id);
-			loadSellerTermList(agreementObj.id);
 		} else
 		{
 			navigate("/home");
@@ -150,16 +137,21 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 
 								}} />
 								</div>
-								{showAcceptButton === 1 ? <div className="col-md-3">
-										<FormButton name="Start" onClick={(e) => {
-											e.preventDefault();
-											setRemarkData(agreementObj);
-											setRemarkType("AA");
+								{/*{showAcceptButton === 1 ? <div className="col-md-3">*/}
+								{/*		<FormButton name="Start" onClick={(e) => {*/}
+								{/*			e.preventDefault();*/}
+								{/*			setRemarkData(agreementObj);*/}
+								{/*			setRemarkType("AA");*/}
 
-										}} />
-									</div> :<></>
-								}
-								
+								{/*		}} />*/}
+								{/*	</div> :<></>*/}
+								{/*}*/}
+								<FormButton name="Start" onClick={(e) => {
+									e.preventDefault();
+									setRemarkData(agreementObj);
+									setRemarkType("AA");
+
+								}} />
 
 							</div> : <></>}
 						{agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ?
@@ -235,7 +227,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 								setRemarkType("SAN");
 							}} />
 						</> : <></>}
-						{agreementObj.status === "Accepted" ? <span class="badge bg-success text-light">{agreementObj.status}</span> :<></>}
+						{agreementObj.status === "Accepted" ? <span className="badge bg-success text-light">{agreementObj.status}</span> :<></>}
 					</div>
 
 				</div>
@@ -323,7 +315,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 											}}
 										/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
 									<br />
-									<span class="badge bg-success text-light">{x.itemStatus}</span>
+									<span className="badge bg-success text-light">{x.itemStatus}</span>
 								</span>
 							</div>
 							<div className="col-md-1 d-flex align-items-center">
@@ -373,7 +365,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 					<div className="col-md-12 pt-2 ">
 						<div className="row">
 							<div className="col-md-12 p-0">
-								<h4 className="headingStyle">Buyer Terms</h4>
+								<h4 className="headingStyle">All Terms</h4>
 							</div>
 						</div>
 						<div className="row">
@@ -408,7 +400,7 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 										}}
 									/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
 								<br />
-								<span class="badge bg-success text-light">{x.termStatus}</span>
+								<span className="badge bg-success text-light">{x.termStatus}</span>
 							</div>
 							<div className="col-md-2">
 								<span>
@@ -440,77 +432,6 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 										e.preventDefault();
 										setRemarkData(x);
 										setRemarkType("BTBN");
-									}} />
-								</> : <></>}
-							</div>
-						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
-						<div className="row">
-							<div className="col-md-12 p-0">
-								<h4 className="headingStyle">Seller Terms</h4>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-md-1 tableHeader">S. No.</div>
-							<div className="col-md-2 tableHeader">Title</div>
-							<div className="col-md-4 tableHeader">Terms And Conditions</div>
-							<div className="col-md-2 tableHeader">Remarks</div>
-							<div className="col-md-2 tableHeader">Attachment</div>
-							<div className="col-md-1 tableHeader">Action</div>
-						</div>
-						{sellerTermList && sellerTermList.length > 0 ? sellerTermList.map((x, ind) => <div className="row p-1 tablebox">
-							<div className="col-md-1">
-								<strong className="d-inline d-md-none">S.No.: </strong>
-								{ind + 1}
-							</div>
-							<div className="col-md-2">
-								<strong className="d-inline d-md-none">Title: </strong>
-								{x.termTitle} </div>
-							<div className="col-md-4">
-								<strong className="d-inline d-md-none">Terms And Conditions: </strong>
-								{x.termTxt}
-							</div>
-							<div className="col-md-2">
-								<strong className="d-inline d-md-none">Remarks: </strong>
-								{x.communication && x.communication.length > 0 ?
-									<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
-										onClick={(e) => {
-											e.preventDefault();
-											setRemarkList(x.communication);
-										}}
-									/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
-									<br/>
-								<span class="badge bg-success text-light">{x.termStatus}</span>
-							</div>
-							<div className="col-md-2">
-								<span>
-									<strong className="d-inline d-md-none">Attachments: </strong>
-									{x.attachments ? x.attachments.map((i) => < div className="col-md-12" style={{
-										marginBottom: "2px"
-									}}>
-										<a href={i.link} target={"new"}>
-											<img src={i.link} width={50} height={50} />
-										</a>
-									</div>) : <span style={{ fontsize: "70%" }}>No Attachments</span>}
-								</span></div>
-							<div className="col-md-1">
-								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString()
-									&& (x.termStatus === "Proposed" || x.termStatus === "Waiting for Buyer") ? <>
-										<FormButton name="Accept" onClick={(e) => {
-											e.preventDefault();
-											setRemarkData(x);
-											setRemarkType("STBA");
-										}} />
-										<FormButton name="Negotiate" onClick={(e) => {
-											e.preventDefault();
-											setRemarkData(x);
-											setRemarkType("STBN");
-										}} />
-								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && x.termStatus === "Waiting for Seller" ? <>
-									<FormButton name="Negotiate" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("STSN");
 									}} />
 								</> : <></>}
 							</div>

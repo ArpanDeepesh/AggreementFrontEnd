@@ -15,7 +15,7 @@ const ActiveFlowPresentation = ({startDate,endDate,days,itemDaysArray, itemList,
         return (<ul className="treeEleListDisplay">
             {Array.from({ length: itemDaysArray.length }, (_, idx) => (itemDaysArray[idx] === i ? <li>
                 <strong>Item: </strong>{itemList[idx].title}
-                <span class="badge text-light" style={itemList[idx].status === "Completed" ? { backgroundColor: "#28A745" } :
+                <span className="badge text-light" style={itemList[idx].status === "Completed" ? { backgroundColor: "#28A745" } :
                     itemList[idx].status === "Waiting" ? { backgroundColor: "#F15A29" } : { backgroundColor: "#6c757d" }}>{itemList[idx].status}</span>
             </li> : <></>))}
         </ul>);
@@ -33,7 +33,7 @@ const ActiveFlowPresentation = ({startDate,endDate,days,itemDaysArray, itemList,
         return (<ul className="treeEleListDisplay">
             {Array.from({ length: payDaysArray.length }, (_, idx) => (payDaysArray[idx] === i ? <li>
                 <strong>Payment: </strong>{cur} {payList[idx].amt}
-                <span class="badge text-light" style={payList[idx].status === "Completed" ? { backgroundColor: "#28A745" } :
+                <span className="badge text-light" style={payList[idx].status === "Completed" ? { backgroundColor: "#28A745" } :
                     payList[idx].status === "Waiting" ? { backgroundColor: "#F15A29" } : { backgroundColor: "#6c757d" }}>{payList[idx].status}</span>
             </li> : <></>))}
         </ul>);

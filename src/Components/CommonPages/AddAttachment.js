@@ -45,11 +45,11 @@ const AddAttachment = ({ fileLinkList, setFileLinkList }) => {
     }
     return (
         <div>
-            <div class="row">
+            <div className="row">
                 <div className="col-md-10">
                     {attMsg}
                     <Form ref={attachmentForm} onSubmit={(e) => { e.preventDefault() }}>
-                        <div class="input-group">
+                        <div className="input-group">
                             <div className="col-md-2">
                                 <InputField name="title" type="text" label="Title" />
                             </div>

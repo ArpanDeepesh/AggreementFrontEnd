@@ -32,14 +32,14 @@ const SubscriptionPage = ({ setUserName, setUserType })=>{
 	return (
         <>
             <div className="main-content">
-                {displayName && displayName.length > 0 ? <div class="headerHome">
-                    <div class="page-title">
+                {displayName && displayName.length > 0 ? <div className="headerHome">
+                    <div className="page-title">
                         <h1>Pricing list</h1>
                         <p>Simple, Transparent Pricing <br/>Choose the plan that fits your business needs</p>
                     </div>
-                    <div class="user-profile">
+                    <div className="user-profile">
                         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" />
-                        <div class="user-info">
+                        <div className="user-info">
                             <h4>{displayName}</h4>
                             <p>Premium Plan</p>
                             <a href="/LogOut" style={{ color: "#007bff" }}>Logout</a>

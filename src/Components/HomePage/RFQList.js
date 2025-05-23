@@ -37,7 +37,9 @@ const RFQList = () => {
                     else if (res.data[i].proposalStatus === "Active")
                     {
                         activeLst.push(res.data[i]);
-                    } else if (res.data[i].proposalStatus === "Closed" || res.data[i].proposalStatus === "Completed" || res.data[i].proposalStatus === "Expired") {
+                    } else if (res.data[i].proposalStatus === "Closed"
+                        || res.data[i].proposalStatus === "Completed"
+                        || res.data[i].proposalStatus === "Expired") {
                         closedLst.push(res.data[i]);
                     }
                 }
@@ -84,99 +86,99 @@ const RFQList = () => {
         e.currentTarget.classList.add("active");
     }
     return (<>
-        <div class="status-overview">
-            <div class="section-header">
-                <h3 class="section-title">RFQ List</h3>
-                {/*<a href="#" class="view-all">View All</a>*/}
+        <div className="status-overview">
+            <div className="section-header">
+                <h3 className="section-title">RFQ List</h3>
+                {/*<a href="#" className="view-all">View All</a>*/}
             </div>
 
-            <div class="status-tabs">
-                <div class="status-tab status-RFQ-tab " onClick={(e) => { openTab(e, "otherActiveProposals") }}>Others Active({otherActiveProposalLst && otherActiveProposalLst.length && otherActiveProposalLst.length > 0 ? otherActiveProposalLst.length : 0})</div>
-                <div class="status-tab status-RFQ-tab active" onClick={(e) => { openTab(e, "draftProposals") }}>User Draft ({userDraftProposalLst && userDraftProposalLst.length && userDraftProposalLst.length > 0 ? userDraftProposalLst.length :0})</div>
-                <div class="status-tab status-RFQ-tab" onClick={(e) => { openTab(e, "activeProposals") }}>User Active ({userActiveProposalLst && userActiveProposalLst.length && userActiveProposalLst.length > 0 ? userActiveProposalLst.length:0})</div>
-                <div class="status-tab status-RFQ-tab" onClick={(e) => { openTab(e, "proposalInvites") }}>User Invites ({inviteList && inviteList.length && inviteList.length < 0 ? inviteList.length:0})</div>
-                <div class="status-tab status-RFQ-tab" onClick={(e) => { openTab(e, "completedProposals") }}>User Completed ({userClosedProposalLst && userClosedProposalLst.length && userClosedProposalLst.length>0?userClosedProposalLst.length:0})</div>
+            <div className="status-tabs">
+                <div className="status-tab status-RFQ-tab " onClick={(e) => { openTab(e, "otherActiveProposals") }}>Others Active({otherActiveProposalLst && otherActiveProposalLst.length && otherActiveProposalLst.length > 0 ? otherActiveProposalLst.length : 0})</div>
+                <div className="status-tab status-RFQ-tab active" onClick={(e) => { openTab(e, "draftProposals") }}>User Draft ({userDraftProposalLst && userDraftProposalLst.length && userDraftProposalLst.length > 0 ? userDraftProposalLst.length :0})</div>
+                <div className="status-tab status-RFQ-tab" onClick={(e) => { openTab(e, "activeProposals") }}>User Active ({userActiveProposalLst && userActiveProposalLst.length && userActiveProposalLst.length > 0 ? userActiveProposalLst.length:0})</div>
+                <div className="status-tab status-RFQ-tab" onClick={(e) => { openTab(e, "proposalInvites") }}>User Invites ({inviteList && inviteList.length && inviteList.length > 0 ? inviteList.length:0})</div>
+                <div className="status-tab status-RFQ-tab" onClick={(e) => { openTab(e, "completedProposals") }}>User Completed ({userClosedProposalLst && userClosedProposalLst.length && userClosedProposalLst.length>0?userClosedProposalLst.length:0})</div>
             </div>
-            <div class="status-content status-RFQ-content" id="otherActiveProposals">
-                <ul class="contract-list">
+            <div className="status-content status-RFQ-content" id="otherActiveProposals">
+                <ul className="contract-list">
                     {otherActiveProposalLst && otherActiveProposalLst.length > 0 ? otherActiveProposalLst.map(x =>
-                        <li class="contract-item">
-                            <div class="contract-icon">
-                                <i class="fas fa-file-alt"></i>
+                        <li className="contract-item">
+                            <div className="contract-icon">
+                                <i className="fas fa-file-alt"></i>
                             </div>
-                            <div class="contract-details">
-                                <div class="contract-title">Proposal id: {x.proposalUID} </div>
-                                <div class="contract-meta">
-                                    <span><i class="fas fa-user"></i> {x.owner.usrName}</span>
-                                    <span><i class="fas fa-calendar"></i> Created on:{x.createdOn} </span>
+                            <div className="contract-details">
+                                <div className="contract-title">Proposal id: {x.proposalUID} </div>
+                                <div className="contract-meta">
+                                    <span><i className="fas fa-user"></i> {x.owner.usrName}</span>
+                                    <span><i className="fas fa-calendar"></i> Created on:{x.createdOn} </span>
                                 </div>
                             </div>
-                            <div class="contract-actions">
-                                <button class="contract-btn" title="Apply" onClick={(e) => {
+                            <div className="contract-actions">
+                                <button className="contract-btn" title="Apply" onClick={(e) => {
                                     e.preventDefault();
                                     OtherData.setData(JSON.stringify(x));
                                     navigate("/ApplyRFQ");
                                 }}>
-                                    <i class="fas fa-edit"></i>
+                                    <i className="fas fa-edit"></i>
                                 </button>
-                                <button class="contract-btn" title="Detail" onClick={(e) => {
+                                <button className="contract-btn" title="Detail" onClick={(e) => {
                                     e.preventDefault();
                                     OtherData.setData(JSON.stringify(x));
                                     navigate("/DetailProposal");
                                 }}>
-                                    <i class="fas fa-trash"></i>
+                                    <i className="fas fa-trash"></i>
                                 </button>
                             </div>
                         </li>) : <></>}
                 </ul>
             </div>
-            <div class="status-content status-RFQ-content active" id="draftProposals">
-                <ul class="contract-list">
+            <div className="status-content status-RFQ-content active" id="draftProposals">
+                <ul className="contract-list">
                     {userDraftProposalLst && userDraftProposalLst.length > 0 ? userDraftProposalLst.map(x => 
-                        <li class="contract-item">
-                        <div class="contract-icon">
-                            <i class="fas fa-file-alt"></i>
+                        <li className="contract-item">
+                            <div className="contract-icon">
+                                <i className="fas fa-file-alt"></i>
                         </div>
-                        <div class="contract-details">
-                                <div class="contract-title">Proposal id: {x.proposalUID} </div>
-                            <div class="contract-meta">
-                                    <span><i class="fas fa-user"></i> {x.owner.usrName }</span>
-                                    <span><i class="fas fa-calendar"></i> Created on:{x.createdOn} </span>
+                            <div className="contract-details">
+                                <div className="contract-title">Proposal id: {x.proposalUID} </div>
+                            <div className="contract-meta">
+                                    <span><i className="fas fa-user"></i> {x.owner.usrName }</span>
+                                    <span><i className="fas fa-calendar"></i> Created on:{x.createdOn} </span>
                             </div>
                         </div>
-                            <div class="contract-actions">
-                                <button class="contract-btn" title="Edit" onClick={(e) => { editRFQ(e, x); }}>
-                                <i class="fas fa-edit"></i>
+                            <div className="contract-actions">
+                                <button className="contract-btn" title="Edit" onClick={(e) => { editRFQ(e, x); }}>
+                                    <i className="fas fa-edit"></i>
                             </button>
-                            <button class="contract-btn" title="Delete">
-                                <i class="fas fa-trash"></i>
+                                <button className="contract-btn" title="Delete">
+                                    <i className="fas fa-trash"></i>
                             </button>
                         </div>
                     </li> ):<></>}
                 </ul>
             </div>
 
-            <div class="status-content status-RFQ-content" id="activeProposals">
-                <ul class="contract-list">
+            <div className="status-content status-RFQ-content" id="activeProposals">
+                <ul className="contract-list">
                     {userActiveProposalLst && userActiveProposalLst.length > 0 ? userActiveProposalLst.map(x => 
-                        <li class="contract-item">
-                            <div class="contract-icon">
-                                <i class="fas fa-file-alt"></i>
+                        <li className="contract-item">
+                            <div className="contract-icon">
+                                <i className="fas fa-file-alt"></i>
                             </div>
-                            <div class="contract-details">
-                                <div class="contract-title">RFQ with Id - {x.proposalUID}</div>
-                                <div class="contract-meta">
-                                    <span><i class="fas fa-user"></i> {x.owner.usrName}</span>
-                                    <span><i class="fas fa-calendar"></i> Created on: {x.createdOn}</span>
+                            <div className="contract-details">
+                                <div className="contract-title">RFQ with Id - {x.proposalUID}</div>
+                                <div className="contract-meta">
+                                    <span><i className="fas fa-user"></i> {x.owner.usrName}</span>
+                                    <span><i className="fas fa-calendar"></i> Created on: {x.createdOn}</span>
                                 </div>
                             </div>
-                            <div class="contract-actions">
-                                <button class="contract-btn" title="Detail" onClick={(e) => {
+                            <div className="contract-actions">
+                                <button className="contract-btn" title="Detail" onClick={(e) => {
                                     e.preventDefault();
                                     OtherData.setData(JSON.stringify(x));
                                     navigate("/DetailProposal");
                                 }}>
-                                    <i class="fas fa-check-square"></i>
+                                    <i className="fas fa-check-square"></i>
                                 </button>
                             </div>
                         </li>
@@ -184,32 +186,32 @@ const RFQList = () => {
                 </ul>
             </div>
 
-            <div class="status-content status-RFQ-content" id="proposalInvites">
-                <ul class="contract-list">
+            <div className="status-content status-RFQ-content" id="proposalInvites">
+                <ul className="contract-list">
                     {inviteList && inviteList.length > 0 ? inviteList.map(x => 
-                        <li class="contract-item">
-                            <div class="contract-icon">
-                                <i class="fas fa-file-alt"></i>
+                        <li className="contract-item">
+                            <div className="contract-icon">
+                                <i className="fas fa-file-alt"></i>
                             </div>
-                            <div class="contract-details">
-                                <div class="contract-title">Proposal id: {x.proposalUID}</div>
-                                <div class="contract-meta">
-                                    <span><i class="fas fa-user"></i> {x.owner.usrName}</span>
-                                    <span><i class="fas fa-calendar"></i> Created on: {x.createdOn}</span>
+                            <div className="contract-details">
+                                <div className="contract-title">Invite id: {x.inviteUID}</div>
+                                <div className="contract-meta">
+                                    <span><i className="fas fa-user"></i> {x.raisedByUser.usrName}</span>
+                                    {/*<span><i className="fas fa-calendar"></i> Created on: {x.createdOn}</span>*/}
                                 </div>
                             </div>
-                            <div class="contract-actions">
-                                <button class="contract-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                            <div className="contract-actions">
+                                <button className="contract-btn" title="Edit">
+                                    <i className="fas fa-edit"></i>
                                 </button> 
-                                <button class="contract-btn" title="Delete">
-                                    <i class="fas fa-trash"></i>
+                                <button className="contract-btn" title="Delete">
+                                    <i className="fas fa-trash"></i>
                                 </button>
-                                <button class="contract-btn" title="Apply" onClick={(e) => {
+                                <button className="contract-btn" title="Apply" onClick={(e) => {
                                     e.preventDefault();
                                     ApplyForInvite(x.id);
                                 }}>
-                                    <i class="fas fa-check-square"></i>
+                                    <i className="fas fa-check-square"></i>
                                 </button>
                             </div>
                         </li>
@@ -217,26 +219,26 @@ const RFQList = () => {
                 </ul>
             </div>
 
-            <div class="status-content status-RFQ-content" id="completedProposals">
-                <ul class="contract-list">
+            <div className="status-content status-RFQ-content" id="completedProposals">
+                <ul className="contract-list">
                     {userClosedProposalLst && userClosedProposalLst.length > 0 ? userClosedProposalLst.map(x => 
-                        <li class="contract-item">
-                            <div class="contract-icon">
-                                <i class="fas fa-file-alt"></i>
+                        <li className="contract-item">
+                            <div className="contract-icon">
+                                <i className="fas fa-file-alt"></i>
                             </div>
-                            <div class="contract-details">
-                                <div class="contract-title">Proposal id: {x.proposalUID}</div>
-                                <div class="contract-meta">
-                                    <span><i class="fas fa-user"></i> {x.owner.usrName}</span>
-                                    <span><i class="fas fa-calendar"></i> Created on: {x.createdOn}</span>
+                            <div className="contract-details">
+                                <div className="contract-title">Proposal id: {x.proposalUID}</div>
+                                <div className="contract-meta">
+                                    <span><i className="fas fa-user"></i> {x.owner.usrName}</span>
+                                    <span><i className="fas fa-calendar"></i> Created on: {x.createdOn}</span>
                                 </div>
                             </div>
-                            <div class="contract-actions">
-                                <button class="contract-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                            <div className="contract-actions">
+                                <button className="contract-btn" title="Edit">
+                                    <i className="fas fa-edit"></i>
                                 </button>
-                                <button class="contract-btn" title="Delete">
-                                    <i class="fas fa-trash"></i>
+                                <button className="contract-btn" title="Delete">
+                                    <i className="fas fa-trash"></i>
                                 </button>
                             </div>
                         </li>

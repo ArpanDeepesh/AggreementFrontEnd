@@ -64,10 +64,10 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 	return (
 		<>
 			<MessageDisplay msgType={msgType} msg={msg} setMsg={setMsg} />
-			<div class="login-container">
+			<div className="login-container">
 
-				<div class="login-header">
-					<div class="logo">
+				<div className="login-header">
+					<div className="logo">
 						<a style={{ textDecoration: "none" }} href="/">
 							<span style={{ color: 'white' }}>Contr
 								<span style={{ color: "#ff8400" }}>e</span>
@@ -78,29 +78,29 @@ const ForgotPassword = ({ setDisplayLogin })=>{
 					<p>Please share your contact number.</p>
 				</div>
 
-				<div class="login-form">
+				<div className="login-form">
 
 					<Form ref={usrForm} onSubmit={handleSubmit} >
-						<div class="form-content" id="phone-form" >
-							<div class="form-group">
+						<div className="form-content" id="phone-form" >
+							<div className="form-group">
 								<label for="phone">Phone number</label>
-								<div class="phone-input">
-									<select class="phone-prefix form-control" name="phonePrefix" style={{ width: "20%" }}>
+								<div className="phone-input">
+									<select className="phone-prefix form-control" name="phonePrefix" style={{ width: "20%" }}>
 										<option value="+1">+1</option>
 										<option value="+44">+44</option>
 										<option value="+91">+91</option>
 										<option value="+61">+61</option>
 									</select>
-									<input type="tel" id="phone" name="userPhone" class="form-control phone-number" placeholder="123-456-7890" />
+									<input type="tel" id="phone" name="userPhone" className="form-control phone-number" placeholder="123-456-7890" />
 								</div>
 							</div>
-							<div class="form-options">
-								<a href="/" class="forgot-password" onClick={(e) => {
+							<div className="form-options">
+								<a href="/" className="forgot-password" onClick={(e) => {
 									e.preventDefault();
 									setDisplayLogin(1);
 								}}>Already have account?</a>
 							</div>
-							<button type="submit" class="btn btn-primary">Send OTP</button>
+							<button type="submit" className="btn btn-primary">Send OTP</button>
 							
 						</div>
 					</Form>

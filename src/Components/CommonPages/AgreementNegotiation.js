@@ -145,7 +145,7 @@ const AgreementNegotiation = ({ reloadAction, type,data,setData}) => {
 								ItemId: data.id,
 								ItemTax: 0,
 								CompletionDays: remarkForm.current["itemCompletion"] ? remarkForm.current["itemCompletion"].value : data.ldPercent,
-								RateType: type === "SIN" ? 2 : 3,
+								RateType: type === "SIN" ? 1 : 2,
 								Amount: remarkForm.current["amount"] ? remarkForm.current["amount"].value : type === "SIN" ? data.sellerRate : data.buyerRate,
 								Currency: 0,
 								SellingUnit: 0

@@ -259,7 +259,7 @@ const DetailPO = ({ setUserName, setUserType }) => {
 										{x.title}</div>
 									<div className="col-md-3 pl-0">
 										<strong className="d-inline d-md-none">Status: </strong>
-										<span class="badge text-light" style={x.lineItemStatus === "Completed" ? { backgroundColor: "#28A745" } :
+										<span className="badge text-light" style={x.lineItemStatus === "Completed" ? { backgroundColor: "#28A745" } :
 											x.lineItemStatus === "Waiting" ? { backgroundColor: "#F15A29" } : { backgroundColor: "#6c757d" }}>{x.lineItemStatus}</span>
 										
 									</div>
@@ -416,7 +416,7 @@ const DetailPO = ({ setUserName, setUserType }) => {
 							</div>
 							<div className="col-md-1">
 								<strong className="d-inline d-md-none">Status: </strong>
-								<span class="badge text-light" style={x.paymentStatus === "Completed" ? { backgroundColor: "#28A745" } :
+								<span className="badge text-light" style={x.paymentStatus === "Completed" ? { backgroundColor: "#28A745" } :
 									x.paymentStatus === "Waiting" ? { backgroundColor: "#F15A29" } : { backgroundColor: "#6c757d" }}>{x.paymentStatus} </span>
 							</div>
 							<div className="col-md-3">

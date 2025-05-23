@@ -148,7 +148,7 @@ const EditInvoice = () => {
 
 
 	return (<>
-		<div className="scrollable-section">
+		<div className="main-content">
 			<DisappearingMessage msg={msgDis} setMsg={setMsgDis} />
 			<MessageDisplay msg={msg} setMsg={setMsg} />
 			{invoiceObj && invoiceObj.id && invoiceObj.id > 0 ?

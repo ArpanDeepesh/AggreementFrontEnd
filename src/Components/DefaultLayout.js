@@ -42,13 +42,13 @@ const DefaultLayout = () => {
             <header className="bg-primary text-white py-2 pl-4 pr-4 pt-2 pb-2">
                 {/*<a href="\LogOut" className="text-white text-decoration-none"> Logout</a>*/}
                 {UserProfile.getLoginStatus() === "1" ? <div className="d-flex justify-content-between align-items-center">
-                    <div class="hamburger" id="hamburger" onClick={e => {
+                    <div className="hamburger" id="hamburger" onClick={e => {
                         e.preventDefault();
                         document.getElementById("menu").classList.toggle('active');
                     }}>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
+                        <div className="bar"></div>
+                        <div className="bar"></div>
+                        <div className="bar"></div>
                     </div>
                     <div className="logo">
                         <a href="\" className="text-white text-decoration-none" onClick={(e) => {
@@ -62,7 +62,7 @@ const DefaultLayout = () => {
                     
                     <nav>
                         
-                            <ul class="menu" id="menu" style={{ marginBottom: "0" }}>
+                            <ul className="menu" id="menu" style={{ marginBottom: "0" }}>
                                 <li>
                                     <a href="/">Home</a>
                                 </li>
@@ -97,13 +97,13 @@ const DefaultLayout = () => {
                     
                 </div> :
                     <div className="d-flex justify-content-between align-items-center">
-                        <div class="hamburger" id="hamburger" onClick={e => {
+                        <div className="hamburger" id="hamburger" onClick={e => {
                             e.preventDefault();
                             document.getElementById("menu").classList.toggle('active');
                         }}>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
+                            <div className="bar"></div>
+                            <div className="bar"></div>
+                            <div className="bar"></div>
                         </div>
                         <div className="logo">
                             <a href="\" className="text-white text-decoration-none">
@@ -112,7 +112,7 @@ const DefaultLayout = () => {
                         <div style={{ width: "100%" }}>
                         <nav>
 
-                                <ul class="menu" id="menu" style={{ marginBottom: "0" }}>
+                                <ul className="menu" id="menu" style={{ marginBottom: "0" }}>
                                 <li>
                                     <a href="/">Home</a>
                                 </li>

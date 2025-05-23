@@ -27,10 +27,10 @@ const UploadSingleFile = ({ fileLink, setFileLink, methodToRun }) => {
     }
     return (
         <div>
-            <div class="row">
+            <div className="row">
                 <div className="col-md-12">
                     <Form ref={attachmentForm} onSubmit={(e) => { e.preventDefault() }}>
-                        <div class="input-group">
+                        <div className="input-group">
                             <div className="col-md-6">
                                 <label style={{ fontsize: '20px', color: 'black', fontWeight: '700' }}>Upload File</label>
                                 <br/>

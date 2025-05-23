@@ -65,14 +65,14 @@ const HomePage = ({ setUserName, setUserType}) => {
 
     return (
         <div className="main-content" >
-            <div class="headerHome">
-                <div class="page-title">
+            <div className="headerHome">
+                <div className="page-title">
                     <h1>Dashboard</h1>
                     <p>Welcome back, here's what's happening with your contracts today</p>
                 </div>
-                <div class="user-profile">
+                <div className="user-profile">
                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" />
-                    <div class="user-info">
+                    <div className="user-info">
                         <h4>{displayName}</h4>
                         <p>Premium Plan</p>
                         <a href="/LogOut" style={{ color: "#007bff" }}>Logout</a>
@@ -80,37 +80,37 @@ const HomePage = ({ setUserName, setUserType}) => {
                 </div>
             </div>
             <DelayMsgs msgList={delayMsg} setMsgList={setDelayMsg} />
-            <div class="quick-actions">
-                <div class="action-card" onClick={e => {
+            <div className="quick-actions">
+                <div className="action-card" onClick={e => {
                     e.preventDefault();
                     navigate("/SelectTemplate");
                 }}>
-                    <i class="fas fa-file-contract"></i>
+                    <i className="fas fa-file-contract"></i>
                     <h3>Create Contract</h3>
                     <p>Start a new contract from template</p>
                 </div>
-                <div class="action-card" onClick={e => {
+                <div className="action-card" onClick={e => {
                     e.preventDefault();
                     OtherData.resetData();
                     navigate("/NewRFQ");
                 }}>
-                    <i class="fas fa-clipboard-list"></i>
+                    <i className="fas fa-clipboard-list"></i>
                     <h3>Generate RFQ</h3>
                     <p>Request for quotations</p>
                 </div>
-                <div class="action-card" onClick={e => {
+                <div className="action-card" onClick={e => {
                     e.preventDefault();
                     navigate("/userTerms");
                 }} >
-                    <i class="fas fa-file-alt"></i>
+                    <i className="fas fa-file-alt"></i>
                     <h3>User Terms</h3>
                     <p>Create default terms</p>
                 </div>
-                <div class="action-card"  onClick={e => {
+                <div className="action-card"  onClick={e => {
                     e.preventDefault();
                     navigate("/userItems");
                 }}>
-                    <i class="fas fa-boxes"></i>
+                    <i className="fas fa-boxes"></i>
                     <h3>Create Catalogue</h3>
                     <p>Build product/service catalog</p>
                 </div>
