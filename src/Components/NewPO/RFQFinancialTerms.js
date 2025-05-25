@@ -49,7 +49,6 @@ const RFQFinancialTerms = ({
                         <th>Description</th>
                         <th>HSN/SAC</th>
                         <th>Qty</th>
-                        <th>Completion (in days)</th>
                         <th>Unit</th>
                         <th></th>
                     </tr>
@@ -87,14 +86,6 @@ const RFQFinancialTerms = ({
                                     value={item.quantity}
                                     onChange={(e) => onItemChange(item.id, 'quantity', e.target.value)}
                                     className="item-qty"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    value={item.timeToComplete}
-                                    onChange={(e) => onItemChange(item.id, 'timeToComplete', e.target.value)}
-                                    className="item-rate"
                                 />
                             </td>
                             
@@ -162,6 +153,17 @@ const RFQFinancialTerms = ({
                         >
                                 <i className="fas fa-plus"></i> Add Payment Term
                         </button>}
+                        {newTermId && newTermId.toString().length > 0 ? <button
+                            type="button"
+                            className="btn btn-outline"
+                            onClick={() => {
+                                setNewTermId();
+                                setNewTermTitle('');
+                                setNewTermDesc('');
+                            }}
+                        >
+                            <i className="fas fa-edit"></i> Cancel
+                        </button> : <></>}
                     </div>
                 </div>
             </div>

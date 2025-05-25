@@ -10,7 +10,7 @@ const RFQFormActions = ({ onSendContract, onSaveContract, disabled, sent }) => {
                 disabled={disabled}
             >
                 <i className="fas fa-paper-plane"></i>
-                {sent ? ' Contract Sent' : ' Send to Counterparty'}
+                {sent ? ' Quotation Published' : ' Publish Quotation'}
             </button>
             <button
                 type="button"
@@ -19,7 +19,7 @@ const RFQFormActions = ({ onSendContract, onSaveContract, disabled, sent }) => {
                 disabled={disabled}
             >
                 <i className="fas fa-cloud-upload"></i>
-                {sent ? ' Proposal Saved' : ' Save porposal'}
+                {sent ? ' Quotation Saved' : ' Save Quotation'}
             </button>
         </div>
     );

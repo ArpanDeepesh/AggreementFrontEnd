@@ -32,9 +32,11 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
 
     useEffect(() => {
         setProposalId(rfqId);
-        if (oldFormData && oldFormData.counterpartyDetails && oldFormData.counterpartyDetails.length > 0) {
+        
+        if (oldFormData && oldFormData.inviteOnly !== undefined ) {
             console.log(999);
             setFormData(oldFormData);
+            //OtherData.resetData();
         } else {
             getRequestAllowAll("api/general/TemplateTerms?agTempType=Sales").then(r => r.json()).then(res => {
                 console.log(res);
@@ -60,12 +62,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                             description: res.data[i].itemDescription,
                             hsnSac: res.data[i].itemHsnCsnUin,
                             quantity: res.data[i].itemQuantity,
-                            rate: res.data[i].rate,
-                            timeToComplete: res.data[i].itemCompletion,
-                            currency: res.data[i].currency,
-                            tax: res.data[i].itemTax,
-                            unit: 1,
-                            amount: 0
+                            unit: 1
                         });
                     }
                     handleInputChange("lineItems", customItem);
@@ -143,7 +140,6 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                     description: "",
                     hsnSac: "",
                     quantity: 0,
-                    timeToComplete: 0,
                     unit: 1
                 }
             ]
@@ -455,7 +451,11 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
         <div className="template-container">
             <div className="template-header">
                 <div className="logo">
-                    <a style={{ textDecoration: "none" }} href="/">
+                    <a style={{ textDecoration: "none" }} href="/" onClick={(e) => {
+                        e.preventDefault();
+                        OtherData.resetData();
+                        navigate("/");
+                    }}>
                         <span style={{ color: 'white' }}>Contr
                             <span style={{ color: "#ff8400" }}>e</span>
                             ct</span>
@@ -503,7 +503,7 @@ const RFQTemplate = ({ oldFormData, rfqId }) => {
                     handleEditTerm={editCustomTerm}
                 />
 
-                <RFQPreview formData={formData} />
+                <RFQPreview formData={formData} unitOptions={itemUnitOptions} />
 
                 <RFQFormActions
                     onSendContract={sendContract}

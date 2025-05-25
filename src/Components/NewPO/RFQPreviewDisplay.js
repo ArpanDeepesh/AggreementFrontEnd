@@ -1,7 +1,7 @@
 ﻿// ContractPreview.jsx
 import React from 'react';
 
-const RFQPreview = ({ formData, unitOptions }) => {
+const RFQPreviewDisplay = ({ formData, unitOptions }) => {
     // Format date for display
     const formatDate = (dateString) => {
         if (!dateString) return '[Date]';
@@ -9,13 +9,15 @@ const RFQPreview = ({ formData, unitOptions }) => {
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
-    // Format currency
+
+    const getUserDetailToDisplay = (d) => {
+        var arr = d.split("\n");
+        return (<>{arr[0]}<br />{arr[1]}<br />{arr[2]}<br />{arr[3]}<br />{arr[4]}</>);
+    }
     const unitValue = (u) => {
-        if (unitOptions.length > 0)
-        {
+        if (unitOptions.length > 0) {
             for (var i = 0; i < unitOptions.length; i++) {
-                if (unitOptions[i].id === u)
-                {
+                if (unitOptions[i].id === u) {
                     return unitOptions[i].typeValue;
                 }
             }
@@ -24,32 +26,37 @@ const RFQPreview = ({ formData, unitOptions }) => {
 
     };
 
-    const getUserDetailToDisplay = (d) => {
-        var arr = d.split("\n");
-        return (<>{arr[0]}<br />{arr[1]}<br />{arr[2]}<br />{arr[3]}<br />{arr[4]}</>);
-    }
-
-
     return (
         <div className="contract-preview">
             <h2>Quotation Preview</h2>
             <div className="contract-content">
-                <p><strong>{formData.agreementTitle || 'New Quotation'}</strong></p>
-                <p>This Quotation is made on {formatDate(new Date())} by:</p>
+                <p><strong>{"Quotation id "+formData.proposalUID || 'New Quotation'}</strong></p>
+                <p>This Quotation is made on {formatDate(formData.createdOn)} by:</p>
 
                 <h3>Requesting Party</h3>
                 <p>
-                    {formData.firstpartyDetails && formData.firstpartyDetails !== "" ?
-                        getUserDetailToDisplay(formData.firstpartyDetails) : "[Your details will appear here]"}
+                    Name: {formData.owner.usrName}
+                    <br />
+                    GSTIN: {formData.owner.usrGstin}
+                    <br />
+                    PAN: {formData.owner.usrPan}
+                    <br />
+                    Email: {formData.owner.email}
+                    <br />
+                    Phone: {formData.owner.phoneNumber}
+                    <br />
+                    Address: {formData.owner.usrAddress}
+                    <br />
                 </p>
                 <h3>1. QUOTATION DETAILS</h3>
-                Quotation Duration: {formData.contractDuration || '[Contract duration]'}
+
+                Quotation Duration: {formData.proposalCompletionInDays || '0'}
                 <br/>
-                Penality Days: {formData.penalityDays || '[Penality days]'}
+                Penality Days: {formData.proposalLdAppliedAfterDays || '0'}
                 <br />
-                Penality Percent: {formData.penalityPercent || '[Penality percent]'} %
+                Penality Percent: {formData.proposalLdPercent || '0'} %
                 <h3>2. TERM</h3>
-                <p>Effective from {formatDate(formData.startDate)} to {formatDate(formData.endDate)} with {formData.noticePeriod} days notice period.</p>
+                <p>Effective from {formatDate(formData.createdOn)} to {formatDate(formData.endDate)} with {formData.noticePeriod} days notice period.</p>
 
                 <h3>3. FINANCIAL TERMS</h3>
                 <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '1rem' }}>
@@ -102,4 +109,4 @@ const RFQPreview = ({ formData, unitOptions }) => {
     );
 };
 
-export default RFQPreview;
+export default RFQPreviewDisplay;

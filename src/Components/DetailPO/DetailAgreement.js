@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormSubmitButton from "../FormParts/FormSubmitButton";
 import FormButton from "../FormParts/FormButton";
-import { getRequest } from "../Services/ContrectBackendAPI";
+import { getRequest, getRequestAllowAll } from "../Services/ContrectBackendAPI";
 import UserProfile from "../Context/UserProfile";
 import PurchaseOrder from "../Context/PurchaseOrder";
 import "./DetailApplication.css";
@@ -10,6 +10,7 @@ import AgreementNegotiation from "../CommonPages/AgreementNegotiation";
 import RemarkListDisplay from "../CommonPages/RemarkListDisplay";
 import TreeDisplay from "./TreeDisplay";
 import OtherData from "../Context/OtherData";
+import ContractPreviewDisplay from "../D2CTemplates/ContractPreviewDisplay";
 
 const DetailAgreement = ({ setUserName, setUserType }) => {
 	const [remarkList, setRemarkList] = useState();
@@ -20,6 +21,8 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 	const [remarkData, setRemarkData] = useState();
 	const [treeDisplay, setTreeDisplay] = useState();
 	const [showAcceptButton, setShowAcceptButton] = useState(0);
+	const [formDisplayData, setFormDisplayData] = useState();
+	const [itemUnitOptions, setItemUnitOptions] = useState();
 	const navigate = useNavigate();
 	useEffect(() => {
 
@@ -37,8 +40,18 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 			console.log(obj);
 			setAgreementObj(obj);
 			checkAgreementAccepted(obj);
+			obj["paymentTerms"] = [];
+			obj["lineItems"] = [];
+			obj["customTerms"] = [];
+			getRequestAllowAll("api/General/UnitList").then(x => x.json()).then(res => {
+				if (res.status === 1) {
+					setItemUnitOptions(res.data);
+				}
+			}).catch(err => console.log(err));
+			setFormDisplayData(obj);
 			loadItemList(obj.id);
 			loadBuyerTermList(obj.id);
+			
 		}
 
 	}, []);
@@ -46,16 +59,29 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 		getRequest("api/Business/GetAgreementItems?agreementid=" + agreementId, UserProfile.getToken()).then(x => x.json()).then(res => {
 			console.log(res);
 			setItemList(res.data);
-			checkItemsAccepted(res.data);
-			checkTermAccepted(buyerTermList);
+			//checkItemsAccepted(res.data);
+			//checkTermAccepted(buyerTermList);
+			for (var i = 0; i < res.data.length; i++) {
+				addLineItem(res.data[i]);
+            }
+			
 		}).catch(err => console.log(err));
 	}
 	const loadBuyerTermList = (pid) => {
 		getRequest("api/Business/AgreementTermList?agreementId=" + pid , UserProfile.getToken()).then(x => x.json()).then(res => {
 			console.log(res);
 			setBuyerTermList(res.data);
-			checkTermAccepted(res.data);
-			checkItemsAccepted(itemList);
+			//checkTermAccepted(res.data);
+			//checkItemsAccepted(itemList);
+			for (var i = 0; i < res.data.length; i++) {
+				if (res.data[i].isPaymentTerm) {
+					addPaymentTerm(res.data[i].id, res.data[i].termTxt, res.data[i].termTitle);
+				} else
+				{
+					addCustomTerm(res.data[i].id, res.data[i].termTxt, res.data[i].termTitle);
+				}
+				
+			}
 		}).catch(err => console.log(err));
 	}
 
@@ -106,6 +132,102 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 		
 		return true;
 	}
+	const addCustomTerm = (termId, termText, termTitle) => {
+		if (!termText.trim()) return;
+		removeCustomTerm(termId);
+		setFormDisplayData(prev => ({
+			...prev,
+			customTerms: [
+				...prev.customTerms,
+				{
+					id: termId === 0 ? Date.now() : termId,
+					title: termTitle,
+					text: termText,
+					status: 'pending'
+				}
+			]
+		}));
+	};
+	const addPaymentTerm = (termId, termText, termTitle) => {
+		if (!termText.trim()) return;
+		removePaymentTerm(termId);
+		setFormDisplayData(prev => ({
+			...prev,
+			paymentTerms: [
+				...prev.paymentTerms,
+				{
+					id: termId === 0 ? Date.now() : termId,
+					title: termTitle,
+					text: termText,
+					status: 'pending'
+				}
+			]
+		}));
+	};
+	const removePaymentTerm = (id) => {
+		setFormDisplayData(prev => ({
+			...prev,
+			paymentTerms: prev.paymentTerms.filter(t => t.id !== id)
+		}));
+	};
+	const removeCustomTerm = (id) => {
+		setFormDisplayData(prev => ({
+			...prev,
+			customTerms: prev.customTerms.filter(t => t.id !== id)
+		}));
+	};
+	const removeLineItem = (id) => {
+		setFormDisplayData(prev => ({
+			...prev,
+			lineItems: prev.lineItems.filter(item => item.id !== id)
+		}));
+	};
+	const addLineItem = (item) => {
+		removeLineItem(item.id);
+		setFormDisplayData(prev => ({
+			...prev,
+			lineItems: [
+				...prev.lineItems,
+				{
+
+					id: item.id,
+					title: item.itemTitle,
+					description: item.itemDescription,
+					hsnSac: item.itemHsnCsnUin,
+					quantity: item.itemQuantity,
+					unit: item.unit,
+					buyerRate: item.buyerRate,
+					sellerRate: item.sellerRate,
+					currency:item.currency
+				}
+			]
+		}));
+	};
+	const getStatusClass = (status) => {
+		switch (status) {
+			case 'Accepted': return 'status-accepted';
+			case 'rejected': return 'status-rejected';
+			case 'pending': return 'status-pending';
+			case 'Active': return 'status-accepted';
+			case 'Proposed': return 'status-pending';
+			case 'Waiting for Seller': return 'status-pending';
+			case 'Waiting for Buyer': return 'status-pending';
+			default: return '';
+		}
+	};
+
+	const getStatusText = (status) => {
+		switch (status) {
+			case 'Accepted': return 'Accepted';
+			case 'rejected': return 'Rejected';
+			case 'pending': return 'Pending';
+			case 'Active': return 'Active';
+			case 'Proposed': return 'Proposed';
+			case 'Waiting for Seller': return 'Seller Action Pending';
+			case 'Waiting for Buyer': return 'Buyer Action Pending';
+			default: return '';
+		}
+	};
 
 	return (
 		<><div className="main-content" style={{ overflowY: 'scroll' }}>
@@ -137,21 +259,15 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 
 								}} />
 								</div>
-								{/*{showAcceptButton === 1 ? <div className="col-md-3">*/}
-								{/*		<FormButton name="Start" onClick={(e) => {*/}
-								{/*			e.preventDefault();*/}
-								{/*			setRemarkData(agreementObj);*/}
-								{/*			setRemarkType("AA");*/}
+								{agreementObj.status === "Proposed"
+									|| agreementObj.status === "Draft" ? <FormButton name="Start" onClick={(e) => {
+										e.preventDefault();
+										setRemarkData(agreementObj);
+										setRemarkType("AA");
 
-								{/*		}} />*/}
-								{/*	</div> :<></>*/}
-								{/*}*/}
-								<FormButton name="Start" onClick={(e) => {
-									e.preventDefault();
-									setRemarkData(agreementObj);
-									setRemarkType("AA");
-
-								}} />
+									}} />:<></>
+								}
+								
 
 							</div> : <></>}
 						{agreementObj.seller.usrId.toString() === UserProfile.getUserId().toString() ?
@@ -233,209 +349,168 @@ const DetailAgreement = ({ setUserName, setUserType }) => {
 				</div>
 
 				<div className="row">
-					
+					<div className="col-md-12 pt-2">
+						<div className="col-md-12 pt-2">
+							<div className="form-group">
+								<label>Item List</label>
+								<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '1rem' }}>
+									<thead>
+										<tr>
+											<th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Title</th>
+											<th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Description</th>
+											<th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Quantity</th>
+											<th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Rates</th>
+											<th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Tax</th>
+											<th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Completion</th>
+											<th style={{ textAlign: 'right', padding: '8px', borderBottom: '1px solid #ddd' }}></th>
+										</tr>
+									</thead>
+									<tbody>
+										{itemList && itemList.length > 0 ?itemList.map(item => (
+											<tr key={item.id}>
+												<td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{item.itemTitle|| 'Title'}<br />
+													<br />{item.itemHsnCsnUin}</td>
+												<td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{item.itemDescription|| 'Description'}</td>
+												<td style={{  padding: '8px', borderBottom: '1px solid #ddd' }}>
+													{item.itemQuantity} 
+												</td>
+												<td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
+													{item.sellerRate && item.sellerRate > 0 ? <span>{item.sellerRate} {item.currency}/{item.unit} </span> : <span> Waiting</span>}
+													<br />
+													{item.buyerRate && item.buyerRate > 0 ? <span>{item.buyerRate} {item.currency}/{item.unit} </span> : <span> Waiting</span>}
+												</td>
+												<td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
+													{item.itemTax} %
+												</td>
+												<td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
+													{item.sellerItemCompletion} days / {item.buyerItemCompletion} days 
+												</td>
+												<td style={{ textAlign: 'right', padding: '8px', borderBottom: '1px solid #ddd' }}>
+													<span className={`term-status ${getStatusClass(item.itemStatus)}`}>
+														{getStatusText(item.itemStatus)}
+													</span>
+													<span>
+														{item.communication && item.communication.length > 0 ?
+															<span className="remove-item" onClick={(e) => {
+																e.preventDefault();
+																setRemarkList(item.communication);
+															}}>
+																<i className="fas fa-comments"></i>
+															</span>
+															: <span style={{ fontSize: "70%" }}>No remarks</span>}
+														<br />
+													</span>
+													{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && item.itemStatus === "Proposed" ? <>
+														<span className="remove-item" onClick={(e) => {
+															e.preventDefault();
+															setRemarkData(item);
+															setRemarkType("BIN");
+														}}>
+															<i className="fas fa-handshake"></i>
+														</span>
+													</> : <></>}
+													{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && item.itemStatus === "Waiting for Buyer" ? <>
+														{item.sellerRate === item.buyerRate && item.sellerItemCompletion === item.buyerItemCompletion ? <span className="remove-item" onClick={(e) => {
+															e.preventDefault();
+															setRemarkData(item);
+															setRemarkType("BIA");
+														}}>
+															<i className="fas fa-check"></i>
+														</span> : <></>}
+														<span className="remove-item" onClick={(e) => {
+															e.preventDefault();
+															setRemarkData(item);
+															setRemarkType("BIN");
+														}}>
+															<i className="fas fa-handshake"></i>
+														</span>
+													</> : <></>}
+													{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && item.itemStatus === "Waiting for Seller" ? <>
+														{item.sellerRate === item.buyerRate && item.sellerItemCompletion === item.buyerItemCompletion ? <span className="remove-item" onClick={(e) => {
+															e.preventDefault();
+															setRemarkData(item);
+															setRemarkType("SIA");
+														}}>
+															<i className="fas fa-check"></i>
+														</span> : <></>}
+														<span className="remove-item" onClick={(e) => {
+															e.preventDefault();
+															setRemarkData(item);
+															setRemarkType("SIN");
+														}}>
+															<i className="fas fa-handshake"></i>
+														</span>
+													</> : <></>}
+												</td>
+											</tr>
+										)):<></>}
+									</tbody>
+								</table>
 
-					<div className="col-md-12 pt-2 ">
-						<div className="row">
-							<div className="col-md-12 p-0">
-								<h4 className="headingStyle">Line Items</h4>
 							</div>
 						</div>
-						<div className="d-none d-md-block">
-							<div className="row tableHeader ">
-								<div className="col-md-1 ">
-									Code
-								</div>
-								<div className="col-md-1 ">
-									Title
-								</div>
-								<div className="col-md-3 ">
-									Description
-								</div>
-								<div className="col-md-1 ">
-									Quantity
-								</div>
-								<div className="col-md-1 ">
-									Rate
-								</div>
-								<div className="col-md-2 ">
-									Remarks
-								</div>
-								<div className="col-md-1 ">
-									Tax
-								</div>
-								<div className="col-md-1 ">
-									Completion
-								</div>
+						<div className="col-md-12 pt-2">
+							<div className="form-group">
+								<label>Terms</label>
+								<ul className="terms-list">
+									{buyerTermList && buyerTermList.length>0?buyerTermList.map(term => (
+										<li className="term-item" key={term.id}>
 
-								<div className="col-md-1 " style={{ textAlign: "center" }}>
-									Actions
-								</div>
+											<label htmlFor={`custom-term-${term.id}`}>
+												<span>
+													{term.termTitle}
+												</span>
+											</label>
+											<label >
+												<span>
+													{term.termTxt}
+												</span>
+											</label>
+											<span className={`term-status ${getStatusClass(term.termStatus)}`}>
+												{getStatusText(term.termStatus)}
+											</span>
+											{term.communication && term.communication.length > 0 ?
+												<span className="remove-item" onClick={(e) => {
+													e.preventDefault();
+														setRemarkList(term.communication);
+												}}>
+													<i className="fas fa-comments"></i>
+												</span>
+												: <span style={{ fontSize: "70%" }}>No remarks</span>}
+											{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString()
+												&& (term.termStatus === "Proposed" || term.termStatus === "Waiting for Seller") ? <>
+												<span className="remove-item" onClick={(e) => {
+													e.preventDefault();
+													setRemarkData(term);
+													setRemarkType("BTSA");
+												}}>
+														<i className="fas fa-check"></i>
+												</span>
+												<span className="remove-item" onClick={(e) => {
+													e.preventDefault();
+													setRemarkData(term);
+													setRemarkType("BTSN");
+												}}>
+														<i className="fas fa-handshake"></i>
+												</span>
+											</> : <></>}
+											{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && term.termStatus === "Waiting for Buyer" ? <>
+												<span className="remove-item" onClick={(e) => {
+													e.preventDefault();
+													setRemarkData(term);
+													setRemarkType("BTBN");
+												}}>
+													<i className="fas fa-handshake"></i>
+												</span>
+											</> : <></>}
+										</li>
+									)):<>Loading Term List</>}
+								</ul>
 							</div>
 						</div>
-
-						{itemList && itemList.length > 0 ? itemList.map((x, ind) => <div className="row p-1 tablebox">
-							<div className="col-md-1 d-flex align-items-center">
-								<span>
-									<strong className="d-inline d-md-none">Code: </strong>
-									{x.itemHsnCsnUin}</span>
-								
-							</div>
-							<div className="col-md-1 d-flex align-items-center">
-								<span>
-									<strong className="d-inline d-md-none">Title: </strong>
-									{x.itemTitle}
-								</span>
-							</div>
-							<div className="col-md-3 d-flex align-items-center">
-								<span>
-									<strong className="d-inline d-md-none">Description: </strong>
-									{x.itemDescription}</span>
-							</div>
-							<div className="col-md-1 d-flex align-items-center">
-								<span>
-									<strong className="d-inline d-md-none">Quantity: </strong>
-									{x.itemQuantity}</span>
-							</div>
-							<div className="col-md-1 d-flex align-items-center" style={{ fontSize:"70%" }}>
-								<span id={"displayRate" + x.id}>
-									{x.sellerRate && x.sellerRate > 0 ? <span>{x.sellerRate} {x.currency}/{x.unit} </span> : <span> Waiting</span>}
-									<br />
-									{x.buyerRate && x.buyerRate > 0 ? <span>{x.buyerRate} {x.currency}/{x.unit} </span> : <span> Waiting</span>}
-								</span>
-							</div>
-							<div className="col-md-2 d-flex align-items-center">
-								<strong className="d-inline d-md-none">Remarks: </strong>
-								<span>
-									{x.communication && x.communication.length > 0 ?
-										<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
-											onClick={(e) => {
-												e.preventDefault();
-												setRemarkList(x.communication);
-											}}
-										/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
-									<br />
-									<span className="badge bg-success text-light">{x.itemStatus}</span>
-								</span>
-							</div>
-							<div className="col-md-1 d-flex align-items-center">
-								<span id={"displayTax" + x.id}>
-									{x.itemTax} %
-								</span>
-							</div>
-							<div className="col-md-1 d-flex align-items-center">
-								<span id={"displayCompletion" + x.id} style={{ fontSize: "70%" }}>
-									{x.sellerItemCompletion} days / {x.buyerItemCompletion} days 
-								</span>
-							</div>
-							<div className="col-md-1" style={{ textAlign: "center" }}>
-								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.itemStatus === "Proposed" ? <>
-									<FormButton name="Negotiate" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("BIN");
-									}} />
-								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.itemStatus === "Waiting for Buyer" ? <>
-									{x.sellerRate === x.buyerRate && x.sellerItemCompletion === x.buyerItemCompletion ? <FormButton name="Accept" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("BIA");
-									}} /> : <></>}
-									<FormButton name="Negotiate" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("BIN");
-									}} />
-								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString() && x.itemStatus === "Waiting for Seller" ? <>
-									{x.sellerRate === x.buyerRate && x.sellerItemCompletion === x.buyerItemCompletion ? <FormButton name="Accept" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("SIA");
-									}} /> : <></>}
-									<FormButton name="Negotiate" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("SIN"); }} />
-								</> : <></>}
-							</div>
-						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
 					</div>
-					<div className="col-md-12 pt-2 ">
-						<div className="row">
-							<div className="col-md-12 p-0">
-								<h4 className="headingStyle">All Terms</h4>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-md-1 tableHeader">S. No.</div>
-							<div className="col-md-2 tableHeader">Title</div>
-							<div className="col-md-4 tableHeader">Terms And Conditions</div>
-							<div className="col-md-2 tableHeader">Remarks
-								<br />
-								status</div>
-							<div className="col-md-2 tableHeader">Attachment</div>
-							<div className="col-md-1 tableHeader">Action</div>
-						</div>
-
-						{buyerTermList && buyerTermList.length > 0 ? buyerTermList.map((x, ind) => <div className="row p-1 tablebox">
-							<div className="col-md-1">
-								<strong className="d-inline d-md-none">S.No.: </strong>
-								{ind + 1} </div>
-							<div className="col-md-2">
-								<strong className="d-inline d-md-none">Title: </strong>
-								{ x.termTitle} </div>
-							<div className="col-md-4">
-								<strong className="d-inline d-md-none">Terms And Conditions: </strong>
-								{x.termTxt}
-							</div>
-							<div className="col-md-2">
-								<strong className="d-inline d-md-none">Remarks: </strong>
-								{x.communication && x.communication.length > 0 ?
-									<img src={"/comment2.png"} alt="Comment" className="commentIcon" width={20} height={20}
-										onClick={(e) => {
-											e.preventDefault();
-											setRemarkList(x.communication);
-										}}
-									/> : <span style={{ fontSize: "70%" }}>No remarks</span>}
-								<br />
-								<span className="badge bg-success text-light">{x.termStatus}</span>
-							</div>
-							<div className="col-md-2">
-								<span>
-									<strong className="d-inline d-md-none">Attachments: </strong>
-									{x.attachments ? x.attachments.map((i) => < div className="col-md-12" style={{
-										marginBottom: "2px"
-									}}>
-										<a href={i.link} target={"new"}>
-											<img src={i.link} width={50} height={50} />
-										</a> 
-									</div>) : <span style={{ fontsize: "70%" }}>No Attachments</span>}
-								</span></div>
-							<div className="col-md-1">
-								{UserProfile.getUserId().toString() === agreementObj.seller.usrId.toString()
-									&& (x.termStatus === "Proposed" || x.termStatus === "Waiting for Seller") ? <>
-										<FormButton name="Accept" onClick={(e) => {
-											e.preventDefault();
-											setRemarkData(x);
-											setRemarkType("BTSA");
-										}} />
-										<FormButton name="Negotiate" onClick={(e) => {
-											e.preventDefault();
-											setRemarkData(x);
-											setRemarkType("BTSN");
-										}} />
-								</> : <></>}
-								{UserProfile.getUserId().toString() === agreementObj.buyer.usrId.toString() && x.termStatus === "Waiting for Buyer" ? <>
-									<FormButton name="Negotiate" onClick={(e) => {
-										e.preventDefault();
-										setRemarkData(x);
-										setRemarkType("BTBN");
-									}} />
-								</> : <></>}
-							</div>
-						</div>) : <div className="row"> No Items in Purchase Agreement</div>}
+					<div className="col-md-12 pt-2">
+						<ContractPreviewDisplay formData={formDisplayData} unitOptions={itemUnitOptions} />
 					</div>
 				</div>
 			</div> : <div> Not able to display order details</div>}

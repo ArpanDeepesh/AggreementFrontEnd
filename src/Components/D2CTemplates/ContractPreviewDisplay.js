@@ -1,7 +1,7 @@
 ﻿// ContractPreview.jsx
 import React from 'react';
 
-const ContractPreview = ({ formData }) => {
+const ContractPreviewDisplay = ({ formData, unitOptions }) => {
     // Format date for display
     const formatDate = (dateString) => {
         if (!dateString) return '[Date]';
@@ -49,26 +49,68 @@ const ContractPreview = ({ formData }) => {
             ? (isFirstParty ? partyTitles[formData.userRole][0] : partyTitles[formData.userRole][1])
             : 'Party';
     };
-    const getUserDetailToDisplay = (d) => {
-        var arr = d.split("\n");
-        return (<>{arr[0]}<br />{arr[1]}<br />{arr[2]}<br />{arr[3]}<br />{arr[4]}</>);
-    }
+    const unitValue = (u) => {
+        if (unitOptions.length > 0) {
+            for (var i = 0; i < unitOptions.length; i++) {
+                if (unitOptions[i].id === u) {
+                    return unitOptions[i].typeValue;
+                }
+            }
+        }
+        return "Count";
+
+    };
 
     return (
         <div className="contract-preview">
             <h2>Contract Preview</h2>
             <div className="contract-content">
-                <p><strong>{formData.agreementTitle || 'AGREEMENT'}</strong></p>
-                <p>This Agreement is made and executed on this {formatDate(formData.agreementDate)}, between:</p>
+                <p><strong>{"Agreement id " + formData.agreementUID || 'New Agreement'}</strong></p>
+                <p>This Agreement is made and executed on this {formatDate(formData.createdOn)}, between:</p>
 
                 <h3>FIRST PARTY ({getPartyTitle(true)})</h3>
-                <p>{formData.firstpartyDetails && formData.firstpartyDetails !== "" ? getUserDetailToDisplay(formData.firstpartyDetails) : "[Your details will appear here]"} </p>
+                <p>
+                    Name: {formData.buyer.usrName}
+                    <br />
+                    GSTIN: {formData.buyer.usrGstin}
+                    <br />
+                    PAN: {formData.buyer.usrPan}
+                    <br />
+                    Email: {formData.buyer.email}
+                    <br />
+                    Phone: {formData.buyer.phoneNumber}
+                    <br />
+                    Address: {formData.buyer.usrAddress}
+                    <br />
+                 </p>
 
                 <h3>SECOND PARTY ({getPartyTitle(false)})</h3>
-                <p>{formData.counterpartyDetails && formData.counterpartyDetails !== "" ? getUserDetailToDisplay(formData.counterpartyDetails):"[Counterparty details will be filled after sending]"}</p>
+                <p>
+                    Name: {formData.seller.usrName}
+                    <br />
+                    GSTIN: {formData.seller.usrGstin}
+                    <br />
+                    PAN: {formData.seller.usrPan}
+                    <br />
+                    Email: {formData.seller.email}
+                    <br />
+                    Phone: {formData.seller.phoneNumber}
+                    <br />
+                    Address: {formData.seller.usrAddress}
+                    <br />
+                </p>
 
                 <h3>1. AGREEMENT DETAILS</h3>
-                <p>This agreement concerns: {formData.propertyDescription || '[Description]'}</p>
+                <p>Quotation Duration: {formData.contractDuration || '0'}
+                    <br />
+                    Penality Days: {formData.ldDays || '0'}
+                    <br />
+                    Penality Percent: {formData.ldPercent || '0'} %
+                    <br />
+                    Advance : {formData.advance || '0'}
+                    <br />
+                    Deposite : {formData.deposite || '0'}
+                </p>
 
                 <h3>2. TERM</h3>
                 <p>Effective from {formatDate(formData.startDate)} to {formatDate(formData.endDate)} with {formData.noticePeriod} days notice period.</p>
@@ -77,17 +119,22 @@ const ContractPreview = ({ formData }) => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '1rem' }}>
                     <thead>
                         <tr>
+                            <th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Title</th>
                             <th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Description</th>
-                            <th style={{ textAlign: 'right', padding: '8px', borderBottom: '1px solid #ddd' }}>Amount</th>
+                            <th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Quanitity</th>
+                            <th style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #ddd' }}>Rate</th>
                         </tr>
                     </thead>
                     <tbody>
                         {formData.lineItems.map(item => (
                             <tr key={item.id}>
-                                <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{item.description || 'Item'}</td>
-                                <td style={{ textAlign: 'right', padding: '8px', borderBottom: '1px solid #ddd' }}>
-                                    {formatCurrency(item.amount)}
+                                <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{item.title || 'Title'}<br />{item.hsnSac}</td>
+                                <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{item.description || 'Description'}</td>
+                                <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
+                                    {item.quantity} {/^\d+$/.test(item.unit.toString())?unitValue(item.unit):item.unit}
                                 </td>
+                                <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
+                                    {item.buyerRate || "Buyer Rate"} / { item.sellerRate || 'Seller Rate'}{ item.currency}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -127,4 +174,4 @@ const ContractPreview = ({ formData }) => {
     );
 };
 
-export default ContractPreview;
+export default ContractPreviewDisplay;

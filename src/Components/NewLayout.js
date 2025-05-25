@@ -49,6 +49,7 @@ import AnalyticsPage from "./HomePage/AnalyticsPage";
 import ResetPassword from './LandingPage/ResetPassword';
 import ContactUs from './LandingPage/ContactUs';
 import CookiePolicy from "./LandingPage/CookiePolicy";
+import OtherData from './Context/OtherData';
 const NewLayout = () => {
     const [loggedInUserName, setLoggedInUsername] = useState();
     const [loggedInUserType, setLoggedInUserType] = useState();
@@ -75,7 +76,9 @@ const NewLayout = () => {
                     <div className="sidebar-header">
                         <div className="logo">
                             <i className="fas fa-file-contract" style={{ color: '#007bff' }}></i>
-                            <a style={{ textDecoration: "none" }} href="/">
+                            <a style={{ textDecoration: "none" }} href="/" onClick={(e) => {
+                                OtherData.resetData();
+                            }}>
                                 <span style={{ color: '#007bff' }}>Contr
                                     <span style={{ color: "#ff8400" }}>e</span>
                                     ct</span>

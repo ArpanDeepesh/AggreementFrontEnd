@@ -34,6 +34,10 @@ const HomePage = ({ setUserName, setUserType}) => {
                 navigate("/CustomAgreement");
                 
             }
+            if ( dObj.inviteOnly !== undefined) {
+                navigate("/NewRFQ");
+
+            }
         }
         
         setUserName(UserProfile.getName());

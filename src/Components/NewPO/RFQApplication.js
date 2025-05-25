@@ -24,9 +24,6 @@ const RFQApplication = ({setUserName ,setUserType }) => {
 	const [msgType, setMsgType] = useState("");
 	
 	const [proposalId, setProposalId] = useState();
-	const [proposalCompletion, setProposalCompletion] = useState();
-	const [termLDPercent, setTermLDPercent] = useState();
-	const [termLDDays, setTermLDDays] = useState();
 	const [propsalType, setProposalType] = useState([]);
 	const [propsalTermOptions, setProposalTermOptions] = useState([]);
 	const [propsalItemOptions, setProposalItemOptions] = useState([]);
@@ -59,9 +56,11 @@ const RFQApplication = ({setUserName ,setUserType }) => {
 		console.log(data);
 		if (data.startsWith('{')) {
 			var dataObj = JSON.parse(data);
-			if (dataObj.counterpartyDetails && dataObj.counterpartyDetails.length > 0) {
+			if (dataObj.inviteOnly !== undefined) {
+				console.log("Data assigned 122");
 				setFrmData(dataObj);
-				OtherData.setData();
+				setProposalId(dataObj.id);
+				
 			}
 		}
 		//getRequest("api/General/UserTermDropDown?typeName=Buyer", UserProfile.getToken()).then(x => x.json()).then(res => {
@@ -74,17 +73,7 @@ const RFQApplication = ({setUserName ,setUserType }) => {
 				setProposalItemOptions(res.data);
 			}
 		}).catch(err => console.log(err)); 
-		if (OtherData.getData()!=="" && OtherData.getData().length > 0)
-		{
-			var proposalObj = JSON.parse(OtherData.getData());
-			setProposalCompletion(proposalObj.proposalCompletionInDays);
-			setTermLDPercent(proposalObj.proposalLdPercent);
-			setTermLDDays(proposalObj.proposalLdAppliedAfterDays);
-			setProposalId(proposalObj.id);
-			loadItemList(proposalObj.id);
-			loadTermList(proposalObj.id);
-			//OtherData.resetData();
-		}
+
 		
 		
 	}, []);
@@ -297,21 +286,21 @@ const handleSubmitAddItem = (e) => {
 				}
 			}).catch(err => console.log(err));
 	}
-	const setLDData = (termId) =>
-	{
-		getRequest("api/general/UserTermLDData?groupId=" + termId, UserProfile.getToken())
-			.then(x => x.json())
-			.then(res => {
-				console.log(res);
-				if (res.status === 1)
-				{
-					setTermLDDays(res.data.key);
-					setTermLDPercent(res.data.value);
-					proposalForm.current["ProposalLdPercent"].value = res.data.value ;
-					proposalForm.current["ProposalLdAppliedAfterDays"].value = res.data.key ;
-				}
-			}).catch(err => console.log(err));
-	}
+	//const setLDData = (termId) =>
+	//{
+	//	getRequest("api/general/UserTermLDData?groupId=" + termId, UserProfile.getToken())
+	//		.then(x => x.json())
+	//		.then(res => {
+	//			console.log(res);
+	//			if (res.status === 1)
+	//			{
+	//				setTermLDDays(res.data.key);
+	//				setTermLDPercent(res.data.value);
+	//				proposalForm.current["ProposalLdPercent"].value = res.data.value ;
+	//				proposalForm.current["ProposalLdAppliedAfterDays"].value = res.data.key ;
+	//			}
+	//		}).catch(err => console.log(err));
+	//}
 	const addUserTermToProposal = () => {
 		var groupId = termForm.current['selectedTermId'].value
 		getRequest("api/Business/AddUserTermToProposal?proposalId=" + proposalId + "&grpId=" + groupId +"&termType=Buyer", UserProfile.getToken())

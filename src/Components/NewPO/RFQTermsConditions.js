@@ -75,7 +75,17 @@ const RFQTermsConditions = ({ customTerms, onAddTerm, onRemoveTerm, handleEditTe
                         >
                             <i className="fas fa-plus"></i> Add Term
                         </button>}
-                        
+                        {newTermId && newTermId.toString().length > 0 ? <button
+                            type="button"
+                            className="btn btn-outline"
+                            onClick={() => {
+                                setNewTermId();
+                                setNewTermTitle('');
+                                setNewTermDesc('');
+                            }}
+                        >
+                            <i className="fas fa-edit"></i> Cancel
+                        </button> : <></>}
                     </div>
                 </div>
             </div>
